@@ -278,7 +278,7 @@ export default function App() {
     <div className="mb-8 md:mb-12 relative z-20">
       <button
         onClick={() => setActiveRationale(activeRationale === id ? null : id)}
-        className={`group flex flex-col md:flex-row md:items-center justify-between gap-3 w-full text-left pb-4 border-b transition-all duration-300 ${dark ? 'border-neutral-700 hover:border-neutral-500' : 'border-neutral-200 hover:border-neutral-300'}`}
+        className={`group flex flex-col md:flex-row md:items-center justify-between gap-3 w-full text-left pb-4 border-b transition-colors duration-300 ${dark ? 'border-neutral-700 hover:border-neutral-500' : 'border-neutral-200 hover:border-neutral-300'}`}
       >
         <h2 className={`text-[11px] md:text-[12px] font-bold uppercase tracking-widest transition-colors duration-300 ${dark ? 'text-neutral-300 group-hover:text-white' : 'text-neutral-400 group-hover:text-neutral-600'}`}>
           {rationales[id].title}
@@ -292,26 +292,30 @@ export default function App() {
         </div>
       </button>
 
-      {/* Rationale Expansion Panel - Animation Fixed */}
-      <div className={`grid transition-all duration-[600ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${activeRationale === id ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
-        <div className="overflow-hidden">
-          <div className="pt-4 pb-2 md:pt-6">
-            <div className={`p-6 md:p-8 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.03)] border transform transition-all duration-[500ms] ease-out ${
-              activeRationale === id ? 'translate-y-0' : '-translate-y-4 md:-translate-y-8'
-            } ${dark ? 'bg-neutral-800 border-neutral-700' : 'bg-white border-neutral-200'}`}>
-              <div className="grid md:grid-cols-2 gap-6 md:gap-10">
-                <div className={`transform transition-all duration-700 delay-100 ${activeRationale === id ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-                  <h4 className={`text-[10px] uppercase tracking-widest font-bold mb-2 md:mb-3 ${dark ? 'text-neutral-400' : 'text-neutral-400'}`}>The Purpose</h4>
-                  <p className={`text-[11px] md:text-[12px] leading-relaxed font-medium ${dark ? 'text-neutral-200' : 'text-neutral-600'}`}>
-                    {rationales[id].whyExists}
-                  </p>
-                </div>
-                <div className={`transform transition-all duration-700 delay-200 ${activeRationale === id ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-                  <h4 className={`text-[10px] uppercase tracking-widest font-bold mb-2 md:mb-3 ${dark ? 'text-neutral-400' : 'text-neutral-400'}`}>The Strategic Placement</h4>
-                  <p className={`text-[11px] md:text-[12px] leading-relaxed font-medium ${dark ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                    {rationales[id].whyHere}
-                  </p>
-                </div>
+      {/* BULLETPROOF ANIMATION USING MAX-HEIGHT */}
+      <div 
+        className="transition-all duration-[600ms] ease-in-out overflow-hidden"
+        style={{
+          maxHeight: activeRationale === id ? '600px' : '0px',
+          opacity: activeRationale === id ? 1 : 0
+        }}
+      >
+        <div className="pt-4 pb-2 md:pt-6">
+          <div className={`p-6 md:p-8 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.03)] border transform transition-all duration-[600ms] ease-out ${
+            activeRationale === id ? 'translate-y-0' : '-translate-y-6'
+          } ${dark ? 'bg-neutral-800 border-neutral-700' : 'bg-white border-neutral-200'}`}>
+            <div className="grid md:grid-cols-2 gap-6 md:gap-10">
+              <div className={`transform transition-all duration-[600ms] delay-100 ${activeRationale === id ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+                <h4 className={`text-[10px] uppercase tracking-widest font-bold mb-2 md:mb-3 ${dark ? 'text-neutral-400' : 'text-neutral-400'}`}>The Purpose</h4>
+                <p className={`text-[11px] md:text-[12px] leading-relaxed font-medium ${dark ? 'text-neutral-200' : 'text-neutral-600'}`}>
+                  {rationales[id].whyExists}
+                </p>
+              </div>
+              <div className={`transform transition-all duration-[600ms] delay-200 ${activeRationale === id ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+                <h4 className={`text-[10px] uppercase tracking-widest font-bold mb-2 md:mb-3 ${dark ? 'text-neutral-400' : 'text-neutral-400'}`}>The Strategic Placement</h4>
+                <p className={`text-[11px] md:text-[12px] leading-relaxed font-medium ${dark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                  {rationales[id].whyHere}
+                </p>
               </div>
             </div>
           </div>
@@ -744,7 +748,7 @@ export default function App() {
                     <div className="w-full h-2 md:h-3 bg-neutral-200 rounded-xl mb-2 md:mb-3"></div>
                     <div className="w-4/5 h-2 md:h-3 bg-neutral-200 rounded-xl mb-auto"></div>
                     
-                    <div className={`w-full h-12 md:h-14 rounded-xl mt-6 md:mt-8 transition-colors duration-300 flex items-center justify-center border ${grant === 1 ? 'bg-neutral-400 hover:bg-neutral-500 border-neutral-400' : 'bg-white hover:bg-neutral-100 border-neutral-200'}`}>
+                    <div className={`w-full h-12 md:h-14 rounded-xl mt-6 md:mt-8 transition-colors duration-300 flex items-center justify-center border w-full ${grant === 1 ? 'bg-neutral-400 hover:bg-neutral-500 border-neutral-400' : 'bg-white hover:bg-neutral-100 border-neutral-200'}`}>
                       <div className={`w-24 md:w-32 h-2 md:h-3 rounded-xl ${grant === 1 ? 'bg-white' : 'bg-neutral-300'}`}></div>
                     </div>
                   </div>
