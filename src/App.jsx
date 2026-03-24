@@ -41,7 +41,7 @@ const Preloader = ({ onComplete }) => {
     }, 16); // Run at ~60fps for buttery smooth numbers
 
     return () => clearInterval(timer);
-  }, []); // Empty dependency array mathematically guarantees it only runs once
+  }, [onComplete]); // Empty dependency array mathematically guarantees it only runs once
 
   return (
     <div className="absolute inset-0 bg-neutral-50 flex flex-col items-center justify-center font-sans overflow-hidden">
@@ -82,7 +82,7 @@ const HeroDataGrid = () => {
 
   return (
     <div
-      className="w-full h-[300px] md:h-[400px] bg-white border border-neutral-200 rounded-xl relative overflow-hidden flex items-end p-4 md:p-8 group cursor-crosshair shadow-sm touch-none"
+      className="w-full h-[300px] md:h-[400px] xl:h-[500px] bg-white border border-neutral-200 rounded-xl relative overflow-hidden flex items-end p-4 md:p-8 group cursor-crosshair shadow-sm touch-none"
       onMouseMove={(e) => handleMove(e.clientX, e.clientY, e.currentTarget)}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -422,6 +422,11 @@ export default function App() {
           background-size: 24px 24px;
         }
 
+        @keyframes scan {
+          0% { transform: translateY(-100vh); }
+          100% { transform: translateY(100vh); }
+        }
+        
         @keyframes scroll {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
@@ -479,8 +484,8 @@ export default function App() {
           </header>
 
           {/* 1. Hero Section */}
-          <section className="relative pt-12 md:pt-20 pb-20 md:pb-32 border-b border-neutral-200 bg-white">
-            <div className="max-w-[90rem] mx-auto px-5 md:px-12 lg:px-16">
+          <section className="relative pt-12 md:pt-16 pb-20 md:pb-24 border-b border-neutral-200 bg-white min-h-[calc(100vh-80px)] flex flex-col justify-center">
+            <div className="max-w-[90rem] mx-auto px-5 md:px-12 lg:px-16 w-full">
               <SectionHeader id="hero" />
               
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 mt-4 items-center">
