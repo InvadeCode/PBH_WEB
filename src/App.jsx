@@ -4,11 +4,13 @@ const Preloader = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    let animationFrameId;
     const startTime = Date.now();
-    let completed = false; // strict guard to prevent any loops
+    let isCompleted = false;
 
-    const timer = setInterval(() => {
-      if (completed) return;
+    const animate = () => {
+      if (isCompleted) return;
+      
       const elapsed = Date.now() - startTime;
       let newProgress = 0;
 
@@ -32,16 +34,23 @@ const Preloader = ({ onComplete }) => {
         newProgress = 100;
       } else {
         newProgress = 100;
-        completed = true;
-        clearInterval(timer);
-        setTimeout(() => onComplete(), 100);
+        isCompleted = true;
+        setProgress(100);
+        setTimeout(() => {
+          if (onComplete) onComplete();
+        }, 100);
+        return; // End animation loop
       }
       
       setProgress(Math.min(newProgress, 100));
-    }, 16); // Run at ~60fps for buttery smooth numbers
+      animationFrameId = requestAnimationFrame(animate);
+    };
 
-    return () => clearInterval(timer);
-  }, [onComplete]); // Empty dependency array mathematically guarantees it only runs once
+    // Start loop
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []); // <-- EMPTY DEPENDENCY ARRAY GUARANTEES IT ONLY RUNS ONCE
 
   return (
     <div className="absolute inset-0 bg-neutral-50 flex flex-col items-center justify-center font-sans overflow-hidden">
@@ -280,55 +289,55 @@ export default function App() {
       whyExists: "To provide the historical context, intellectual foundation, and deeper national mission driving the IIT Delhi CoE RA. It shifts the narrative from 'what we do' to 'why our work is critically important for the future of India's energy security and market equity.'",
       whyHere: "Placing this after the hero and pillars ensures users have bought into the core value before reading the longer institutional narrative. It perfectly bridges the gap to hard metrics."
     },
+    experts: {
+      title: "05. Our Experts & Leadership",
+      whyExists: "To attach faces and formidable academic pedigrees to the regulatory data. By showcasing the prestigious IIT Delhi faculty and industry veterans leading the CoE, it humanizes the institution while simultaneously reinforcing its elite intellectual capital.",
+      whyHere: "In regulatory spaces, institutional weight matters more initially than individual faces. Once the institution is trusted via the narrative above, revealing the elite team seals the deal."
+    },
     impact: {
-      title: "05. Metrics / Impact",
+      title: "06. Metrics / Impact",
       whyExists: "To provide irrefutable, objective, and quantifiable proof of the IIT Delhi CoE RA's systemic interventions in the power sector. It replaces qualitative claims with hard numbers, proving the tangible footprint of the institution's advisory and research outputs.",
       whyHere: "Subjective storytelling must be immediately backed up by hard data (e.g., papers published, policies drafted). Narrative plus hard numbers equals institutional authority."
     },
     map: {
-      title: "06. Interactive Regional Impact Map",
+      title: "07. Interactive Regional Impact Map",
       whyExists: "To geographically visualize the physical and jurisdictional reach of the IIT Delhi CoE RA across state grids and national policy arenas. It proves that the institution's work transcends theoretical models and physically impacts national infrastructure.",
       whyHere: "Follows impact metrics to ground those abstract numbers in geographical reality. It proves the CoE's influence across regional grids and state policies."
     },
     data: {
-      title: "07. Featured Data & Analytics Preview",
+      title: "08. Featured Data & Analytics Preview",
       whyExists: "To publicly flex the high-end computational and analytical capabilities of the IIT Delhi CoE RA. By previewing interactive datasets, it proves the institution possesses the rigorous technological infrastructure required to manage complex modern power systems.",
       whyHere: "It shows, rather than tells, the technical rigor of IIT Delhi. Placed after the metrics, it visually demonstrates the advanced models used to generate that impact."
     },
     projects: {
-      title: "08. Active Projects & Sandboxes",
+      title: "09. Active Projects & Sandboxes",
       whyExists: "To demonstrate that the IIT Delhi CoE RA is actively testing live regulatory sandboxes and deploying pilot projects. This confirms the institution is dynamically shaping future policy rather than just analyzing past data in a static academic vacuum.",
       whyHere: "Proves the Centre is implementing pilot projects in the real world. It bridges the gap between theoretical data modeling and the final published academic research."
     },
     research: {
-      title: "09. Latest Research / Knowledge Hub",
+      title: "10. Latest Research / Knowledge Hub",
       whyExists: "To distribute the primary intellectual payload of the IIT Delhi CoE RA. This acts as the central dissemination point for peer-reviewed papers, policy briefs, and working models that fundamentally influence market design and regulatory directives.",
       whyHere: "Placed in the exact middle of the page. The user has been educated on capabilities and scale. Their cognitive load is now primed for deep, peer-reviewed regulatory literature."
     },
     archive: {
-      title: "10. Policy Archive & Database",
+      title: "11. Policy Archive & Database",
       whyExists: "To offer a comprehensive, utilitarian search interface for researchers, legal teams, and policymakers requiring historical continuity. It ensures the vast intellectual property of the IIT Delhi CoE RA remains highly accessible and systematically indexed.",
       whyHere: "Sits immediately after 'Latest Research' to offer the deep-dive functionality for users who want to search beyond the recent highlights."
     },
     events: {
-      title: "11. Upcoming Events & Webinars",
+      title: "12. Upcoming Events & Webinars",
       whyExists: "To showcase the IIT Delhi CoE RA as a vibrant, convening power within the energy sector. It highlights ongoing symposiums and stakeholder consultations, transitioning the user from passive consumption of research to active participation in policy discourse.",
       whyHere: "Flows naturally from the Research section. The progression is seamless: 'You just read our policy paper, now come attend the national symposium about it'."
-    },
-    experts: {
-      title: "12. Our Experts & Leadership",
-      whyExists: "To attach faces and formidable academic pedigrees to the regulatory data. By showcasing the prestigious IIT Delhi faculty and industry veterans leading the CoE, it humanizes the institution while simultaneously reinforcing its elite intellectual capital.",
-      whyHere: "In regulatory spaces, institutional weight matters more initially than individual faces. Once the institution is trusted, revealing the elite team seals the deal."
     },
     fellowships: {
       title: "13. Fellowships & Grants",
       whyExists: "To secure the future pipeline of regulatory thought leaders. By advertising grants and fellowships, the CoE RA positions itself as an incubator for top-tier academic talent, ensuring continuous, high-quality research output.",
-      whyHere: "Strategically placed right after 'Our Experts' so prospective applicants, scholars, and post-docs see the caliber of mentorship available before they apply."
+      whyHere: "Strategically placed here so prospective applicants, scholars, and post-docs see the caliber of output and mentorship available before they apply."
     },
     testimonials: {
       title: "14. Ecosystem Voices / Testimonials",
       whyExists: "To deliver high-impact peer validation from external energy sector titans, grid operators, and regulatory commissioners. This external advocacy acts as the ultimate trust multiplier, proving that the industry actively relies on the CoE RA's guidance.",
-      whyHere: "A powerful trust multiplier placed after the team. It tells visitors: 'Don't just take our word that our faculty is great—look at what national grid operators say about us'."
+      whyHere: "A powerful trust multiplier placed before final conversions. It tells visitors: 'Don't just take our word that our faculty is great—look at what national grid operators say about us'."
     },
     media: {
       title: "15. In the Media / Press",
@@ -600,7 +609,30 @@ export default function App() {
             </div>
           </section>
 
-          {/* 5. Metrics / Impact */}
+          {/* 5. Our Experts & Leadership */}
+          <section className="py-20 md:py-32 border-b border-neutral-200 bg-neutral-50">
+            <div className="max-w-[90rem] mx-auto px-5 md:px-12 lg:px-16">
+              <SectionHeader id="experts" />
+              <div className="mb-12 md:mb-20 flex flex-col items-start gap-4 md:gap-5 mt-8 w-full">
+                <div className="w-24 h-3 md:h-4 bg-neutral-200 rounded-xl"></div>
+                <div className="w-56 md:w-64 h-10 md:h-12 bg-neutral-400 rounded-xl shadow-sm"></div>
+              </div>
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-10">
+                {[1, 2, 3, 4, 5, 6].map((expert) => (
+                  <div key={expert} className="group flex gap-4 md:gap-6 items-center p-4 md:p-5 rounded-xl hover:bg-white border border-transparent hover:border-neutral-200 hover:shadow-sm transition-all duration-300 cursor-pointer">
+                    <div className="w-20 h-20 md:w-24 md:h-24 bg-neutral-200 group-hover:bg-neutral-300 rounded-xl flex-shrink-0 transition-colors duration-300"></div>
+                    <div className="flex flex-col gap-2 md:gap-3 items-start">
+                      <div className="w-32 md:w-40 h-4 md:h-5 bg-neutral-300 rounded-xl group-hover:bg-neutral-400 transition-colors"></div>
+                      <div className="w-24 md:w-28 h-2 md:h-3 bg-neutral-200 rounded-xl"></div>
+                      <div className="w-20 md:w-24 h-1.5 md:h-2 bg-neutral-100 rounded-xl mt-1 md:mt-2"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* 6. Metrics / Impact */}
           <section className="py-16 md:py-24 border-b border-neutral-200 bg-white">
             <div className="max-w-[90rem] mx-auto px-5 md:px-12 lg:px-16">
               <SectionHeader id="impact" />
@@ -615,7 +647,7 @@ export default function App() {
             </div>
           </section>
 
-          {/* 6. Interactive Network / Regional Impact Map */}
+          {/* 7. Interactive Network / Regional Impact Map */}
           <section className="py-20 md:py-32 border-b border-neutral-200 bg-neutral-50">
             <div className="max-w-[90rem] mx-auto px-5 md:px-12 lg:px-16">
               <SectionHeader id="map" />
@@ -625,7 +657,7 @@ export default function App() {
             </div>
           </section>
 
-          {/* 7. Featured Data & Analytics Preview */}
+          {/* 8. Featured Data & Analytics Preview */}
           <section className="py-20 md:py-32 max-w-[90rem] mx-auto px-5 md:px-12 lg:px-16">
             <SectionHeader id="data" />
             <div className="mb-12 md:mb-16 flex flex-col items-start gap-4 md:gap-5 mt-8">
@@ -710,7 +742,7 @@ export default function App() {
             </div>
           </section>
 
-          {/* 10. Policy Archive & Database */}
+          {/* 11. Policy Archive & Database */}
           <section className="py-20 md:py-32 border-b border-neutral-200 bg-neutral-50">
             <div className="max-w-[90rem] mx-auto px-5 md:px-12 lg:px-16">
               <SectionHeader id="archive" />
@@ -764,7 +796,7 @@ export default function App() {
             </div>
           </section>
 
-          {/* 11. Upcoming Events & Webinars */}
+          {/* 12. Upcoming Events & Webinars */}
           <section className="py-20 md:py-32 border-b border-neutral-200 bg-white">
             <div className="max-w-[90rem] mx-auto px-5 md:px-12 lg:px-16">
               <SectionHeader id="events" />
@@ -788,29 +820,6 @@ export default function App() {
                        <div className="w-full md:w-32 h-10 md:h-12 bg-white border border-neutral-200 group-hover:bg-neutral-100 rounded-xl transition-colors duration-300 flex items-center justify-center">
                          <div className="w-16 h-2 bg-neutral-300 group-hover:bg-neutral-400 rounded-xl"></div>
                        </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* 12. Our Experts & Leadership */}
-          <section className="py-20 md:py-32 border-b border-neutral-200 bg-neutral-50">
-            <div className="max-w-[90rem] mx-auto px-5 md:px-12 lg:px-16">
-              <SectionHeader id="experts" />
-              <div className="mb-12 md:mb-20 flex flex-col items-start gap-4 md:gap-5 mt-8 w-full">
-                <div className="w-24 h-3 md:h-4 bg-neutral-200 rounded-xl"></div>
-                <div className="w-56 md:w-64 h-10 md:h-12 bg-neutral-400 rounded-xl shadow-sm"></div>
-              </div>
-              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-10">
-                {[1, 2, 3, 4, 5, 6].map((expert) => (
-                  <div key={expert} className="group flex gap-4 md:gap-6 items-center p-4 md:p-5 rounded-xl hover:bg-white border border-transparent hover:border-neutral-200 hover:shadow-sm transition-all duration-300 cursor-pointer">
-                    <div className="w-20 h-20 md:w-24 md:h-24 bg-neutral-200 group-hover:bg-neutral-300 rounded-xl flex-shrink-0 transition-colors duration-300"></div>
-                    <div className="flex flex-col gap-2 md:gap-3 items-start">
-                      <div className="w-32 md:w-40 h-4 md:h-5 bg-neutral-300 rounded-xl group-hover:bg-neutral-400 transition-colors"></div>
-                      <div className="w-24 md:w-28 h-2 md:h-3 bg-neutral-200 rounded-xl"></div>
-                      <div className="w-20 md:w-24 h-1.5 md:h-2 bg-neutral-100 rounded-xl mt-1 md:mt-2"></div>
                     </div>
                   </div>
                 ))}
