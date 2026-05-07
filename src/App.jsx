@@ -1,33 +1,51 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useInView } from 'framer-motion';
+import { 
+  ArrowRight, Sparkles, Hexagon, Zap, CheckCircle2, 
+  ArrowLeft, ArrowDown, Check, Menu, X, Globe, MoveRight,
+  Lightbulb, Activity, BookOpen, Fingerprint, Dna, Rocket,
+  Mail, MessageSquare, Terminal
+} from 'lucide-react';
 
-// --- DATA MODELS (Used for routing/loops only, content is hidden) ---
-const ROUTES = [1, 2, 3, 4, 5];
-const CASE_STUDIES = [1, 2, 3, 4];
-const QUIZ_QUESTIONS = [1, 2];
+// --- DATA MODELS ---
+const ROUTES = [
+  { id: 'brand-boulevard', title: 'Brand Boulevard', tagline: 'Strategy & Identity', description: 'Brand workshops, audits, brand identity systems, design systems, collaterals, brand guidelines.', icon: <Fingerprint className="w-5 h-5" /> },
+  { id: 'sciart-saga', title: 'SciArt Saga', tagline: 'Complexity Translation', description: 'Innovation and science frameworks, experience and IP strategy, product storytelling, go-to-market.', icon: <Dna className="w-5 h-5" /> },
+  { id: 'storytelling-corner', title: 'Storytelling Corner', tagline: 'Digital Narratives', description: 'Creative direction, social media and influencer strategy, website frameworks, digital storytelling.', icon: <Lightbulb className="w-5 h-5" /> },
+  { id: 'launch-systems', title: 'Launch Systems', tagline: 'Growth Assets', description: 'Packaging, SKU systems, launch campaigns, influencer PR kits, lookbooks, social templates.', icon: <Rocket className="w-5 h-5" /> },
+  { id: 'institutional', title: 'Institutional Systems', tagline: 'Structured Frameworks', description: 'Branding workshops, institutional narratives, publication templates, report systems, governance.', icon: <BookOpen className="w-5 h-5" /> }
+];
 
-// --- SKELETON UTILITIES (Replaces all text and content) ---
-const S = {
-  Micro: ({ w = "w-16", className = "" }) => <div className={`h-2.5 bg-zinc-200 rounded-sm ${w} ${className}`} />,
-  Line: ({ w = "w-full", className = "" }) => <div className={`h-4 bg-zinc-200 rounded-sm ${w} ${className}`} />,
-  Paragraph: ({ lines = 3, className = "" }) => (
-    <div className={`flex flex-col gap-3 w-full items-start ${className}`}>
-      {Array.from({ length: lines }).map((_, i) => (
-        <div key={i} className={`h-4 bg-zinc-200 rounded-sm ${i === lines - 1 && lines > 1 ? 'w-2/3' : 'w-full'}`} />
-      ))}
-    </div>
-  ),
-  Heading: ({ w = "w-48", className = "" }) => <div className={`h-8 bg-zinc-300 rounded-sm ${w} ${className}`} />,
-  Title: ({ w = "w-3/4", className = "" }) => (
-    <div className={`flex flex-col gap-4 items-start w-full ${className}`}>
-      <div className={`h-12 md:h-16 bg-zinc-300 rounded-sm ${w}`} />
-      <div className={`h-12 md:h-16 bg-zinc-300 rounded-sm w-1/2`} />
-    </div>
-  ),
-  Box: ({ className = "" }) => <div className={`bg-zinc-100 border border-zinc-200 ${className}`} />
-};
+const CASE_STUDIES = [
+  { client: 'Observer Research Foundation', sector: 'Think Tank', challenge: 'Translating complex global policy into accessible digital narratives.', route: 'Institutional Systems', tags: ['Policy', 'Digital'] },
+  { client: 'Arise Ventures', sector: 'Venture Capital', challenge: 'Building an ecosystem narrative for deep-tech founders.', route: 'Brand Boulevard', tags: ['VC', 'Strategy'] },
+  { client: 'Snow Leopard Trust', sector: 'Conservation', challenge: 'Bridging science, policy, and emotion for global impact.', route: 'SciArt Saga', tags: ['Impact', 'Story'] },
+  { client: 'Firefox Bikes', sector: 'Consumer', challenge: 'Revitalising an iconic brand for a new generation of riders.', route: 'Launch Systems', tags: ['Consumer', 'Identity'] },
+];
+
+const QUIZ_QUESTIONS = [
+  {
+    id: 'q1', text: 'Your brand’s messaging feels inconsistent across different platforms. What feels closest?',
+    options: [
+      { id: 'A', text: 'Different teams interpret the brand differently.', cluster: 'Internal Alignment' },
+      { id: 'B', text: 'There is no unified brand guideline or playbook.', cluster: 'System Gap' },
+      { id: 'C', text: 'Each platform has a different audience and the message keeps changing.', cluster: 'Story Gap' },
+      { id: 'D', text: 'The company scaled quickly but the brand foundation was never revisited.', cluster: 'Clarity Gap' }
+    ]
+  },
+  {
+    id: 'q2', text: 'Your business is gaining traction, but engagement remains low. What could be happening?',
+    options: [
+      { id: 'A', text: 'The product is useful, but the brand story is not resonating.', cluster: 'Story Gap' },
+      { id: 'B', text: 'Marketing is not reaching the right audience.', cluster: 'Launch Gap' },
+      { id: 'C', text: 'The brand voice feels functional but forgettable.', cluster: 'Identity Gap' },
+      { id: 'D', text: 'The communication is too scattered to build recall.', cluster: 'System Gap' }
+    ]
+  }
+];
 
 // --- HIGH-END UTILITIES ---
+
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isPointer, setIsPointer] = useState(false);
@@ -35,8 +53,9 @@ const CustomCursor = () => {
   useEffect(() => {
     const handleMouseMove = (e) => setPosition({ x: e.clientX, y: e.clientY });
     const handleMouseOver = (e) => {
-      setIsPointer(window.getComputedStyle(e.target).cursor === 'pointer' || e.target.tagName.toLowerCase() === 'button' || e.target.tagName.toLowerCase() === 'div');
+      setIsPointer(window.getComputedStyle(e.target).cursor === 'pointer' || e.target.tagName.toLowerCase() === 'button' || e.target.tagName.toLowerCase() === 'a');
     };
+
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseover', handleMouseOver);
     return () => { window.removeEventListener('mousemove', handleMouseMove); window.removeEventListener('mouseover', handleMouseOver); };
@@ -44,11 +63,12 @@ const CustomCursor = () => {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 w-6 h-6 border border-zinc-300 pointer-events-none z-[999] hidden md:flex items-center justify-center bg-zinc-100/50 mix-blend-multiply"
+      className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[999] mix-blend-difference hidden md:flex items-center justify-center"
       animate={{
-        x: position.x - 12, y: position.y - 12,
-        scale: isPointer ? 1.5 : 1,
-        borderRadius: isPointer ? '4px' : '50%'
+        x: position.x - 8, y: position.y - 8,
+        scale: isPointer ? 3 : 1,
+        backgroundColor: isPointer ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,1)',
+        border: isPointer ? '0.5px solid rgba(255,255,255,0.5)' : 'none'
       }}
       transition={{ type: 'spring', stiffness: 700, damping: 40, mass: 0.1 }}
     />
@@ -58,14 +78,14 @@ const CustomCursor = () => {
 const FadeIn = ({ children, delay = 0, className = "", direction = "up" }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
-  const yOffset = direction === "up" ? 20 : 0;
+  const yOffset = direction === "up" ? 30 : 0;
   
   return (
-    <div ref={ref} className={`w-full ${className}`}>
+    <div ref={ref} className={className}>
       <motion.div
         initial={{ y: yOffset, opacity: 0 }}
         animate={isInView ? { y: 0, opacity: 1 } : { y: yOffset, opacity: 0 }}
-        transition={{ duration: 0.8, delay, ease: "easeOut" }}
+        transition={{ duration: 1, delay, ease: [0.16, 1, 0.3, 1] }}
       >
         {children}
       </motion.div>
@@ -73,459 +93,641 @@ const FadeIn = ({ children, delay = 0, className = "", direction = "up" }) => {
   );
 };
 
-const WireframeButton = ({ onClick, className = "", w = "w-24", disabled = false }) => {
+const PremiumButton = ({ children, onClick, variant = "primary", className = "", type = "button" }) => {
+  const baseStyle = "group relative inline-flex items-center justify-center px-8 py-4 font-medium tracking-wide transition-all duration-500 overflow-hidden rounded-[9px] text-sm";
+  const variants = {
+    primary: "bg-white text-[#05050A]",
+    secondary: "bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20",
+    ghost: "text-white/70 hover:text-white hover:bg-white/5"
+  };
+
   return (
-    <button 
-      onClick={onClick} 
-      disabled={disabled} 
-      className={`group relative inline-flex items-center justify-start px-8 py-4 border border-zinc-200 bg-white hover:bg-zinc-50 transition-colors ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
-    >
-      <S.Micro w={w} className="bg-zinc-300 group-hover:bg-zinc-400 transition-colors" />
+    <button type={type} onClick={onClick} className={`${baseStyle} ${variants[variant]} ${className}`}>
+      <span className="relative z-10 flex items-center gap-2">{children}</span>
     </button>
   );
 };
 
-// --- BLUEPRINT ANNOTATION COMPONENT ---
-const Annotation = ({ title, rationale }) => {
-  const [isOpen, setIsOpen] = useState(false);
+// Gradient Hover Component for Italics
+const AnimatedItalic = ({ children, className = "" }) => {
   return (
-    <div className="relative z-20 w-full mb-8 flex flex-col items-start">
-      <div 
-        onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center gap-2 px-3 py-1.5 bg-black text-white font-mono text-[10px] sm:text-xs uppercase tracking-widest cursor-pointer hover:bg-zinc-800 transition-colors shadow-[2px_2px_0px_0px_rgba(161,161,170,0.5)] select-none"
+    <span className={`relative group inline-block cursor-default font-serif italic pr-4 ${className}`}>
+      {/* Base Layer - Normal static text */}
+      <span className="relative z-10">
+        {children}
+      </span>
+      
+      {/* Wipe-in Gradient Layer */}
+      <span 
+        className="absolute left-0 top-0 w-full h-full z-20 text-transparent bg-clip-text bg-gradient-to-r from-[#8A5CFF] via-[#2563FF] to-[#8A5CFF] bg-[length:200%_auto] [clip-path:inset(0_100%_0_0)] group-hover:[clip-path:inset(0_-20px_0_0)] transition-[clip-path] duration-500 ease-out group-hover:animate-gradient"
+        aria-hidden="true"
       >
-        <span className="w-1.5 h-1.5 bg-zinc-300 rounded-full animate-pulse" />
-        {title}
-        <span className="ml-4 font-bold text-zinc-400">{isOpen ? '[-]' : '[+]'}</span>
-      </div>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0, y: -10 }}
-            animate={{ opacity: 1, height: 'auto', y: 0 }}
-            exit={{ opacity: 0, height: 0, y: -10 }}
-            className="overflow-hidden relative mt-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] w-full sm:w-1/2 lg:w-1/3"
-          >
-            <div className="bg-white border-2 border-black p-4 text-black font-mono text-xs sm:text-sm leading-relaxed text-left w-full">
-              <div className="inline-block mb-3 px-2 py-1 bg-black text-white text-[8px] uppercase tracking-widest">UX_RATIONALE</div>
-              <p className="mt-2 text-zinc-600">{rationale}</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+        {children}
+      </span>
+      
+      {/* Glow Layer */}
+      <span 
+        className="absolute left-0 top-0 w-full h-full z-0 text-transparent bg-clip-text bg-gradient-to-r from-[#8A5CFF] via-[#2563FF] to-[#8A5CFF] bg-[length:200%_auto] opacity-0 group-hover:opacity-60 blur-[16px] transition-opacity duration-500 group-hover:animate-gradient pointer-events-none select-none" 
+        aria-hidden="true"
+      >
+        {children}
+      </span>
+    </span>
   );
 };
-
 
 // --- CORE PAGES ---
 
 const HomePage = ({ navigate }) => {
   const { scrollYProgress } = useScroll();
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  
+  const heroRef = useRef(null);
+  const [mouse, setMouse] = useState({ x: 0, y: 0, px: 0, py: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e) => {
+    if (!heroRef.current) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+    const x = px / rect.width - 0.5;
+    const y = py / rect.height - 0.5;
+    setMouse({ x, y, px, py });
+  };
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-zinc-50 min-h-screen w-full">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-[#05050A] min-h-screen text-[#F4F4F5] w-full">
       
-      {/* 1. Hero Section */}
-      <section className="relative min-h-[80vh] md:min-h-[700px] flex flex-col justify-center items-start overflow-hidden px-[3vw] pt-32 pb-16 w-full">
-        <motion.div style={{ y, opacity }} className="absolute inset-0 z-0 pointer-events-none flex items-start justify-start opacity-30">
-          <svg className="w-full h-auto" viewBox="0 0 1000 1000" fill="none">
-            <rect x="0" y="100" width="800" height="800" stroke="#e4e4e7" strokeWidth="1" strokeDasharray="10 10"/>
-            <line x1="0" y1="100" x2="800" y2="900" stroke="#e4e4e7" strokeWidth="1"/>
-            <line x1="800" y1="100" x2="0" y2="900" stroke="#e4e4e7" strokeWidth="1"/>
-            <circle cx="400" cy="500" r="300" stroke="#e4e4e7" strokeWidth="1" />
+      {/* Combined Hero & Trusted By Section - Set strictly to 100vh */}
+      <section 
+        ref={heroRef}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="relative h-screen min-h-[750px] flex flex-col overflow-hidden w-full pt-28"
+      >
+        {/* Layer 1: Background Orbs & Parallax */}
+        <motion.div 
+          style={{ y, opacity }} 
+          className="absolute inset-0 z-0 pointer-events-none flex justify-center items-center"
+        >
+          <motion.div
+            animate={{ x: mouse.x * -40, y: mouse.y * -40 }}
+            transition={{ type: "spring", stiffness: 30, damping: 20 }}
+            className="relative w-full h-full flex justify-center items-center"
+          >
+            <div className="absolute w-[80vw] md:w-[600px] h-[80vw] md:h-[450px] bg-[#6D3BEF] rounded-[100%] blur-[120px] md:blur-[160px] opacity-[0.15] mix-blend-screen animate-pulse" style={{ animationDuration: '8s' }} />
+            <div className="absolute w-[60vw] md:w-[450px] h-[80vw] md:h-[600px] bg-[#2563FF] rounded-[100%] blur-[120px] md:blur-[160px] opacity-[0.12] mix-blend-screen translate-x-1/4" />
+          </motion.div>
+        </motion.div>
+
+        {/* Layer 2: Autonomous Orbiting Moving Light */}
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 z-0 pointer-events-none flex justify-center items-center mix-blend-screen"
+        >
+          <div className="relative w-[140%] max-w-[1200px] h-[500px]">
+            <motion.div
+              animate={{
+                scale: [1, 1.5, 1],
+                opacity: [0, 0.4, 0],
+              }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-0 right-1/4 w-72 h-72 bg-white rounded-full blur-[100px]"
+            />
+          </div>
+        </motion.div>
+
+        {/* Layer 3: Interactive Cursor Spotlight */}
+        <motion.div
+          animate={{ 
+            x: mouse.px - 400, // Center the 800x800 orb
+            y: mouse.py - 400,
+            opacity: isHovered ? 1 : 0 
+          }}
+          transition={{ 
+            opacity: { duration: 0.8 }, 
+            x: { type: "spring", stiffness: 100, damping: 25, mass: 0.5 }, 
+            y: { type: "spring", stiffness: 100, damping: 25, mass: 0.5 } 
+          }}
+          className="absolute z-[5] pointer-events-none"
+          style={{ width: '800px', height: '800px', left: 0, top: 0 }}
+        >
+          <div className="w-full h-full rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.08)_0%,rgba(138,92,255,0.03)_30%,transparent_60%)] mix-blend-screen" />
+        </motion.div>
+
+        {/* Layer 4: SVG Grid / Rings */}
+        <motion.div 
+          animate={{ rotate: 360, x: mouse.x * 20, y: mouse.y * 20 }}
+          transition={{ rotate: { duration: 150, repeat: Infinity, ease: "linear" }, x: { type: "spring", stiffness: 40, damping: 20 }, y: { type: "spring", stiffness: 40, damping: 20 } }}
+          className="absolute inset-0 z-0 pointer-events-none opacity-[0.15] flex items-center justify-center origin-center"
+        >
+          <svg className="w-full max-w-[1000px] h-auto" viewBox="0 0 1000 1000" fill="none">
+            <circle cx="500" cy="500" r="300" stroke="url(#paint0_linear)" strokeWidth="0.5" strokeDasharray="4 8"/>
+            <circle cx="500" cy="500" r="450" stroke="url(#paint1_linear)" strokeWidth="0.5" />
+            <circle cx="500" cy="500" r="200" stroke="url(#paint0_linear)" strokeWidth="1" strokeDasharray="1 16"/>
+            <defs>
+              <linearGradient id="paint0_linear" x1="200" y1="200" x2="800" y2="800" gradientUnits="userSpaceOnUse"><stop stopColor="white" stopOpacity="0.5"/><stop offset="1" stopColor="white" stopOpacity="0"/></linearGradient>
+              <linearGradient id="paint1_linear" x1="500" y1="50" x2="500" y2="950" gradientUnits="userSpaceOnUse"><stop stopColor="#6D3BEF" stopOpacity="0.4"/><stop offset="1" stopColor="white" stopOpacity="0"/></linearGradient>
+            </defs>
           </svg>
         </motion.div>
 
-        <div className="relative z-10 flex flex-col items-start w-full mt-10 md:mt-0">
-          <Annotation 
-            title="SEC: HERO_BANNER" 
-            rationale="Establishes the immediate value proposition. Above-the-fold space is prime real estate utilized to capture attention before the user's dopamine-depleted brain inevitably scrolls away." 
-          />
-          <div className="flex flex-col items-start text-left mt-6 w-full">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="flex items-center gap-3 px-4 py-2 border border-zinc-200 bg-white mb-12 rounded-sm">
-              <S.Box className="w-3 h-3 rounded-full bg-zinc-300 border-none" />
-              <S.Micro w="w-48" />
+        {/* Layer 5: Random Glowing Gradient Lines */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-40 mix-blend-screen">
+          {[
+            { top: '15%', left: '-10%', width: '80vw', rotate: 25, duration: 12, delay: 0, gradient: 'via-[#8A5CFF]' },
+            { top: '70%', left: '-5%', width: '120vw', rotate: -15, duration: 18, delay: 2, gradient: 'via-[#2563FF]' },
+            { top: '40%', left: '20%', width: '90vw', rotate: 45, duration: 15, delay: 1, gradient: 'via-[#8A5CFF]' },
+            { top: '85%', left: '40%', width: '70vw', rotate: -35, duration: 14, delay: 3, gradient: 'via-[#2563FF]' },
+            { top: '5%', left: '60%', width: '60vw', rotate: 60, duration: 16, delay: 4, gradient: 'via-white' }
+          ].map((line, i) => (
+            <motion.div
+              key={i}
+              animate={{
+                x: [0, 40, 0],
+                y: [0, 20, 0],
+                opacity: [0.1, 0.7, 0.1],
+              }}
+              transition={{
+                duration: line.duration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: line.delay
+              }}
+              style={{
+                position: 'absolute',
+                top: line.top,
+                left: line.left,
+                width: line.width,
+                height: '1px',
+                rotate: line.rotate,
+                transformOrigin: 'left center'
+              }}
+              className={`bg-gradient-to-r from-transparent ${line.gradient} to-transparent`}
+            >
+              {/* Internal glow */}
+              <div className="absolute inset-0 w-full h-[2px] blur-[3px] bg-inherit" />
+              <div className="absolute inset-0 w-full h-[6px] -top-[2px] blur-[10px] bg-inherit opacity-60" />
             </motion.div>
-            
-            <div className="flex flex-col items-start w-full mb-12">
-              <S.Title w="w-full" className="items-start" />
+          ))}
+        </div>
+
+        {/* Foreground Main Content Container */}
+        <div className="flex-1 flex flex-col justify-center px-[3%] relative z-10 w-full">
+          <div className="flex flex-col items-start justify-start mb-8 w-full">
+            <div className="overflow-hidden pb-2">
+              <motion.h1 
+                initial={{ y: "100%", opacity: 0, rotateZ: 2 }}
+                animate={{ y: 0, opacity: 1, rotateZ: 0 }}
+                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+                className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white origin-bottom text-left drop-shadow-lg"
+              >
+                Where breakthrough
+              </motion.h1>
+            </div>
+
+            <div className="overflow-hidden pb-3">
+              <motion.h1 
+                initial={{ y: "100%", opacity: 0, rotateZ: 2 }}
+                animate={{ y: 0, opacity: 1, rotateZ: 0 }}
+                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white origin-bottom text-left drop-shadow-lg"
+              >
+                <AnimatedItalic className="text-white/60 mr-3 md:mr-5">innovators</AnimatedItalic>
+                <span>find their voice.</span>
+              </motion.h1>
+            </div>
+          </div>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="text-base md:text-lg text-white/40 font-light max-w-3xl leading-relaxed tracking-wide mb-12"
+          >
+            PurpleBlue House decodes complex ideas into elegant communication systems. We help research teams, founders, and institutions become understood, trusted, and remembered.
+          </motion.p>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col sm:flex-row items-start justify-start gap-4 sm:gap-6 w-full sm:w-auto"
+          >
+            <PremiumButton onClick={() => navigate('tools')} className="w-full sm:w-auto min-w-[240px] shadow-[0_0_40px_rgba(255,255,255,0.1)]">
+              Access Tools <Terminal className="w-4 h-4 ml-2 opacity-70 group-hover:translate-x-1 transition-transform" />
+            </PremiumButton>
+            <PremiumButton variant="secondary" onClick={() => navigate('services')} className="w-full sm:w-auto min-w-[240px]">
+              Explore Services
+            </PremiumButton>
+          </motion.div>
+        </div>
+
+        {/* Scroll Indicator - Integrated into flow */}
+        <div className="w-full px-[3%] flex justify-end pb-8 relative z-20 shrink-0">
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5, duration: 1 }}
+            className="flex items-center gap-4 text-white/30"
+          >
+            <span className="text-[9px] uppercase tracking-[0.2em] font-medium">Scroll to explore</span>
+            <motion.div 
+              animate={{ y: [0, 5, 0] }} 
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className="relative flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-[#05050A]/50 backdrop-blur-md"
+            >
+              <ArrowDown className="w-4 h-4 text-[#8A5CFF]" />
+              <motion.div 
+                animate={{ scale: [1, 1.5], opacity: [0.5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeOut" }}
+                className="absolute inset-0 rounded-full border border-[#8A5CFF]"
+              />
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Sleek, Docked Trusted By Strip */}
+        <div className="relative z-10 w-full border-t border-white/5 bg-[#05050A]/40 backdrop-blur-md h-14 md:h-16 shrink-0 flex items-center">
+          <div className="flex items-center w-full h-full">
+            {/* Title Block */}
+            <div className="h-full flex items-center px-[3%] border-r border-white/5 bg-white/[0.02] shrink-0">
+              <span className="text-[9px] md:text-xs font-medium text-white/40 uppercase tracking-[0.2em]">Trusted By</span>
             </div>
             
-            <div className="w-full border-l-2 border-zinc-200 pl-6 mb-16 text-left">
-              <S.Paragraph lines={3} />
-            </div>
-            
-            <div className="flex flex-col sm:flex-row items-start justify-start gap-4 w-full">
-              <WireframeButton onClick={() => navigate('tools')} w="w-32" className="w-full sm:w-auto" />
-              <WireframeButton onClick={() => navigate('services')} w="w-40" className="w-full sm:w-auto bg-zinc-100 hover:bg-zinc-200 border-transparent" />
+            {/* Scrolling Area */}
+            <div className="flex-1 overflow-hidden h-full flex items-center [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
+              <motion.div 
+                className="flex items-center w-max pl-10"
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{ repeat: Infinity, ease: "linear", duration: 35 }}
+              >
+                {[...Array(2)].map((_, arrayIndex) => (
+                  <div key={arrayIndex} className="flex items-center gap-12 md:gap-24 shrink-0 pr-12 md:pr-24">
+                    {['Observer Research Foundation', 'Snow Leopard Trust', 'Firefox Bikes', 'Sayre Therapeutics', 'India Global Forum'].map((brand, i) => (
+                      <span key={i} className="text-xs md:text-sm font-serif italic tracking-wider text-white/40 hover:text-white transition-colors duration-500 cursor-default">
+                        {brand}
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </motion.div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Trust Strip */}
-      <section className="py-12 border-y border-zinc-200 bg-white w-full px-[3vw]">
-        <Annotation 
-          title="SEC: SOCIAL_PROOF" 
-          rationale="B2B decisions are heavily driven by risk mitigation. Seeing recognizable logos instantly reduces perceived risk and borrows credibility through mere association." 
-        />
-        <div className="flex flex-col md:flex-row items-start justify-start gap-12 mt-8 w-full">
-          <S.Micro w="w-24" className="shrink-0 mt-3" />
-          <div className="flex flex-wrap items-start justify-start gap-x-12 gap-y-6 w-full">
-            {[1, 2, 3, 4, 5].map((_, i) => (
-              <S.Heading key={i} w={['w-32', 'w-48', 'w-24', 'w-40', 'w-36'][i]} className="h-6 bg-zinc-100" />
+      {/* Core Philosophy */}
+      <section className="py-32 md:py-48 px-[3%] relative overflow-hidden w-full">
+        <div className="absolute top-1/2 left-[3%] -translate-y-1/2 w-[800px] h-[300px] bg-[#8A5CFF] rounded-[100%] blur-[200px] opacity-[0.05] pointer-events-none" />
+        <div className="w-full text-left relative z-10">
+          <FadeIn>
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-light leading-tight tracking-tight text-white">
+              We don't build cosmetic brands. <br className="hidden md:block" /> 
+              We engineer <AnimatedItalic className="text-[#8A5CFF]">strategic architectures</AnimatedItalic> <br className="hidden md:block" />
+              for ideas that matter.
+            </h2>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* The Challenge - Editorial Layout */}
+      <section className="py-24 px-[3%] relative border-t border-white/5 bg-[#0A0A0F]/50 w-full">
+        <div className="w-full">
+          <FadeIn>
+            <h2 className="text-3xl md:text-5xl font-light tracking-tight mb-20 max-w-3xl">
+              Your innovation is flawless. <br/>
+              <span className="text-white/40">The story surrounding it might be the bottleneck.</span>
+            </h2>
+          </FadeIn>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 w-full">
+            {[
+              { title: "Comprehension Gap", desc: "The market is deaf to complexity. If they don't understand the value instantly, the opportunity is lost." },
+              { title: "Generic Aesthetic", desc: "Your visuals are modern but feel like a template. It feels safe, functional, but entirely forgettable." },
+              { title: "Internal Misalignment", desc: "As you scale, teams interpret the brand differently. There is no unified system governing the narrative." },
+            ].map((problem, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="group">
+                  <div className="w-8 h-8 rounded-[9px] border border-white/10 flex items-center justify-center mb-6 text-[#8A5CFF] group-hover:bg-[#8A5CFF] group-hover:text-white transition-colors">
+                    <Zap className="w-3.5 h-3.5" />
+                  </div>
+                  <h3 className="text-xl font-medium mb-3">{problem.title}</h3>
+                  <p className="text-white/50 font-light leading-relaxed max-w-lg">{problem.desc}</p>
+                </div>
+              </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 3. The Challenge */}
-      <section className="py-32 md:py-48 bg-zinc-50 w-full px-[3vw]">
-        <Annotation 
-          title="SEC: PROBLEM_AGITATION" 
-          rationale="Users rarely seek solutions until they acutely feel the pain of their problem. This section structurally 'twists the knife' before offering the architectural band-aid below." 
-        />
-        <FadeIn>
-          <div className="mb-24 mt-12 border-l-4 border-zinc-200 pl-8 w-full">
-            <S.Heading w="w-full" className="h-12 md:h-16 mb-4" />
-            <S.Heading w="w-2/3" className="h-12 md:h-16 bg-zinc-200" />
-          </div>
-        </FadeIn>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-          {[1, 2, 3].map((i) => (
-            <FadeIn key={i} delay={i * 0.1}>
-              <div className="border border-zinc-200 bg-white p-8 w-full flex flex-col items-start">
-                <S.Box className="w-12 h-12 mb-8 bg-zinc-100 border-zinc-200 rounded-sm" />
-                <S.Heading w="w-3/4" className="mb-6" />
-                <S.Paragraph lines={4} />
+      {/* The Framework */}
+      <section className="py-32 px-[3%] bg-[#0A0A0F] border-y border-white/5 w-full">
+        <div className="w-full">
+          <FadeIn>
+            <div className="flex flex-col md:flex-row md:items-end justify-start mb-16 gap-8 w-full">
+              <div>
+                <h2 className="text-xs font-medium text-white/40 uppercase tracking-widest mb-4">The Methodology</h2>
+                <h3 className="text-3xl md:text-4xl font-light tracking-tight">Structured <AnimatedItalic className="text-white/50">Execution.</AnimatedItalic></h3>
               </div>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
+              <p className="text-white/40 font-light max-w-sm text-sm">A rigorous, four-phase system designed to extract truth and deploy it at scale.</p>
+            </div>
+          </FadeIn>
 
-      {/* 4. Operation Flow (Process) */}
-      <section className="py-32 bg-white border-y border-zinc-200 w-full px-[3vw]">
-        <Annotation 
-          title="SEC: OPERATION_FLOW" 
-          rationale="Reduces cognitive friction by breaking down complex engagements into predictable, linear micro-steps. Users need to know 'what happens next' before committing." 
-        />
-        <FadeIn>
-          <div className="mt-12 mb-20 flex flex-col items-start w-full">
-            <S.Micro w="w-32" className="mb-6" />
-            <S.Title w="w-full" className="items-start" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
+            {[
+              { step: "01", title: "Decode Complexity", desc: "Extracting the core scientific or strategic truth from raw, complex data." },
+              { step: "02", title: "Construct the Spine", desc: "Building the structural narrative and verbal identity frameworks." },
+              { step: "03", title: "Design the System", desc: "Crafting a premium, scalable visual language and design architecture." },
+              { step: "04", title: "Scale the Narrative", desc: "Deploying the communication system across institutional and market channels." }
+            ].map((phase, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="border-t border-white/10 pt-8 group text-left">
+                  <span className="text-[#8A5CFF] font-medium text-sm mb-6 block group-hover:translate-x-2 transition-transform">{phase.step}</span>
+                  <h3 className="text-xl font-medium mb-4">{phase.title}</h3>
+                  <p className="text-white/40 font-light text-sm leading-relaxed">{phase.desc}</p>
+                </div>
+              </FadeIn>
+            ))}
           </div>
-        </FadeIn>
-        
-        <div className="grid md:grid-cols-4 gap-12 relative w-full">
-          <div className="absolute top-8 left-0 w-full h-[1px] bg-zinc-200 hidden md:block z-0" />
-          {[1, 2, 3, 4].map((i) => (
-            <FadeIn key={i} delay={i * 0.1} className="relative z-10 w-full flex flex-col items-start">
-              <S.Box className="w-16 h-16 rounded-full bg-zinc-100 border-zinc-300 flex items-center justify-center mb-8">
-                <div className="font-mono text-zinc-400 font-bold">0{i}</div>
-              </S.Box>
-              <S.Heading w="w-48" className="h-6 mb-4" />
-              <S.Paragraph lines={3} />
-            </FadeIn>
-          ))}
         </div>
       </section>
 
-      {/* 5. Metrics (Quantifiable Impact) */}
-      <section className="py-24 bg-zinc-50 border-b border-zinc-200 w-full px-[3vw]">
-        <Annotation 
-          title="SEC: QUANTIFIABLE_IMPACT" 
-          rationale="Anchors abstract value propositions to hard, numerical realities. Massive typography for numbers bypasses analytical processing to create immediate emotional trust." 
-        />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mt-16 w-full">
-          {[1, 2, 3, 4].map((i) => (
-            <FadeIn key={i} delay={i * 0.1}>
-              <div className="flex flex-col items-start text-left p-6 border border-zinc-200 bg-white w-full">
-                <S.Heading w="w-32" className="h-16 md:h-20 mb-6 bg-zinc-300" />
-                <S.Line w="w-24" className="h-3" />
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
+      {/* Featured Systems Preview */}
+      <section className="py-32 md:py-48 px-[3%] relative w-full">
+        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#2563FF] rounded-[100%] blur-[250px] opacity-[0.04] pointer-events-none" />
+        <div className="w-full relative z-10">
+          <FadeIn>
+            <div className="flex flex-col sm:flex-row justify-start items-start sm:items-end mb-16 gap-6 w-full">
+              <h2 className="text-4xl md:text-5xl font-light tracking-tight">Featured <AnimatedItalic className="text-white/50">Systems.</AnimatedItalic></h2>
+              <PremiumButton variant="ghost" onClick={() => navigate('work')} className="px-0 py-0 hover:bg-transparent text-[#8A5CFF] sm:ml-auto">
+                View Full Archive <ArrowRight className="w-4 h-4 ml-1" />
+              </PremiumButton>
+            </div>
+          </FadeIn>
 
-      {/* 6. Testimonials (Peer Validation) */}
-      <section className="py-32 bg-white border-b border-zinc-200 w-full px-[3vw]">
-        <Annotation 
-          title="SEC: PEER_VALIDATION" 
-          rationale="Leverages the bandwagon effect. Specificity in peer validation (avatars, distinct text lengths) increases perceived authenticity compared to homogeneous marketing copy." 
-        />
-        <FadeIn>
-          <div className="mt-12 mb-16 w-full">
-            <S.Title w="w-full" className="mb-8 items-start" />
-            <S.Paragraph lines={2} className="w-full" />
-          </div>
-        </FadeIn>
-        
-        <div className="grid md:grid-cols-3 gap-8 w-full">
-          {[1, 2, 3].map((i) => (
-            <FadeIn key={i} delay={i * 0.1}>
-              <div className="p-8 border border-zinc-200 bg-zinc-50 flex flex-col h-full items-start w-full">
-                <div className="flex items-center justify-start gap-4 mb-8">
-                  <S.Box className="w-12 h-12 rounded-full shrink-0" />
-                  <div className="flex flex-col items-start">
-                    <S.Line w="w-32" className="mb-2" />
-                    <S.Micro w="w-20" />
+          <div className="grid md:grid-cols-2 gap-6 w-full">
+            {CASE_STUDIES.slice(0, 2).map((cs, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div 
+                  onClick={() => navigate('work')}
+                  className="group bg-[#0A0A0F] border border-white/5 rounded-[9px] p-10 md:p-12 hover:bg-[#0D0D14] hover:border-white/10 transition-all duration-500 cursor-pointer h-full flex flex-col justify-between min-h-[320px] text-left"
+                >
+                  <div>
+                    <h3 className="text-3xl font-medium mb-4 group-hover:text-[#8A5CFF] transition-colors">{cs.client}</h3>
+                    <p className="text-white/50 font-light text-lg mb-8 max-w-xl">{cs.challenge}</p>
+                  </div>
+                  <div className="flex gap-3 flex-wrap">
+                    {cs.tags.map(t => (
+                      <span key={t} className="px-4 py-2 rounded-[9px] border border-white/10 bg-white/5 text-xs font-medium text-white/60 tracking-wide">
+                        {t}
+                      </span>
+                    ))}
                   </div>
                 </div>
-                <div className="flex-grow w-full">
-                  <S.Paragraph lines={i === 2 ? 6 : i === 1 ? 4 : 5} />
-                </div>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
-
-      {/* 7. Pricing (Choice Architecture) */}
-      <section className="py-32 bg-zinc-50 border-b border-zinc-200 w-full px-[3vw]">
-        <Annotation 
-          title="SEC: CHOICE_ARCHITECTURE" 
-          rationale="Implements the Decoy Effect and center-stage heuristic. By presenting three options, we guide users toward the middle 'optimal' tier, anchoring price expectations against the highest tier." 
-        />
-        <FadeIn>
-          <div className="flex flex-col items-start mt-12 mb-20 text-left w-full">
-            <S.Title w="w-full" className="items-start mb-6" />
-            <S.Paragraph lines={2} className="w-full items-start" />
+              </FadeIn>
+            ))}
           </div>
-        </FadeIn>
-        
-        <div className="grid lg:grid-cols-3 gap-8 items-start w-full">
-          {[1, 2, 3].map((i) => (
-            <FadeIn key={i} delay={i * 0.1}>
-              <div className={`p-8 md:p-10 border relative flex flex-col items-start w-full ${i === 2 ? 'border-zinc-400 bg-white shadow-xl z-10' : 'border-zinc-200 bg-white'}`}>
-                {i === 2 && (
-                   <div className="absolute top-0 left-0 -translate-y-full bg-zinc-800 px-4 py-1">
-                      <S.Micro w="w-20" className="bg-zinc-300" />
-                   </div>
-                )}
-                <S.Micro w="w-24" className="mb-6" />
-                <S.Heading w="w-40" className="h-12 mb-4" />
-                <S.Paragraph lines={2} className="mb-10 w-full" />
-                
-                <WireframeButton w="w-full" className={`w-full mb-10 ${i === 2 ? 'bg-zinc-100' : ''}`} />
-                
-                <div className="space-y-4 border-t border-zinc-100 pt-8 w-full">
-                  {[1, 2, 3, 4, 5].map((j) => (
-                    <div key={j} className="flex items-center justify-start gap-4 w-full">
-                      <S.Box className="w-4 h-4 rounded-full shrink-0 bg-zinc-200 border-none" />
-                      <S.Line w={j % 2 === 0 ? "w-full" : "w-5/6"} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </FadeIn>
-          ))}
         </div>
       </section>
 
-      {/* 8. FAQ (Objection Handling) */}
-      <section className="py-32 bg-white border-b border-zinc-200 w-full px-[3vw]">
-        <Annotation 
-          title="SEC: OBJECTION_HANDLING" 
-          rationale="Proactively neutralizes purchase anxieties. The accordion format hides structural complexity while empowering the high-intent user to seek out specific technical reassurance." 
-        />
-        <FadeIn>
-          <S.Title w="w-full" className="mt-12 mb-16 items-start" />
-        </FadeIn>
+      {/* High-Impact Testimonial */}
+      <section className="py-32 md:py-48 px-[3%] bg-[#0A0A0F] border-y border-white/5 text-left relative overflow-hidden w-full">
+        <div className="absolute top-0 left-[3%] w-[800px] h-[300px] bg-[#6D3BEF] rounded-[100%] blur-[180px] opacity-[0.08] pointer-events-none" />
         
-        <div className="space-y-4 w-full">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <FadeIn key={i} delay={i * 0.05}>
-              <div className="border border-zinc-200 bg-zinc-50 p-6 flex justify-between items-center cursor-pointer hover:bg-zinc-100 transition-colors w-full">
-                <S.Line w={['w-2/3', 'w-3/4', 'w-1/2', 'w-5/6', 'w-2/3'][i-1]} className="h-5" />
-                <S.Box className="w-6 h-6 shrink-0" />
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </section>
-
-      {/* 9. Newsletter / Footer CTA (Micro Commitment) */}
-      <section className="py-32 bg-zinc-50 w-full px-[3vw]">
-        <Annotation 
-          title="SEC: MICRO_COMMITMENT" 
-          rationale="Captures visitors who are not ready for a high-friction primary CTA (booking a call or paying). Offers a low-stakes exchange of value for an email address to fuel the retargeting engine." 
-        />
-        <FadeIn>
-          <div className="w-full mt-12 bg-white border border-zinc-200 p-12 md:p-20 shadow-sm flex flex-col items-start text-left">
-            <S.Box className="w-16 h-16 mb-8 rounded-full" />
-            <S.Heading w="w-3/4" className="h-10 mb-6" />
-            <S.Paragraph lines={2} className="w-full items-start mb-12" />
-            
-            <div className="flex flex-col sm:flex-row gap-4 w-full items-start">
-              <S.Box className="h-14 w-full bg-zinc-50 flex items-center justify-start px-4">
-                <S.Micro w="w-32" />
-              </S.Box>
-              <WireframeButton w="w-24" className="h-14 py-0 sm:shrink-0 bg-zinc-100" />
+        <div className="w-full max-w-5xl relative z-10">
+          <FadeIn>
+            <div className="text-6xl text-[#8A5CFF]/40 font-serif mb-8 leading-none">"</div>
+            <h3 className="text-2xl md:text-4xl font-light leading-relaxed tracking-tight text-white/90 mb-12">
+              They possess a rare ability to bridge the gap between profound scientific complexity and compelling human storytelling. The framework they built completely shifted how the market perceives our technology.
+            </h3>
+            <div className="flex flex-col items-start justify-start gap-2">
+              <span className="text-sm font-medium tracking-wide text-white">Innovation Lead</span>
+              <span className="text-xs tracking-widest text-white/40 uppercase">Translational Health Sector</span>
             </div>
-          </div>
-        </FadeIn>
+          </FadeIn>
+        </div>
       </section>
 
+      {/* Sector Expertise */}
+      <section className="py-32 md:py-40 px-[3%] relative w-full">
+        <div className="w-full text-left">
+          <FadeIn>
+            <h2 className="text-3xl md:text-5xl font-light tracking-tight mb-16">
+              Operating at the intersection of <br className="hidden md:block" />
+              <AnimatedItalic className="text-white/50">complex sectors.</AnimatedItalic>
+            </h2>
+          </FadeIn>
+          
+          <FadeIn delay={0.2}>
+            <div className="flex flex-wrap justify-start gap-3 md:gap-4 w-full">
+              {['Translational Health', 'Deep-Tech & AI', 'Public Policy & Governance', 'Venture Capital Ecosystems', 'Conservation & Impact', 'Purpose-Led Consumer', 'Research Institutions'].map((sector, i) => (
+                <span key={i} className="px-6 py-3 rounded-[9px] border border-white/10 bg-white/[0.02] text-sm md:text-base font-light text-white/60 hover:text-white hover:border-white/30 hover:bg-white/5 transition-all cursor-default">
+                  {sector}
+                </span>
+              ))}
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* Pre-Footer CTA */}
+      <section className="py-32 px-[3%] border-t border-white/5 relative overflow-hidden bg-gradient-to-b from-transparent to-[#0A0A0F] w-full">
+        <div className="absolute bottom-0 left-[3%] w-full max-w-[1000px] h-[400px] bg-[#2563FF] rounded-[100%] blur-[250px] opacity-[0.07] pointer-events-none" />
+        
+        <div className="w-full text-left relative z-10">
+          <FadeIn>
+            <h2 className="text-xs font-medium text-[#2563FF] uppercase tracking-widest mb-6">The Next Step</h2>
+            <h3 className="text-4xl md:text-6xl font-light tracking-tight mb-8">
+              Your innovation is ready. <br/>
+              <AnimatedItalic className="text-white/50">Is your narrative?</AnimatedItalic>
+            </h3>
+            <p className="text-white/40 font-light mb-12 text-lg max-w-2xl">
+              Engage with our strategic tools to map the scope of your transformation.
+            </p>
+            <PremiumButton onClick={() => navigate('tools')}>
+              Initialize Systems <Terminal className="w-4 h-4 ml-2 opacity-70" />
+            </PremiumButton>
+          </FadeIn>
+        </div>
+      </section>
     </motion.div>
   );
 };
 
 const AboutPage = () => {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-zinc-50 min-h-screen pt-40 pb-32 w-full px-[3vw]">
-      <Annotation 
-        title="SEC: ORIGIN_NARRATIVE" 
-        rationale="Humanizes the corporate entity. Establishes the 'Founder-Led' authority bias. Ultimately, clients buy from other humans, not from faceless geometric wireframes." 
-      />
-      
-      <FadeIn>
-        <div className="mb-24 mt-8 text-left border-b border-zinc-200 pb-16 flex flex-col items-start w-full">
-          <S.Micro w="w-24" className="mb-8" />
-          <S.Title w="w-full" className="items-start" />
-        </div>
-      </FadeIn>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-[#05050A] min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full">
+      <div className="w-full">
+        <FadeIn>
+          <div className="mb-24 text-left">
+            <h2 className="text-xs font-medium text-[#8A5CFF] uppercase tracking-widest mb-6">The Studio</h2>
+            <h1 className="text-5xl md:text-7xl font-light leading-[1.1] tracking-tight">
+              Bold innovation deserves <br /> <AnimatedItalic className="text-white/50">bold storytelling.</AnimatedItalic>
+            </h1>
+          </div>
+        </FadeIn>
 
-      <FadeIn delay={0.1}>
-        <div className="grid md:grid-cols-2 gap-12 mb-32 w-full">
-          <div className="space-y-6 w-full flex flex-col items-start">
-            <S.Paragraph lines={5} />
-            <S.Paragraph lines={4} />
+        <FadeIn delay={0.1}>
+          <div className="prose prose-invert prose-lg max-w-4xl text-white/60 font-light leading-relaxed mb-32 text-left">
+            <p className="text-2xl text-white/80 mb-8">
+              PurpleBlue House began as a brand communication studio harnessing SciArt—blending scientific precision with artistic expression to illuminate true innovation.
+            </p>
+            <p className="mb-6">
+              Today, PBH is the definitive brand partner for breakthrough innovators. We don't just "polish" brands. We decode complexity, construct strategic spines, and design the visual systems required to help deep-tech teams, researchers, consumer disruptors, and institutions communicate ideas that are too important to remain misunderstood.
+            </p>
+            <p>
+              We believe that the future is being built in labs, policy rooms, and founder garages right now. But building the future isnt enough; you must be able to explain it. That is where we come in.
+            </p>
           </div>
-          <div className="space-y-6 w-full flex flex-col items-start">
-            <S.Paragraph lines={4} />
-            <S.Paragraph lines={6} />
-          </div>
-        </div>
-      </FadeIn>
+        </FadeIn>
 
-      <FadeIn delay={0.2}>
-        <div className="bg-white border border-zinc-200 p-8 md:p-16 flex flex-col md:flex-row gap-12 items-start w-full">
-          <S.Box className="w-48 h-48 rounded-full shrink-0" />
-          <div className="w-full flex flex-col items-start">
-            <S.Micro w="w-32" className="mb-4" />
-            <S.Heading w="w-48" className="mb-6 h-10" />
-            <S.Paragraph lines={4} />
+        <FadeIn delay={0.2}>
+          <div className="bg-[#0A0A0F] border border-white/5 rounded-[9px] p-12 md:p-16 flex flex-col md:flex-row gap-12 items-start w-full">
+            <div className="w-48 h-48 rounded-[9px] border border-white/10 bg-white/5 flex-shrink-0 overflow-hidden relative">
+               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#6D3BEF_0%,transparent_70%)] opacity-20 mix-blend-screen" />
+            </div>
+            <div className="text-left max-w-2xl">
+              <h2 className="text-xs font-medium text-[#8A5CFF] uppercase tracking-widest mb-2">Founder-Led</h2>
+              <h3 className="text-3xl font-medium mb-4">Prerita</h3>
+              <p className="text-white/60 font-light leading-relaxed mb-6">
+                With over a decade of experience across innovation, policy, public communication, and breakthrough storytelling, Prerita built PBH specifically for founders and institutions who are often too busy building the future to explain it clearly.
+              </p>
+            </div>
           </div>
-        </div>
-      </FadeIn>
+        </FadeIn>
+      </div>
     </motion.div>
   );
 };
 
 const ServicesPage = ({ navigate }) => {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-zinc-50 min-h-screen pt-40 pb-32 w-full px-[3vw]">
-      <Annotation 
-        title="SEC: VALUE_ROUTING" 
-        rationale="Minimizes cognitive load. By categorizing abstract services into discrete, repeatable architectural buckets, we guide the user to self-qualify their exact operational needs." 
-      />
-      <FadeIn>
-        <div className="mb-24 mt-8 flex flex-col md:flex-row md:items-start justify-start gap-12 border-b border-zinc-200 pb-12 w-full">
-          <S.Title w="w-full" className="items-start" />
-          <div className="w-full flex flex-col items-start">
-            <S.Paragraph lines={3} />
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-[#05050A] min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] relative overflow-hidden w-full">
+      <div className="absolute right-0 top-1/4 w-[600px] h-[600px] bg-[#6D3BEF] rounded-[100%] blur-[250px] opacity-[0.05] pointer-events-none" />
+      
+      <div className="w-full relative z-10">
+        <FadeIn>
+          <div className="mb-24 text-left">
+            <h1 className="text-5xl md:text-7xl font-light mb-6">Architectures <br/><AnimatedItalic className="text-white/50">of Clarity.</AnimatedItalic></h1>
+            <p className="text-xl text-white/50 font-light max-w-2xl leading-relaxed">
+              We structure our engagements through five distinct pathways, ensuring the deliverables precisely match the altitude of your innovation.
+            </p>
           </div>
-        </div>
-      </FadeIn>
+        </FadeIn>
 
-      <div className="space-y-8 w-full">
-        {ROUTES.map((route, i) => (
-          <FadeIn key={i} delay={i * 0.1}>
-            <div className="bg-white border border-zinc-200 p-8 md:p-12 hover:bg-zinc-100 transition-colors cursor-pointer w-full flex flex-col items-start" onClick={() => navigate('tools')}>
-              <div className="flex flex-col md:flex-row gap-8 md:items-start w-full">
-                <S.Box className="w-16 h-16 shrink-0" />
-                <div className="flex-1 flex flex-col items-start w-full">
-                  <S.Micro w="w-32" className="mb-4" />
-                  <S.Heading w="w-64" className="mb-6" />
-                  <S.Paragraph lines={2} className="w-full" />
-                </div>
-                <div className="md:pl-8 md:border-l border-zinc-200 shrink-0 pt-6 md:pt-0 flex flex-col items-start">
-                  <WireframeButton onClick={(e) => { e.stopPropagation(); navigate('tools'); }} w="w-24" />
+        <div className="space-y-6 w-full">
+          {ROUTES.map((route, i) => (
+            <FadeIn key={route.id} delay={i * 0.1}>
+              <div className="group bg-[#0A0A0F] border border-white/5 rounded-[9px] p-10 md:p-12 hover:bg-[#0D0D14] hover:border-white/10 transition-all duration-500 w-full text-left">
+                <div className="flex flex-col md:flex-row gap-8 md:items-start">
+                  <div className="w-16 h-16 rounded-[9px] border border-white/10 flex items-center justify-center text-white/30 group-hover:text-[#8A5CFF] group-hover:border-[#8A5CFF]/30 transition-colors flex-shrink-0">
+                    {route.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-xs font-medium text-[#8A5CFF] tracking-widest uppercase mb-2">{route.tagline}</h2>
+                    <h3 className="text-3xl font-medium mb-4">{route.title}</h3>
+                    <p className="text-white/50 font-light leading-relaxed text-lg max-w-3xl">
+                      {route.description}
+                    </p>
+                  </div>
+                  <div className="md:pl-8 md:border-l border-white/10 flex-shrink-0 pt-6 md:pt-0">
+                    <PremiumButton variant="secondary" onClick={() => navigate('tools')}>
+                      Initialize <ArrowRight className="w-4 h-4 ml-2 opacity-50" />
+                    </PremiumButton>
+                  </div>
                 </div>
               </div>
-            </div>
-          </FadeIn>
-        ))}
+            </FadeIn>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
 };
 
 const ContactPage = () => {
+  const [form, setForm] = useState({ name: '', email: '', type: '', need: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
-  return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-zinc-50 min-h-screen pt-40 pb-32 w-full px-[3vw]">
-      <Annotation 
-        title="SEC: CONVERSION_TERMINAL" 
-        rationale="The primary point of capture. Friction is intentionally introduced (via specific dropdowns and multi-line inputs) to filter out low-intent leads and qualify serious prospects." 
-      />
-      
-      <div className="grid md:grid-cols-2 gap-16 md:gap-24 mt-8 w-full">
-        <div className="flex flex-col items-start w-full">
-          <FadeIn>
-            <S.Micro w="w-32" className="mb-8" />
-            <S.Title w="w-full" className="mb-12 items-start" />
-            <div className="border-l-2 border-zinc-200 pl-6 mb-16 w-full flex flex-col items-start text-left">
-              <S.Paragraph lines={3} />
-            </div>
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
 
-            <div className="space-y-8 bg-white border border-zinc-200 p-8 w-full flex flex-col items-start">
-              <div className="flex items-center justify-start gap-6 w-full">
-                <S.Box className="w-6 h-6 shrink-0" />
-                <S.Line w="w-48" />
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-[#05050A] min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full">
+      <div className="w-full grid md:grid-cols-2 gap-16 md:gap-24">
+        
+        <div className="text-left">
+          <FadeIn>
+            <h2 className="text-xs font-medium text-[#2563FF] uppercase tracking-widest mb-6">Secure Transmission</h2>
+            <h1 className="text-5xl md:text-7xl font-light mb-8">Initiate <br/><AnimatedItalic className="text-white/50">Contact.</AnimatedItalic></h1>
+            <p className="text-xl text-white/50 font-light leading-relaxed mb-12 max-w-lg">
+              Whether you are ready to build a system, or simply evaluating partners for an upcoming leap, our intelligence unit is ready to assist.
+            </p>
+
+            <div className="space-y-6">
+              <div className="flex items-start gap-4 text-white/60">
+                <Mail className="w-5 h-5 text-white/30" />
+                <span className="font-light">strategy@purplebluehouse.com</span>
               </div>
-              <div className="w-full h-[1px] bg-zinc-200" />
-              <div className="flex items-center justify-start gap-6 w-full">
-                <S.Box className="w-6 h-6 shrink-0" />
-                <S.Line w="w-64" />
+              <div className="flex items-start gap-4 text-white/60">
+                <Globe className="w-5 h-5 text-white/30" />
+                <span className="font-light">Based in India. Operating Globally.</span>
               </div>
             </div>
           </FadeIn>
         </div>
 
-        <div className="flex flex-col items-start w-full">
+        <div className="text-left">
           <FadeIn delay={0.2}>
             {submitted ? (
-              <div className="bg-white border border-zinc-200 p-12 text-left h-full flex flex-col justify-start items-start gap-6 w-full">
-                <S.Box className="w-20 h-20 rounded-full mb-4" />
-                <S.Heading w="w-64" className="h-10" />
-                <S.Paragraph lines={2} className="w-full" />
+              <div className="bg-[#0A0A0F] border border-white/5 rounded-[9px] p-12 h-full flex flex-col justify-start items-start">
+                <div className="w-16 h-16 border border-white/10 rounded-[9px] flex items-center justify-center mb-6 bg-white/5">
+                  <CheckCircle2 className="w-8 h-8 text-[#2563FF]" />
+                </div>
+                <h3 className="text-2xl font-medium mb-4">Transmission Received</h3>
+                <p className="text-white/50 font-light">Our strategy team will review your parameters and respond shortly.</p>
               </div>
             ) : (
-              <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }} className="bg-white border border-zinc-200 p-10 space-y-8 w-full flex flex-col items-start">
+              <form onSubmit={handleSubmit} className="bg-[#0A0A0F] border border-white/5 rounded-[9px] p-10 space-y-8 w-full">
                 <div className="grid sm:grid-cols-2 gap-6 w-full">
-                  <div className="w-full flex flex-col items-start">
-                    <S.Micro w="w-24" className="mb-4" />
-                    <S.Box className="w-full h-12" />
+                  <div>
+                    <label className="block text-xs font-medium text-white/40 uppercase tracking-widest mb-3">Your Name</label>
+                    <input required type="text" className="w-full bg-white/[0.02] border border-white/10 rounded-[9px] px-4 py-3 text-white focus:outline-none focus:border-[#2563FF]/50 transition-colors" onChange={e => setForm({...form, name: e.target.value})} />
                   </div>
-                  <div className="w-full flex flex-col items-start">
-                    <S.Micro w="w-24" className="mb-4" />
-                    <S.Box className="w-full h-12" />
+                  <div>
+                    <label className="block text-xs font-medium text-white/40 uppercase tracking-widest mb-3">Work Email</label>
+                    <input required type="email" className="w-full bg-white/[0.02] border border-white/10 rounded-[9px] px-4 py-3 text-white focus:outline-none focus:border-[#2563FF]/50 transition-colors" onChange={e => setForm({...form, email: e.target.value})} />
                   </div>
                 </div>
 
-                <div className="w-full flex flex-col items-start">
-                  <S.Micro w="w-24" className="mb-4" />
-                  <S.Box className="w-full h-12" />
+                <div className="w-full">
+                  <label className="block text-xs font-medium text-white/40 uppercase tracking-widest mb-3">I am a...</label>
+                  <select required className="w-full bg-white/[0.02] border border-white/10 rounded-[9px] px-4 py-3 text-white appearance-none focus:outline-none focus:border-[#2563FF]/50 transition-colors" onChange={e => setForm({...form, type: e.target.value})}>
+                    <option value="" className="bg-[#05050A]">Select profile...</option>
+                    <option value="founder" className="bg-[#05050A]">Founder / Startup</option>
+                    <option value="research" className="bg-[#05050A]">Research / Deep-tech Team</option>
+                    <option value="institution" className="bg-[#05050A]">Institution / Policy Body</option>
+                    <option value="consumer" className="bg-[#05050A]">Consumer Brand</option>
+                    <option value="investor" className="bg-[#05050A]">Investor / Ecosystem</option>
+                  </select>
                 </div>
 
-                <div className="w-full flex flex-col items-start">
-                  <S.Micro w="w-32" className="mb-4" />
-                  <S.Box className="w-full h-32" />
+                <div className="w-full">
+                  <label className="block text-xs font-medium text-white/40 uppercase tracking-widest mb-3">System Required</label>
+                  <textarea required rows={4} placeholder="Briefly describe the challenge or scope..." className="w-full bg-white/[0.02] border border-white/10 rounded-[9px] px-4 py-3 text-white focus:outline-none focus:border-[#2563FF]/50 transition-colors resize-none" onChange={e => setForm({...form, message: e.target.value})} />
                 </div>
 
-                <WireframeButton type="submit" w="w-32" className="w-full bg-zinc-100" />
+                <PremiumButton type="submit">Initialize Contact</PremiumButton>
               </form>
             )}
           </FadeIn>
         </div>
+
       </div>
     </motion.div>
   );
@@ -533,182 +735,214 @@ const ContactPage = () => {
 
 const ToolsHubPage = ({ navigate }) => {
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-zinc-50 min-h-screen pt-40 pb-32 w-full px-[3vw]">
-      <Annotation 
-        title="SEC: INTERACTIVE_LEAD_GEN" 
-        rationale="Leverages the psychological principle of reciprocity. We provide the user with a valuable diagnostic framework in exchange for their active engagement and deeper ecosystem immersion." 
-      />
-      
-      <FadeIn>
-        <div className="mb-24 mt-8 text-left border-b border-zinc-200 pb-12 flex flex-col items-start w-full">
-          <S.Micro w="w-32" className="mb-8" />
-          <S.Title w="w-full" className="items-start mb-8" />
-          <div className="w-full bg-white p-6 border border-zinc-200 flex flex-col items-start text-left">
-            <S.Paragraph lines={2} />
-          </div>
-        </div>
-      </FadeIn>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-[#05050A] min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] relative overflow-hidden w-full">
+      <div className="absolute top-1/4 left-[3%] w-[800px] h-[400px] bg-[#6D3BEF] rounded-[100%] blur-[200px] opacity-[0.08] pointer-events-none" />
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-        {[
-          { dest: 'quiz', lines: 3 },
-          { dest: 'scope-builder', lines: 4 },
-          { dest: 'contact', lines: 3 }
-        ].map((tool, i) => (
-          <FadeIn key={i} delay={i * 0.1}>
+      <div className="w-full relative z-10">
+        <FadeIn>
+          <div className="mb-24 text-left">
+            <h2 className="text-xs font-medium text-[#8A5CFF] uppercase tracking-widest mb-6">Engineering Bay</h2>
+            <h1 className="text-5xl md:text-7xl font-light mb-6">Strategic <AnimatedItalic className="text-white/50">Tools.</AnimatedItalic></h1>
+            <p className="text-xl text-white/50 font-light max-w-3xl leading-relaxed">
+              Access our proprietary diagnostic and scoping systems to accurately map the parameters of your next build.
+            </p>
+          </div>
+        </FadeIn>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+          <FadeIn delay={0.1}>
             <div 
-              onClick={() => navigate(tool.dest)}
-              className="bg-white border border-zinc-200 p-8 hover:bg-zinc-100 transition-colors cursor-pointer h-full flex flex-col items-start w-full"
+              onClick={() => navigate('quiz')}
+              className="group cursor-pointer bg-[#0A0A0F] border border-white/5 rounded-[9px] p-10 hover:border-[#8A5CFF]/30 hover:bg-[#0D0D14] transition-all duration-500 relative overflow-hidden h-full flex flex-col text-left"
             >
-              <S.Box className="w-12 h-12 mb-8" />
-              <S.Heading w="w-3/4" className="mb-6" />
-              <div className="flex-grow mb-8 w-full">
-                <S.Paragraph lines={tool.lines} className="items-start" />
-              </div>
-              <div className="border-t border-zinc-200 pt-6 flex justify-between items-center w-full">
-                <S.Micro w="w-24" />
-                <S.Micro w="w-8" />
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#8A5CFF] rounded-full blur-[120px] opacity-0 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none" />
+              <Activity className="w-8 h-8 text-white/30 group-hover:text-[#8A5CFF] mb-8 transition-colors" />
+              <h3 className="text-2xl font-light mb-3">Brand Diagnostic</h3>
+              <p className="text-white/50 font-light leading-relaxed mb-8 flex-grow text-sm">A structured evaluation to uncover where your brand narrative is experiencing friction or misalignment.</p>
+              <div className="flex items-center gap-2 text-xs uppercase tracking-widest font-medium text-white/40 group-hover:text-white transition-colors">
+                Run Sequence <MoveRight className="w-4 h-4" />
               </div>
             </div>
           </FadeIn>
-        ))}
+
+          <FadeIn delay={0.2}>
+            <div 
+              onClick={() => navigate('scope-builder')}
+              className="group cursor-pointer bg-[#0A0A0F] border border-white/5 rounded-[9px] p-10 hover:border-[#2563FF]/30 hover:bg-[#0D0D14] transition-all duration-500 relative overflow-hidden h-full flex flex-col text-left"
+            >
+              <div className="absolute top-0 left-0 w-64 h-64 bg-[#2563FF] rounded-full blur-[120px] opacity-0 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none" />
+              <Hexagon className="w-8 h-8 text-white/30 group-hover:text-[#2563FF] mb-8 transition-colors" />
+              <h3 className="text-2xl font-light mb-3">Scope Generator</h3>
+              <p className="text-white/50 font-light leading-relaxed mb-8 flex-grow text-sm">Select exact deliverables, set priorities, and generate a tailored, proposal-ready scope document instantly.</p>
+              <div className="flex items-center gap-2 text-xs uppercase tracking-widest font-medium text-white/40 group-hover:text-white transition-colors">
+                Build Scope <MoveRight className="w-4 h-4" />
+              </div>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.3}>
+            <div 
+              onClick={() => navigate('contact')}
+              className="group cursor-pointer bg-[#0A0A0F] border border-white/5 rounded-[9px] p-10 hover:border-white/20 hover:bg-[#0D0D14] transition-all duration-500 relative overflow-hidden h-full flex flex-col text-left"
+            >
+              <MessageSquare className="w-8 h-8 text-white/30 group-hover:text-white mb-8 transition-colors" />
+              <h3 className="text-2xl font-light mb-3">Strategy Call</h3>
+              <p className="text-white/50 font-light leading-relaxed mb-8 flex-grow text-sm">Bypass the automated tools and initiate direct contact with our strategy team for a custom consultation.</p>
+              <div className="flex items-center gap-2 text-xs uppercase tracking-widest font-medium text-white/40 group-hover:text-white transition-colors">
+                Initiate <MoveRight className="w-4 h-4" />
+              </div>
+            </div>
+          </FadeIn>
+        </div>
       </div>
     </motion.div>
   );
 };
 
+
+// --- WORK PAGE ---
+
 const WorkPage = () => {
   return (
-    <div className="min-h-screen bg-zinc-50 pt-40 pb-32 w-full px-[3vw]">
-      <Annotation 
-        title="SEC: EMPIRICAL_EVIDENCE" 
-        rationale="Case studies act as the scientific method applied to design marketing. Hypothesis -> Execution -> Results. They provide irrefutable structural proof that the methodology is sound." 
-      />
-      
-      <FadeIn>
-        <div className="mb-24 mt-8 flex flex-col md:flex-row md:items-start justify-start gap-8 border-b border-zinc-200 pb-12 w-full">
-          <S.Title w="w-full" className="items-start" />
-          <div className="bg-white border border-zinc-200 p-4 flex flex-col items-start">
-            <S.Micro w="w-32" />
+    <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full">
+      <div className="w-full text-left">
+        <FadeIn>
+          <div className="mb-24">
+            <h1 className="text-5xl md:text-7xl font-light mb-6">System Archives</h1>
+            <p className="text-xl text-white/50 font-light"><AnimatedItalic className="text-white/50">Decoded complexity. Engineered clarity.</AnimatedItalic></p>
           </div>
-        </div>
-      </FadeIn>
+        </FadeIn>
 
-      <div className="grid gap-6 w-full">
-        {CASE_STUDIES.map((_, i) => (
-          <FadeIn key={i} delay={i * 0.1}>
-            <div className="bg-white border border-zinc-200 p-8 flex flex-col md:flex-row justify-start items-start md:items-center gap-8 hover:bg-zinc-100 transition-colors w-full">
-              <div className="flex-1 w-full flex flex-col items-start">
-                <S.Heading w="w-2/3" className="mb-4" />
-                <S.Paragraph lines={2} className="w-full items-start" />
+        <div className="grid gap-6 w-full">
+          {CASE_STUDIES.map((cs, i) => (
+            <FadeIn key={i} delay={i * 0.1}>
+              <div className="group bg-[#0A0A0F] border border-white/5 rounded-[9px] p-10 flex flex-col md:flex-row justify-between items-start gap-8 hover:bg-[#0D0D14] hover:border-white/10 transition-all duration-500 cursor-pointer w-full text-left">
+                <div className="flex-1">
+                  <h3 className="text-3xl font-medium mb-3 group-hover:text-[#8A5CFF] transition-colors">{cs.client}</h3>
+                  <p className="text-white/50 font-light text-lg max-w-2xl">{cs.challenge}</p>
+                </div>
+                
+                <div className="flex gap-3 flex-wrap justify-start">
+                  {cs.tags.map(t => (
+                    <span key={t} className="px-4 py-2 rounded-[9px] border border-white/10 bg-white/5 text-xs font-medium text-white/60 tracking-wide whitespace-nowrap">
+                      {t}
+                    </span>
+                  ))}
+                </div>
               </div>
-              
-              <div className="flex gap-4 items-start justify-start">
-                <S.Micro w="w-16" className="h-6" />
-                <S.Micro w="w-20" className="h-6" />
-              </div>
-            </div>
-          </FadeIn>
-        ))}
+            </FadeIn>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
 
+
+// --- CONCIERGE QUIZ ---
+
 const QuizApp = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [answers, setAnswers] = useState({});
   const [isFinished, setIsFinished] = useState(false);
 
-  const handleSelect = () => {
+  const handleSelect = (questionId, option) => {
+    setAnswers(prev => ({ ...prev, [questionId]: option }));
     setTimeout(() => {
       if (currentStep < QUIZ_QUESTIONS.length - 1) {
         setCurrentStep(prev => prev + 1);
       } else {
         setIsFinished(true);
       }
-    }, 300);
+    }, 500);
   };
 
   if (isFinished) {
     return (
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen bg-zinc-50 flex flex-col items-start justify-center pt-32 w-full px-[3vw]">
-        <div className="w-full flex flex-col items-start text-left">
-          <S.Box className="w-24 h-24 rounded-full mb-12 bg-white" />
-          <S.Micro w="w-48" className="mb-8" />
-          <S.Title w="w-full" className="items-start mb-16" />
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen bg-[#05050A] text-[#F4F4F5] flex flex-col items-start justify-center px-[3%] pt-32 w-full">
+        <div className="w-full text-left">
+          <div className="w-16 h-16 border border-white/10 rounded-[9px] flex items-center justify-center mb-8 bg-white/5">
+            <CheckCircle2 className="w-8 h-8 text-[#8A5CFF]" />
+          </div>
+          <h2 className="text-xs font-medium tracking-widest uppercase text-[#8A5CFF] mb-4">Evaluation Complete</h2>
+          <h1 className="text-4xl md:text-5xl font-light mb-8">
+            Your brand requires a <br/><AnimatedItalic className="text-white/70">Structural Realignment.</AnimatedItalic>
+          </h1>
           
-          <div className="w-full bg-white border border-zinc-200 p-10 mb-12 flex flex-col items-start">
-            <S.Paragraph lines={4} className="mb-10 w-full items-start" />
-            <div className="border-t border-zinc-200 pt-8 flex items-start gap-6 w-full">
-              <S.Box className="w-12 h-12 shrink-0" />
-              <div className="w-full flex flex-col items-start text-left">
-                <S.Heading w="w-1/2" className="mb-4" />
-                <S.Paragraph lines={2} className="w-full items-start" />
+          <div className="bg-[#0A0A0F] border border-white/5 p-10 rounded-[9px] text-left mb-12 max-w-3xl">
+            <p className="text-white/60 font-light leading-relaxed mb-6">
+              Based on your responses, the friction lies primarily in translating complex internal depth into external clarity. We recommend establishing a formal framework before producing new assets.
+            </p>
+            <div className="border-t border-white/5 pt-6 flex items-start gap-4">
+              <Dna className="w-6 h-6 text-[#8A5CFF] shrink-0 mt-1" />
+              <div>
+                <h4 className="font-medium text-lg mb-1">Recommended: SciArt Saga</h4>
+                <p className="text-white/40 text-sm font-light">Focus on innovation frameworks, experience strategy, and complex idea translation.</p>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-6 w-full justify-start items-start">
-            <WireframeButton onClick={() => onComplete('scope-builder')} w="w-32" className="bg-zinc-100" />
-            <WireframeButton onClick={() => onComplete('tools')} w="w-32" />
+          <div className="flex flex-col sm:flex-row justify-start gap-4">
+            <PremiumButton onClick={() => onComplete('scope-builder')}>Generate Scope</PremiumButton>
+            <PremiumButton variant="ghost" onClick={() => onComplete('tools')} className="px-0 sm:px-8">Return to Hub</PremiumButton>
           </div>
         </div>
       </motion.div>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col justify-center pt-32 pb-24 w-full px-[3vw]">
-      <div className="w-full relative flex flex-col items-start text-left">
-        <div className="absolute -top-20 left-0 w-full flex justify-start">
-           <Annotation 
-             title="SEC: QUALIFICATION_FUNNEL" 
-             rationale="Masked as a diagnostic game. This mechanism makes the user feel deeply understood while simultaneously mapping their psychographic profile and uncovering precise structural gaps." 
-           />
-        </div>
+  const q = QUIZ_QUESTIONS[currentStep];
+  const progress = ((currentStep) / QUIZ_QUESTIONS.length) * 100;
 
-        <div className="mb-20 flex flex-col items-start mt-12 w-full">
-          <S.Micro w="w-32" className="mb-6" />
-          <div className="w-full h-2 bg-white border border-zinc-200 overflow-hidden rounded-sm">
-            <motion.div 
-              className="h-full bg-zinc-300" 
-              initial={{ width: 0 }} 
-              animate={{ width: `${((currentStep) / QUIZ_QUESTIONS.length) * 100}%` }} 
-              transition={{ duration: 0.5 }} 
-            />
+  return (
+    <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] flex flex-col justify-center px-[3%] pt-32 pb-24 relative overflow-hidden w-full">
+      <div className="absolute top-0 left-[3%] w-[800px] h-[400px] bg-[#6D3BEF] rounded-[100%] blur-[200px] opacity-[0.08] pointer-events-none" />
+
+      <div className="w-full relative z-10">
+        <div className="mb-20 text-left">
+          <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6">
+            Phase 0{currentStep + 1} of 0{QUIZ_QUESTIONS.length}
+          </div>
+          <div className="w-full max-w-xs h-[1px] bg-white/10 relative">
+            <motion.div className="absolute top-0 left-0 h-full bg-[#8A5CFF]" initial={{ width: 0 }} animate={{ width: `${progress}%` }} transition={{ duration: 0.5 }} />
           </div>
         </div>
 
         <AnimatePresence mode="wait">
-          <motion.div key={currentStep} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="w-full">
-            <div className="bg-white border border-zinc-200 p-8 md:p-12 mb-12 flex justify-start w-full">
-              <S.Heading w="w-full" className="h-12 md:h-16" />
-            </div>
+          <motion.div key={q.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.4 }} className="text-left w-full max-w-4xl">
+            <h2 className="text-3xl md:text-4xl font-light mb-16 leading-relaxed">
+              {q.text}
+            </h2>
             
-            <div className="grid gap-6 w-full">
-              {[1, 2, 3, 4].map((opt) => (
-                <button
-                  key={opt}
-                  onClick={handleSelect}
-                  className="bg-white border border-zinc-200 p-6 flex items-start gap-6 hover:bg-zinc-100 transition-colors w-full text-left"
-                >
-                  <S.Box className="w-10 h-10 shrink-0" />
-                  <S.Line w="w-3/4" />
-                </button>
-              ))}
+            <div className="grid gap-4 w-full">
+              {q.options.map((opt, i) => {
+                const isSelected = answers[q.id]?.id === opt.id;
+                return (
+                  <button
+                    key={opt.id}
+                    onClick={() => handleSelect(q.id, opt)}
+                    className={`text-left p-6 md:p-8 rounded-[9px] border transition-all duration-300 flex items-start gap-6 w-full ${
+                      isSelected ? 'border-[#8A5CFF] bg-[#8A5CFF]/10 text-white' : 'border-white/10 hover:border-white/30 text-white/60 hover:text-white bg-white/[0.02]'
+                    }`}
+                  >
+                    <span className="font-serif italic text-white/30 text-xl shrink-0 leading-none">{String.fromCharCode(65 + i)}</span>
+                    <span className="text-lg font-light leading-relaxed">{opt.text}</span>
+                  </button>
+                );
+              })}
             </div>
           </motion.div>
         </AnimatePresence>
 
-        <div className="mt-16 flex justify-between items-start w-full border-t border-zinc-200 pt-6">
+        <div className="mt-16 flex justify-start items-center gap-8 w-full">
           <button 
             onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
-            className={`opacity-50 hover:opacity-100 transition-opacity py-2 pr-2 flex justify-start ${currentStep === 0 ? 'pointer-events-none opacity-0' : ''}`}
+            className={`text-sm font-medium text-white/40 hover:text-white transition-colors flex items-center gap-2 ${currentStep === 0 ? 'opacity-0 pointer-events-none' : ''}`}
           >
-            <S.Micro w="w-16" />
+            <ArrowLeft className="w-4 h-4" /> Previous
           </button>
-          <button onClick={() => onComplete('tools')} className="opacity-50 hover:opacity-100 transition-opacity p-2 border border-zinc-200 rounded-sm flex justify-start">
-            <S.Micro w="w-12" />
+          <button onClick={() => onComplete('tools')} className="text-sm font-medium text-white/40 hover:text-white transition-colors">
+             Abort
           </button>
         </div>
       </div>
@@ -716,52 +950,61 @@ const QuizApp = ({ onComplete }) => {
   );
 };
 
-const ScopeBuilderApp = ({ onComplete }) => {
+
+// --- SCOPE BUILDER ---
+
+const ScopeBuilderApp = ({ initialData, onComplete }) => {
+  const [step, setStep] = useState(1);
   const [projectType, setProjectType] = useState('');
 
   return (
-    <div className="min-h-screen bg-zinc-50 pt-40 pb-24 w-full px-[3vw]">
-      <Annotation 
-        title="SEC: ANCHORING_MECHANISM" 
-        rationale="Empowers the user to 'build' their own framework. This triggers the IKEA Effect—users place a disproportionately high value on solutions they actively participated in assembling." 
-      />
-      
-      <FadeIn>
-        <div className="mb-20 mt-8 bg-white border border-zinc-200 p-10 md:p-12 w-full flex flex-col items-start">
-          <S.Micro w="w-40" className="mb-8" />
-          <S.Title w="w-full" className="mb-8 items-start" />
-          <S.Line w="w-full" />
-        </div>
-      </FadeIn>
+    <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-40 px-[3%] pb-24 relative overflow-hidden w-full">
+       <div className="absolute bottom-0 right-[3%] w-[600px] h-[600px] bg-[#2563FF] rounded-[100%] blur-[200px] opacity-[0.05] pointer-events-none" />
 
-      <FadeIn delay={0.1}>
-        <div className="grid sm:grid-cols-2 gap-6 w-full">
-          {[1, 2, 3, 4, 5, 6].map((type) => (
-            <button 
-              key={type} 
-              className={`text-left p-8 border transition-colors flex justify-between items-center w-full ${
-                projectType === type ? 'border-zinc-400 bg-zinc-200' : 'border-zinc-200 bg-white hover:bg-zinc-100'
-              }`}
-              onClick={() => setProjectType(type)}
-            >
-              <S.Line w="w-48" className={projectType === type ? 'bg-white' : ''} />
-              <S.Micro w="w-8" className={projectType === type ? 'bg-white' : ''} />
+      <div className="w-full relative z-10 text-left">
+        <FadeIn>
+          <div className="mb-20">
+            <h2 className="text-xs font-medium text-[#2563FF] uppercase tracking-widest mb-4">Project Architecture</h2>
+            <h1 className="text-4xl md:text-6xl font-light mb-6">Scope Generator</h1>
+            <p className="text-xl text-white/50 font-light max-w-2xl">Configure your organizational profile to generate a tailored framework.</p>
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={0.1}>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+            {[
+              'Founder-Led Startup', 'Deep-Tech / Research', 
+              'Consumer / FMCG Brand', 'Institution / Policy Body',
+              'Venture / Ecosystem', 'Purpose-Led Organization'
+            ].map(type => (
+              <button 
+                key={type} 
+                className={`text-left p-8 rounded-[9px] border transition-all duration-300 font-light text-lg ${
+                  projectType === type ? 'border-[#2563FF] bg-[#2563FF]/10 text-white' : 'border-white/10 hover:border-white/30 text-white/60 bg-white/[0.02]'
+                }`}
+                onClick={() => setProjectType(type)}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+        </FadeIn>
+        
+        <FadeIn delay={0.2}>
+          <div className="mt-16 flex justify-start items-center gap-8 w-full">
+            <PremiumButton onClick={() => onComplete('tools')} disabled={!projectType}>
+               Generate Framework
+            </PremiumButton>
+            <button onClick={() => onComplete('tools')} className="text-sm font-medium text-white/40 hover:text-white transition-colors">
+              Return to Hub
             </button>
-          ))}
-        </div>
-      </FadeIn>
-      
-      <FadeIn delay={0.2}>
-        <div className="mt-16 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-8 border-t border-zinc-200 pt-12 w-full">
-          <button onClick={() => onComplete('tools')} className="p-4 border border-zinc-200 bg-white hover:bg-zinc-100 transition-colors flex justify-start">
-            <S.Micro w="w-32" />
-          </button>
-          <WireframeButton onClick={() => onComplete('tools')} disabled={!projectType} w="w-48" className="bg-zinc-100" />
-        </div>
-      </FadeIn>
+          </div>
+        </FadeIn>
+      </div>
     </div>
   );
 };
+
 
 // --- LAYOUT ---
 
@@ -777,24 +1020,36 @@ const Header = ({ navigate, current }) => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-[90] transition-all duration-300 w-full px-[3vw] ${scrolled ? 'bg-white/80 backdrop-blur-sm border-b border-zinc-200 py-4' : 'bg-transparent py-8'}`}>
-        <div className="w-full flex justify-between items-start md:items-center">
-          <div className="cursor-pointer flex items-center justify-start gap-4" onClick={() => { navigate('home'); setMobileMenu(false); }}>
-            <S.Box className="w-10 h-10 rounded-sm bg-zinc-200" />
-            <S.Heading w="w-48" className="hidden sm:block h-6" />
+      <header className={`fixed top-0 left-0 right-0 z-[90] transition-all duration-500 w-full ${scrolled ? 'bg-[#05050A]/80 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-8'}`}>
+        <div className="w-full px-[3%] flex justify-between items-center">
+          <div 
+            className="text-lg font-medium tracking-wide cursor-pointer flex items-center gap-3" 
+            onClick={() => { navigate('home'); setMobileMenu(false); }}
+          >
+            <img 
+              src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png/v1/fill/w_148,h_110,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/pbh-animated-gradient-2_edited.png" 
+              alt="PurpleBlue House Logo" 
+              className="h-8 w-auto object-contain"
+            />
+            PurpleBlue House
           </div>
           
-          <nav className="hidden md:flex items-start justify-start gap-8">
+          <nav className="hidden md:flex items-center gap-10 text-sm font-medium tracking-wide">
             {['work', 'services', 'about'].map(id => (
-              <div key={id} onClick={() => navigate(id)} className="cursor-pointer py-2 flex items-start">
-                <S.Micro w="w-16" className={current === id ? 'bg-zinc-400' : 'bg-zinc-200 hover:bg-zinc-300'} />
-              </div>
+              <span 
+                key={id} onClick={() => navigate(id)} 
+                className={`cursor-pointer transition-colors capitalize ${current === id ? 'text-white' : 'text-white/50 hover:text-white'}`}
+              >
+                {id === 'work' ? 'Archive' : id}
+              </span>
             ))}
-            <WireframeButton onClick={() => navigate('tools')} w="w-20" className="px-6 py-2 ml-4" />
+            <button onClick={() => navigate('tools')} className="px-6 py-2.5 rounded-[9px] bg-white text-[#05050A] hover:bg-white/90 transition-colors">
+              Engage
+            </button>
           </nav>
 
-          <button className="md:hidden p-2 border border-zinc-200 bg-white flex justify-start" onClick={() => setMobileMenu(!mobileMenu)}>
-            <S.Box className="w-6 h-6 border-none bg-zinc-300" />
+          <button className="md:hidden text-white" onClick={() => setMobileMenu(!mobileMenu)}>
+            {mobileMenu ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </header>
@@ -802,17 +1057,20 @@ const Header = ({ navigate, current }) => {
       <AnimatePresence>
         {mobileMenu && (
           <motion.div 
-            initial={{ opacity: 0, y: "-100%" }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: "-100%" }} transition={{ type: "tween", duration: 0.3 }}
-            className="fixed inset-0 z-[80] bg-zinc-50 border-b border-zinc-200 pt-32 pb-12 flex flex-col justify-start items-start w-full px-[3vw]"
+            initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} 
+            className="fixed inset-0 z-[80] bg-[#05050A] pt-32 px-[3%] w-full"
           >
-            <div className="flex flex-col gap-8 items-start justify-start w-full">
-              {['home', 'work', 'services', 'about'].map(id => (
-                <div key={id} onClick={() => { navigate(id); setMobileMenu(false); }} className="border-b border-zinc-200 pb-6 w-full flex items-start justify-start">
-                  <S.Heading w="w-48" className="h-10" />
-                </div>
+            <div className="flex flex-col items-start gap-8 text-2xl font-light w-full">
+              <span onClick={() => { navigate('home'); setMobileMenu(false); }}>Home</span>
+              {['work', 'services', 'about'].map(id => (
+                <span key={id} onClick={() => { navigate(id); setMobileMenu(false); }} className="capitalize text-white/70 hover:text-white">
+                  {id === 'work' ? 'Archive' : id}
+                </span>
               ))}
+              <span onClick={() => { navigate('tools'); setMobileMenu(false); }} className="text-[#8A5CFF] mt-4">
+                Access Tools
+              </span>
             </div>
-            <WireframeButton onClick={() => { navigate('tools'); setMobileMenu(false); }} w="w-32" className="w-full py-6 mt-8 bg-zinc-100" />
           </motion.div>
         )}
       </AnimatePresence>
@@ -821,25 +1079,23 @@ const Header = ({ navigate, current }) => {
 };
 
 const Footer = ({ navigate }) => (
-  <footer className="bg-white border-t border-zinc-200 pt-24 pb-12 w-full px-[3vw]">
-    <div className="w-full grid md:grid-cols-2 gap-16 mb-24">
-      <div className="flex flex-col items-start gap-10 w-full">
-        <S.Title w="w-full" className="items-start" />
-        <WireframeButton onClick={() => navigate('tools')} w="w-32" className="bg-zinc-100" />
+  <footer className="bg-[#05050A] border-t border-white/5 pt-32 pb-12 text-[#F4F4F5] px-[3%] w-full">
+    <div className="w-full grid md:grid-cols-2 gap-16 mb-24 text-left">
+      <div>
+        <h2 className="text-4xl md:text-6xl font-light mb-8">Ready to <br/><span className="font-serif italic text-white/50">illuminate?</span></h2>
+        <PremiumButton variant="secondary" onClick={() => navigate('tools')}>Access Tools</PremiumButton>
       </div>
-      <div className="flex flex-col justify-start gap-6 items-start w-full">
-        {[1, 2, 3].map((i) => (
-          <div key={i} onClick={() => navigate('services')} className="cursor-pointer pb-2 border-b border-zinc-200 flex items-start justify-start">
-            <S.Micro w={['w-40', 'w-32', 'w-48'][i-1]} className="h-4" />
-          </div>
-        ))}
+      <div className="flex flex-col justify-end items-start text-sm font-medium tracking-wide space-y-4 text-white/50 md:pl-16">
+        <p className="hover:text-white cursor-pointer transition-colors" onClick={() => navigate('services')}>Brand Boulevard</p>
+        <p className="hover:text-white cursor-pointer transition-colors" onClick={() => navigate('services')}>SciArt Saga</p>
+        <p className="hover:text-white cursor-pointer transition-colors" onClick={() => navigate('services')}>Institutional Systems</p>
       </div>
     </div>
-    <div className="w-full border-t border-zinc-200 pt-8 flex flex-col md:flex-row justify-between items-start gap-6">
-      <S.Micro w="w-48" />
-      <div className="flex gap-8 items-start justify-start">
-        <S.Micro w="w-24" />
-        <S.Micro w="w-24" />
+    <div className="w-full border-t border-white/5 pt-8 text-xs font-medium text-white/30 uppercase tracking-widest flex flex-col md:flex-row gap-8 justify-between text-left">
+      <p>© {new Date().getFullYear()} PurpleBlue House.</p>
+      <div className="flex gap-6 justify-start">
+        <span className="hover:text-white cursor-pointer transition-colors">Privacy</span>
+        <span className="hover:text-white cursor-pointer transition-colors">Terms</span>
       </div>
     </div>
   </footer>
@@ -851,10 +1107,21 @@ export default function App() {
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'auto' }); }, [currentPage]);
 
   return (
-    <div className="bg-zinc-50 min-h-screen font-sans selection:bg-zinc-200 w-full flex flex-col items-start text-left">
+    <div className="bg-[#05050A] min-h-screen text-[#F4F4F5] font-sans w-full selection:bg-[#6D3BEF]/30 selection:text-white overflow-x-hidden">
+      {/* Global CSS injection for arbitrary text gradient animations */}
+      <style>{`
+        @keyframes gradientFlow {
+          0% { background-position: 0% 50%; }
+          100% { background-position: 200% 50%; }
+        }
+        .animate-gradient {
+          animation: gradientFlow 3s linear infinite;
+        }
+      `}</style>
+      
       <CustomCursor />
       <Header navigate={setCurrentPage} current={currentPage} />
-      <main className="w-full flex flex-col items-start">
+      <main className="w-full">
         <AnimatePresence mode="wait">
           {currentPage === 'home' && <HomePage key="home" navigate={setCurrentPage} />}
           {currentPage === 'about' && <AboutPage key="about" />}
