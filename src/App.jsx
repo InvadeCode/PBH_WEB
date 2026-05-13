@@ -401,7 +401,7 @@ const LeafletMap = () => {
     let mapInstance;
     const initMap = () => {
       if (!window.L || !mapRef.current || mapRef.current._leaflet_id) return;
-      mapInstance = window.L.map(mapRef.current, { zoomControl: false, scrollWheelZoom: false }).setView([18.5204, 73.8567], 2.5);
+      mapInstance = window.L.map(mapRef.current, { zoomControl: false, scrollWheelZoom: false }).setView([28.5494, 77.2529], 2.5);
       window.L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
         subdomains: 'abcd', maxZoom: 20
@@ -411,7 +411,7 @@ const LeafletMap = () => {
         html: `<div style="width: 16px; height: 16px; background: ${color}; border-radius: 50%; box-shadow: 0 0 20px ${color}; animation: mapPulse 2s infinite;"></div>`,
         iconSize: [16, 16], iconAnchor: [8, 8]
       });
-      window.L.marker([18.5204, 73.8567], { icon: createNode('#8A5CFF') }).addTo(mapInstance).bindPopup('<div class="text-black font-medium px-2 py-1">PBH HQ - Delhi</div>');
+      window.L.marker([28.5494, 77.2529], { icon: createNode('#8A5CFF') }).addTo(mapInstance).bindPopup('<div class="text-black font-medium px-2 py-1">PBH HQ - Nehru Place, Delhi</div>');
       window.L.marker([51.5074, -0.1278], { icon: createNode('#2563FF') }).addTo(mapInstance).bindPopup('<div class="text-black font-medium px-2 py-1">PBH - London</div>');
       window.L.marker([40.7128, -74.0060], { icon: createNode('#8A5CFF') }).addTo(mapInstance).bindPopup('<div class="text-black font-medium px-2 py-1">PBH - New York</div>');
     };
@@ -902,7 +902,7 @@ const Header = ({ navigate, current }) => {
         { step: 'Execution', desc: 'Move from clarity to implementation.' }
       ].map((item, i) => (
         <MenuHoverCard key={item.step} color={i % 2 === 0 ? '#8A5CFF' : '#2563FF'} onClick={() => { navigate('method'); closeImmediately(); }}>
-          <span className="text-4xl font-serif italic mb-6 block text-white/20">0{i + 1}</span>
+          <span className="text-4xl font-serif italic mb-6 block text-white/10 group-hover:text-white/30 transition-colors duration-500">0{i + 1}</span>
           <h4 className="text-sm font-medium text-white mb-2">{item.step}</h4>
           <p className="text-[11px] text-white/45 leading-relaxed mt-auto font-light">{item.desc}</p>
         </MenuHoverCard>
@@ -912,18 +912,56 @@ const Header = ({ navigate, current }) => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-[10000] h-[92px] bg-[#05050A] shadow-[0_18px_70px_rgba(0,0,0,0.55)] border-b border-white/5">
+      <header className="fixed top-0 left-0 right-0 z-[10000] h-[92px] bg-[#05050A] shadow-[0_18px_70px_rgba(0,0,0,0.55)]">
         <div className="w-full h-full px-[3%] flex justify-between items-center">
           <div className="text-lg font-medium tracking-wide cursor-pointer flex items-center gap-3 hover:opacity-80 transition-opacity text-white" onClick={() => { navigate('home'); closeImmediately(); }}>
             <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className="h-6 w-auto object-contain shrink-0" />
             PurpleBlue House
           </div>
-          <nav className="hidden lg:flex items-center gap-2 text-sm font-medium tracking-wide bg-white/[0.035] rounded-full px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_50px_rgba(0,0,0,0.35)] border border-white/5">
-            <NavLink onClick={() => { navigate('work'); closeImmediately(); }} onMouseEnter={() => openMenu('work')} onMouseLeave={closeMenu} active={current === 'work' || activeMenu === 'work'}>Work</NavLink>
-            <NavLink onClick={() => { navigate('services'); closeImmediately(); }} onMouseEnter={() => openMenu('services')} onMouseLeave={closeMenu} active={current?.startsWith('services') || activeMenu === 'services'}>Services</NavLink>
-            <NavLink onClick={() => { navigate('method'); closeImmediately(); }} onMouseEnter={() => openMenu('method')} onMouseLeave={closeMenu} active={current === 'method' || activeMenu === 'method'}>Method</NavLink>
-            <NavLink onClick={() => { navigate('about'); closeImmediately(); }} onMouseEnter={closeImmediately} onMouseLeave={() => {}} active={current === 'about'}>About</NavLink>
+
+          <nav className="hidden lg:flex items-center gap-2 text-sm font-medium tracking-wide bg-white/[0.035] rounded-full px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_50px_rgba(0,0,0,0.35)]">
+            <NavLink 
+              onClick={() => {navigate('work'); setActiveMenu(null);}} 
+              onMouseEnter={() => openMenu('work')} 
+              onMouseLeave={closeMenu}
+              active={current === 'work' || activeMenu === 'work'}
+            >
+              Work
+            </NavLink>
+            <NavLink 
+              onClick={() => {navigate('services'); setActiveMenu(null);}} 
+              onMouseEnter={() => openMenu('services')} 
+              onMouseLeave={closeMenu}
+              active={current?.startsWith('services') || activeMenu === 'services'}
+            >
+              Services
+            </NavLink>
+            <NavLink 
+              onClick={() => {navigate('method'); setActiveMenu(null);}} 
+              onMouseEnter={() => openMenu('method')} 
+              onMouseLeave={closeMenu}
+              active={current === 'method' || activeMenu === 'method'}
+            >
+              Method
+            </NavLink>
+            <NavLink 
+              onClick={() => {navigate('about'); setActiveMenu(null);}} 
+              onMouseEnter={closeImmediately} 
+              onMouseLeave={() => {}}
+              active={current === 'about'}
+            >
+              About
+            </NavLink>
+            <NavLink 
+              onClick={() => {navigate('contact'); closeImmediately();}} 
+              onMouseEnter={closeImmediately} 
+              onMouseLeave={() => {}}
+              active={current === 'contact'}
+            >
+              Contact
+            </NavLink>
           </nav>
+
           <div className="hidden lg:flex items-center">
             <PremiumButton onClick={() => { navigate('assessment'); closeImmediately(); }} className="px-6 py-2.5 rounded-[9px] text-xs shadow-[0_0_20px_rgba(138,92,255,0.1)]">Build My Brand Scope</PremiumButton>
           </div>
