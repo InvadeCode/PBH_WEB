@@ -1692,7 +1692,7 @@ const ContactPage = ({ navigate }) => (
 
 const AdminDashboard = ({ navigate }) => {
   return (
-    <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-32 pb-24 px-[3%] w-full text-left">
+    <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-32 pb-24 px-[3%] w-full">
       <div className="w-full">
         <div className="flex justify-between items-end mb-12">
           <div>
@@ -1737,45 +1737,188 @@ const AdminDashboard = ({ navigate }) => {
     </div>
   );
 };
-const Footer = ({ navigate }) => {
-  return (
-    <footer className="relative bg-[#05050A] border-t border-white/[0.06] px-[3%] py-16 text-white">
-      <div className="grid md:grid-cols-4 gap-10">
-        <div className="md:col-span-2">
-          <div className="text-lg font-medium mb-4">PurpleBlue House</div>
-          <p className="max-w-md text-sm text-white/45 leading-relaxed font-light">
-            Strategic brand systems, storytelling, campaign thinking, and design-led consulting for brands that need clarity before execution.
-          </p>
-        </div>
 
-        <div>
-          <h4 className="text-xs uppercase tracking-widest text-white/35 mb-5">Explore</h4>
-          <div className="space-y-3 text-sm text-white/55">
-            <button onClick={() => navigate('work')} className="block hover:text-white transition-colors">Work</button>
-            <button onClick={() => navigate('services')} className="block hover:text-white transition-colors">Services</button>
-            <button onClick={() => navigate('method')} className="block hover:text-white transition-colors">Method</button>
-            <button onClick={() => navigate('about')} className="block hover:text-white transition-colors">About</button>
+const MagicalParticles = () => {
+  const [particles, setParticles] = useState([]);
+  useEffect(() => {
+    const newParticles = Array.from({ length: 40 }).map((_, i) => ({
+      id: i,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      size: Math.random() * 3 + 1,
+      duration: Math.random() * 20 + 15,
+      delay: Math.random() * 10,
+    }));
+    setParticles(newParticles);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0" style={{ maskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)', WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)' }}>
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          className="absolute rounded-full bg-[#8A5CFF] mix-blend-screen blur-[1px]"
+          style={{ left: p.left, top: p.top, width: p.size, height: p.size }}
+          animate={{
+            y: [0, -800],
+            opacity: [0, 0.8, 0],
+            scale: [0, 1.5, 0]
+          }}
+          transition={{
+            duration: p.duration,
+            repeat: Infinity,
+            ease: "linear",
+            delay: p.delay
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const SpotlightTitle = () => {
+  const containerRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e) => {
+    if (!containerRef.current) return;
+    const { left, top } = containerRef.current.getBoundingClientRect();
+    mouseX.set(e.clientX - left);
+    mouseY.set(e.clientY - top);
+  };
+
+  return (
+    <div 
+      ref={containerRef} 
+      onMouseMove={handleMouseMove} 
+      className="relative w-full flex justify-center items-center mt-16 mb-8 py-10 overflow-hidden select-none group z-10"
+    >
+      {/* Base Dim Text */}
+      <h1 className="text-[11vw] leading-[0.85] font-light tracking-[-0.04em] text-white/5 uppercase text-center w-full absolute inset-0 flex items-center justify-center pointer-events-none">
+        PurpleBlue House
+      </h1>
+      
+      {/* Hover Reveal Gradient Text (Follows Mouse) */}
+      <motion.h1 
+        className="text-[11vw] leading-[0.85] font-light tracking-[-0.04em] uppercase text-center w-full text-transparent bg-clip-text relative z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+        style={{
+          backgroundImage: useMotionTemplate`radial-gradient(450px circle at ${mouseX}px ${mouseY}px, rgba(138,92,255,1), rgba(37,99,255,0.8) 40%, transparent 70%)`
+        }}
+      >
+        PurpleBlue House
+      </motion.h1>
+    </div>
+  );
+};
+
+const FooterLink = ({ onClick, children }) => (
+  <button onClick={onClick} className="text-left w-max group relative overflow-hidden py-1">
+    <span className="text-white/50 group-hover:text-white transition-colors duration-300 font-light text-sm">{children}</span>
+    <span className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-[#8A5CFF] to-[#2563FF] -translate-x-[105%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+  </button>
+);
+
+const Footer = ({ navigate }) => {
+  const [time, setTime] = useState('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit', hour12: true }) + ' IST');
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <footer className="relative bg-[#05050A] pt-32 pb-8 w-full overflow-hidden border-t border-white/5 text-left">
+      {/* Ambient background glow & Magical Particles */}
+      <div className="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[500px] bg-gradient-to-r from-[#8A5CFF] to-[#2563FF] rounded-[100%] blur-[200px] opacity-[0.12] pointer-events-none z-0" />
+      <MagicalParticles />
+
+      <div className="w-full px-[3%] relative z-10 flex flex-col">
+        
+        {/* Top Section: CTA & Grids */}
+        <div className="flex flex-col xl:flex-row justify-between items-start gap-16 xl:gap-8 mb-16">
+          
+          {/* Left: Massive CTA */}
+          <div className="max-w-2xl">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-10 leading-[1.1]">
+              Ready to build <br/><AnimatedItalic className="text-white/50">something great?</AnimatedItalic>
+            </h2>
+            <PremiumButton onClick={() => navigate('assessment')} className="px-10 py-5 text-lg shadow-[0_0_40px_rgba(138,92,255,0.15)]">
+              Start Brand Assessment <ArrowRight className="w-5 h-5 ml-2" />
+            </PremiumButton>
+          </div>
+
+          {/* Right: Editorial Links Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-12 lg:gap-20 w-full xl:w-auto xl:min-w-[600px] relative z-20">
+            <div className="flex flex-col">
+              <h4 className="text-xs uppercase tracking-widest text-[#8A5CFF] mb-6 font-medium">Studio</h4>
+              <nav className="flex flex-col gap-4">
+                <FooterLink onClick={() => navigate('home')}>Home</FooterLink>
+                <FooterLink onClick={() => navigate('work')}>Selected Work</FooterLink>
+                <FooterLink onClick={() => navigate('services')}>Services Overview</FooterLink>
+                <FooterLink onClick={() => navigate('method')}>The PBH Method</FooterLink>
+                <FooterLink onClick={() => navigate('about')}>About Us</FooterLink>
+              </nav>
+            </div>
+
+            <div className="flex flex-col">
+              <h4 className="text-xs uppercase tracking-widest text-[#8A5CFF] mb-6 font-medium">Connect</h4>
+              <nav className="flex flex-col gap-4">
+                <FooterLink onClick={() => navigate('contact')}>Direct Inquiry</FooterLink>
+                <a href="#" className="text-left w-max group relative overflow-hidden py-1 flex items-center gap-2">
+                  <span className="text-white/50 group-hover:text-white transition-colors duration-300 font-light text-sm">LinkedIn</span>
+                  <ArrowUpRight className="w-3 h-3 text-white/50 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                </a>
+                <a href="#" className="text-left w-max group relative overflow-hidden py-1 flex items-center gap-2">
+                  <span className="text-white/50 group-hover:text-white transition-colors duration-300 font-light text-sm">Instagram</span>
+                  <ArrowUpRight className="w-3 h-3 text-white/50 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                </a>
+                <a href="#" className="text-left w-max group relative overflow-hidden py-1 flex items-center gap-2">
+                  <span className="text-white/50 group-hover:text-white transition-colors duration-300 font-light text-sm">Twitter (X)</span>
+                  <ArrowUpRight className="w-3 h-3 text-white/50 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
+                </a>
+              </nav>
+            </div>
+
+            <div className="flex flex-col col-span-2 md:col-span-1">
+              <h4 className="text-xs uppercase tracking-widest text-[#8A5CFF] mb-6 font-medium">Location</h4>
+              <div className="text-sm font-light text-white/60 space-y-5">
+                <p className="leading-relaxed">Nehru Place<br/>New Delhi, India</p>
+                <div className="flex items-center gap-2 text-white/80 font-medium bg-white/[0.03] border border-white/10 px-4 py-2 rounded-full w-max backdrop-blur-md">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.8)]" />
+                  <span className="tracking-wide text-xs">{time || 'Loading...'}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div>
-          <h4 className="text-xs uppercase tracking-widest text-white/35 mb-5">Start</h4>
-          <button
-            onClick={() => navigate('assessment')}
-            className="text-sm text-white/55 hover:text-white transition-colors"
-          >
-            Build My Brand Scope
-          </button>
-        </div>
-      </div>
+        {/* Interactive Magical Logotype */}
+        <SpotlightTitle />
 
-      <div className="mt-14 pt-8 border-t border-white/[0.06] flex flex-col md:flex-row justify-between gap-4 text-xs text-white/30">
-        <span>© {new Date().getFullYear()} PurpleBlue House. All rights reserved.</span>
-        <span>Built for clarity, restraint, and strategic brand execution.</span>
+        {/* Bottom Metadata Bar */}
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-[10px] sm:text-xs font-medium text-white/30 uppercase tracking-widest gap-6 relative z-20">
+          <p>© {new Date().getFullYear()} PurpleBlue House. All rights reserved.</p>
+          <div className="flex gap-6 items-center">
+            <span className="cursor-pointer hover:text-white transition-colors" onClick={() => navigate('privacy')}>Privacy Policy</span>
+            <span className="cursor-pointer hover:text-white transition-colors" onClick={() => navigate('terms')}>Terms of Service</span>
+            <span className="w-[1px] h-3 bg-white/20 hidden md:block" />
+            <span className="cursor-pointer hover:text-[#8A5CFF] flex items-center gap-2 transition-colors" onClick={() => navigate('admin')}>
+              <Lock className="w-3 h-3"/> Admin
+            </span>
+          </div>
+        </div>
+
       </div>
     </footer>
   );
 };
+
 export default function App() {
   const [routeState, setRouteState] = useState({ page: 'home', data: null });
   
