@@ -10,7 +10,6 @@ import {
   Quote, Printer, Download
 } from 'lucide-react';
 
-
 const QUIZ_QUESTIONS = [
   {
     id: 'stage',
@@ -79,16 +78,13 @@ const ROUTES_INFO = {
 };
 
 const DELIVERABLES_MASTER = [
-  // Brand Boulevard
   { id: 'd1', lineItem: 'BB1', name: 'Brand Audit', priority: 'Strategic Foundation', desc: 'Diagnostic review of current brand assets.' },
   { id: 'd2', lineItem: 'BB1', name: 'Positioning Territories', priority: 'Strategic Foundation', desc: 'Defining the strategic market gap.' },
   { id: 'd3', lineItem: 'BB2', name: 'Visual Identity System', priority: 'Core', desc: 'Logos, colors, typography, and visual language.' },
   { id: 'd4', lineItem: 'BB3', name: 'Brand Guidelines', priority: 'Execution Support', desc: 'Scalable rules for your internal teams.' },
-  // SciArt Saga
   { id: 'd5', lineItem: 'SAS1', name: 'Innovation Narrative', priority: 'Strategic Foundation', desc: 'The overarching story of your innovation.' },
   { id: 'd6', lineItem: 'SAS2', name: 'Use Case Stories', priority: 'Core', desc: 'Translating features into human benefits.' },
   { id: 'd7', lineItem: 'SAS3', name: 'Launch Strategy', priority: 'Launch Critical', desc: 'GTM messaging and channel communication plan.' },
-  // Storytelling Corner
   { id: 'd8', lineItem: 'STC1', name: 'Creative Strategy & Moodboard', priority: 'Strategic Foundation', desc: 'Visual direction for shoots and assets.' },
   { id: 'd9', lineItem: 'STC2', name: 'Campaign Idea & Narrative', priority: 'Launch Critical', desc: 'The big idea for your next launch.' },
   { id: 'd10', lineItem: 'STC3', name: 'Content Playbook & Templates', priority: 'Execution Support', desc: 'Recurring formats and publishing workflow.' }
@@ -132,7 +128,7 @@ const CustomCursor = () => {
     return () => { window.removeEventListener('mousemove', handleMouseMove); window.removeEventListener('mouseover', handleMouseOver); };
   }, []);
   return (
-    <motion.div className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[999] mix-blend-difference hidden md:flex items-center justify-center"
+    <motion.div className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[99999] mix-blend-difference hidden md:flex items-center justify-center"
       animate={{ x: position.x - 8, y: position.y - 8, scale: isPointer ? 3 : 1, backgroundColor: isPointer ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,1)', border: isPointer ? '0.5px solid rgba(255,255,255,0.5)' : 'none' }}
       transition={{ type: 'spring', stiffness: 700, damping: 40, mass: 0.1 }} />
   );
@@ -162,8 +158,8 @@ const InteractiveFlowingLines = () => {
 
   useEffect(() => {
     const handleMouseMove = (e) => {
-      mouseX.set((e.clientX / window.innerWidth) * 2 - 1);
-      mouseY.set((e.clientY / window.innerHeight) * 2 - 1);
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
@@ -200,6 +196,7 @@ const InteractiveFlowingLines = () => {
   );
 };
 
+
 const SpotlightCard = ({ children, className = "", isActive = false }) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -215,7 +212,6 @@ const SpotlightCard = ({ children, className = "", isActive = false }) => {
     </div>
   );
 };
-
 
 const ProblemHoverCard = ({ title, icon, color }) => {
   const mouseX = useMotionValue(0);
@@ -269,165 +265,6 @@ const ProblemHoverCard = ({ title, icon, color }) => {
         </motion.span>
       </div>
     </motion.div>
-  );
-};
-
-const StepHoverCard = ({ num, title, desc, icon, color, isHovered, onHover, onLeave }) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function handleMouseMove({ currentTarget, clientX, clientY }) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
-
-  return (
-    <motion.div
-      onMouseMove={handleMouseMove}
-      onMouseEnter={onHover}
-      onMouseLeave={onLeave}
-      animate={{ opacity: isHovered === false ? 0.4 : 1, y: isHovered === true ? -10 : 0 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative cursor-default p-8 bg-[#0A0A0F] border border-white/10 hover:border-white/20 rounded-[24px] flex flex-col min-h-[300px] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-colors"
-    >
-      <motion.div
-        className="pointer-events-none absolute -inset-px rounded-[24px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"
-        style={{ background: useMotionTemplate`radial-gradient(250px circle at ${mouseX}px ${mouseY}px, ${color}15, transparent 80%)` }}
-      />
-      <motion.div 
-        variants={{ initial: { scale: 0.8, opacity: 0 }, hover: { scale: 2, opacity: 0.1 } }}
-        initial="initial" whileHover="hover" transition={{ duration: 0.7 }}
-        className="absolute -right-10 -top-10 w-32 h-32 blur-[30px] rounded-full pointer-events-none z-0"
-        style={{ backgroundColor: color }}
-      />
-
-      <div className="relative z-10 flex flex-col h-full">
-        <div className="flex justify-between items-start mb-12">
-          <div className="w-14 h-14 rounded-[16px] bg-white/[0.03] border border-white/10 flex items-center justify-center transition-colors duration-500 group-hover:bg-white/[0.08]" style={{ color: color }}>
-            {icon}
-          </div>
-          <span className="text-5xl font-serif italic text-white/5 group-hover:text-white/20 transition-colors duration-500">{num}</span>
-        </div>
-        <h4 className="text-2xl font-light mb-4 text-white mt-auto">{title}</h4>
-        <p className="text-sm text-white/50 font-light leading-relaxed">{desc}</p>
-      </div>
-    </motion.div>
-  );
-};
-
-const DiagnoseVisual = () => (
-  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }} className="absolute inset-0 flex flex-col items-center justify-center p-8">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(138,92,255,0.15)_0%,transparent_60%)]" />
-    <div className="bg-[#05050A] border border-white/10 rounded-[16px] p-6 w-full max-w-sm mb-4 shadow-2xl relative z-10">
-      <div className="w-1/2 h-2 bg-white/10 rounded-full mb-8" />
-      <div className="space-y-4">
-        <motion.div animate={{ borderColor: ['rgba(255,255,255,0.05)', 'rgba(138,92,255,0.6)', 'rgba(255,255,255,0.05)'] }} transition={{ duration: 2, repeat: Infinity }} className="h-12 bg-white/[0.02] border rounded-[8px] flex items-center px-4"><div className="w-4 h-4 rounded-full border border-white/20 mr-4"/><div className="w-2/3 h-2 bg-white/20 rounded-full"/></motion.div>
-        <div className="h-12 bg-white/[0.02] border border-white/5 rounded-[8px] flex items-center px-4"><div className="w-4 h-4 rounded-full border border-white/20 mr-4"/><div className="w-1/2 h-2 bg-white/10 rounded-full"/></div>
-        <div className="h-12 bg-white/[0.02] border border-white/5 rounded-[8px] flex items-center px-4"><div className="w-4 h-4 rounded-full border border-white/20 mr-4"/><div className="w-3/4 h-2 bg-white/10 rounded-full"/></div>
-      </div>
-    </div>
-  </motion.div>
-);
-
-const MapVisual = () => (
-  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }} className="absolute inset-0 flex items-center justify-center p-8">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(37,99,255,0.15)_0%,transparent_60%)]" />
-    <div className="flex items-center gap-6 relative z-10 w-full max-w-md">
-      <div className="flex flex-col gap-4 flex-1">
-        <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="px-4 py-3 bg-white/5 border border-white/10 rounded-[8px] text-[10px] text-white/50 text-center uppercase tracking-widest">Inconsistent Identity</motion.div>
-        <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="px-4 py-3 bg-white/5 border border-white/10 rounded-[8px] text-[10px] text-white/50 text-center uppercase tracking-widest">Weak Narrative</motion.div>
-      </div>
-      <div className="flex-1 flex flex-col items-center">
-        <motion.div className="h-[2px] bg-gradient-to-r from-transparent via-[#2563FF] to-transparent w-full" animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} />
-      </div>
-      <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.4 }} className="flex-1 bg-gradient-to-br from-[#2563FF]/20 to-transparent border border-[#2563FF]/30 p-6 rounded-[16px] text-center flex flex-col items-center justify-center aspect-square shadow-[0_0_30px_rgba(37,99,255,0.2)]">
-        <Layers className="w-8 h-8 text-[#2563FF] mb-3" />
-        <div className="text-xs text-white font-medium tracking-wide">Brand<br/>Boulevard</div>
-      </motion.div>
-    </div>
-  </motion.div>
-);
-
-const BuildVisual = () => (
-  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }} className="absolute inset-0 flex items-center justify-center p-8">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(138,92,255,0.15)_0%,transparent_60%)]" />
-    <div className="bg-[#05050A] border border-white/10 rounded-[16px] p-8 w-full max-w-sm shadow-2xl relative z-10">
-      <h4 className="text-[10px] uppercase tracking-widest text-[#8A5CFF] mb-6 flex items-center gap-2"><PenTool className="w-4 h-4"/> Scope Blueprint</h4>
-      <div className="space-y-4">
-        {[1, 2, 3, 4].map(i => (
-          <motion.div key={i} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.15 }} className="flex items-center gap-4">
-            <div className="w-5 h-5 rounded bg-[#8A5CFF]/20 flex items-center justify-center shrink-0 border border-[#8A5CFF]/40"><Check className="w-3 h-3 text-[#8A5CFF]" /></div>
-            <div className="flex-1 h-2.5 bg-white/10 rounded-full" />
-            <div className="w-1/4 h-2.5 bg-white/5 rounded-full" />
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  </motion.div>
-);
-
-const StartVisual = () => (
-  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }} className="absolute inset-0 flex flex-col items-center justify-center p-8">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(37,99,255,0.15)_0%,transparent_60%)]" />
-    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="w-24 h-24 bg-green-500/10 border border-green-500/30 rounded-full flex items-center justify-center mb-6 relative z-10 shadow-[0_0_40px_rgba(34,197,94,0.2)]">
-      <CheckCircle2 className="w-12 h-12 text-green-500" />
-    </motion.div>
-    <motion.h4 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="text-2xl font-light text-white mb-2 relative z-10">Brief Generated</motion.h4>
-    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="px-8 py-3 bg-white text-black text-xs font-medium uppercase tracking-widest rounded-full relative z-10 mt-6 cursor-pointer hover:scale-105 transition-transform">Schedule Discovery</motion.div>
-  </motion.div>
-);
-
-
-const InteractiveHowItWorks = () => {
-  const [activeStep, setActiveStep] = useState(0);
-
-  const steps = [
-    { num: '01', title: 'Diagnose', desc: 'Answer focused questions about your brand, teams, communication, and growth stage.', icon: <Target className="w-6 h-6" />, color: '#8A5CFF' },
-    { num: '02', title: 'Map', desc: 'We identify your problem clusters and route you to the right strategic service paths.', icon: <Compass className="w-6 h-6" />, color: '#2563FF' },
-    { num: '03', title: 'Build', desc: 'Select priorities, deliverables, timelines, and depth to create a custom scope.', icon: <Layers className="w-6 h-6" />, color: '#8A5CFF' },
-    { num: '04', title: 'Start', desc: 'Submit your scope and begin the first conversation with clarity, not guesswork.', icon: <Rocket className="w-6 h-6" />, color: '#2563FF' }
-  ];
-
-  return (
-    <div className="flex flex-col lg:flex-row gap-16 items-center w-full relative z-10 text-left">
-      <div className="w-full lg:w-5/12 flex flex-col relative">
-        <div className="absolute left-[23px] top-8 bottom-8 w-[2px] bg-white/5" />
-        <motion.div
-          className="absolute left-[23px] w-[2px] bg-gradient-to-b from-[#8A5CFF] to-[#2563FF]"
-          animate={{ top: `${activeStep * 33}%`, height: '33%' }}
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        />
-        {steps.map((s, i) => {
-            const isActive = activeStep === i;
-            return (
-              <div key={i} onMouseEnter={() => setActiveStep(i)} className={`relative flex items-start gap-8 p-6 rounded-[16px] cursor-pointer transition-all duration-500 ${isActive ? 'bg-white/[0.02]' : 'hover:bg-white/[0.01]'}`}>
-                <div className={`relative z-10 w-12 h-12 rounded-full border flex items-center justify-center shrink-0 transition-all duration-500 ${isActive ? 'border-[#8A5CFF] bg-[#8A5CFF]/10' : 'border-white/10 bg-[#0A0A0F]'}`}>
-                  <div className={`w-3 h-3 rounded-full transition-all duration-500 ${isActive ? 'bg-[#8A5CFF] scale-100' : 'bg-white/20 scale-50'}`} />
-                </div>
-                <div>
-                  <h3 className={`text-2xl font-light mb-2 transition-colors duration-500 ${isActive ? 'text-white' : 'text-white/40'}`}>{s.num}. {s.title}</h3>
-                  <AnimatePresence>
-                    {isActive && (
-                      <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="text-sm font-light text-white/50 leading-relaxed overflow-hidden">
-                        {s.desc}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </div>
-            );
-        })}
-      </div>
-      <div className="w-full lg:w-7/12 h-[450px] bg-[#0A0A0F] border border-white/10 rounded-[24px] relative overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)]">
-        <AnimatePresence mode="wait">
-            {activeStep === 0 && <DiagnoseVisual key="diag" />}
-            {activeStep === 1 && <MapVisual key="map" />}
-            {activeStep === 2 && <BuildVisual key="build" />}
-            {activeStep === 3 && <StartVisual key="start" />}
-        </AnimatePresence>
-      </div>
-    </div>
   );
 };
 
@@ -510,10 +347,7 @@ const BrandHealthRadar = ({ clusters }) => {
 
   const getPoint = (value, index, total) => {
     const angle = (Math.PI * 2 * index) / total - Math.PI / 2;
-    return {
-      x: center + radius * value * Math.cos(angle),
-      y: center + radius * value * Math.sin(angle)
-    };
+    return { x: center + radius * value * Math.cos(angle), y: center + radius * value * Math.sin(angle) };
   };
 
   const dataPoints = data.map((d, i) => {
@@ -530,60 +364,79 @@ const BrandHealthRadar = ({ clusters }) => {
             const p = getPoint(level, j, data.length);
             return `${p.x},${p.y}`;
           }).join(' ');
-          return (
-            <polygon key={i} points={points} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-          );
+          return <polygon key={i} points={points} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />;
         })}
         {data.map((_, i) => {
           const p = getPoint(1, i, data.length);
-          return (
-            <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-          );
+          return <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />;
         })}
         <motion.polygon 
-          points={dataPoints}
-          fill="rgba(138,92,255,0.2)"
-          stroke="#8A5CFF"
-          strokeWidth="2"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 50, damping: 15, delay: 0.2 }}
-          style={{ transformOrigin: `${center}px ${center}px` }}
-          className="mix-blend-screen"
+          points={dataPoints} fill="rgba(138,92,255,0.2)" stroke="#8A5CFF" strokeWidth="2"
+          initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", stiffness: 50, damping: 15, delay: 0.2 }}
+          style={{ transformOrigin: `${center}px ${center}px` }} className="mix-blend-screen"
         />
         {data.map((d, i) => {
           const p = getPoint(d.score / 100, i, data.length);
-          return (
-            <motion.circle 
-              key={i} cx={p.x} cy={p.y} r="4" fill="#ffffff" 
-              initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.6 + i * 0.1 }}
-            />
-          );
+          return <motion.circle key={i} cx={p.x} cy={p.y} r="4" fill="#ffffff" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.6 + i * 0.1 }} />;
         })}
         {data.map((d, i) => {
           const p = getPoint(1.25, i, data.length);
-          return (
-            <motion.text 
-              key={i} x={p.x} y={p.y} 
-              fill="rgba(255,255,255,0.5)" 
-              fontSize="10" 
-              textAnchor="middle" 
-              alignmentBaseline="middle"
-              className="uppercase tracking-widest font-medium"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-            >
-              {d.label}
-            </motion.text>
-          );
+          return <motion.text key={i} x={p.x} y={p.y} fill="rgba(255,255,255,0.5)" fontSize="10" textAnchor="middle" alignmentBaseline="middle" className="uppercase tracking-widest font-medium" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>{d.label}</motion.text>;
         })}
       </svg>
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.2 }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center bg-[#05050A]/80 backdrop-blur-md w-16 h-16 rounded-full justify-center border border-white/10 shadow-xl"
-      >
+      <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.2 }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center bg-[#05050A]/80 backdrop-blur-md w-16 h-16 rounded-full justify-center border border-white/10 shadow-xl">
         <span className="text-xl font-light text-white leading-none">{overallScore}</span>
         <span className="text-[8px] uppercase tracking-widest text-[#8A5CFF]">Index</span>
       </motion.div>
+    </div>
+  );
+};
+
+// --- CUSTOM LEAFLET MAP COMPONENT ---
+
+const LeafletMap = () => {
+  const mapRef = useRef(null);
+
+  useEffect(() => {
+    let mapInstance;
+    const initMap = () => {
+      if (!window.L || !mapRef.current || mapRef.current._leaflet_id) return;
+      mapInstance = window.L.map(mapRef.current, { zoomControl: false, scrollWheelZoom: false }).setView([18.5204, 73.8567], 2.5);
+      window.L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+        subdomains: 'abcd', maxZoom: 20
+      }).addTo(mapInstance);
+      const createNode = (color) => window.L.divIcon({
+        className: 'custom-leaflet-marker',
+        html: `<div style="width: 16px; height: 16px; background: ${color}; border-radius: 50%; box-shadow: 0 0 20px ${color}; animation: mapPulse 2s infinite;"></div>`,
+        iconSize: [16, 16], iconAnchor: [8, 8]
+      });
+      window.L.marker([18.5204, 73.8567], { icon: createNode('#8A5CFF') }).addTo(mapInstance).bindPopup('<div class="text-black font-medium px-2 py-1">PBH HQ - Delhi</div>');
+      window.L.marker([51.5074, -0.1278], { icon: createNode('#2563FF') }).addTo(mapInstance).bindPopup('<div class="text-black font-medium px-2 py-1">PBH - London</div>');
+      window.L.marker([40.7128, -74.0060], { icon: createNode('#8A5CFF') }).addTo(mapInstance).bindPopup('<div class="text-black font-medium px-2 py-1">PBH - New York</div>');
+    };
+    if (!document.getElementById('leaflet-css')) {
+      const link = document.createElement('link');
+      link.id = 'leaflet-css'; link.rel = 'stylesheet'; link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(link);
+    }
+    if (!document.getElementById('leaflet-js')) {
+      const script = document.createElement('script');
+      script.id = 'leaflet-js'; script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.onload = initMap;
+      document.head.appendChild(script);
+    } else {
+      if (window.L) initMap();
+      else document.getElementById('leaflet-js').addEventListener('load', initMap);
+    }
+    return () => { if (mapInstance) mapInstance.remove(); };
+  }, []);
+
+  return (
+    <div className="w-full h-full absolute inset-0 z-0">
+      <style>{`@keyframes mapPulse { 0% { box-shadow: 0 0 0 0 rgba(138,92,255, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(138,92,255, 0); } 100% { box-shadow: 0 0 0 0 rgba(138,92,255, 0); } } .leaflet-popup-content-wrapper { background: #ffffff; color: #000; border-radius: 8px; font-family: inherit; } .leaflet-popup-tip { background: #ffffff; } .leaflet-container { background: #05050A; font-family: inherit; } .leaflet-control-attribution { opacity: 0.2; }`}</style>
+      <div ref={mapRef} style={{ width: '100%', height: '100%', background: '#05050A' }} />
+      <div className="absolute inset-0 pointer-events-none z-10 shadow-[inset_0_0_100px_rgba(5,5,10,1)]" />
     </div>
   );
 };
@@ -606,11 +459,8 @@ const StrategicEngine = ({ navigate }) => {
     const newAnswers = { ...answers, [questionId]: option };
     setAnswers(newAnswers);
     setTimeout(() => {
-      if (step < QUIZ_QUESTIONS.length) {
-        setStep(step + 1);
-      } else {
-        processDiagnosis(newAnswers);
-      }
+      if (step < QUIZ_QUESTIONS.length) setStep(step + 1);
+      else processDiagnosis(newAnswers);
     }, 400);
   };
 
@@ -854,19 +704,16 @@ const StrategicEngine = ({ navigate }) => {
           <div className="grid md:grid-cols-2 gap-16 relative z-10">
             {/* Left Side: Data & Strategy */}
             <div className="space-y-10">
-              {/* Radar Chart Data Visualization */}
               <div className="bg-white/[0.02] border border-white/5 rounded-[16px] p-8 mb-8 relative overflow-hidden">
                  <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-8">Diagnostic Brand Health</h4>
                  <BrandHealthRadar clusters={clusters} />
               </div>
-
               <div>
                 <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2">Recommended Ecosystems</h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedRoutes.map(r => <span key={r} className="px-3 py-1.5 bg-white/5 text-white/70 text-xs border border-white/10 rounded-full flex items-center gap-2">{ROUTES_INFO[r]?.icon} {ROUTES_INFO[r]?.title}</span>)}
                 </div>
               </div>
-              
               <div>
                 <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2">Execution Context</h4>
                 <div className="text-sm text-white/70 font-light space-y-3 bg-white/[0.02] p-6 rounded-[12px] border border-white/5">
@@ -876,7 +723,6 @@ const StrategicEngine = ({ navigate }) => {
                 </div>
               </div>
             </div>
-            
             {/* Right Side: Execution Blueprint */}
             <div>
               <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2">Selected Deliverables Blueprint</h4>
@@ -893,7 +739,6 @@ const StrategicEngine = ({ navigate }) => {
               </ul>
             </div>
           </div>
-
           <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-10">
             <p className="text-xs text-white/40 max-w-md leading-relaxed">This snapshot has been securely routed to our partners. We will review your requirements and reach out within 24 hours to schedule a discovery alignment.</p>
             <div className="flex gap-4 w-full sm:w-auto">
@@ -913,8 +758,8 @@ const StrategicEngine = ({ navigate }) => {
           <motion.div className="h-full bg-[#8A5CFF]" initial={{ width: 0 }} animate={{ width: `${(step / 8) * 100}%` }} transition={{ duration: 0.5 }} />
         </div>
       )}
-      <div className="w-full px-[3%] flex flex-col md:flex-row justify-between relative gap-8 max-w-7xl mx-auto">
-        <div className="flex-1 flex items-center justify-start md:pr-12 pt-12 pb-32 md:pb-12 min-h-[80vh] w-full">
+      <div className="w-full px-[3%] flex flex-col md:flex-row justify-between relative gap-8">
+        <div className="flex-1 flex items-center justify-start pt-12 pb-32 md:pb-12 min-h-[80vh] w-full">
           <AnimatePresence mode="wait">
             <motion.div key={step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.4 }} className="w-full h-full flex flex-col justify-center">
               {steps[step]}
@@ -989,16 +834,10 @@ const NavLink = ({ children, onClick, active, onMouseEnter, onMouseLeave }) => {
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`relative px-5 py-2.5 cursor-pointer transition-colors capitalize rounded-full overflow-hidden ${
-        active ? 'text-white' : 'text-white/50 hover:text-white'
-      }`}
+      className={`relative px-5 py-2.5 cursor-pointer transition-colors capitalize rounded-full overflow-hidden ${active ? 'text-white' : 'text-white/50 hover:text-white'}`}
     >
       {active && (
-        <motion.span
-          layoutId="nav-indicator"
-          className="absolute inset-0 rounded-full bg-white/[0.07] z-0"
-          transition={{ duration: 0.18, ease: 'easeOut' }}
-        />
+        <motion.span layoutId="nav-indicator" className="absolute inset-0 rounded-full bg-white/[0.07] z-0" transition={{ duration: 0.18, ease: 'easeOut' }} />
       )}
       <span className="relative z-10">{children}</span>
     </button>
@@ -1016,15 +855,13 @@ const Header = ({ navigate, current }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleMouseEnter = (menu) => {
+  const openMenu = (menu) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setActiveMenu(menu);
   };
 
-  const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
-      setActiveMenu(null);
-    }, 120);
+  const closeMenu = () => {
+    timeoutRef.current = setTimeout(() => setActiveMenu(null), 120);
   };
 
   const closeImmediately = () => {
@@ -1033,22 +870,10 @@ const Header = ({ navigate, current }) => {
   };
 
   const ServicesMegaMenu = () => (
-    <div className="grid md:grid-cols-3 gap-6">
+    <div className="grid md:grid-cols-3 gap-6 text-left">
       {Object.values(ROUTES_INFO).map((route) => (
-        <MenuHoverCard
-          key={route.id}
-          color={route.color}
-          onClick={() => {
-            navigate(`services/${route.id.toLowerCase()}`);
-            closeImmediately();
-          }}
-        >
-          <div
-            className="w-12 h-12 rounded-[12px] bg-white/[0.04] flex items-center justify-center mb-8"
-            style={{ color: route.color }}
-          >
-            {route.icon}
-          </div>
+        <MenuHoverCard key={route.id} color={route.color} onClick={() => { navigate(`services/${route.id.toLowerCase()}`); closeImmediately(); }}>
+          <div className="w-12 h-12 rounded-[12px] bg-white/[0.04] flex items-center justify-center mb-8" style={{ color: route.color }}>{route.icon}</div>
           <h4 className="text-xl font-medium text-white mb-3">{route.title}</h4>
           <p className="text-sm text-white/45 leading-relaxed font-light">{route.desc}</p>
         </MenuHoverCard>
@@ -1057,19 +882,10 @@ const Header = ({ navigate, current }) => {
   );
 
   const WorkMegaMenu = () => (
-    <div className="grid md:grid-cols-2 gap-6">
+    <div className="grid md:grid-cols-2 gap-6 text-left">
       {CASE_STUDIES.map((cs) => (
-        <MenuHoverCard
-          key={cs.client}
-          color={cs.color?.includes('2563') ? '#2563FF' : '#8A5CFF'}
-          onClick={() => {
-            navigate('work');
-            closeImmediately();
-          }}
-        >
-          <span className="text-[10px] uppercase tracking-widest text-[#8A5CFF] mb-4 block">
-            {cs.sector}
-          </span>
+        <MenuHoverCard key={cs.client} color={cs.color?.includes('2563') ? '#2563FF' : '#8A5CFF'} onClick={() => { navigate('work'); closeImmediately(); }}>
+          <span className="text-[10px] uppercase tracking-widest text-[#8A5CFF] mb-4">{cs.sector}</span>
           <h4 className="text-xl font-medium text-white mb-3">{cs.client}</h4>
           <p className="text-sm text-white/45 leading-relaxed font-light">{cs.challenge}</p>
         </MenuHoverCard>
@@ -1078,28 +894,17 @@ const Header = ({ navigate, current }) => {
   );
 
   const MethodMegaMenu = () => (
-    <div className="grid md:grid-cols-4 gap-6">
+    <div className="grid md:grid-cols-4 gap-6 text-left">
       {[
         { step: 'Diagnosis', desc: 'Understand the brand problem.' },
         { step: 'Mapping', desc: 'Route the problem to the right ecosystem.' },
         { step: 'Scope Building', desc: 'Define exact deliverables and priorities.' },
         { step: 'Execution', desc: 'Move from clarity to implementation.' }
       ].map((item, i) => (
-        <MenuHoverCard
-          key={item.step}
-          color={i % 2 === 0 ? '#8A5CFF' : '#2563FF'}
-          onClick={() => {
-            navigate('method');
-            closeImmediately();
-          }}
-        >
-          <span className="text-4xl font-serif italic mb-6 block text-white/20">
-            0{i + 1}
-          </span>
+        <MenuHoverCard key={item.step} color={i % 2 === 0 ? '#8A5CFF' : '#2563FF'} onClick={() => { navigate('method'); closeImmediately(); }}>
+          <span className="text-4xl font-serif italic mb-6 block text-white/20">0{i + 1}</span>
           <h4 className="text-sm font-medium text-white mb-2">{item.step}</h4>
-          <p className="text-[11px] text-white/45 leading-relaxed mt-auto font-light">
-            {item.desc}
-          </p>
+          <p className="text-[11px] text-white/45 leading-relaxed mt-auto font-light">{item.desc}</p>
         </MenuHoverCard>
       ))}
     </div>
@@ -1107,132 +912,33 @@ const Header = ({ navigate, current }) => {
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-[9999] isolate w-full transition-all duration-300 border-b border-white/10 ${
-          scrolled || activeMenu
-            ? 'bg-[#05050A] py-4 shadow-[0_24px_90px_rgba(0,0,0,0.85)]'
-            : 'bg-[#05050A]/98 backdrop-blur-[40px] py-6 shadow-[0_18px_70px_rgba(0,0,0,0.55)]'
-        }`}
-      >
-        <div className="w-full px-[3%] flex justify-between items-center relative z-10">
-          <div
-            className="text-lg font-medium tracking-wide cursor-pointer flex items-center gap-3 hover:opacity-80 transition-opacity text-white"
-            onClick={() => {
-              navigate('home');
-              closeImmediately();
-            }}
-          >
-            <img
-              src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png"
-              alt="PurpleBlue House"
-              className="h-6 w-auto object-contain shrink-0"
-            />
+      <header className="fixed top-0 left-0 right-0 z-[10000] h-[92px] bg-[#05050A] shadow-[0_18px_70px_rgba(0,0,0,0.55)] border-b border-white/5">
+        <div className="w-full h-full px-[3%] flex justify-between items-center">
+          <div className="text-lg font-medium tracking-wide cursor-pointer flex items-center gap-3 hover:opacity-80 transition-opacity text-white" onClick={() => { navigate('home'); closeImmediately(); }}>
+            <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className="h-6 w-auto object-contain shrink-0" />
             PurpleBlue House
           </div>
-
-          <nav className="hidden lg:flex items-center gap-2 text-sm font-medium tracking-wide bg-white/[0.035] rounded-full px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_50px_rgba(0,0,0,0.35)]">
-            <NavLink
-              onClick={() => {
-                navigate('work');
-                closeImmediately();
-              }}
-              onMouseEnter={() => handleMouseEnter('work')}
-              onMouseLeave={handleMouseLeave}
-              active={current === 'work' || activeMenu === 'work'}
-            >
-              Work
-            </NavLink>
-
-            <NavLink
-              onClick={() => {
-                navigate('services');
-                closeImmediately();
-              }}
-              onMouseEnter={() => handleMouseEnter('services')}
-              onMouseLeave={handleMouseLeave}
-              active={current?.startsWith('services') || activeMenu === 'services'}
-            >
-              Services
-            </NavLink>
-
-            <NavLink
-              onClick={() => {
-                navigate('method');
-                closeImmediately();
-              }}
-              onMouseEnter={() => handleMouseEnter('method')}
-              onMouseLeave={handleMouseLeave}
-              active={current === 'method' || activeMenu === 'method'}
-            >
-              Method
-            </NavLink>
-
-            <NavLink
-              onClick={() => {
-                navigate('about');
-                closeImmediately();
-              }}
-              onMouseEnter={closeImmediately}
-              onMouseLeave={() => {}}
-              active={current === 'about'}
-            >
-              About
-            </NavLink>
+          <nav className="hidden lg:flex items-center gap-2 text-sm font-medium tracking-wide bg-white/[0.035] rounded-full px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_50px_rgba(0,0,0,0.35)] border border-white/5">
+            <NavLink onClick={() => { navigate('work'); closeImmediately(); }} onMouseEnter={() => openMenu('work')} onMouseLeave={closeMenu} active={current === 'work' || activeMenu === 'work'}>Work</NavLink>
+            <NavLink onClick={() => { navigate('services'); closeImmediately(); }} onMouseEnter={() => openMenu('services')} onMouseLeave={closeMenu} active={current?.startsWith('services') || activeMenu === 'services'}>Services</NavLink>
+            <NavLink onClick={() => { navigate('method'); closeImmediately(); }} onMouseEnter={() => openMenu('method')} onMouseLeave={closeMenu} active={current === 'method' || activeMenu === 'method'}>Method</NavLink>
+            <NavLink onClick={() => { navigate('about'); closeImmediately(); }} onMouseEnter={closeImmediately} onMouseLeave={() => {}} active={current === 'about'}>About</NavLink>
           </nav>
-
           <div className="hidden lg:flex items-center">
-            <PremiumButton
-              onClick={() => {
-                navigate('assessment');
-                closeImmediately();
-              }}
-              className="px-6 py-2.5 rounded-[9px] text-xs shadow-[0_0_20px_rgba(138,92,255,0.1)]"
-            >
-              Build My Brand Scope
-            </PremiumButton>
+            <PremiumButton onClick={() => { navigate('assessment'); closeImmediately(); }} className="px-6 py-2.5 rounded-[9px] text-xs shadow-[0_0_20px_rgba(138,92,255,0.1)]">Build My Brand Scope</PremiumButton>
           </div>
-
           <div className="lg:hidden flex items-center">
-            <button
-              onClick={() => navigate('assessment')}
-              className="text-[10px] font-medium text-white bg-gradient-to-r from-[#8A5CFF] to-[#2563FF] px-4 py-2 rounded-[6px] uppercase tracking-widest shadow-md"
-            >
-              Build Scope
-            </button>
+            <button onClick={() => navigate('assessment')} className="text-[10px] font-medium text-white bg-gradient-to-r from-[#8A5CFF] to-[#2563FF] px-4 py-2 rounded-[6px] uppercase tracking-widest shadow-md">Build Scope</button>
           </div>
         </div>
       </header>
 
-      <AnimatePresence mode="sync">
+      <AnimatePresence mode="wait">
         {activeMenu && (
-          <motion.div
-            key="mega-menu-layer"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[9998] pointer-events-none"
-          >
-            {/* Page veil */}
-            <div className="absolute inset-0 bg-[#05050A]/82 backdrop-blur-[10px]" />
-
-            {/* Mega menu */}
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.985 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.985 }}
-              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute top-[96px] left-[3%] right-[3%] z-[2] pointer-events-auto origin-top"
-              onMouseEnter={() => {
-                if (timeoutRef.current) clearTimeout(timeoutRef.current);
-              }}
-              onMouseLeave={handleMouseLeave}
-            >
-              <div className="relative overflow-hidden rounded-[24px] border border-white/12 bg-[#05050A] p-10 shadow-[0_60px_140px_rgba(0,0,0,1)]">
-                <div className="absolute inset-0 bg-[#05050A] opacity-100 pointer-events-none" />
-                <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),rgba(255,255,255,0.015))] pointer-events-none" />
-                <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-70" />
-
+          <motion.div key="mega-menu-shell" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.12, ease: 'linear' }} className="fixed inset-0 z-[9998] bg-[#05050A]/88 pointer-events-none">
+            <motion.div key={activeMenu} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.16, ease: 'easeOut' }} className="absolute top-[112px] left-[3%] right-[3%] pointer-events-auto" onMouseEnter={() => { if (timeoutRef.current) clearTimeout(timeoutRef.current); }} onMouseLeave={closeMenu}>
+              <div className="relative overflow-hidden rounded-[24px] bg-[#05050A] p-10 shadow-[0_60px_140px_rgba(0,0,0,1)] border border-white/10">
+                <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.045),rgba(255,255,255,0.01))] pointer-events-none" />
                 <div className="relative z-10">
                   {activeMenu === 'services' && <ServicesMegaMenu />}
                   {activeMenu === 'work' && <WorkMegaMenu />}
@@ -1259,7 +965,6 @@ const HomePage = ({ navigate }) => {
   const heroY = useTransform(heroProgress, [0, 1], ["0%", "40%"]);
   const heroOpacity = useTransform(heroProgress, [0, 0.8], [1, 0]);
 
-  // --- Mouse Tracking for Hero Orbs & Spotlight ---
   const [isHovered, setIsHovered] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -1305,17 +1010,14 @@ const HomePage = ({ navigate }) => {
               <div className="absolute w-[60vw] md:w-[450px] h-[80vw] md:h-[600px] bg-[#2563FF] rounded-[100%] blur-[120px] md:blur-[160px] opacity-[0.12] mix-blend-screen translate-x-1/4" />
             </motion.div>
           </div>
-
           <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute inset-0 flex justify-center items-center mix-blend-screen">
             <div className="relative w-[140%] max-w-[1200px] h-[500px] md:translate-x-[20%]">
               <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0, 0.4, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} className="absolute top-0 right-1/4 w-72 h-72 bg-white rounded-full blur-[100px]" />
             </div>
           </motion.div>
-
           <motion.div animate={{ opacity: isHovered ? 1 : 0 }} transition={{ duration: 0.8 }} className="absolute z-[5]" style={{ width: '800px', height: '800px', left: 0, top: 0, x: spotlightX, y: spotlightY }}>
             <div className="w-full h-full rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.08)_0%,rgba(138,92,255,0.03)_30%,transparent_60%)] mix-blend-screen" />
           </motion.div>
-
           <motion.div style={{ x: gridX, y: gridY }} animate={{ rotate: 360 }} transition={{ duration: 150, repeat: Infinity, ease: "linear" }} className="absolute inset-0 opacity-[0.15] flex items-center justify-center origin-center">
             <svg className="w-full max-w-[1000px] h-auto" viewBox="0 0 1000 1000" fill="none">
               <circle cx="500" cy="500" r="300" stroke="url(#paint0_linear)" strokeWidth="0.5" strokeDasharray="4 8"/>
@@ -1327,7 +1029,6 @@ const HomePage = ({ navigate }) => {
               </defs>
             </svg>
           </motion.div>
-
           <InteractiveFlowingLines />
         </motion.div>
 
@@ -1394,12 +1095,20 @@ const HomePage = ({ navigate }) => {
         </div>
       </section>
 
-      <section className="py-32 px-[3%] relative w-full bg-[#05050A] border-y border-white/5 text-left overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#8A5CFF] opacity-[0.03] blur-[120px] pointer-events-none rounded-[100%]" />
-        <div className="relative z-10 w-full">
-          <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-20">How It <AnimatedItalic className="text-[#8A5CFF]">Works.</AnimatedItalic></h2></RevealText>
-          <InteractiveHowItWorks />
-        </div>
+      <section className="py-32 px-[3%] relative w-full bg-[#0A0A0F] border-y border-white/5">
+        <SpotlightCard className="rounded-[24px]">
+          <div className="bg-gradient-to-br from-[#0A0A0F] to-[#0A0A0F] relative border border-white/10 rounded-[24px] p-12 md:p-20 flex flex-col md:flex-row items-center justify-between gap-12 text-center md:text-left overflow-hidden">
+            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-[#8A5CFF] opacity-[0.05] blur-[120px] pointer-events-none" />
+            <div className="flex-1 relative z-10">
+              <h2 className="text-4xl md:text-5xl font-light mb-6 tracking-tight">Not sure what your brand <br/><AnimatedItalic className="text-white/50">needs first?</AnimatedItalic></h2>
+              <p className="text-lg text-white/50 font-light leading-relaxed max-w-xl mx-auto md:mx-0 mb-4">Take a guided strategic assessment and get a custom brand scope based on your current stage, communication gaps, priorities, and growth goals.</p>
+              <span className="text-xs uppercase tracking-widest text-[#8A5CFF] font-medium block">Takes 3–5 minutes. No generic form. No assumptions.</span>
+            </div>
+            <div className="shrink-0 relative z-10">
+              <PremiumButton onClick={() => navigate('assessment')} className="px-10 py-6 text-lg shadow-[0_0_50px_rgba(138,92,255,0.15)]">Build My Brand Scope <ArrowRight className="w-5 h-5 ml-2" /></PremiumButton>
+            </div>
+          </div>
+        </SpotlightCard>
       </section>
 
       <section className="py-32 px-[3%] w-full bg-[#0A0A0F] text-center flex flex-col items-center justify-center border-b border-white/5 relative overflow-hidden">
@@ -1465,21 +1174,150 @@ const HomePage = ({ navigate }) => {
 };
 
 const AboutPage = ({ navigate }) => (
-  <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full">
-    <div className="w-full text-left">
+  <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-40 pb-0 w-full overflow-hidden">
+    <section className="px-[3%] mb-32 relative z-10 text-left">
       <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-      <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight max-w-5xl">We are a strategy-led creative house built for brands that need more than <AnimatedItalic className="text-[#8A5CFF]">good-looking communication.</AnimatedItalic></h1></RevealText>
-      <p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed">PurpleBlue House works at the intersection of brand thinking, storytelling, design, and execution. We help businesses understand what they stand for, how they should speak, and how their communication should work across every touchpoint.</p>
-      
-      <div className="grid md:grid-cols-2 gap-16 border-t border-white/10 pt-24">
-        <div><h2 className="text-3xl font-light">We do not begin with logos.<br/>We begin with clarity.</h2></div>
-        <div className="space-y-8 text-lg font-light text-white/60">
-          <p><strong className="text-white font-medium">Before design, there is positioning.</strong> We map the market gap before we draw a single pixel.</p>
-          <p><strong className="text-white font-medium">Before campaigns, there is narrative.</strong> We architect the core story before we script the ad.</p>
-          <p><strong className="text-white font-medium">Before content, there is a system.</strong> We build playbooks and templates so your execution scales seamlessly.</p>
+      <RevealText><h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-light tracking-tight leading-[0.95] max-w-6xl">We build brands that <AnimatedItalic className="text-[#8A5CFF]">move culture.</AnimatedItalic></h1></RevealText>
+    </section>
+
+    <section className="py-32 px-[3%] bg-[#0A0A0F] border-y border-white/5 relative overflow-hidden text-left">
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#8A5CFF] opacity-[0.03] blur-[150px] pointer-events-none rounded-full" />
+      <div className="grid md:grid-cols-2 gap-16 relative z-10">
+        <div>
+          <h2 className="text-xs font-medium uppercase tracking-widest text-[#8A5CFF] mb-6">The Origin</h2>
+          <h3 className="text-4xl md:text-5xl font-light leading-tight mb-8">We saw a massive gap between <span className="text-white/40">beautiful design and actual business strategy.</span></h3>
+        </div>
+        <div className="space-y-6 text-lg text-white/60 font-light leading-relaxed">
+          <p>PurpleBlue House was founded to bridge the gap between creative studios that only care about aesthetics, and consulting firms that only care about spreadsheets.</p>
+          <p>We realized that founders were frustrated. They would pay for gorgeous branding, but it wouldn't solve their core narrative problems. Or they would pay for heavy strategy, but couldn't execute it beautifully.</p>
+          <p>We built PBH to be the synthesis. A premium creative house driven entirely by rigorous business strategy.</p>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section className="py-24 bg-[#8A5CFF] w-full text-center flex items-center justify-center overflow-hidden relative">
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay pointer-events-none" />
+      <div className="relative z-10 w-full overflow-hidden flex whitespace-nowrap">
+          <motion.div animate={{ x: ["0%", "-50%"] }} transition={{ repeat: Infinity, ease: "linear", duration: 25 }} className="flex gap-16 text-[#05050A] opacity-90">
+            <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">No Generic Forms. No Assumptions. No Templates.</span>
+            <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">No Generic Forms. No Assumptions. No Templates.</span>
+          </motion.div>
+      </div>
+    </section>
+
+    <section className="py-32 px-[3%] bg-[#05050A] text-left">
+      <div className="max-w-4xl mb-20">
+        <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6">The PBH Triad.</h2>
+        <p className="text-xl text-white/50 font-light leading-relaxed">Our entire operating model is built on three interconnected pillars. You cannot succeed without all three.</p>
+      </div>
+      <div className="grid md:grid-cols-3 gap-8">
+        {[
+          { title: "Strategy", icon: <Target className="w-8 h-8"/>, color: "#8A5CFF", desc: "Positioning, audience mapping, and competitive gap analysis. Knowing exactly where to strike." },
+          { title: "Story", icon: <MessageSquare className="w-8 h-8"/>, color: "#2563FF", desc: "The narrative architecture. Translating complex business models into visceral human truths." },
+          { title: "Systems", icon: <Layers className="w-8 h-8"/>, color: "#8A5CFF", desc: "The execution layer. Visual identities, playbooks, and templates that allow the brand to scale." }
+        ].map((item, i) => (
+          <div key={i} className="bg-[#0A0A0F] border border-white/5 rounded-[24px] p-12 hover:border-white/20 transition-colors">
+            <div className="w-16 h-16 rounded-[16px] bg-white/5 border border-white/10 flex items-center justify-center mb-8" style={{ color: item.color }}>{item.icon}</div>
+            <h3 className="text-3xl font-medium mb-4">{item.title}</h3>
+            <p className="text-white/50 font-light text-lg leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section className="py-32 px-[3%] bg-[#0A0A0F] border-y border-white/5 relative overflow-hidden text-left">
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#2563FF] opacity-[0.03] blur-[150px] pointer-events-none rounded-full" />
+      <div className="grid md:grid-cols-2 gap-16 items-center relative z-10">
+        <div className="w-full aspect-[4/5] bg-white/[0.02] border border-white/10 rounded-[24px] overflow-hidden relative shadow-2xl">
+           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(138,92,255,0.1)_0%,transparent_70%)] animate-pulse" style={{ animationDuration: '6s' }} />
+           <div className="absolute inset-0 flex items-center justify-center text-white/10 font-serif italic text-4xl">Prerita</div>
+        </div>
+        <div>
+          <h2 className="text-xs font-medium uppercase tracking-widest text-[#2563FF] mb-6">Founder & Creative Director</h2>
+          <h3 className="text-5xl md:text-6xl font-light mb-8">Prerita</h3>
+          <div className="space-y-6 text-lg text-white/60 font-light leading-relaxed">
+            <p>Driven by an obsession with architectural design systems and human psychology, Prerita built PurpleBlue House to redefine how premium brands are constructed.</p>
+            <p>Under her leadership, PBH has moved away from the traditional "design agency" model, instead operating as a strategic consultancy that uses design as its primary weapon.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section className="py-32 px-[3%] bg-[#05050A] text-left">
+      <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-20 text-center">Studio <AnimatedItalic className="text-white/50">Values.</AnimatedItalic></h2>
+      <div className="grid md:grid-cols-4 gap-6">
+        {[
+          { title: "Diagnose First", desc: "Prescription without diagnosis is malpractice. We ask hard questions before we open design software." },
+          { title: "Zero Fluff", desc: "No agency jargon. No vanity metrics. We focus strictly on what drives business growth and brand equity." },
+          { title: "Systemic Thinking", desc: "A beautiful logo is useless if the team can't use it. We build comprehensive, scalable systems." },
+          { title: "Premium Restraint", desc: "Confidence is quiet. We believe the most premium brands show immense restraint in their design." }
+        ].map((v, i) => (
+          <div key={i} className="p-8 border-t border-white/10">
+            <span className="text-sm font-mono text-[#8A5CFF] mb-4 block">0{i+1}</span>
+            <h4 className="text-xl font-medium text-white mb-4">{v.title}</h4>
+            <p className="text-sm text-white/50 font-light leading-relaxed">{v.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section className="py-32 px-[3%] bg-[#0A0A0F] border-y border-white/5 text-center">
+      <div className="max-w-3xl mx-auto">
+        <Globe className="w-12 h-12 text-[#8A5CFF] mx-auto mb-8 opacity-50" />
+        <h2 className="text-3xl md:text-5xl font-light mb-8">Rooted in Delhi. <br/>Working with the world.</h2>
+        <p className="text-lg text-white/50 font-light leading-relaxed">While our physical studio operations are anchored in Delhi, India, our operating system is entirely global. We partner seamlessly with founders and teams across North America, Europe, and Asia.</p>
+      </div>
+    </section>
+
+    <section className="py-32 px-[3%] bg-[#05050A] text-left">
+      <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div>
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">We don't sell hours. <br/><AnimatedItalic className="text-white/50">We sell outcomes.</AnimatedItalic></h2>
+          <div className="space-y-6 text-lg text-white/60 font-light leading-relaxed">
+            <p>Traditional agencies punish efficiency by charging hourly. The longer they take, the more they make.</p>
+            <p>We use **value-based, modular scoping**. You pay for the strategic ecosystem and the exact deliverables required to solve your friction points. Transparent timelines, fixed costs, and zero billing surprises.</p>
+          </div>
+        </div>
+        <div className="bg-[#0A0A0F] border border-white/10 rounded-[24px] p-10 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 blur-[50px] rounded-full pointer-events-none" />
+          <h3 className="text-xs uppercase tracking-widest text-white/40 mb-8 font-medium">The Scope Architect</h3>
+          <p className="text-white/80 font-light mb-8 text-xl">Our custom engine allows you to build your exact deliverable scope before we even sign a contract.</p>
+          <PremiumButton onClick={() => navigate('assessment')} className="w-full">Try the Scope Builder</PremiumButton>
+        </div>
+      </div>
+    </section>
+
+    <section className="py-24 px-[3%] bg-[#0A0A0F] border-t border-white/5 text-left">
+      <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="p-10 border border-white/10 rounded-[24px] bg-white/[0.02]">
+          <h3 className="text-2xl font-light mb-8 flex items-center gap-3"><CheckCircle2 className="w-6 h-6 text-green-500" /> We are a great fit if:</h3>
+          <ul className="space-y-4 text-white/60 font-light">
+            <li>You value strategic thinking before design execution.</li>
+            <li>You view your brand as a core driver of business equity.</li>
+            <li>You are willing to collaborate deeply during discovery.</li>
+            <li>You need a complete system, not just a quick logo.</li>
+          </ul>
+        </div>
+        <div className="p-10 border border-white/10 rounded-[24px] bg-white/[0.02]">
+          <h3 className="text-2xl font-light mb-8 flex items-center gap-3"><X className="w-6 h-6 text-red-500" /> We are not a fit if:</h3>
+          <ul className="space-y-4 text-white/60 font-light">
+            <li>You just need "someone to make it look pretty".</li>
+            <li>You are looking for the cheapest, fastest offshore option.</li>
+            <li>You want execution without doing the strategic groundwork.</li>
+            <li>You treat design as an expense rather than an investment.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section className="py-32 md:py-48 px-[3%] relative w-full bg-[#05050A] flex flex-col items-center justify-center text-center overflow-hidden">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#8A5CFF] rounded-[100%] blur-[200px] opacity-[0.08] pointer-events-none" />
+      <div className="relative z-10 w-full flex flex-col items-center">
+        <h2 className="text-xs font-medium text-[#8A5CFF] uppercase tracking-widest mb-6">Next Steps</h2>
+        <h1 className="text-5xl md:text-7xl lg:text-8xl font-light mb-12 tracking-tight">Ready to build your <br/><AnimatedItalic className="text-white/60">brand scope?</AnimatedItalic></h1>
+        <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-6 text-lg w-full sm:w-auto">Start Strategic Assessment</PremiumButton>
+      </div>
+    </section>
   </div>
 );
 
@@ -1552,33 +1390,102 @@ const ServicesPage = ({ navigate }) => (
 
 const ServiceDetailPage = ({ navigate, routeId }) => {
   const route = ROUTES_INFO[routeId.toUpperCase()] || ROUTES_INFO['BB'];
+  
+  const philosophies = {
+    'BB': "We don't design for aesthetic applause. We design to solve market friction and give your internal teams a scalable, undeniable visual operating system.",
+    'SAS': "Complex ideas fail when they sound like engineering manuals. We translate deep technology and product innovation into visceral, human narratives.",
+    'STC': "A good campaign isn't just clever copy. It's a structured deployment of narrative designed to hijack attention and demand an emotional response."
+  };
+
+  const frictions = {
+    'BB': ['You look like everyone else in the category.', 'Your messaging changes depending on who you ask.', 'Your teams execute without brand guidelines.'],
+    'SAS': ['Your product is amazing, but hard to explain.', 'Your GTM strategy lacks a central cohesive story.', 'Investors and users don’t understand the actual value.'],
+    'STC': ['Your social media feels repetitive and dull.', 'You lack the creative direction for a major launch.', 'Your campaigns aren’t converting attention to action.']
+  };
+
   return (
-    <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full">
-      <div className="w-full text-left">
+    <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-40 pb-0 w-full overflow-hidden text-left">
+      <section className="px-[3%] mb-32 relative z-10">
         <button onClick={() => navigate('services')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Services</button>
-        <div className="w-20 h-20 rounded-[20px] bg-white/5 border border-white/10 flex items-center justify-center mb-10" style={{ color: route.color }}>{route.icon}</div>
-        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight">{route.title}</h1></RevealText>
-        <p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed">{route.desc}</p>
-        
-        <h3 className="text-3xl font-light mb-12 border-b border-white/10 pb-6">What's Included</h3>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
-          {route.lineItems.map(li => (
-            <div key={li.id} className="bg-[#0A0A0F] border border-white/5 rounded-[16px] p-8">
-              <h4 className="text-xl font-medium mb-6 text-white">{li.name}</h4>
-              <ul className="space-y-3">
-                {DELIVERABLES_MASTER.filter(d => d.lineItem === li.id).map(d => (
-                  <li key={d.id} className="text-sm font-light text-white/60 flex items-start gap-2"><Check className="w-4 h-4 shrink-0 mt-[2px]" style={{ color: route.color }}/> {d.name}</li>
-                ))}
-              </ul>
+        <div className="absolute top-0 right-[10%] w-[600px] h-[600px] rounded-full blur-[150px] opacity-[0.05] pointer-events-none" style={{ backgroundColor: route.color }} />
+        <div className="w-24 h-24 rounded-[24px] bg-white/5 border border-white/10 flex items-center justify-center mb-10 shadow-2xl relative z-10" style={{ color: route.color }}>{route.icon}</div>
+        <RevealText><h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-light tracking-tight leading-[0.95] max-w-6xl relative z-10">{route.title}.</h1></RevealText>
+        <p className="text-xl text-white/50 font-light mt-8 max-w-3xl leading-relaxed relative z-10">{route.desc}</p>
+      </section>
+
+      <section className="py-32 px-[3%] bg-[#0A0A0F] border-y border-white/5 text-center">
+        <div className="max-w-5xl mx-auto">
+          <Quote className="w-12 h-12 mx-auto mb-10 opacity-30" style={{ color: route.color }} />
+          <h2 className="text-3xl md:text-5xl font-light leading-[1.4]">{philosophies[routeId.toUpperCase()] || philosophies['BB']}</h2>
+        </div>
+      </section>
+
+      <section className="py-32 px-[3%] bg-[#05050A]">
+        <h2 className="text-xs font-medium uppercase tracking-widest text-white/40 mb-12">The Friction: Who needs this?</h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          {(frictions[routeId.toUpperCase()] || frictions['BB']).map((f, i) => (
+            <div key={i} className="p-8 border border-white/5 bg-white/[0.02] rounded-[16px] flex items-start gap-4">
+              <X className="w-5 h-5 text-red-500/50 shrink-0 mt-1" />
+              <p className="text-white/60 font-light text-lg">{f}</p>
             </div>
           ))}
         </div>
-        
-        <div className="bg-gradient-to-br from-[#0A0A0F] to-[#05050A] border border-white/10 rounded-[24px] p-12 text-center">
-          <h2 className="text-3xl font-light mb-6">Find the right scope for your brand.</h2>
-          <PremiumButton onClick={() => navigate('assessment')}>Build A Scope</PremiumButton>
+      </section>
+
+      <section className="py-32 px-[3%] bg-[#0A0A0F] border-y border-white/5">
+        <div className="mb-20">
+          <h2 className="text-xs font-medium uppercase tracking-widest text-white/40 mb-6">The Architecture</h2>
+          <h3 className="text-4xl md:text-5xl font-light">What's included in this route.</h3>
         </div>
-      </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {route.lineItems.map(li => (
+            <SpotlightCard key={li.id} className="rounded-[24px] h-full">
+              <div className="bg-[#05050A] border border-white/5 rounded-[24px] p-10 h-full flex flex-col hover:border-white/10 transition-colors shadow-xl">
+                <h4 className="text-2xl font-light mb-8 text-white">{li.name}</h4>
+                <ul className="space-y-4 flex-grow">
+                  {DELIVERABLES_MASTER.filter(d => d.lineItem === li.id).map(d => (
+                    <li key={d.id} className="flex items-start gap-3 border-t border-white/5 pt-4">
+                      <div className="w-1.5 h-1.5 rounded-full mt-2 shrink-0" style={{ backgroundColor: route.color }} />
+                      <div>
+                        <span className="text-sm font-medium text-white/90 block mb-1">{d.name}</span>
+                        <span className="text-xs font-light text-white/40">{d.desc}</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </SpotlightCard>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-32 px-[3%] bg-[#05050A]">
+        <h2 className="text-xs font-medium uppercase tracking-widest text-white/40 mb-16">The Process Workflow</h2>
+        <div className="grid md:grid-cols-4 gap-8">
+           {[
+             { step: 'Phase 1', title: 'Discovery & Audit', desc: 'We review existing materials and diagnose exactly what is breaking.' },
+             { step: 'Phase 2', title: 'Strategic Definition', desc: 'We build the foundational positioning and narrative architecture.' },
+             { step: 'Phase 3', title: 'Creative Execution', desc: 'We translate the strategy into a final, undeniable visual and written system.' },
+             { step: 'Phase 4', title: 'Handover & Governance', desc: 'We deploy the playbooks so your internal team can scale the output.' }
+           ].map((s, i) => (
+             <div key={i} className="border-t border-white/10 pt-8">
+               <span className="text-[10px] font-medium tracking-widest uppercase mb-4 block" style={{ color: route.color }}>{s.step}</span>
+               <h4 className="text-xl font-medium mb-4 text-white">{s.title}</h4>
+               <p className="text-white/50 font-light leading-relaxed">{s.desc}</p>
+             </div>
+           ))}
+         </div>
+      </section>
+
+      <section className="py-32 md:py-48 px-[3%] relative w-full bg-[#05050A] border-t border-white/5 flex flex-col items-center justify-center text-center overflow-hidden">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-[100%] blur-[200px] opacity-[0.06] pointer-events-none" style={{ backgroundColor: route.color }} />
+        <div className="relative z-10 w-full flex flex-col items-center">
+          <h2 className="text-xs font-medium uppercase tracking-widest mb-6" style={{ color: route.color }}>The Scope Architect</h2>
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light mb-12 tracking-tight">Configure your exact <br/><AnimatedItalic className="text-white/60">deliverables.</AnimatedItalic></h1>
+          <p className="text-lg text-white/50 font-light mb-12 max-w-xl leading-relaxed">Don't guess what you need. Use our interactive builder to select the specific line items from {route.title} and generate a live project blueprint.</p>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-6 text-lg w-full sm:w-auto">Build This Scope</PremiumButton>
+        </div>
+      </section>
     </div>
   );
 };
@@ -1620,38 +1527,134 @@ const WorkPage = ({ navigate }) => (
 );
 
 const ContactPage = ({ navigate }) => (
-  <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full">
-    <div className="w-full text-left">
+  <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-40 pb-0 w-full overflow-hidden text-left">
+    <section className="px-[3%] mb-32 relative z-10">
       <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-      <h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight">Start with a conversation. <br/><AnimatedItalic className="text-white/50">Or start with clarity.</AnimatedItalic></h1>
-      <p className="text-white/50 mb-16 text-lg font-light">Have a project in mind? Choose how you want to begin.</p>
-      
-      <div className="grid md:grid-cols-2 gap-8 max-w-5xl">
-        <div className="bg-[#0A0A0F] border border-white/10 rounded-[24px] p-10 flex flex-col justify-between">
-          <div>
-            <h3 className="text-2xl font-light mb-4">I know what I need.</h3>
-            <p className="text-white/50 font-light mb-8">Skip the assessment and send us a direct message outlining your requirements.</p>
+      <RevealText><h1 className="text-5xl md:text-7xl lg:text-[7rem] font-light mb-6 tracking-tight leading-none">Start a conversation.<br/><AnimatedItalic className="text-white/50">Or start with clarity.</AnimatedItalic></h1></RevealText>
+      <p className="text-white/50 text-xl font-light max-w-2xl mt-8">We partner with founders and marketing teams who understand that execution without strategy is just noise. Choose how you'd like to begin.</p>
+    </section>
+
+    <section className="px-[3%] mb-32 relative z-10">
+      <div className="grid md:grid-cols-2 gap-8 w-full">
+        <div className="bg-[#0A0A0F] border border-white/10 rounded-[24px] p-10 md:p-14 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-white opacity-[0.02] blur-[100px] rounded-full pointer-events-none" />
+          <div className="relative z-10">
+            <h3 className="text-3xl font-light mb-4">I know what I need.</h3>
+            <p className="text-white/50 font-light mb-12">Skip the assessment and send us a direct message outlining your requirements or RFP.</p>
           </div>
-          <form className="space-y-4 text-left w-full" onSubmit={(e) => e.preventDefault()}>
-            <input required placeholder="Your Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none focus:border-[#8A5CFF]/50 transition-colors" />
-            <input required type="email" placeholder="Work Email" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none focus:border-[#8A5CFF]/50 transition-colors" />
-            <PremiumButton type="submit" className="w-full">Contact PBH</PremiumButton>
+          <form className="space-y-4 text-left w-full relative z-10" onSubmit={(e) => e.preventDefault()}>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <input required placeholder="Your Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none focus:border-white/30 transition-colors" />
+              <input required type="email" placeholder="Work Email" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none focus:border-white/30 transition-colors" />
+            </div>
+            <textarea required rows={3} placeholder="How can we help?" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none focus:border-white/30 transition-colors resize-none" />
+            <PremiumButton type="submit" variant="secondary" className="w-full border-white/20">Send Inquiry</PremiumButton>
           </form>
         </div>
-        <div className="bg-gradient-to-br from-[#8A5CFF]/10 to-transparent border border-[#8A5CFF]/20 rounded-[24px] p-10 flex flex-col justify-center text-center items-center relative overflow-hidden">
-          <div className="w-16 h-16 rounded-[16px] bg-[#8A5CFF]/20 flex items-center justify-center mb-6"><Fingerprint className="w-8 h-8 text-[#8A5CFF]"/></div>
-          <h3 className="text-2xl font-light mb-4 text-white">I need help defining the scope.</h3>
-          <p className="text-white/70 font-light mb-8 max-w-sm">Use our strategic tool to map your exact deliverables before the first call.</p>
-          <PremiumButton onClick={() => navigate('assessment')} className="w-full shadow-[0_0_30px_rgba(138,92,255,0.2)]">Build My Brand Scope</PremiumButton>
+
+        <div className="bg-gradient-to-br from-[#8A5CFF]/10 to-[#2563FF]/5 border border-[#8A5CFF]/20 rounded-[24px] p-10 md:p-14 flex flex-col justify-center text-center items-center relative overflow-hidden shadow-2xl group">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(138,92,255,0.15)_0%,transparent_60%)] pointer-events-none group-hover:scale-110 transition-transform duration-700" />
+          <div className="w-20 h-20 rounded-[20px] bg-[#8A5CFF]/20 flex items-center justify-center mb-8 relative z-10 border border-[#8A5CFF]/30"><Fingerprint className="w-10 h-10 text-[#8A5CFF]"/></div>
+          <h3 className="text-3xl font-light mb-4 text-white relative z-10">I need help defining the scope.</h3>
+          <p className="text-white/70 font-light mb-12 max-w-sm relative z-10">Use our strategic tool to map your exact deliverables, priorities, and gaps before the first call.</p>
+          <PremiumButton onClick={() => navigate('assessment')} className="w-full max-w-sm shadow-[0_0_40px_rgba(138,92,255,0.3)] relative z-10">Build My Brand Scope</PremiumButton>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section className="w-full h-[600px] border-y border-white/10 relative bg-[#05050A] overflow-hidden">
+      <div className="absolute top-10 left-[3%] z-20 pointer-events-none">
+        <h2 className="text-4xl md:text-5xl font-light drop-shadow-2xl">Global Reach. <br/><AnimatedItalic className="text-[#8A5CFF]">Delhi Roots.</AnimatedItalic></h2>
+      </div>
+      <LeafletMap />
+    </section>
+
+    <section className="py-24 px-[3%] bg-[#0A0A0F] border-b border-white/5">
+      <div className="grid md:grid-cols-3 gap-12 w-full">
+        <div className="flex flex-col items-start border-l border-white/10 pl-8">
+          <span className="text-[10px] text-[#8A5CFF] uppercase tracking-widest font-medium mb-4 block">Headquarters</span>
+          <h3 className="text-2xl font-light mb-2">Delhi, India</h3>
+          <p className="text-white/50 font-light leading-relaxed">Our main strategic design studio and operational hub.</p>
+        </div>
+        <div className="flex flex-col items-start border-l border-white/10 pl-8">
+          <span className="text-[10px] text-white/30 uppercase tracking-widest font-medium mb-4 block">Client Hub</span>
+          <h3 className="text-2xl font-light mb-2">London, UK</h3>
+          <p className="text-white/50 font-light leading-relaxed">Local partners for UK and European client alignment.</p>
+        </div>
+        <div className="flex flex-col items-start border-l border-white/10 pl-8">
+          <span className="text-[10px] text-white/30 uppercase tracking-widest font-medium mb-4 block">Client Hub</span>
+          <h3 className="text-2xl font-light mb-2">New York, USA</h3>
+          <p className="text-white/50 font-light leading-relaxed">Local partners for North American strategy execution.</p>
+        </div>
+      </div>
+    </section>
+
+    <section className="py-32 px-[3%] bg-[#05050A]">
+      <div className="max-w-4xl mb-16">
+        <h2 className="text-xs font-medium uppercase tracking-widest text-[#8A5CFF] mb-6">The Process</h2>
+        <h3 className="text-4xl md:text-5xl font-light">What happens after you reach out?</h3>
+      </div>
+      <div className="grid md:grid-cols-4 gap-6">
+        {[
+          { time: "0-24 Hours", title: "Review", desc: "A partner reviews your inquiry or generated scope snapshot." },
+          { time: "Day 2", title: "Discovery Call", desc: "We schedule a 30-minute alignment call to dive deep into the gaps." },
+          { time: "Day 5", title: "Proposal", desc: "We present a custom SOW with exact timelines, deliverables, and costs." },
+          { time: "Day 10", title: "Kickoff", desc: "Contracts signed. Strategy workshops scheduled. Work begins." }
+        ].map((step, i) => (
+          <div key={i} className="p-8 bg-[#0A0A0F] border border-white/5 rounded-[16px] relative overflow-hidden group hover:border-white/20 transition-colors">
+            <span className="absolute top-0 right-8 w-1 h-8 bg-[#8A5CFF] opacity-0 group-hover:opacity-100 transition-opacity" />
+            <span className="text-[10px] font-medium text-white/30 tracking-widest uppercase mb-6 block">{step.time}</span>
+            <h4 className="text-xl font-medium text-white mb-3">{step.title}</h4>
+            <p className="text-sm text-white/50 font-light leading-relaxed">{step.desc}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section className="py-32 px-[3%] bg-[#0A0A0F] border-t border-white/5">
+      <div className="grid md:grid-cols-2 gap-16">
+        <div>
+          <h3 className="text-3xl font-light mb-10">Direct Channels</h3>
+          <div className="space-y-6">
+            <div className="flex items-center gap-6 p-6 border border-white/10 rounded-[16px] bg-white/[0.02]">
+              <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center"><Mail className="w-5 h-5 text-white/50" /></div>
+              <div>
+                <h4 className="text-white font-medium mb-1">New Business</h4>
+                <a href="mailto:hello@purplebluehouse.com" className="text-[#8A5CFF] hover:underline text-sm">hello@purplebluehouse.com</a>
+              </div>
+            </div>
+            <div className="flex items-center gap-6 p-6 border border-white/10 rounded-[16px] bg-white/[0.02]">
+              <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center"><Briefcase className="w-5 h-5 text-white/50" /></div>
+              <div>
+                <h4 className="text-white font-medium mb-1">Careers & Talent</h4>
+                <a href="mailto:careers@purplebluehouse.com" className="text-white/50 hover:text-white transition-colors text-sm">careers@purplebluehouse.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 className="text-3xl font-light mb-10">Frequently Asked Questions</h3>
+          <div className="space-y-6">
+            {[
+              { q: "Do you take on execution-only projects?", a: "Rarely. We believe execution without strategy is a waste of capital. We prefer to build the system first, then execute it." },
+              { q: "What is your typical project timeline?", a: "Brand identity and strategy projects typically run 6-12 weeks. End-to-end ecosystems take 3-5 months." },
+              { q: "Do you work with startups?", a: "Yes. We frequently partner with seed and Series A founders to build their foundational GTM narrative and identity." }
+            ].map((faq, i) => (
+              <div key={i} className="border-b border-white/10 pb-6">
+                <h4 className="text-lg font-medium text-white mb-2">{faq.q}</h4>
+                <p className="text-white/50 font-light text-sm leading-relaxed">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 );
 
 const AdminDashboard = ({ navigate }) => {
   return (
-    <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-32 pb-24 px-[3%] w-full">
+    <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-32 pb-24 px-[3%] w-full text-left">
       <div className="w-full">
         <div className="flex justify-between items-end mb-12">
           <div>
@@ -1696,109 +1699,45 @@ const AdminDashboard = ({ navigate }) => {
     </div>
   );
 };
-
-
-const LegalPage = ({ title, lastUpdated, navigate, children }) => (
-  <div className="min-h-screen bg-[#05050A] text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full">
-    <div className="w-full max-w-4xl text-left">
-      <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12">
-        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home
-      </button>
-      <div className="mb-16 border-b border-white/10 pb-12">
-        <h1 className="text-4xl md:text-6xl font-light mb-4 tracking-tight">{title}</h1>
-        <p className="text-white/40 uppercase tracking-widest text-xs font-medium">Last Updated: {lastUpdated}</p>
-      </div>
-      <div className="prose prose-invert prose-p:text-white/60 prose-p:font-light prose-p:leading-relaxed prose-headings:font-light prose-headings:text-white prose-a:text-[#8A5CFF] max-w-none">
-        {children}
-      </div>
-    </div>
-  </div>
-);
-
-const PrivacyPage = ({ navigate }) => (
-  <LegalPage title="Privacy Policy" lastUpdated="May 12, 2026" navigate={navigate}>
-    <h2>1. Introduction</h2>
-    <p>At PurpleBlue House, we respect your privacy and are committed to protecting your personal data. This privacy policy will inform you as to how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.</p>
-    
-    <h2>2. Data We Collect</h2>
-    <p>When you use our Strategic Brand Scope Builder, we collect the information you voluntarily provide, including your name, corporate email address, company name, and the strategic answers you provide regarding your brand's current stage and challenges. This allows us to generate accurate scope recommendations.</p>
-    
-    <h2>3. How We Use Your Data</h2>
-    <p>We use the data captured through our assessment engine to pre-qualify consulting leads, generate custom project scopes, and prepare for initial discovery calls. We do not sell your data to third parties under any circumstances.</p>
-
-    <h2>4. Data Security</h2>
-    <p>We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used, or accessed in an unauthorized way, altered, or disclosed. Access to your personal data is limited to those employees and partners who have a business need to know.</p>
-
-    <h2>5. Your Legal Rights</h2>
-    <p>Under certain circumstances, you have rights under data protection laws in relation to your personal data, including the right to request access, correction, erasure, restriction, transfer, or to object to processing. To exercise these rights, please contact us at privacy@purplebluehouse.com.</p>
-  </LegalPage>
-);
-
-const TermsPage = ({ navigate }) => (
-  <LegalPage title="Terms of Service" lastUpdated="May 12, 2026" navigate={navigate}>
-    <h2>1. Agreement to Terms</h2>
-    <p>By accessing our website and utilizing our Strategic Brand Scope Builder, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.</p>
-
-    <h2>2. Intellectual Property</h2>
-    <p>The strategic frameworks, diagnostic logic, code, design, and content of this website are the intellectual property of PurpleBlue House. The project scopes generated by the engine are for discussion purposes and do not constitute a legally binding contract until a formal Statement of Work (SOW) is signed.</p>
-
-    <h2>3. Disclaimer of Warranties</h2>
-    <p>The materials on PurpleBlue House's website are provided on an 'as is' basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
-
-    <h2>4. Limitations</h2>
-    <p>In no event shall PurpleBlue House or its partners be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on our website.</p>
-
-    <h2>5. Modifications</h2>
-    <p>We may revise these terms of service for our website at any time without notice. By using this website, you are agreeing to be bound by the then-current version of these terms of service.</p>
-  </LegalPage>
-);
-
-const Footer = ({ navigate }) => (
-  <footer className="bg-[#05050A] border-t border-white/5 pt-20 pb-12 px-[3%] relative z-10 w-full text-left">
-    <div className="w-full">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-16">
-        <div className="md:col-span-1 flex flex-col items-start">
-          <div className="flex items-center gap-3 text-xl font-medium tracking-wide mb-6 cursor-pointer" onClick={() => navigate('home')}>
-            <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className="h-8 w-auto object-contain shrink-0" />
-            PurpleBlue House
-          </div>
-          <p className="text-white/40 font-light text-sm leading-relaxed mb-6">A premium brand, storytelling, and communication studio that understands your brand problem before you even speak to them.</p>
+const Footer = ({ navigate }) => {
+  return (
+    <footer className="relative bg-[#05050A] border-t border-white/[0.06] px-[3%] py-16 text-white">
+      <div className="grid md:grid-cols-4 gap-10">
+        <div className="md:col-span-2">
+          <div className="text-lg font-medium mb-4">PurpleBlue House</div>
+          <p className="max-w-md text-sm text-white/45 leading-relaxed font-light">
+            Strategic brand systems, storytelling, campaign thinking, and design-led consulting for brands that need clarity before execution.
+          </p>
         </div>
-        <div className="flex flex-col items-start md:pl-12">
-          <h4 className="text-white/80 font-medium mb-6 text-sm">Studio</h4>
-          <div className="flex flex-col space-y-4 text-white/40 text-sm font-light">
-            <button onClick={() => navigate('home')} className="hover:text-white transition-colors text-left">Home</button>
-            <button onClick={() => navigate('about')} className="hover:text-white transition-colors text-left">About</button>
-            <button onClick={() => navigate('method')} className="hover:text-white transition-colors text-left">The PBH Method</button>
-            <button onClick={() => navigate('work')} className="hover:text-white transition-colors text-left">Selected Work</button>
+
+        <div>
+          <h4 className="text-xs uppercase tracking-widest text-white/35 mb-5">Explore</h4>
+          <div className="space-y-3 text-sm text-white/55">
+            <button onClick={() => navigate('work')} className="block hover:text-white transition-colors">Work</button>
+            <button onClick={() => navigate('services')} className="block hover:text-white transition-colors">Services</button>
+            <button onClick={() => navigate('method')} className="block hover:text-white transition-colors">Method</button>
+            <button onClick={() => navigate('about')} className="block hover:text-white transition-colors">About</button>
           </div>
         </div>
-        <div className="flex flex-col items-start">
-          <h4 className="text-white/80 font-medium mb-6 text-sm">Services</h4>
-          <div className="flex flex-col space-y-4 text-white/40 text-sm font-light">
-            <button onClick={() => navigate('services')} className="hover:text-white transition-colors text-left">Overview</button>
-            <button onClick={() => navigate('services/bb')} className="hover:text-white transition-colors text-left">Brand Boulevard</button>
-            <button onClick={() => navigate('services/sas')} className="hover:text-white transition-colors text-left">SciArt Saga</button>
-            <button onClick={() => navigate('services/stc')} className="hover:text-white transition-colors text-left">Storytelling Corner</button>
-          </div>
-        </div>
-        <div className="flex flex-col items-start">
-          <h4 className="text-white/80 font-medium mb-6 text-sm">Connect</h4>
-          <div className="flex flex-col space-y-4 text-white/40 text-sm font-light">
-            <button onClick={() => navigate('contact')} className="hover:text-white transition-colors text-left">Contact Us</button>
-            <button onClick={() => navigate('assessment')} className="hover:text-white transition-colors text-left">Build Brand Scope</button>
-            <span className="cursor-pointer hover:text-white flex items-center gap-2 mt-4" onClick={()=>navigate('admin')}><Lock className="w-3 h-3"/> Admin Area</span>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-[10px] sm:text-xs font-medium text-white/30 uppercase tracking-widest gap-4">
-        <p>© {new Date().getFullYear()} PurpleBlue House. All rights reserved.</p>
-        <div className="flex gap-6"><span onClick={() => navigate('privacy')} className="cursor-pointer hover:text-white">Privacy Policy</span><span onClick={() => navigate('terms')} className="cursor-pointer hover:text-white">Terms</span></div>
-      </div>
-    </div>
-  </footer>
-);
 
+        <div>
+          <h4 className="text-xs uppercase tracking-widest text-white/35 mb-5">Start</h4>
+          <button
+            onClick={() => navigate('assessment')}
+            className="text-sm text-white/55 hover:text-white transition-colors"
+          >
+            Build My Brand Scope
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-14 pt-8 border-t border-white/[0.06] flex flex-col md:flex-row justify-between gap-4 text-xs text-white/30">
+        <span>© {new Date().getFullYear()} PurpleBlue House. All rights reserved.</span>
+        <span>Built for clarity, restraint, and strategic brand execution.</span>
+      </div>
+    </footer>
+  );
+};
 export default function App() {
   const [routeState, setRouteState] = useState({ page: 'home', data: null });
   
@@ -1830,8 +1769,6 @@ export default function App() {
           {routeState.page === 'contact' && <ContactPage key="contact" navigate={navigate} />}
           {routeState.page === 'assessment' && <StrategicEngine key="engine" navigate={navigate} />}
           {routeState.page === 'admin' && <AdminDashboard key="admin" navigate={navigate} />}
-          {routeState.page === 'privacy' && <PrivacyPage key="privacy" navigate={navigate} />}
-          {routeState.page === 'terms' && <TermsPage key="terms" navigate={navigate} />}
         </AnimatePresence>
       </main>
 
