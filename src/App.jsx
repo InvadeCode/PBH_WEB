@@ -21,6 +21,10 @@ const PALETTES = {
     primary: '#8A5CFF',
     secondary: '#D4CEFC',
     blue: '#2563FF',
+    accent: '#2563FF',
+    purple: '#8A5CFF',
+    orange: '#8A5CFF',
+    green: '#2563FF',
     text: '#F4F4F5',
     fonts: {
       primary: 'sans-serif',
@@ -28,12 +32,16 @@ const PALETTES = {
     }
   },
   v2: {
-    bg: '#02051F',
-    bgDeep: '#01030F',
-    panel: '#071033',
-    primary: '#6865FA',
-    secondary: '#D4CEFC',
-    blue: '#2A97D9',
+    bg: '#010D54',        // PBH official navy
+    bgDeep: '#010836',    // Darker navy for depth
+    panel: '#0C185C',     // Elevated panel navy
+    primary: '#6865FA',   // PBH primary purple
+    secondary: '#D4CEFC', // Light purple
+    blue: '#2A97D9',      // Bright blue
+    accent: '#FFCD00',    // Yellow for high-contrast accents/buttons
+    purple: '#AF73DD',    // Secondary purple
+    green: '#93D435',     // Secondary green
+    orange: '#ED7E18',    // Secondary orange
     text: '#F4F4F5',
     fonts: {
       primary: "'Space Grotesk', sans-serif",
@@ -102,7 +110,7 @@ const ROUTES_INFO = {
   'STC': { 
     id: 'STC', title: 'Storytelling Corner', 
     desc: 'Campaign ideas, creative direction, and execution-ready content.', 
-    icon: <Rocket className="w-6 h-6" />, type: 'text',
+    icon: <Rocket className="w-6 h-6" />, type: 'purple',
     lineItems: [
       { id: 'STC1', name: 'Creative Direction' },
       { id: 'STC2', name: 'Campaign Storytelling' },
@@ -133,11 +141,11 @@ const CASE_STUDIES = [
 ];
 
 const PROBLEM_DATA = [
-  { title: "Unclear messaging", icon: <MessageSquare className="w-6 h-6" />, type: 'primary' },
-  { title: "Generic visual identity", icon: <Fingerprint className="w-6 h-6" />, type: 'blue' },
-  { title: "Low campaign engagement", icon: <Activity className="w-6 h-6" />, type: 'primary' },
-  { title: "Disconnected teams", icon: <Layers className="w-6 h-6" />, type: 'blue' },
-  { title: "No repeatable brand system", icon: <Command className="w-6 h-6" />, type: 'primary' }
+  { title: "Unclear messaging", icon: <MessageSquare className="w-5 h-5" />, type: 'primary' },
+  { title: "Generic visual identity", icon: <Fingerprint className="w-5 h-5" />, type: 'blue' },
+  { title: "Low campaign engagement", icon: <Activity className="w-5 h-5" />, type: 'secondary' },
+  { title: "Disconnected teams", icon: <Layers className="w-5 h-5" />, type: 'purple' },
+  { title: "No repeatable brand system", icon: <Command className="w-5 h-5" />, type: 'primary' }
 ];
 
 let GLOBAL_LEADS = [];
@@ -261,7 +269,7 @@ const SpotlightCard = ({ children, className = "", isActive = false }) => {
 };
 
 const ProblemHoverCard = ({ title, icon, type }) => {
-  const { palette } = useContext(VersionContext);
+  const { palette, isV2 } = useContext(VersionContext);
   const color = palette[type] || palette.primary;
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -277,8 +285,12 @@ const ProblemHoverCard = ({ title, icon, type }) => {
       onMouseMove={handleMouseMove}
       initial="initial"
       whileHover="hover"
-      className="group relative cursor-default p-6 border border-white/5 hover:border-white/10 rounded-[16px] flex flex-col justify-center h-40 overflow-hidden transition-colors duration-500 shadow-lg"
-      style={{ backgroundColor: palette.panel }}
+      className={`group relative cursor-default p-6 border rounded-[16px] flex flex-col justify-center h-44 overflow-hidden transition-all duration-500 shadow-lg ${isV2 ? 'hover:-translate-y-1' : ''}`}
+      style={{ 
+        backgroundColor: palette.panel,
+        borderColor: isV2 ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.05)',
+        borderBottom: isV2 ? `3px solid ${color}` : undefined
+      }}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-[16px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"
@@ -301,8 +313,11 @@ const ProblemHoverCard = ({ title, icon, type }) => {
         <motion.div 
           variants={{ initial: { y: 15, opacity: 0, scale: 0.5 }, hover: { y: 0, opacity: 1, scale: 1 } }}
           transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          className="text-white drop-shadow-md"
-          style={{ color: color === '#F4F4F5' ? '#FFFFFF' : color }}
+          className={`flex items-center justify-center ${isV2 ? 'w-10 h-10 rounded-[10px] shadow-sm' : ''}`}
+          style={{ 
+            backgroundColor: isV2 ? color : 'transparent',
+            color: isV2 ? palette.bgDeep : (color === '#F4F4F5' ? '#FFFFFF' : color)
+          }}
         >
           {icon}
         </motion.div>
@@ -407,8 +422,8 @@ const StartVisual = () => {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }} className="absolute inset-0 flex flex-col items-center justify-center p-8">
       <div className="absolute inset-0" style={{ background: `radial-gradient(circle at center, rgba(${rgbBlue},0.15) 0%, transparent 60%)` }} />
-      <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="w-24 h-24 bg-green-500/10 border border-green-500/30 rounded-full flex items-center justify-center mb-6 relative z-10 shadow-[0_0_40px_rgba(34,197,94,0.2)]">
-        <CheckCircle2 className="w-12 h-12 text-green-500" />
+      <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="w-24 h-24 border rounded-full flex items-center justify-center mb-6 relative z-10 shadow-[0_0_40px_rgba(147,212,53,0.2)]" style={{ backgroundColor: `${palette.green}1A`, borderColor: `${palette.green}4D` }}>
+        <CheckCircle2 className="w-12 h-12" style={{ color: palette.green }} />
       </motion.div>
       <motion.h4 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="text-2xl font-light text-white mb-2 relative z-10 font-primary">Brief Generated</motion.h4>
       <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="px-8 py-3 bg-white text-black text-xs font-medium uppercase tracking-widest rounded-full relative z-10 mt-6 cursor-pointer hover:scale-105 transition-transform font-primary">Schedule Discovery</motion.div>
@@ -417,7 +432,7 @@ const StartVisual = () => {
 };
 
 const InteractiveHowItWorks = () => {
-  const { palette } = useContext(VersionContext);
+  const { palette, isV2 } = useContext(VersionContext);
   const [activeStep, setActiveStep] = useState(0);
 
   const steps = [
@@ -441,7 +456,6 @@ const InteractiveHowItWorks = () => {
 
         {steps.map((s, i) => {
             const isActive = activeStep === i;
-            // hex to rgba helper inside mapping loop
             const hexToRgba = (hex, alpha) => {
                 const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
                 return result ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${alpha})` : `rgba(138, 92, 255, ${alpha})`;
@@ -456,9 +470,9 @@ const InteractiveHowItWorks = () => {
                 <div className={`relative z-10 w-12 h-12 rounded-full border flex items-center justify-center shrink-0 transition-all duration-500`}
                      style={{ 
                          borderColor: isActive ? palette.primary : 'rgba(255,255,255,0.1)',
-                         backgroundColor: isActive ? hexToRgba(palette.primary, 0.1) : palette.panel
+                         backgroundColor: isActive ? hexToRgba(palette.primary, isV2 ? 0.3 : 0.1) : palette.panel
                      }}>
-                  <div className={`w-3 h-3 rounded-full transition-all duration-500 ${isActive ? 'scale-100' : 'bg-white/20 scale-50'}`} style={{ backgroundColor: isActive ? palette.primary : '' }} />
+                  <div className={`w-3 h-3 rounded-full transition-all duration-500 ${isActive ? 'scale-100' : 'bg-white/20 scale-50'}`} style={{ backgroundColor: isActive ? (isV2 ? 'white' : palette.primary) : '' }} />
                 </div>
                 <div>
                   <h3 className={`text-2xl font-light mb-2 transition-colors duration-500 font-primary ${isActive ? 'text-white' : 'text-white/40'}`}>{s.num}. {s.title}</h3>
@@ -523,7 +537,7 @@ const AnimatedItalic = ({ children, className = "" }) => {
 };
 
 const PremiumButton = ({ children, onClick, variant = "primary", className = "", type = "button", disabled = false }) => {
-  const { palette } = useContext(VersionContext);
+  const { palette, isV2 } = useContext(VersionContext);
   const buttonRef = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -546,14 +560,16 @@ const PremiumButton = ({ children, onClick, variant = "primary", className = "",
     y.set(0);
   };
 
-  const isV2 = palette.bg === '#02051F';
-  const textDark = isV2 ? '#01030F' : '#05050A';
+  const isPrimary = variant === "primary";
+  const btnStyle = isPrimary 
+    ? (isV2 
+        ? { background: `linear-gradient(135deg, ${palette.primary}, ${palette.blue})`, color: 'white', x: smoothX, y: smoothY } 
+        : { backgroundColor: 'white', color: '#05050A', x: smoothX, y: smoothY })
+    : { x: smoothX, y: smoothY };
 
-  const variants = {
-    primary: `bg-white text-[${textDark}] hover:bg-white/90`,
-    secondary: "bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20",
-    ghost: "text-white/70 hover:text-white hover:bg-white/5"
-  };
+  const baseClasses = isPrimary 
+    ? (isV2 ? `hover:brightness-110 font-bold` : `hover:bg-white/90`) 
+    : (variant === "secondary" ? "bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20" : "text-white/70 hover:text-white hover:bg-white/5");
 
   return (
     <motion.button 
@@ -563,11 +579,11 @@ const PremiumButton = ({ children, onClick, variant = "primary", className = "",
       disabled={disabled} 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ x: smoothX, y: smoothY, color: variant === 'primary' ? textDark : '' }}
-      className={`group relative inline-flex items-center justify-center px-8 py-4 font-medium tracking-wide transition-all duration-500 overflow-hidden rounded-[9px] text-sm hover:scale-[1.02] ${variants[variant]} ${className} ${disabled ? 'opacity-50 cursor-not-allowed hover:scale-100' : ''}`}
+      style={btnStyle}
+      className={`group relative inline-flex items-center justify-center px-8 py-4 tracking-wide transition-all duration-500 overflow-hidden rounded-[9px] text-sm hover:scale-[1.02] ${baseClasses} ${className} ${disabled ? 'opacity-50 cursor-not-allowed hover:scale-100' : ''} ${isV2 ? 'font-primary' : 'font-medium'}`}
     >
       <span className="relative z-10 flex items-center gap-2">{children}</span>
-      {variant === "primary" && !disabled && <span className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out skew-x-12" />}
+      {isPrimary && !disabled && <span className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out skew-x-12" />}
     </motion.button>
   );
 };
@@ -681,7 +697,7 @@ const BrandHealthRadar = ({ clusters }) => {
 // --- STRATEGIC ENGINE (SCOPE BUILDER) ---
 
 const StrategicEngine = ({ navigate }) => {
-  const { palette } = useContext(VersionContext);
+  const { palette, isV2 } = useContext(VersionContext);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [clusters, setClusters] = useState([]);
@@ -755,7 +771,7 @@ const StrategicEngine = ({ navigate }) => {
             <ul className="space-y-2">
               {DELIVERABLES_MASTER.filter(d => selectedDeliverables.includes(d.id)).map(d => (
                 <li key={d.id} className="text-xs font-light text-white flex items-start gap-2 font-secondary">
-                  <Check className="w-3 h-3 shrink-0 mt-[2px]" style={{ color: palette.blue }} /> {d.name}
+                  <Check className="w-3 h-3 shrink-0 mt-[2px]" style={{ color: palette.accent }} /> {d.name}
                 </li>
               ))}
             </ul>
@@ -768,7 +784,7 @@ const StrategicEngine = ({ navigate }) => {
   const steps = [
     // Step 0: Welcome
     <div key="s0" className="flex flex-col justify-center h-full max-w-2xl text-left">
-      <div className="w-16 h-16 border rounded-[16px] flex items-center justify-center mb-8" style={{ backgroundColor: hexToRgba(palette.primary, 0.1), borderColor: hexToRgba(palette.primary, 0.3) }}><Fingerprint className="w-8 h-8" style={{ color: palette.primary }} /></div>
+      <div className="w-16 h-16 border rounded-[16px] flex items-center justify-center mb-8" style={{ backgroundColor: hexToRgba(palette.primary, isV2 ? 0.8 : 0.1), borderColor: hexToRgba(palette.primary, 0.3) }}><Fingerprint className="w-8 h-8" style={{ color: isV2 ? palette.bgDeep : palette.primary }} /></div>
       <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-6 leading-[1.1] font-primary">Build your <AnimatedItalic>strategic</AnimatedItalic> brand scope.</h1>
       <p className="text-lg md:text-xl text-white/50 font-light mb-12 leading-relaxed font-secondary">This is not a generic form. It is a guided discovery system. We’ll map your gaps, define service priorities, and generate a customized roadmap before our first conversation.</p>
       <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -812,13 +828,16 @@ const StrategicEngine = ({ navigate }) => {
       <h2 className="text-3xl md:text-4xl font-light mb-6 font-primary">Your brand opportunity areas.</h2>
       <p className="text-white/50 font-light mb-12 text-lg font-secondary">Based on your answers, your communication is currently breaking due to <strong className="text-white">{clusters.join(' & ')}</strong>. We recommend structuring your project around these core ecosystems:</p>
       <div className="grid sm:grid-cols-2 gap-4 mb-12 w-full">
-        {routes.map(r => (
-          <div key={r} className="bg-white/[0.02] border border-white/10 rounded-[16px] p-6 text-left flex flex-col">
-            <div className="w-12 h-12 rounded-[12px] bg-white/5 border border-white/10 flex items-center justify-center mb-6" style={{ color: palette[ROUTES_INFO[r].type] || palette.primary }}>{ROUTES_INFO[r].icon}</div>
-            <h4 className="text-xl font-medium mb-2 font-primary">{ROUTES_INFO[r].title}</h4>
-            <p className="text-sm text-white/40 font-light leading-relaxed font-secondary">{ROUTES_INFO[r].desc}</p>
-          </div>
-        ))}
+        {routes.map(r => {
+          const rColor = palette[ROUTES_INFO[r].type] || palette.primary;
+          return (
+            <div key={r} className="border border-white/10 rounded-[16px] p-6 text-left flex flex-col" style={{ backgroundColor: palette.panel }}>
+              <div className={`w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 shadow-sm`} style={{ backgroundColor: isV2 ? rColor : 'rgba(255,255,255,0.05)', color: isV2 ? palette.bgDeep : rColor }}>{ROUTES_INFO[r].icon}</div>
+              <h4 className="text-xl font-medium mb-2 font-primary">{ROUTES_INFO[r].title}</h4>
+              <p className="text-sm text-white/40 font-light leading-relaxed font-secondary">{ROUTES_INFO[r].desc}</p>
+            </div>
+          )
+        })}
       </div>
       <div className="flex gap-6 items-center">
         <PremiumButton onClick={() => setStep(5)}>Customize Scope</PremiumButton>
@@ -867,9 +886,10 @@ const StrategicEngine = ({ navigate }) => {
       <div className="space-y-10 w-full pb-10">
         {selectedRoutes.map(rId => {
           const route = ROUTES_INFO[rId];
+          const rColor = palette[route.type] || palette.primary;
           return (
             <div key={rId}>
-              <h4 className="text-sm font-medium tracking-widest uppercase mb-4 pb-2 border-b border-white/5 flex items-center gap-2 font-primary" style={{ color: palette.primary }}>{route.icon} {route.title}</h4>
+              <h4 className="text-sm font-medium tracking-widest uppercase mb-4 pb-2 border-b border-white/5 flex items-center gap-2 font-primary" style={{ color: rColor }}>{route.icon} {route.title}</h4>
               <div className="space-y-6">
                 {route.lineItems.map(li => {
                   const delivs = DELIVERABLES_MASTER.filter(d => d.lineItem === li.id);
@@ -1068,7 +1088,7 @@ const StrategicEngine = ({ navigate }) => {
 };
 
 const MenuHoverCard = ({ children, color, onClick }) => {
-  const { palette } = useContext(VersionContext);
+  const { palette, isV2 } = useContext(VersionContext);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -1084,8 +1104,11 @@ const MenuHoverCard = ({ children, color, onClick }) => {
       onMouseMove={handleMouseMove}
       initial="initial"
       whileHover="hover"
-      className="group relative cursor-pointer p-6 rounded-[16px] border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden h-full flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
-      style={{ backgroundColor: palette.panel }}
+      className={`group relative cursor-pointer p-6 rounded-[16px] border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden h-full flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.45)] ${isV2 ? 'hover:-translate-y-1' : ''}`}
+      style={{ 
+        backgroundColor: palette.panel,
+        borderBottom: isV2 ? `4px solid ${color}` : undefined
+      }}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-[16px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0"
@@ -1128,7 +1151,7 @@ const NavLink = ({ children, onClick, active, onMouseEnter, onMouseLeave }) => {
 };
 
 const Header = ({ navigate, current }) => {
-  const { palette } = useContext(VersionContext);
+  const { palette, isV2 } = useContext(VersionContext);
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const timeoutRef = useRef(null);
@@ -1158,7 +1181,7 @@ const Header = ({ navigate, current }) => {
   const ServicesMegaMenu = () => (
     <div className="flex gap-12 text-left">
       <div className="w-1/3 pr-12 border-r border-white/5 flex flex-col items-start">
-        <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 border" style={{ backgroundColor: hexToRgba(palette.primary, 0.1), borderColor: hexToRgba(palette.primary, 0.2) }}><Layers className="w-6 h-6" style={{ color: palette.primary }}/></div>
+        <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 border" style={{ backgroundColor: isV2 ? palette.primary : hexToRgba(palette.primary, 0.1), borderColor: hexToRgba(palette.primary, 0.2), color: isV2 ? palette.bgDeep : palette.primary }}><Layers className="w-6 h-6" /></div>
         <h3 className="text-2xl font-light mb-4 text-white font-primary">Consulting Ecosystems</h3>
         <p className="text-white/50 text-sm leading-relaxed mb-8 font-secondary">We deliver across three distinct pillars depending on your growth stage and communication gaps.</p>
         <button onClick={() => { navigate('services'); setActiveMenu(null); }} className="text-sm text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">View All Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform"/></button>
@@ -1171,8 +1194,8 @@ const Header = ({ navigate, current }) => {
               <motion.div 
                 variants={{ initial: { y: 0, scale: 1 }, hover: { y: -4, scale: 1.05 } }}
                 transition={{ type: "spring", stiffness: 400, damping: 15 }}
-                className="w-12 h-12 rounded-[12px] bg-white/5 border border-white/10 flex items-center justify-center mb-5 shadow-inner" 
-                style={{ color: rColor }}
+                className="w-12 h-12 rounded-[12px] border border-white/10 flex items-center justify-center mb-5 shadow-inner" 
+                style={{ backgroundColor: isV2 ? rColor : 'rgba(255,255,255,0.05)', color: isV2 ? palette.bgDeep : rColor, border: isV2 ? 'none' : undefined }}
               >
                 {route.icon}
               </motion.div>
@@ -1188,7 +1211,7 @@ const Header = ({ navigate, current }) => {
   const WorkMegaMenu = () => (
     <div className="flex gap-12 text-left">
       <div className="w-1/3 pr-12 border-r border-white/5 flex flex-col items-start">
-        <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 border" style={{ backgroundColor: hexToRgba(palette.blue, 0.1), borderColor: hexToRgba(palette.blue, 0.2) }}><Briefcase className="w-6 h-6" style={{ color: palette.blue }}/></div>
+        <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 border" style={{ backgroundColor: isV2 ? palette.blue : hexToRgba(palette.blue, 0.1), borderColor: hexToRgba(palette.blue, 0.2), color: isV2 ? palette.bgDeep : palette.blue }}><Briefcase className="w-6 h-6" /></div>
         <h3 className="text-2xl font-light mb-4 text-white font-primary">Selected Work</h3>
         <p className="text-white/50 text-sm leading-relaxed mb-8 font-secondary">Case studies and full visual archive proving our thinking across strategy, identity, and campaigns.</p>
         <button onClick={() => { navigate('work'); setActiveMenu(null); }} className="text-sm text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">View Full Archive <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform"/></button>
@@ -1209,7 +1232,7 @@ const Header = ({ navigate, current }) => {
                   <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/40 text-2xl">{cs.client.split(' ')[0]}</span></div>
                 </div>
                 <div>
-                  <motion.span variants={{ initial: { x: 0 }, hover: { x: 4 } }} transition={{ duration: 0.3 }} className="text-[10px] tracking-widest uppercase mb-2 block font-medium font-primary" style={{ color: palette.primary }}>{cs.sector}</motion.span>
+                  <motion.span variants={{ initial: { x: 0 }, hover: { x: 4 } }} transition={{ duration: 0.3 }} className="text-[10px] tracking-widest uppercase mb-2 block font-medium font-primary" style={{ color: hexColor }}>{cs.sector}</motion.span>
                   <h4 className="text-white font-medium mb-1 text-lg font-secondary">{cs.client}</h4>
                   <p className="text-xs text-white/40 line-clamp-2 leading-relaxed font-light font-secondary">{cs.challenge}</p>
                 </div>
@@ -1224,7 +1247,7 @@ const Header = ({ navigate, current }) => {
   const MethodMegaMenu = () => (
     <div className="flex gap-12 text-left">
       <div className="w-1/3 pr-12 border-r border-white/5 flex flex-col items-start">
-        <div className="w-12 h-12 bg-white/10 rounded-[12px] flex items-center justify-center mb-6 border border-white/20"><Compass className="w-6 h-6 text-white"/></div>
+        <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 border border-white/20" style={{ backgroundColor: isV2 ? palette.accent : 'rgba(255,255,255,0.1)', color: isV2 ? palette.bgDeep : 'white' }}><Compass className="w-6 h-6"/></div>
         <h3 className="text-2xl font-light mb-4 text-white font-primary">The PBH Method</h3>
         <p className="text-white/50 text-sm leading-relaxed mb-8 font-secondary">A clear process for brands that need direction, not decoration. We diagnose before we design.</p>
         <button onClick={() => { navigate('method'); setActiveMenu(null); }} className="text-sm text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">Explore Our Process <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform"/></button>
@@ -1303,7 +1326,7 @@ const Header = ({ navigate, current }) => {
         </nav>
         
         <div className="hidden lg:flex items-center">
-            <PremiumButton onClick={() => {navigate('assessment'); setActiveMenu(null);}} className="px-6 py-2.5 rounded-[9px] text-xs shadow-[0_0_20px_rgba(104,101,250,0.1)] font-secondary">
+            <PremiumButton onClick={() => {navigate('assessment'); setActiveMenu(null);}} className="px-6 py-2.5 rounded-[9px] text-xs font-secondary shadow-lg">
               Build My Brand Scope
             </PremiumButton>
         </div>
@@ -1356,7 +1379,7 @@ const Header = ({ navigate, current }) => {
 };
 
 const HomePage = ({ navigate }) => {
-  const { palette } = useContext(VersionContext);
+  const { palette, isV2 } = useContext(VersionContext);
   const heroRef = useRef(null);
   const manifestoRef = useRef(null);
   const { scrollYProgress: manifestoProgress } = useScroll({ target: manifestoRef, offset: ["start end", "center center"] });
@@ -1390,6 +1413,11 @@ const HomePage = ({ navigate }) => {
       return result ? `${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)}` : '138,92,255';
   };
   const rgbPrimary = hexToRgb(palette.primary);
+  
+  const hexToRgba = (hex, alpha) => {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${alpha})` : `rgba(138, 92, 255, ${alpha})`;
+  };
 
   const handleMouseMove = (e) => {
     if (!heroRef.current) return;
@@ -1449,13 +1477,13 @@ const HomePage = ({ navigate }) => {
           <RevealText delay={0.2}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 flex items-baseline flex-wrap font-primary">strategy and execution <AnimatedItalic className="text-white/60 ml-4">stop talking.</AnimatedItalic></h1></RevealText>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">PurpleBlue House helps businesses build clearer brands, sharper narratives, and communication systems that actually move people.</motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.7 }} className="mt-12 flex flex-col sm:flex-row gap-6">
-            <PremiumButton onClick={() => navigate('assessment')} className="min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(${rgbPrimary}, 0.2)` }}>Build My Brand Scope <Sparkles className="w-4 h-4 ml-2" /></PremiumButton>
+            <PremiumButton onClick={() => navigate('assessment')} className="min-w-[240px]" style={isV2 ? { boxShadow: `0 0 50px ${hexToRgba(palette.primary, 0.4)}` } : { boxShadow: `0 0 40px rgba(${rgbPrimary}, 0.2)` }}>Build My Brand Scope <Sparkles className="w-4 h-4 ml-2" /></PremiumButton>
             <PremiumButton variant="secondary" onClick={() => navigate('work')} className="min-w-[240px]">Explore Our Work</PremiumButton>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-24 px-[3%] relative w-full border-y border-white/5 text-left" style={{ backgroundColor: palette.panel }}>
+      <section className="py-24 px-[3%] relative w-full border-y border-white/5 text-left" style={{ backgroundColor: isV2 ? palette.bg : palette.panel }}>
         <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-16 font-primary">Most brand problems are <br/><AnimatedItalic className="text-white/50">not surface problems.</AnimatedItalic></h2></RevealText>
         <p className="text-xl text-white/50 font-light max-w-3xl mb-16 leading-relaxed font-secondary">Low engagement, inconsistent visuals, weak campaigns, unclear messaging, scattered teams — these are usually symptoms of a deeper gap between brand thinking and brand execution.</p>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full">
@@ -1499,7 +1527,7 @@ const HomePage = ({ navigate }) => {
             return (
               <SpotlightCard key={route.id} className="rounded-[24px] h-full">
                 <div className="border border-white/10 rounded-[24px] p-10 h-full flex flex-col hover:border-white/20 transition-colors" style={{ backgroundColor: palette.bgDeep }}>
-                  <div className="w-14 h-14 rounded-[12px] bg-white/5 border border-white/10 flex items-center justify-center mb-8" style={{ color: rColor }}>{route.icon}</div>
+                  <div className="w-14 h-14 rounded-[12px] border border-white/10 flex items-center justify-center mb-8" style={{ backgroundColor: isV2 ? rColor : 'rgba(255,255,255,0.05)', color: isV2 ? palette.bgDeep : rColor, border: isV2 ? 'none' : undefined }}>{route.icon}</div>
                   <h4 className="text-2xl font-light mb-4 font-primary">{route.title}</h4>
                   <p className="text-white/50 font-light leading-relaxed mb-10 flex-grow font-secondary">{route.desc}</p>
                   <PremiumButton variant="ghost" onClick={() => navigate(`services/${route.id.toLowerCase()}`)} className="self-start px-0 group hover:bg-transparent text-white/70">Explore Route <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
@@ -1547,7 +1575,7 @@ const HomePage = ({ navigate }) => {
                 </div>
                 <div className="p-8 flex flex-col justify-between flex-1" style={{ backgroundColor: palette.panel }}>
                   <div>
-                    <span className="text-[10px] font-medium tracking-widest uppercase block mb-2 font-primary" style={{ color: palette.primary }}>{cs.sector}</span>
+                    <span className="text-[10px] font-medium tracking-widest uppercase block mb-2 font-primary" style={{ color: hexColor }}>{cs.sector}</span>
                     <h3 className="text-2xl font-light transition-colors font-primary group-hover:opacity-80" style={{ color: 'white' }}>{cs.client}</h3>
                   </div>
                   <div className="flex justify-between items-end">
@@ -1564,7 +1592,7 @@ const HomePage = ({ navigate }) => {
       <section className="py-32 px-[3%] w-full text-center flex items-center justify-center overflow-hidden relative" style={{ backgroundColor: palette.primary }}>
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="relative z-10 w-full overflow-hidden flex whitespace-nowrap">
-           <motion.div animate={{ x: ["0%", "-50%"] }} transition={{ repeat: Infinity, ease: "linear", duration: 20 }} className="flex gap-16 opacity-90 font-primary" style={{ color: palette.bgDeep }}>
+           <motion.div animate={{ x: ["0%", "-50%"] }} transition={{ repeat: Infinity, ease: "linear", duration: 20 }} className="flex gap-16 opacity-90 font-primary" style={{ color: isV2 ? palette.bgDeep : '#05050A' }}>
              <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">3 Ecosystems. 1 Connected System. Zero Guesswork.</span>
              <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">3 Ecosystems. 1 Connected System. Zero Guesswork.</span>
            </motion.div>
@@ -1641,7 +1669,7 @@ const MethodPage = ({ navigate }) => {
 };
 
 const ServicesPage = ({ navigate }) => {
-  const { palette } = useContext(VersionContext);
+  const { palette, isV2 } = useContext(VersionContext);
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
@@ -1656,7 +1684,7 @@ const ServicesPage = ({ navigate }) => {
               <SpotlightCard key={route.id} className="rounded-[24px]">
                 <div className="border border-white/10 rounded-[24px] p-12 md:p-16 flex flex-col md:flex-row gap-12 transition-colors" style={{ backgroundColor: palette.panel }}>
                   <div className="md:w-1/3">
-                    <div className="w-16 h-16 rounded-[16px] bg-white/5 border border-white/10 flex items-center justify-center mb-8" style={{ color: rColor }}>{route.icon}</div>
+                    <div className="w-16 h-16 rounded-[16px] border border-white/10 flex items-center justify-center mb-8" style={{ backgroundColor: isV2 ? rColor : 'rgba(255,255,255,0.05)', color: isV2 ? palette.bgDeep : rColor, border: isV2 ? 'none' : undefined }}>{route.icon}</div>
                     <h3 className="text-3xl font-light mb-4 font-primary">{route.title}</h3>
                     <p className="text-white/50 font-light leading-relaxed mb-8 font-secondary">{route.desc}</p>
                     <PremiumButton variant="ghost" onClick={() => navigate(`services/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent text-white group font-secondary">Explore Route Details <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"/></PremiumButton>
@@ -1682,7 +1710,7 @@ const ServicesPage = ({ navigate }) => {
 };
 
 const ServiceDetailPage = ({ navigate, routeId }) => {
-  const { palette } = useContext(VersionContext);
+  const { palette, isV2 } = useContext(VersionContext);
   const route = ROUTES_INFO[routeId.toUpperCase()] || ROUTES_INFO['BB'];
   const rColor = palette[route.type] || palette.primary;
 
@@ -1690,7 +1718,7 @@ const ServiceDetailPage = ({ navigate, routeId }) => {
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
         <button onClick={() => navigate('services')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Services</button>
-        <div className="w-20 h-20 rounded-[20px] bg-white/5 border border-white/10 flex items-center justify-center mb-10" style={{ color: rColor }}>{route.icon}</div>
+        <div className="w-20 h-20 rounded-[20px] border border-white/10 flex items-center justify-center mb-10" style={{ backgroundColor: isV2 ? rColor : 'rgba(255,255,255,0.05)', color: isV2 ? palette.bgDeep : rColor, border: isV2 ? 'none' : undefined }}>{route.icon}</div>
         <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">{route.title}</h1></RevealText>
         <p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed font-secondary">{route.desc}</p>
         
@@ -1742,7 +1770,7 @@ const WorkPage = ({ navigate }) => {
                   <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 group-hover:text-white/30 transition-colors duration-700 text-5xl">{cs.client.split(' ')[0]}</span></div>
                 </div>
                 <div className="p-8">
-                  <span className="text-[10px] font-medium tracking-widest uppercase block mb-2 font-primary" style={{ color: palette.primary }}>{cs.sector}</span>
+                  <span className="text-[10px] font-medium tracking-widest uppercase block mb-2 font-primary" style={{ color: hexColor }}>{cs.sector}</span>
                   <h3 className="text-3xl font-light mb-4 font-primary">{cs.client}</h3>
                   <p className="text-white/50 font-light mb-8 text-sm leading-relaxed font-secondary">{cs.challenge}</p>
                   <div className="flex justify-between items-end font-secondary">
@@ -1760,7 +1788,7 @@ const WorkPage = ({ navigate }) => {
 };
 
 const ContactPage = ({ navigate }) => {
-  const { palette } = useContext(VersionContext);
+  const { palette, isV2 } = useContext(VersionContext);
   const hexToRgba = (hex, alpha) => {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? `rgba(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}, ${alpha})` : `rgba(138, 92, 255, ${alpha})`;
@@ -1786,10 +1814,10 @@ const ContactPage = ({ navigate }) => {
             </form>
           </div>
           <div className="border rounded-[24px] p-10 flex flex-col justify-center text-center items-center relative overflow-hidden" style={{ background: `linear-gradient(to bottom right, ${hexToRgba(palette.primary, 0.1)}, transparent)`, borderColor: hexToRgba(palette.primary, 0.2) }}>
-            <div className="w-16 h-16 rounded-[16px] flex items-center justify-center mb-6" style={{ backgroundColor: hexToRgba(palette.primary, 0.2) }}><Fingerprint className="w-8 h-8" style={{ color: palette.primary }}/></div>
+            <div className="w-16 h-16 rounded-[16px] flex items-center justify-center mb-6" style={{ backgroundColor: isV2 ? palette.primary : hexToRgba(palette.primary, 0.2), color: isV2 ? palette.bgDeep : palette.primary }}><Fingerprint className="w-8 h-8" /></div>
             <h3 className="text-2xl font-light mb-4 text-white font-primary">I need help defining the scope.</h3>
             <p className="text-white/70 font-light mb-8 max-w-sm font-secondary">Use our strategic tool to map your exact deliverables before the first call.</p>
-            <PremiumButton onClick={() => navigate('assessment')} className="w-full font-secondary" style={{ boxShadow: `0 0 30px rgba(${hexToRgba(palette.primary, 0.2)})` }}>Build My Brand Scope</PremiumButton>
+            <PremiumButton onClick={() => navigate('assessment')} className="w-full font-secondary" style={isV2 ? {boxShadow: `0 0 40px ${hexToRgba(palette.primary, 0.4)}`} : { boxShadow: `0 0 30px rgba(${hexToRgba(palette.primary, 0.2)})` }}>Build My Brand Scope</PremiumButton>
           </div>
         </div>
       </div>
@@ -1907,6 +1935,7 @@ export default function App() {
   const [version, setVersion] = useState('v1');
   
   const currentPalette = PALETTES[version];
+  const isV2 = version === 'v2';
 
   const navigate = (path, data = null) => {
     if (path.startsWith('services/')) {
@@ -1919,7 +1948,7 @@ export default function App() {
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'auto' }); }, [routeState.page]);
 
   return (
-    <VersionContext.Provider value={{ palette: currentPalette, version }}>
+    <VersionContext.Provider value={{ palette: currentPalette, version, isV2 }}>
       <div className="min-h-screen text-[#F4F4F5] w-full selection:text-white overflow-x-clip font-secondary" style={{ backgroundColor: currentPalette.bgDeep, scrollBehavior: 'smooth', '--tw-selection-color': currentPalette.primary + '4D' }}>
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Space+Grotesk:wght@300..700&display=swap');
@@ -1971,7 +2000,7 @@ export default function App() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setVersion('v2')}
-              className={`px-4 py-2 rounded-full border text-xs font-medium shadow-lg transition-colors flex items-center gap-2 font-secondary ${version === 'v2' ? 'bg-white text-black border-white' : 'bg-black/50 text-white/50 border-white/20 backdrop-blur-md hover:bg-black/80'}`}
+              className={`px-4 py-2 rounded-full border text-xs font-medium shadow-lg transition-colors flex items-center gap-2 font-secondary ${version === 'v2' ? 'bg-[#FFCD00] text-[#010D54] border-[#FFCD00]' : 'bg-black/50 text-white/50 border-white/20 backdrop-blur-md hover:bg-black/80'}`}
            >
               <Sparkles className="w-3 h-3"/> V2 (Space Grotesk + Navy)
            </motion.button>
