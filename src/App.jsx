@@ -48,13 +48,13 @@ const QUIZ_QUESTIONS = [
 ];
 
 const ROUTES_INFO = {
-  'BB': { id: 'BB', title: 'Brand Boulevard', desc: 'Identity, positioning, messaging, and comprehensive brand systems.', icon: <Fingerprint className="w-6 h-6" />, type: 'primary', lineItems: [ { id: 'BB1', name: 'Brand Workshop & Audit' }, { id: 'BB2', name: 'Brand Identity System' }, { id: 'BB3', name: 'Design Systems' } ] },
-  'SAS': { id: 'SAS', title: 'SciArt Saga', desc: 'Storytelling, innovation communication, and experience-led narratives.', icon: <Lightbulb className="w-6 h-6" />, type: 'blue', lineItems: [ { id: 'SAS1', name: 'Innovation Frameworks' }, { id: 'SAS2', name: 'Product Storytelling' }, { id: 'SAS3', name: 'GTM Communication' } ] },
-  'STC': { id: 'STC', title: 'Storytelling Corner', desc: 'Campaign ideas, creative direction, and execution-ready content.', icon: <Rocket className="w-6 h-6" />, type: 'purple', lineItems: [ { id: 'STC1', name: 'Creative Direction' }, { id: 'STC2', name: 'Campaign Storytelling' }, { id: 'STC3', name: 'Content Systems' } ] }
+  'BB': { id: 'BB', title: 'Brand Boulevard', desc: 'Identity, positioning, messaging, and comprehensive brand systems.', icon: <Fingerprint className="w-6 h-6" />, type: 'primary', bestFor: 'Companies seeking a complete structural overhaul, from foundational positioning to a scalable visual identity system.', lineItems: [ { id: 'BB1', name: 'Brand Workshop & Audit' }, { id: 'BB2', name: 'Brand Identity System' }, { id: 'BB3', name: 'Design Systems' } ] },
+  'SAS': { id: 'SAS', title: 'SciArt Saga', desc: 'Storytelling, innovation communication, and experience-led narratives.', icon: <Lightbulb className="w-6 h-6" />, type: 'blue', bestFor: 'Deep-tech or highly complex innovations needing to translate technical features into compelling, human-centric stories.', lineItems: [ { id: 'SAS1', name: 'Innovation Frameworks' }, { id: 'SAS2', name: 'Product Storytelling' }, { id: 'SAS3', name: 'GTM Communication' } ] },
+  'STC': { id: 'STC', title: 'Storytelling Corner', desc: 'Campaign ideas, creative direction, and execution-ready content.', icon: <Rocket className="w-6 h-6" />, type: 'purple', bestFor: 'Established brands looking for high-impact campaign execution, continuous content systems, and creative direction.', lineItems: [ { id: 'STC1', name: 'Creative Direction' }, { id: 'STC2', name: 'Campaign Storytelling' }, { id: 'STC3', name: 'Content Systems' } ] }
 };
 
 const DELIVERABLES_MASTER = [
-  { id: 'd1', lineItem: 'BB1', name: 'Brand Audit', priority: 'Strategic Foundation', desc: 'Diagnostic review of current brand assets.' },
+  { id: 'd1', lineItem: 'BB1', name: 'Brand Audit', priority: 'Strategic Foundation', desc: 'Comprehensive review of current brand assets.' },
   { id: 'd2', lineItem: 'BB1', name: 'Positioning Territories', priority: 'Strategic Foundation', desc: 'Defining the strategic market gap.' },
   { id: 'd3', lineItem: 'BB2', name: 'Visual Identity System', priority: 'Core', desc: 'Logos, colors, typography, and visual language.' },
   { id: 'd4', lineItem: 'BB3', name: 'Brand Guidelines', priority: 'Execution Support', desc: 'Scalable rules for your internal teams.' },
@@ -67,10 +67,38 @@ const DELIVERABLES_MASTER = [
 ];
 
 const CASE_STUDIES = [
-  { id: 'cs1', client: 'Aura Skincare', sector: 'Beauty', challenge: 'Elevating a cult favorite skincare line into a globally recognized luxury lifestyle brand.', route: 'Visual Identity', tags: ['Beauty', 'Packaging'], type: 'primary' },
-  { id: 'cs2', client: 'Lumina Tech', sector: 'Technology', challenge: 'Humanizing a complex AI platform through an approachable, vibrant, and modern design system.', route: 'Digital Experience', tags: ['Tech', 'UI/UX'], type: 'blue' },
-  { id: 'cs3', client: 'Novus Fin', sector: 'Finance', challenge: 'Transforming a legacy financial institution into a modern, creator-led fintech platform.', route: 'Brand Strategy', tags: ['Fintech', 'Positioning'], type: 'purple' },
-  { id: 'cs4', client: 'Aero Dynamics', sector: 'Aviation', challenge: 'Communicating sustainable aviation solutions through powerful SciArt storytelling.', route: 'Narrative', tags: ['Sustainability', 'Storytelling'], type: 'green' },
+  { 
+    id: 'cs1', client: 'Aura Skincare', sector: 'Beauty', challenge: 'Elevating a cult favorite skincare line into a globally recognized luxury lifestyle brand.', route: 'Visual Identity', tags: ['Beauty', 'Packaging', 'Identity'], type: 'primary',
+    overview: 'Aura Skincare was beloved by dermatologists but ignored by the luxury lifestyle market. Their clinical aesthetic was highly functional but lacked the emotional resonance required to compete on a global stage.',
+    solution: 'We stripped away the clinical sterility and introduced a warm, ethereal aesthetic. The new system relies on subtle gradients, elegant serif typography, and tactile, sustainable packaging that feels like a premium lifestyle choice rather than a medical prescription.',
+    roles: ['Brand Strategy', 'Visual Identity System', 'Packaging Design', 'E-commerce UI'],
+    results: ['400% increase in D2C sales in Q1', 'Stocked in 50+ premium retail locations', 'Awarded "Best Rebrand" at Beauty Innovator Awards'],
+    colors: ['#6865FA', '#E8E7FF', '#010D54', '#FFFFFF']
+  },
+  { 
+    id: 'cs2', client: 'Lumina Tech', sector: 'Technology', challenge: 'Humanizing a complex AI platform through an approachable, vibrant, and modern design system.', route: 'Digital Experience', tags: ['Tech', 'UI/UX', 'Digital'], type: 'blue',
+    overview: 'Lumina’s AI engine was incredibly powerful, but their enterprise interface was intimidating and overly technical, causing high drop-off rates during initial user onboarding.',
+    solution: 'We designed a "SciArt" interface that uses dynamic data visualizations as art. We replaced dense tables with fluid, color-coded components, turning complex data processing into an intuitive, visually stunning user experience.',
+    roles: ['UX/UI Design', 'Data Visualization', 'Digital Brand Guidelines', 'Interaction Design'],
+    results: ['Reduced onboarding time by 65%', 'Increased daily active users by 210%', 'Secured Series B funding post-launch'],
+    colors: ['#2A97D9', '#051838', '#FFCD00', '#F4F4F5']
+  },
+  { 
+    id: 'cs3', client: 'Novus Fin', sector: 'Finance', challenge: 'Transforming a legacy financial institution into a modern, creator-led fintech platform.', route: 'Brand Strategy', tags: ['Fintech', 'Positioning', 'Campaign'], type: 'purple',
+    overview: 'Novus Fin was seen as a traditional, slow-moving bank. To capture the next generation of wealth creators, they needed a radical departure from corporate finance tropes.',
+    solution: 'We rebuilt the Novus narrative around "Empowered Creation." The visual identity was shifted to high-contrast neon on dark mode backgrounds, speaking the language of modern tech rather than legacy banking.',
+    roles: ['Brand Repositioning', 'Tone of Voice', 'Launch Campaign', 'App Design'],
+    results: ['Acquired 100k+ new Gen-Z users in 3 months', 'Ranked Top 3 Fintech Apps on App Store', 'Viral social media launch campaign'],
+    colors: ['#AF73DD', '#111111', '#93D435', '#FFFFFF']
+  },
+  { 
+    id: 'cs4', client: 'Aero Dynamics', sector: 'Aviation', challenge: 'Communicating sustainable aviation solutions through powerful SciArt storytelling.', route: 'Narrative', tags: ['Sustainability', 'Storytelling', 'B2B'], type: 'green',
+    overview: 'Aero Dynamics engineered a zero-emission propulsion system, but their B2B marketing material was bogged down in engineering specs, failing to communicate the global impact.',
+    solution: 'We crafted the "Blue Sky Protocol" narrative. Moving away from technical jargon, we built an immersive B2B digital experience that visualized the environmental and economic impact of their engines through striking 3D web experiences.',
+    roles: ['Strategic Narrative', '3D Web Experience', 'Investor Deck Design', 'B2B Storytelling'],
+    results: ['$50M+ in pre-orders secured', 'Featured in top global sustainability summits', 'Brand adopted as industry standard case study'],
+    colors: ['#93D435', '#012015', '#2A97D9', '#E8F5E9']
+  },
 ];
 
 const JOURNAL_ARTICLES = [
@@ -78,7 +106,7 @@ const JOURNAL_ARTICLES = [
   { id: 'a2', tag: "Perspective", title: "Why Aesthetics Cannot Save a Bad Strategy.", time: "4 min read", type: "blue", excerpt: "Design without direction is just decoration. Here is why strategy must lead.", author: "PBH Design", date: "Sep 28, 2025" },
   { id: 'a3', tag: "Analysis", title: "Humanizing Complex Tech for the Enterprise.", time: "6 min read", type: "purple", excerpt: "How to tell a compelling story when your product is highly technical.", author: "PBH Content", date: "Sep 15, 2025" },
   { id: 'a4', tag: "Culture", title: "The SciArt Approach in Practice.", time: "8 min read", type: "accent", excerpt: "A behind-the-scenes look at how our hybrid teams co-create.", author: "PBH Culture", date: "Aug 30, 2025" },
-  { id: 'a5', tag: "Trend", title: "The End of the Traditional Agency Model.", time: "5 min read", type: "orange", excerpt: "Why the retainer model is dying and what replaces it.", author: "PBH Leadership", date: "Aug 12, 2025" },
+  { id: 'a5', tag: "Trend", title: "Scaling for the Next Decade.", time: "5 min read", type: "orange", excerpt: "Why sustainable growth requires a unified brand ecosystem.", author: "PBH Leadership", date: "Aug 12, 2025" },
   { id: 'a6', tag: "Guide", title: "Building a Repeatable Design System.", time: "7 min read", type: "green", excerpt: "Stop recreating the wheel. How to build systems that scale.", author: "PBH Systems", date: "Jul 22, 2025" }
 ];
 
@@ -293,7 +321,7 @@ const StartVisual = () => {
 const InteractiveHowItWorks = () => {
   const [activeStep, setActiveStep] = useState(0);
   const steps = [
-    { num: '01', title: 'Diagnose', desc: 'Answer focused questions about your brand, teams, communication, and growth stage.', color: palette.primary },
+    { num: '01', title: 'Discover', desc: 'Answer focused questions about your brand, teams, communication, and growth stage.', color: palette.primary },
     { num: '02', title: 'Map', desc: 'We identify your problem clusters and route you to the right strategic service paths.', color: palette.blue },
     { num: '03', title: 'Build', desc: 'Select priorities, deliverables, timelines, and depth to create a custom scope.', color: palette.primary },
     { num: '04', title: 'Start', desc: 'Submit your scope and begin the first conversation with clarity, not guesswork.', color: palette.blue }
@@ -476,7 +504,7 @@ const StrategicEngine = ({ navigate }) => {
         <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-6 leading-[1.1] font-primary max-w-4xl">Build your <AnimatedItalic>strategic</AnimatedItalic> brand scope.</h1>
         <p className="text-lg md:text-xl text-white/50 font-light mb-12 leading-relaxed font-secondary max-w-3xl">This is not a generic form. It is a guided discovery system. We’ll map your gaps, define service priorities, and generate a customized roadmap before our first conversation.</p>
         <div className="flex flex-col sm:flex-row items-center gap-6">
-          <PremiumButton onClick={() => setStep(1)} className="w-full sm:w-auto px-10 py-5">Start Assessment</PremiumButton>
+          <PremiumButton onClick={() => setStep(1)} className="w-full sm:w-auto px-10 py-5">Begin Discovery</PremiumButton>
           <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 py-2 font-secondary w-full sm:w-auto"><ArrowLeft className="w-4 h-4"/> Back to Home</button>
         </div>
       </FadeUp>
@@ -486,7 +514,7 @@ const StrategicEngine = ({ navigate }) => {
     ...QUIZ_QUESTIONS.map((q, i) => (
       <div key={`q${i}`} className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
         <FadeUp>
-          <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Diagnosis ({i+1}/3)</div>
+          <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery ({i+1}/3)</div>
           <h2 className="text-3xl md:text-4xl font-light mb-10 font-primary">{q.title}</h2>
           <StaggerGroup className="space-y-3 w-full max-w-3xl">
             {q.options.map((opt, j) => {
@@ -513,7 +541,7 @@ const StrategicEngine = ({ navigate }) => {
     // Step 4: Diagnosis Result
     <div key="s4" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-xs font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4"/> Strategic Diagnosis</div>
+        <div className="text-xs font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4"/> Discovery Insights</div>
         <h2 className="text-3xl md:text-4xl font-light mb-6 font-primary">Your brand opportunity areas.</h2>
         <p className="text-white/50 font-light mb-12 text-lg font-secondary max-w-3xl">Based on your answers, your communication is currently breaking due to <strong className="text-white">{clusters.join(' & ')}</strong>. We recommend structuring your project around these core ecosystems:</p>
         <StaggerGroup className="grid sm:grid-cols-2 gap-4 mb-12 w-full max-w-4xl">
@@ -684,7 +712,7 @@ const StrategicEngine = ({ navigate }) => {
           <div className="grid md:grid-cols-2 gap-16 relative z-10 w-full">
             <div className="space-y-10 w-full">
               <div className="bg-white/[0.02] border border-white/5 rounded-[16px] p-8 mb-8 relative overflow-hidden w-full">
-                 <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-8 font-primary">Diagnostic Brand Health</h4>
+                 <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-8 font-primary">Brand Alignment Profile</h4>
                  <BrandHealthRadar clusters={clusters} />
               </div>
 
@@ -872,7 +900,7 @@ const Header = ({ navigate, current }) => {
         {Object.values(ROUTES_INFO).map(route => {
           const rColor = palette[route.type] || palette.primary;
           return (
-            <MenuHoverCard key={route.id} color={rColor} onClick={() => { navigate(`services/${route.id.toLowerCase()}`); setActiveMenu(null); }}>
+            <MenuHoverCard key={route.id} color={rColor} onClick={() => { navigate(`service-detail/${route.id.toLowerCase()}`); setActiveMenu(null); }}>
               <motion.div variants={{ initial: { y: 0, scale: 1 }, hover: { y: -4, scale: 1.05 } }} transition={{ type: "spring", stiffness: 400, damping: 15 }} className="w-12 h-12 rounded-[12px] border border-white/10 flex items-center justify-center mb-5 shadow-inner" style={{ backgroundColor: rColor, color: palette.bgDeep, border: 'none' }}>{route.icon}</motion.div>
               <h4 className="text-lg font-medium text-white mb-2 font-primary">{route.title}</h4>
               <p className="text-xs text-white/40 leading-relaxed font-light font-secondary">{route.desc}</p>
@@ -895,7 +923,7 @@ const Header = ({ navigate, current }) => {
         {CASE_STUDIES.slice(0, 2).map((cs, i) => {
           const hexColor = palette[cs.type] || palette.primary;
           return (
-            <MenuHoverCard key={i} color={hexColor} onClick={() => { navigate('work'); setActiveMenu(null); }}>
+            <MenuHoverCard key={i} color={hexColor} onClick={() => { navigate('work/' + cs.id); setActiveMenu(null); }}>
               <div className="flex gap-6 items-center w-full">
                 <div className="w-24 h-24 rounded-[12px] bg-white/5 relative overflow-hidden shrink-0 border border-white/10">
                   <motion.div variants={{ initial: { scale: 1, opacity: 0.2 }, hover: { scale: 1.2, opacity: 0.4 } }} transition={{ duration: 0.7, ease: "easeOut" }} className="absolute inset-0" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
@@ -966,7 +994,7 @@ const Header = ({ navigate, current }) => {
         </div>
         
         <nav className="hidden lg:flex items-center gap-2 text-sm font-medium tracking-wide bg-white/[0.04] border border-white/10 rounded-full px-3 py-2 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_50px_rgba(0,0,0,0.35)] font-secondary">
-          <NavLink onClick={() => {navigate('work'); setActiveMenu(null);}} onMouseEnter={() => handleMouseEnter('work')} active={current === 'work' || activeMenu === 'work'}>Work</NavLink>
+          <NavLink onClick={() => {navigate('work'); setActiveMenu(null);}} onMouseEnter={() => handleMouseEnter('work')} active={current.startsWith('work') || activeMenu === 'work'}>Work</NavLink>
           <NavLink onClick={() => {navigate('services'); setActiveMenu(null);}} onMouseEnter={() => handleMouseEnter('services')} active={current.startsWith('services') || activeMenu === 'services'}>Services</NavLink>
           <NavLink onClick={() => {navigate('about'); setActiveMenu(null);}} onMouseEnter={() => handleMouseEnter('about')} active={['about', 'method', 'story', 'team'].includes(current) || activeMenu === 'about'}>About Us</NavLink>
           <NavLink onClick={() => {navigate('journal'); setActiveMenu(null);}} onMouseEnter={() => setActiveMenu(null)} active={current.startsWith('journal') || current.startsWith('article')}>Journal</NavLink>
@@ -1126,9 +1154,9 @@ const HomePage = ({ navigate }) => {
         </motion.div>
 
         <div className="flex-1 flex flex-col justify-center w-full relative z-10 text-left">
-          <RevealText delay={0.1}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-1 font-primary">Brands break when</h1></RevealText>
-          <RevealText delay={0.2}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 flex items-baseline flex-wrap font-primary">strategy and execution <AnimatedItalic className="text-white/60 ml-4">stop talking.</AnimatedItalic></h1></RevealText>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">PurpleBlue House helps businesses build clearer brands, sharper narratives, and communication systems that actually move people.</motion.p>
+          <RevealText delay={0.1}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-1 font-primary">Breakthroughs happen</h1></RevealText>
+          <RevealText delay={0.2}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 flex items-baseline flex-wrap font-primary">when strategy and execution <AnimatedItalic className="text-white/60 ml-4">move as one.</AnimatedItalic></h1></RevealText>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs.</motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.7 }} className="mt-12 flex flex-col sm:flex-row gap-6">
             <PremiumButton onClick={() => navigate('assessment')} className="min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(${rgbPrimary}, 0.2)` }}>Build My Brand Scope <Sparkles className="w-4 h-4 ml-2" /></PremiumButton>
             <PremiumButton variant="secondary" onClick={() => navigate('work')} className="min-w-[240px]">Explore Our Work</PremiumButton>
@@ -1137,8 +1165,8 @@ const HomePage = ({ navigate }) => {
       </section>
 
       <section className="py-24 px-[3%] relative w-full border-y border-white/5 text-left" style={{ backgroundColor: palette.bg }}>
-        <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-16 font-primary">Most brand problems are <br/><AnimatedItalic className="text-white/50">not surface problems.</AnimatedItalic></h2></RevealText>
-        <FadeUp><p className="text-xl text-white/50 font-light max-w-3xl mb-16 leading-relaxed font-secondary">Low engagement, inconsistent visuals, weak campaigns, unclear messaging, scattered teams — these are usually symptoms of a deeper gap between brand thinking and brand execution.</p></FadeUp>
+        <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-16 font-primary">Scaling a breakthrough <br/><AnimatedItalic className="text-white/50">requires deep alignment.</AnimatedItalic></h2></RevealText>
+        <FadeUp><p className="text-xl text-white/50 font-light max-w-3xl mb-16 leading-relaxed font-secondary">Low engagement, inconsistent visuals, and scattered teams aren't just creative issues—they are strategic bottlenecks. We align your brand thinking with execution to drive sustainable, long-term growth.</p></FadeUp>
         <StaggerGroup className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full">
           {PROBLEM_DATA.map((prob, i) => (
             <StaggerItem key={i}><ProblemHoverCard title={prob.title} icon={prob.icon} type={prob.type} /></StaggerItem>
@@ -1148,17 +1176,17 @@ const HomePage = ({ navigate }) => {
 
       <section className="py-32 px-[3%] w-full border-b border-white/5 text-left" style={{ backgroundColor: palette.bgDeep }}>
         <div className="max-w-4xl mb-24">
-          <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6 font-primary">The traditional agency <br/><AnimatedItalic className="text-white/50">model is broken.</AnimatedItalic></h2></RevealText>
-          <FadeUp><p className="text-xl text-white/50 font-light leading-relaxed font-secondary">Most agencies execute blindly against a flawed brief. We build a strategic foundation first, ensuring every creative asset serves a core business objective.</p></FadeUp>
+          <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6 font-primary">Breakthrough innovation <br/><AnimatedItalic className="text-white/50">demands a new model.</AnimatedItalic></h2></RevealText>
+          <FadeUp><p className="text-xl text-white/50 font-light leading-relaxed font-secondary">Traditional execution models struggle to translate complex ideas into scalable systems. We build a strategic foundation first, ensuring every asset accelerates your 5-year vision and market impact.</p></FadeUp>
         </div>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full">
           <StaggerItem>
             <div className="border border-white/5 rounded-[24px] p-10 md:p-14 h-full w-full" style={{ backgroundColor: palette.panel }}>
                <h3 className="text-white/40 text-sm tracking-widest uppercase mb-10 font-primary">The Old Way</h3>
                <ul className="space-y-8 font-secondary">
-                 <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Executing blindly on surface-level aesthetic requests.</span></li>
-                 <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Charging for endless revisions due to lack of clarity.</span></li>
-                 <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Disjointed teams producing inconsistent touchpoints.</span></li>
+                 <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Execution disconnected from core business objectives.</span></li>
+                 <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Short-term aesthetic fixes over long-term strategic systems.</span></li>
+                 <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Disjointed touchpoints that dilute the brand's potential.</span></li>
                </ul>
             </div>
           </StaggerItem>
@@ -1167,7 +1195,7 @@ const HomePage = ({ navigate }) => {
                <div className="absolute bottom-0 right-0 w-64 h-64 opacity-[0.1] blur-[80px] pointer-events-none" style={{ backgroundColor: palette.primary }} />
                <h3 className="text-sm tracking-widest uppercase mb-10 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>The PBH Way</h3>
                <ul className="space-y-8 relative z-10 font-secondary">
-                 <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Diagnosing the root business gap before designing anything.</span></li>
+                 <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Mapping the root business gap before designing anything.</span></li>
                  <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Modular scoping based on exact strategic requirements.</span></li>
                  <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Building connected systems where strategy dictates execution.</span></li>
                </ul>
@@ -1181,8 +1209,8 @@ const HomePage = ({ navigate }) => {
         <div className="grid md:grid-cols-2 gap-16 items-center w-full">
           <FadeUp>
              <h3 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>Our Philosophy</h3>
-             <h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary mb-6 leading-tight">Built on the <br/><AnimatedItalic className="text-white/80">SciArt</AnimatedItalic> framework.</h2>
-             <p className="text-lg text-white/60 font-light leading-relaxed font-secondary">We bridge the divide between rigorous logic and intense imagination. Science gives us the framework, the data, and the strategy. Art gives us the empathy, the visual impact, and the connection. Together, they create brands that are unbreakable.</p>
+             <h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary mb-6 leading-tight">Engineering breakthroughs <br/>with the <AnimatedItalic className="text-white/80">SciArt</AnimatedItalic> framework.</h2>
+             <p className="text-lg text-white/60 font-light leading-relaxed font-secondary">We bridge the divide between rigorous strategic logic and intense imagination. Science gives us the framework, the data, and the scalable systems. Art gives us the empathy, the visual impact, and the connection. Together, they create brands engineered for the future.</p>
           </FadeUp>
           <FadeUp delay={0.2} className="relative h-[300px] md:h-[400px] flex items-center justify-center rounded-[32px] border border-white/10 overflow-hidden shadow-2xl w-full" style={{ backgroundColor: palette.bgDeep }}>
             <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
@@ -1212,7 +1240,7 @@ const HomePage = ({ navigate }) => {
                     <div className="w-14 h-14 rounded-[12px] border border-white/10 flex items-center justify-center mb-8" style={{ backgroundColor: rColor, color: palette.bgDeep, border: 'none' }}>{route.icon}</div>
                     <h4 className="text-2xl font-light mb-4 font-primary">{route.title}</h4>
                     <p className="text-white/50 font-light leading-relaxed mb-10 flex-grow font-secondary">{route.desc}</p>
-                    <PremiumButton variant="ghost" onClick={() => navigate(`services/${route.id.toLowerCase()}`)} className="self-start px-0 group hover:bg-transparent text-white/70">Explore Route <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
+                    <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="self-start px-0 group hover:bg-transparent text-white/70">Explore Route <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
                   </div>
                 </SpotlightCard>
               </StaggerItem>
@@ -1264,7 +1292,7 @@ const HomePage = ({ navigate }) => {
              const hexColor = palette[cs.type] || palette.primary;
              return (
               <StaggerItem key={i}>
-                <div onClick={() => navigate('work')} className="group relative border border-white/5 rounded-[24px] overflow-hidden flex flex-col transition-all duration-700 cursor-pointer text-left h-[450px] w-full" style={{ backgroundColor: palette.panel }}>
+                <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/5 rounded-[24px] overflow-hidden flex flex-col transition-all duration-700 cursor-pointer text-left h-[450px] w-full" style={{ backgroundColor: palette.panel }}>
                   <div className="h-[250px] relative overflow-hidden border-b border-white/5 bg-white/[0.02]">
                     <div className={`absolute inset-0 opacity-20 mix-blend-screen group-hover:scale-110 transition-transform duration-1000 ease-out`} style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
                     <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 group-hover:text-white/30 transition-colors duration-700 text-5xl">{cs.client.split(' ')[0]}</span></div>
@@ -1281,7 +1309,7 @@ const HomePage = ({ navigate }) => {
                   </div>
                 </div>
               </StaggerItem>
-            )
+             )
           })}
         </StaggerGroup>
       </section>
@@ -1314,8 +1342,8 @@ const HomePage = ({ navigate }) => {
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="relative z-10 w-full overflow-hidden flex whitespace-nowrap">
            <motion.div animate={{ x: ["0%", "-50%"] }} transition={{ repeat: Infinity, ease: "linear", duration: 20 }} className="flex gap-16 opacity-90 font-primary" style={{ color: palette.bgDeep }}>
-             <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">3 Ecosystems. 1 Connected System. Zero Guesswork.</span>
-             <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">3 Ecosystems. 1 Connected System. Zero Guesswork.</span>
+             <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">3 Ecosystems. 1 Connected System. Infinite Breakthroughs.</span>
+             <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">3 Ecosystems. 1 Connected System. Infinite Breakthroughs.</span>
            </motion.div>
         </div>
       </section>
@@ -1325,12 +1353,218 @@ const HomePage = ({ navigate }) => {
         <FadeUp className="relative z-10 w-full flex flex-col items-center">
           <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.blue }}>Start with clarity.</h2>
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-light mb-12 tracking-tight font-primary">Build your brand scope <br/><AnimatedItalic className="text-white/60">before the first call.</AnimatedItalic></h1>
-          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-6 text-lg w-full sm:w-auto font-secondary">Start Strategic Assessment</PremiumButton>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-6 text-lg w-full sm:w-auto font-secondary">Begin Brand Discovery</PremiumButton>
         </FadeUp>
       </section>
     </motion.div>
   );
 };
+
+const WorkDetailPage = ({ navigate, projectId }) => {
+  const projectIndex = CASE_STUDIES.findIndex(p => p.id === projectId);
+  const project = CASE_STUDIES[projectIndex] || CASE_STUDIES[0];
+  const nextProject = CASE_STUDIES[(projectIndex + 1) % CASE_STUDIES.length];
+  const hexColor = palette[project.type] || palette.primary;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [projectId]);
+
+  return (
+    <div className="min-h-screen text-[#F4F4F5] w-full" style={{ backgroundColor: palette.bgDeep }}>
+      
+      {/* Hero Section */}
+      <section className="relative w-full h-[70vh] md:h-[90vh] flex flex-col justify-end p-[3%] overflow-hidden">
+        <motion.div initial={{ scale: 1.1 }} animate={{ scale: 1 }} transition={{ duration: 1.5, ease: "easeOut" }} className="absolute inset-0 z-0">
+           <div className="absolute inset-0 opacity-40 mix-blend-screen" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
+           <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/60 to-transparent" />
+           <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none"><span className="font-serif italic text-9xl md:text-[15rem] whitespace-nowrap overflow-hidden">{project.client.split(' ')[0]}</span></div>
+        </motion.div>
+        
+        <div className="relative z-10 w-full pb-12 text-left">
+          <button onClick={() => navigate('work')} className="text-white/60 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Selected Work</button>
+          <FadeUp>
+            <div className="flex gap-3 mb-6 flex-wrap font-secondary">
+               {project.tags.map(t => <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-xs text-white uppercase tracking-widest backdrop-blur-md">{t}</span>)}
+            </div>
+            <h1 className="text-5xl md:text-8xl font-light tracking-tight font-primary text-white mb-6 leading-[1.1]">{project.client}</h1>
+            <p className="text-xl md:text-2xl text-white/70 font-light font-secondary max-w-3xl leading-relaxed">{project.challenge}</p>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* Meta Data Grid */}
+      <section className="border-y border-white/10 w-full" style={{ backgroundColor: palette.panel }}>
+         <div className="grid grid-cols-2 md:grid-cols-4 w-full divide-x divide-y md:divide-y-0 divide-white/10 text-left font-secondary">
+           <div className="p-8 md:p-12">
+             <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Client</h4>
+             <p className="text-lg text-white font-light">{project.client}</p>
+           </div>
+           <div className="p-8 md:p-12">
+             <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Sector</h4>
+             <p className="text-lg text-white font-light">{project.sector}</p>
+           </div>
+           <div className="p-8 md:p-12">
+             <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Core Route</h4>
+             <p className="text-lg text-white font-light">{project.route}</p>
+           </div>
+           <div className="p-8 md:p-12">
+             <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Year</h4>
+             <p className="text-lg text-white font-light">2025</p>
+           </div>
+         </div>
+      </section>
+
+      {/* Story & Context */}
+      <section className="py-32 px-[3%] w-full">
+         <div className="grid md:grid-cols-12 gap-16 w-full text-left">
+           <div className="md:col-span-4">
+             <FadeUp>
+               <h3 className="text-3xl font-light mb-8 font-primary text-white border-b border-white/10 pb-6">Core Deliverables</h3>
+               <ul className="space-y-4 font-secondary">
+                 {project.roles.map(r => (
+                   <li key={r} className="flex items-center gap-3 text-white/70 text-lg font-light"><CheckCircle2 className="w-5 h-5" style={{ color: hexColor }}/> {r}</li>
+                 ))}
+               </ul>
+             </FadeUp>
+           </div>
+           <div className="md:col-span-8">
+             <StaggerGroup className="space-y-16 font-secondary text-white/70 font-light text-xl leading-relaxed">
+               <StaggerItem>
+                 <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">The Challenge</h4>
+                 <p>{project.overview}</p>
+               </StaggerItem>
+               <StaggerItem>
+                 <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">The PBH Solution</h4>
+                 <p className="text-2xl text-white font-medium leading-snug">{project.solution}</p>
+               </StaggerItem>
+             </StaggerGroup>
+           </div>
+         </div>
+      </section>
+
+      {/* Visual Block 1 (Mock Aesthetic Shot) */}
+      <FadeUp className="w-full px-[3%] mb-32">
+        <div className="w-full aspect-[21/9] rounded-[32px] overflow-hidden relative border border-white/10 shadow-[0_50px_100px_rgba(0,0,0,0.5)] bg-[#05050A] flex items-center justify-center">
+          <div className="absolute inset-0 opacity-40 mix-blend-screen" style={{ background: `radial-gradient(ellipse at center, ${hexColor}, transparent 70%)` }} />
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20" />
+          <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }} className="w-full max-w-2xl aspect-square border border-white/5 rounded-full absolute mix-blend-overlay" />
+          <motion.div animate={{ rotate: -360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} className="w-full max-w-4xl aspect-square border border-white/5 rounded-[100%] absolute mix-blend-overlay" />
+          <div className="relative z-10 text-center px-4">
+             <span className="font-serif italic text-6xl md:text-8xl lg:text-[10rem] text-white/90 drop-shadow-2xl">{project.client.split(' ')[0]}</span>
+          </div>
+        </div>
+      </FadeUp>
+
+      {/* Design System & Colors */}
+      <section className="py-32 px-[3%] w-full border-t border-white/5 bg-[#010626] text-left">
+         <FadeUp className="max-w-6xl mx-auto w-full">
+           <h3 className="text-3xl font-light mb-16 font-primary text-center">Design System</h3>
+           
+           <div className="grid md:grid-cols-2 gap-16 mb-24 w-full items-center">
+             <div>
+               <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Typography</h4>
+               <div className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col gap-8">
+                 <div className="border-b border-white/10 pb-6">
+                   <p className="text-sm text-white/40 mb-2 font-secondary">Primary Display (Serif)</p>
+                   <p className="text-5xl font-serif italic text-white">Ogg / Playfair</p>
+                   <p className="text-xl font-serif text-white/50 mt-4 break-words">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm</p>
+                 </div>
+                 <div>
+                   <p className="text-sm text-white/40 mb-2 font-secondary">Secondary Body (Sans)</p>
+                   <p className="text-4xl font-primary font-light text-white">Space Grotesk</p>
+                   <p className="text-lg font-primary text-white/50 mt-4 break-words font-light">0123456789 !@#$%^&*()</p>
+                 </div>
+               </div>
+             </div>
+             
+             <div>
+               <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Color Palette</h4>
+               <div className="grid grid-cols-2 gap-4">
+                 {(project.colors || [hexColor, '#FFFFFF', '#111111', '#555555']).map((col, i) => (
+                   <div key={i} className="rounded-[16px] overflow-hidden border border-white/10 bg-white/[0.02] flex flex-col h-40 shadow-inner group">
+                     <div className="flex-1 transition-transform group-hover:scale-105 origin-bottom" style={{ backgroundColor: col }} />
+                     <div className="p-4 font-mono text-xs text-white/70 bg-[#0A0A0A] flex justify-between">
+                       <span>{i === 0 ? 'Primary' : `Accent 0${i}`}</span>
+                       <span>{col}</span>
+                     </div>
+                   </div>
+                 ))}
+               </div>
+             </div>
+           </div>
+         </FadeUp>
+      </section>
+
+      {/* Visual Block 2 (UI / Packaging Mock) */}
+      <FadeUp className="w-full px-[3%] mb-32 pt-32 text-left">
+        <div className="grid md:grid-cols-2 gap-6 w-full">
+           <div className="aspect-square rounded-[32px] bg-white/[0.02] border border-white/5 flex flex-col p-12 overflow-hidden relative shadow-2xl items-center justify-center group">
+              <div className="absolute inset-0 opacity-20 transition-transform duration-1000 group-hover:scale-110" style={{ background: `radial-gradient(circle at bottom left, ${hexColor}, transparent 60%)` }} />
+              <div className="w-2/3 h-3/4 bg-[#05050A] rounded-[24px] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-10 flex flex-col p-6">
+                <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+                  <div className="flex gap-2"><div className="w-3 h-3 rounded-full bg-white/20"/><div className="w-3 h-3 rounded-full bg-white/20"/></div>
+                  <div className="w-24 h-2 rounded-full bg-white/10"/>
+                </div>
+                <div className="w-full h-32 rounded-[12px] mb-4" style={{ backgroundColor: `${hexColor}33` }} />
+                <div className="w-3/4 h-4 rounded-full bg-white/20 mb-3" />
+                <div className="w-1/2 h-4 rounded-full bg-white/10 mb-8" />
+                <div className="mt-auto w-full h-12 rounded-[8px] bg-white/5" />
+              </div>
+           </div>
+           
+           <div className="aspect-square rounded-[32px] bg-white/[0.02] border border-white/5 flex flex-col p-12 overflow-hidden relative shadow-2xl items-center justify-center group">
+              <div className="absolute inset-0 opacity-20 transition-transform duration-1000 group-hover:scale-110" style={{ background: `radial-gradient(circle at top right, ${hexColor}, transparent 60%)` }} />
+              <div className="w-1/2 h-full bg-[#05050A] rounded-full border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-10 flex items-center justify-center p-8 text-center">
+                 <div>
+                    <span className="font-serif italic text-4xl text-white/90 block mb-8">{project.client.split(' ')[0]}</span>
+                    <div className="w-16 h-1 rounded-full bg-white/20 mx-auto mb-8" />
+                    <div className="w-full aspect-square rounded-full border border-white/10 flex items-center justify-center" style={{ backgroundColor: `${hexColor}1A` }}>
+                      <div className="w-1/2 h-1/2 rounded-full bg-white/5" />
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+      </FadeUp>
+
+      {/* Results / Impact */}
+      <section className="py-32 px-[3%] w-full border-t border-white/5 bg-[#010825] text-left">
+         <FadeUp className="max-w-6xl mx-auto w-full">
+           <h3 className="text-3xl font-light mb-16 font-primary text-center">Project Impact</h3>
+           <div className="grid md:grid-cols-3 gap-8">
+             {project.results.map((res, i) => (
+               <div key={i} className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col items-center text-center shadow-lg relative overflow-hidden group">
+                 <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 transition-opacity group-hover:opacity-30 pointer-events-none" style={{ backgroundColor: hexColor }} />
+                 <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center mb-8 bg-[#05050A] text-white relative z-10">
+                   {i === 0 ? <BarChart2 className="w-6 h-6" style={{ color: hexColor }}/> : i === 1 ? <Target className="w-6 h-6" style={{ color: hexColor }}/> : <Sparkles className="w-6 h-6" style={{ color: hexColor }}/>}
+                 </div>
+                 <p className="text-xl text-white/90 font-light font-secondary leading-relaxed relative z-10">{res}</p>
+               </div>
+             ))}
+           </div>
+         </FadeUp>
+      </section>
+
+      {/* Next Project Footer */}
+      <section 
+        onClick={() => navigate('work/' + nextProject.id)} 
+        className="relative w-full h-[50vh] flex flex-col justify-center items-center cursor-pointer group overflow-hidden border-t border-white/10"
+      >
+         <div className="absolute inset-0 bg-[#05050A] z-0" />
+         <div className="absolute inset-0 opacity-20 mix-blend-screen transition-transform duration-1000 group-hover:scale-105 z-0" style={{ background: `radial-gradient(circle at center, ${palette[nextProject.type] || palette.primary}, transparent 70%)` }} />
+         
+         <div className="relative z-10 text-center">
+            <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary block text-white/50 group-hover:text-white transition-colors">Next Project</span>
+            <h2 className="text-5xl md:text-8xl font-light tracking-tight font-primary text-white group-hover:opacity-80 transition-opacity">
+              {nextProject.client}
+            </h2>
+         </div>
+      </section>
+    </div>
+  );
+};
+
 
 const AboutPage = ({ navigate }) => {
   return (
@@ -1341,18 +1575,18 @@ const AboutPage = ({ navigate }) => {
         {/* Section 1: Hero */}
         <FadeUp>
           <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>About PurpleBlue House</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-12 tracking-tight max-w-5xl font-primary">We co-create brands backed by cutting-edge innovation, with a <AnimatedItalic>SciArt-driven approach.</AnimatedItalic></h1>
+          <h1 className="text-5xl md:text-7xl font-light mb-12 tracking-tight max-w-5xl font-primary">We build breakthrough brands backed by cutting-edge innovation, powered by a <AnimatedItalic>SciArt approach.</AnimatedItalic></h1>
         </FadeUp>
         
         {/* Section 2: Vision & Mission */}
         <FadeUp delay={0.2} className="grid md:grid-cols-2 gap-16 border-t border-white/10 pt-24 mb-24 w-full">
           <div>
             <h3 className="text-sm tracking-widest uppercase mb-6 font-primary text-white/40">Our Vision</h3>
-            <h2 className="text-3xl font-light font-primary leading-tight text-white/90">To be the catalyst igniting a global movement where communication & design illuminate innovations that matter to humanity, India, and the world.</h2>
+            <h2 className="text-3xl font-light font-primary leading-tight text-white/90">To be the defining strategic partner for the world's most ambitious breakthrough innovations, shaping the next era of global progress.</h2>
           </div>
           <div>
             <h3 className="text-sm tracking-widest uppercase mb-6 font-primary text-white/40">Our Mission</h3>
-            <p className="text-xl text-white/60 font-light font-secondary leading-relaxed">We empower innovators globally, crafting impactful communication and design that ignites conversations around groundbreaking ideas. We champion the rise of Indian innovation on the world stage, fostering a future where creativity and ingenuity fuel the progress for humanity.</p>
+            <p className="text-xl text-white/60 font-light font-secondary leading-relaxed">We empower forward-thinking organizations globally, translating complex capabilities into compelling narratives. By championing breakthrough ideas, we build resilient brand systems that scale across the next decade and beyond.</p>
           </div>
         </FadeUp>
 
@@ -1360,7 +1594,7 @@ const AboutPage = ({ navigate }) => {
         <FadeUp className="border border-white/10 rounded-[24px] p-12 md:p-16 mb-24 text-center relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
             <div className="absolute inset-0 opacity-10 mix-blend-screen pointer-events-none w-full" style={{ background: `radial-gradient(circle at 50% 0%, ${palette.primary}, transparent 70%)` }} />
             <h3 className="text-sm tracking-widest uppercase mb-6 font-primary" style={{ color: palette.blue }}>Our Purpose</h3>
-            <h2 className="text-3xl md:text-5xl font-light font-primary leading-tight max-w-4xl mx-auto text-white/90">We exist to foster prosperity. To ignite a revolution of creativity, empowering creators & leaders through the transformative lens of <AnimatedItalic>SciArt.</AnimatedItalic></h2>
+            <h2 className="text-3xl md:text-5xl font-light font-primary leading-tight max-w-4xl mx-auto text-white/90">We exist to turn complex innovations into undeniable <AnimatedItalic>market breakthroughs.</AnimatedItalic></h2>
         </FadeUp>
 
         {/* Section 4: Core Values */}
@@ -1437,10 +1671,10 @@ const OurStoryPage = ({ navigate }) => {
         
         {/* Section 2: The Spark */}
         <StaggerGroup className="space-y-8 text-lg font-light text-white/70 font-secondary leading-relaxed mb-32 w-full">
-            <StaggerItem><p className="text-2xl text-white mb-10 leading-tight max-w-4xl">PurpleBlue House was born out of a desire to revive the scientific heritage of India and bridge the gap between ancient ingenuity and modern digital expression.</p></StaggerItem>
-            <StaggerItem><p className="max-w-4xl">We recognized that breakthrough innovators often struggle to translate complex, cutting-edge technology into narratives that resonate with humanity. They build incredible things, but the world struggles to understand them.</p></StaggerItem>
-            <StaggerItem><p className="max-w-4xl">On the other hand, traditional creative agencies apply surface-level aesthetics, missing the deeper functional truth of the innovation entirely. They decorate, but they do not translate.</p></StaggerItem>
-            <StaggerItem><p className="max-w-4xl">We realized there needed to be a place where rigorous logic and intense imagination could coexist. A place where creators could find their voice.</p></StaggerItem>
+            <StaggerItem><p className="text-2xl text-white mb-10 leading-tight max-w-4xl">PurpleBlue House was founded to solve a critical bottleneck: breakthrough innovations were failing to reach their market potential due to fragmented communication.</p></StaggerItem>
+            <StaggerItem><p className="max-w-4xl">We observed that visionary teams often struggle to translate complex, cutting-edge technology into clear, scalable narratives. They engineer incredible products, but the strategic story gets lost in execution.</p></StaggerItem>
+            <StaggerItem><p className="max-w-4xl">Meanwhile, standard creative approaches focus heavily on surface-level aesthetics without grasping the underlying functional truths. This disconnect limits long-term growth and dilutes the breakthrough.</p></StaggerItem>
+            <StaggerItem><p className="max-w-4xl">We built a collaborative ecosystem where rigorous logic and strategic imagination drive every decision, ensuring tomorrow's breakthroughs communicate with clarity today.</p></StaggerItem>
         </StaggerGroup>
 
         {/* Section 3: The Meaning Behind the Name */}
@@ -1604,7 +1838,7 @@ const MethodPage = ({ navigate }) => {
         {/* Section 1: Hero */}
         <FadeUp>
           <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>The PBH Method</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-24 tracking-tight font-primary max-w-4xl">A clear process for brands that need direction, <AnimatedItalic className="text-white/50">not decoration.</AnimatedItalic></h1>
+          <h1 className="text-5xl md:text-7xl font-light mb-24 tracking-tight font-primary max-w-4xl">The blueprint for <AnimatedItalic className="text-white/50">breakthrough brands.</AnimatedItalic></h1>
         </FadeUp>
         
         {/* Section 2: Traditional vs PBH */}
@@ -1612,15 +1846,15 @@ const MethodPage = ({ navigate }) => {
           <div className="border border-white/5 rounded-[24px] p-10 relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
              <h3 className="text-white/40 text-sm tracking-widest uppercase mb-8 font-primary">The Traditional Model</h3>
              <ul className="space-y-6 font-secondary">
-               <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Executing blindly on surface-level aesthetic requests.</span></li>
-               <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Charging for endless revisions due to lack of clarity.</span></li>
-               <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Disjointed teams producing inconsistent touchpoints.</span></li>
+               <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Execution disconnected from core business objectives.</span></li>
+               <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Short-term aesthetic fixes over long-term systems.</span></li>
+               <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Disjointed touchpoints that dilute brand potential.</span></li>
              </ul>
           </div>
           <div className="border rounded-[24px] p-10 relative overflow-hidden w-full" style={{ background: `linear-gradient(to bottom right, ${hexToRgba(palette.primary, 0.1)}, transparent)`, borderColor: hexToRgba(palette.primary, 0.2) }}>
              <h3 className="text-sm tracking-widest uppercase mb-8 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>The PBH Method</h3>
              <ul className="space-y-6 relative z-10 font-secondary">
-               <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Diagnosing the root business gap before designing anything.</span></li>
+               <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Mapping the root business gap before designing anything.</span></li>
                <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Modular scoping based on exact strategic requirements.</span></li>
                <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Building connected systems where strategy dictates execution.</span></li>
              </ul>
@@ -1632,8 +1866,8 @@ const MethodPage = ({ navigate }) => {
         <StaggerGroup className="space-y-24 mb-32 w-full">
           {[
             { step: "1", title: "Discovery", desc: "We begin by understanding the business, audience, market, internal teams, communication gaps, and growth context. We dig deep into the core mechanics of your innovation.", outputs: ["Brand Audit", "Stakeholder Interviews", "Competitor Landscape Mapping"] },
-            { step: "2", title: "Diagnosis", desc: "We identify exactly where the brand is breaking — whether it's messaging, identity, storytelling, systems, campaigns, or internal execution pipelines.", outputs: ["Problem Clusters Identified", "Gap Analysis Document"] },
-            { step: "3", title: "Route Mapping", desc: "Based on the diagnosis, we recommend one or more dedicated service ecosystems: Brand Boulevard (Identity), SciArt Saga (Innovation Story), or Storytelling Corner (Campaigns).", outputs: ["Strategic Route Assignment", "Resource Allocation"] },
+            { step: "2", title: "Clarity & Alignment", desc: "We identify exactly where the brand is breaking — whether it's messaging, identity, storytelling, systems, campaigns, or internal execution pipelines.", outputs: ["Problem Clusters Identified", "Gap Analysis Document"] },
+            { step: "3", title: "Route Mapping", desc: "Based on these insights, we recommend one or more dedicated service ecosystems: Brand Boulevard (Identity), SciArt Saga (Innovation Story), or Storytelling Corner (Campaigns).", outputs: ["Strategic Route Assignment", "Resource Allocation"] },
             { step: "4", title: "Scope Building", desc: "We lock in the foundation. Each route is broken down into specific line items, deliverables, priorities, dependencies, and precise timelines.", outputs: ["Custom Scope Blueprint", "Project Roadmap"] }
           ].map((s, i) => (
             <StaggerItem key={i}>
@@ -1667,7 +1901,7 @@ const MethodPage = ({ navigate }) => {
         <FadeUp><h3 className="text-3xl font-light mb-12 font-primary text-center">Typical Engagement Timeline</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-4 gap-4 mb-32 w-full">
             {[
-              { phase: "Weeks 1-2", focus: "Discovery & Diagnosis", color: palette.primary },
+              { phase: "Weeks 1-2", focus: "Discovery & Alignment", color: palette.primary },
               { phase: "Weeks 3-4", focus: "Strategy & Narrative", color: palette.blue },
               { phase: "Weeks 5-7", focus: "Design & Systems", color: palette.purple },
               { phase: "Week 8+", focus: "Handoff & Execution", color: palette.accent }
@@ -1704,22 +1938,35 @@ const ServicesPage = ({ navigate }) => {
             const rColor = palette[route.type] || palette.primary;
             return (
               <StaggerItem key={route.id}>
-                <SpotlightCard className="rounded-[24px] w-full">
-                  <div className="border border-white/10 rounded-[24px] p-12 md:p-16 flex flex-col md:flex-row gap-12 transition-colors w-full" style={{ backgroundColor: palette.panel }}>
-                    <div className="md:w-1/3">
-                      <div className="w-16 h-16 rounded-[16px] flex items-center justify-center mb-8" style={{ backgroundColor: rColor, color: palette.bgDeep }}>{route.icon}</div>
-                      <h3 className="text-3xl font-light mb-4 font-primary">{route.title}</h3>
-                      <p className="text-white/50 font-light leading-relaxed mb-8 font-secondary max-w-md">{route.desc}</p>
-                      <PremiumButton variant="ghost" onClick={() => navigate(`services/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent text-white group font-secondary">Explore Route Details <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"/></PremiumButton>
-                    </div>
-                    <div className="md:w-2/3 md:pl-12 md:border-l border-white/10 grid sm:grid-cols-2 gap-8 font-secondary">
-                      <div>
-                        <h4 className="text-xs font-medium text-white/40 uppercase tracking-widest mb-4 font-primary">Core Line Items</h4>
-                        <ul className="space-y-3">{route.lineItems.map(li => <li key={li.id} className="text-sm font-light text-white/70">{li.name}</li>)}</ul>
+                <SpotlightCard className="rounded-[32px] w-full">
+                  <div className="border border-white/10 rounded-[32px] p-10 md:p-16 flex flex-col lg:flex-row gap-12 lg:gap-16 transition-colors w-full" style={{ backgroundColor: palette.panel }}>
+                    <div className="lg:w-5/12 flex flex-col">
+                      <div className="w-20 h-20 rounded-[20px] flex items-center justify-center mb-8 lg:mb-10 shadow-lg shrink-0" style={{ backgroundColor: rColor, color: palette.bgDeep }}>{route.icon}</div>
+                      <h3 className="text-3xl md:text-4xl font-light mb-4 lg:mb-6 font-primary text-white">{route.title}</h3>
+                      <p className="text-white/60 font-light leading-relaxed mb-8 lg:mb-10 font-secondary text-base md:text-lg max-w-md">{route.desc}</p>
+                      
+                      <div className="mt-auto pt-4 border-t border-white/10 lg:border-none lg:pt-0">
+                        <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent text-white group font-secondary text-base">Explore Route Details <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform"/></PremiumButton>
                       </div>
+                    </div>
+                    
+                    <div className="lg:w-7/12 flex flex-col gap-10 font-secondary">
                       <div>
-                        <h4 className="text-xs font-medium text-white/40 uppercase tracking-widest mb-4 font-primary">Best For</h4>
-                        <p className="text-sm font-light text-white/60 leading-relaxed max-w-sm">Brands looking for a structured approach to solving specific gaps in this domain.</p>
+                        <h4 className="text-xs md:text-sm font-medium text-white/40 uppercase tracking-widest mb-6 font-primary flex items-center gap-3"><Layers className="w-4 h-4"/> Core Line Items</h4>
+                        <ul className="grid sm:grid-cols-2 gap-4">
+                          {route.lineItems.map(li => (
+                            <li key={li.id} className="text-base md:text-lg font-medium text-white/90 flex items-start gap-3 bg-white/[0.02] border border-white/5 p-5 rounded-[16px] shadow-sm">
+                              <Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }}/> 
+                              <span className="leading-snug">{li.name}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div className="bg-white/[0.03] border border-white/10 rounded-[24px] p-8 flex flex-col h-full relative overflow-hidden mt-auto shadow-inner">
+                         <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
+                         <h4 className="text-xs md:text-sm font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-4 h-4"/> Best For</h4>
+                         <p className="text-base md:text-lg font-light text-white/80 leading-relaxed relative z-10">{route.bestFor}</p>
                       </div>
                     </div>
                   </div>
@@ -1757,8 +2004,12 @@ const ServicesPage = ({ navigate }) => {
 };
 
 const ServiceDetailPage = ({ navigate, routeId }) => {
-  const route = ROUTES_INFO[routeId.toUpperCase()] || ROUTES_INFO['BB'];
+  const route = ROUTES_INFO[routeId?.toUpperCase()] || ROUTES_INFO['BB'];
   const rColor = palette[route.type] || palette.primary;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [routeId]);
 
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
@@ -1766,19 +2017,25 @@ const ServiceDetailPage = ({ navigate, routeId }) => {
         <button onClick={() => navigate('services')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Services</button>
         <FadeUp>
           <div className="w-20 h-20 rounded-[20px] flex items-center justify-center mb-10 shadow-lg" style={{ backgroundColor: rColor, color: palette.bgDeep }}>{route.icon}</div>
-          <h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">{route.title}</h1>
-          <p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed font-secondary">{route.desc}</p>
+          <h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h1>
+          <p className="text-xl text-white/50 font-light mb-12 max-w-3xl leading-relaxed font-secondary">{route.desc}</p>
+        </FadeUp>
+
+        <FadeUp className="bg-white/[0.03] border border-white/10 rounded-[24px] p-8 mb-16 max-w-4xl relative overflow-hidden shadow-inner">
+           <div className="absolute top-0 right-0 w-64 h-64 blur-[80px] opacity-10 pointer-events-none" style={{ backgroundColor: rColor }} />
+           <h4 className="text-sm font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-5 h-5"/> Best For</h4>
+           <p className="text-xl font-light text-white/90 leading-relaxed relative z-10">{route.bestFor}</p>
         </FadeUp>
         
-        <FadeUp><h3 className="text-3xl font-light mb-12 border-b border-white/10 pb-6 font-primary">What's Included</h3></FadeUp>
-        <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24 w-full">
-          {route.lineItems.map(li => (
+        <FadeUp><h3 className="text-3xl font-light mb-10 border-b border-white/10 pb-6 font-primary text-white">What's Included</h3></FadeUp>
+        <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 w-full">
+          {route.lineItems.map((li, i) => (
             <StaggerItem key={li.id}>
-              <div className="border border-white/5 rounded-[16px] p-8 h-full w-full" style={{ backgroundColor: palette.panel }}>
-                <h4 className="text-xl font-medium mb-6 text-white font-primary">{li.name}</h4>
-                <ul className="space-y-3 font-secondary">
+              <div className="border border-white/5 rounded-[24px] p-8 h-full w-full bg-white/[0.02] hover:bg-white/[0.04] transition-colors shadow-lg">
+                <h4 className="text-2xl font-medium mb-8 text-white font-primary">{li.name}</h4>
+                <ul className="space-y-4 font-secondary">
                   {DELIVERABLES_MASTER.filter(d => d.lineItem === li.id).map(d => (
-                    <li key={d.id} className="text-sm font-light text-white/60 flex items-start gap-2"><Check className="w-4 h-4 shrink-0 mt-[2px]" style={{ color: rColor }}/> {d.name}</li>
+                    <li key={d.id} className="text-base md:text-lg font-light text-white/80 flex items-start gap-3"><Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }}/> <span className="leading-snug">{d.name}</span></li>
                   ))}
                 </ul>
               </div>
@@ -1786,11 +2043,74 @@ const ServiceDetailPage = ({ navigate, routeId }) => {
           ))}
         </StaggerGroup>
         
-        <FadeUp className="border border-white/10 rounded-[24px] p-12 text-center w-full" style={{ background: `linear-gradient(to bottom right, ${palette.panel}, ${palette.bgDeep})` }}>
-          <h2 className="text-3xl font-light mb-6 font-primary">Find the right scope for your brand.</h2>
-          <PremiumButton onClick={() => navigate('assessment')}>Build A Scope</PremiumButton>
+        <FadeUp className="border border-white/10 rounded-[24px] p-12 text-center w-full relative overflow-hidden" style={{ background: `linear-gradient(to bottom right, ${palette.panel}, ${palette.bgDeep})` }}>
+           <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
+           <h2 className="text-3xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
+           <PremiumButton onClick={() => navigate('assessment')} className="relative z-10">Build A Scope</PremiumButton>
         </FadeUp>
       </div>
+    </div>
+  );
+};
+
+const ServiceModal = ({ navigate, routeId, onClose }) => {
+  const route = ROUTES_INFO[routeId.toUpperCase()] || ROUTES_INFO['BB'];
+  const rColor = palette[route.type] || palette.primary;
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-[100000] flex items-center justify-center p-4 md:p-8">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      <motion.div
+        initial={{ opacity: 0, y: 50, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 50, scale: 0.95 }}
+        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-[32px] border border-white/10 relative custom-scrollbar text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)] bg-gradient-to-b"
+        style={{ backgroundColor: palette.bgDeep, backgroundImage: `linear-gradient(180deg, ${palette.panel}, ${palette.bgDeep})` }}
+      >
+        <div className="sticky top-0 right-0 w-full flex justify-end p-6 z-50 pointer-events-none">
+          <button onClick={onClose} className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all pointer-events-auto border border-white/10 shadow-lg">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        
+        <div className="px-8 md:px-16 pb-16 -mt-10 relative z-10">
+          <div className="w-20 h-20 rounded-[20px] flex items-center justify-center mb-10 shadow-lg" style={{ backgroundColor: rColor, color: palette.bgDeep }}>{route.icon}</div>
+          <h2 className="text-4xl md:text-6xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h2>
+          <p className="text-xl text-white/50 font-light mb-12 max-w-3xl leading-relaxed font-secondary">{route.desc}</p>
+          
+          <div className="bg-white/[0.03] border border-white/10 rounded-[24px] p-8 mb-16 max-w-4xl relative overflow-hidden shadow-inner">
+             <div className="absolute top-0 right-0 w-64 h-64 blur-[80px] opacity-10 pointer-events-none" style={{ backgroundColor: rColor }} />
+             <h4 className="text-sm font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-5 h-5"/> Best For</h4>
+             <p className="text-xl font-light text-white/90 leading-relaxed relative z-10">{route.bestFor}</p>
+          </div>
+          
+          <h3 className="text-3xl font-light mb-10 border-b border-white/10 pb-6 font-primary text-white">What's Included</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 w-full">
+            {route.lineItems.map((li, i) => (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} key={li.id} className="border border-white/5 rounded-[24px] p-8 h-full w-full bg-white/[0.02] hover:bg-white/[0.04] transition-colors shadow-lg">
+                <h4 className="text-2xl font-medium mb-8 text-white font-primary">{li.name}</h4>
+                <ul className="space-y-4 font-secondary">
+                  {DELIVERABLES_MASTER.filter(d => d.lineItem === li.id).map(d => (
+                    <li key={d.id} className="text-base md:text-lg font-light text-white/80 flex items-start gap-3"><Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }}/> <span className="leading-snug">{d.name}</span></li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+          
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="border border-white/10 rounded-[24px] p-12 text-center w-full relative overflow-hidden" style={{ background: `linear-gradient(to bottom right, ${palette.panel}, ${palette.bgDeep})` }}>
+             <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
+             <h2 className="text-3xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
+             <PremiumButton onClick={() => { onClose(); navigate('assessment'); }} className="relative z-10">Build A Scope</PremiumButton>
+          </motion.div>
+        </div>
+      </motion.div>
     </div>
   );
 };
@@ -1805,7 +2125,7 @@ const WorkPage = ({ navigate }) => {
         
         {/* Featured Case Study Hero */}
         <FadeUp delay={0.1} className="mb-24 w-full">
-          <div className="group relative border border-white/5 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
+          <div onClick={() => navigate('work/' + CASE_STUDIES[0].id)} className="group relative border border-white/5 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
              <div className="md:w-1/2 relative overflow-hidden h-[300px] md:h-full bg-white/[0.02] w-full">
                <div className="absolute inset-0 opacity-30 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105" style={{ background: `linear-gradient(to bottom right, ${palette.primary}, transparent)` }} />
                <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 text-7xl md:text-9xl">{CASE_STUDIES[0].client.split(' ')[0]}</span></div>
@@ -1814,7 +2134,7 @@ const WorkPage = ({ navigate }) => {
                 <span className="text-[10px] font-medium tracking-widest uppercase block mb-4 font-primary" style={{ color: palette.primary }}>Featured Case Study • {CASE_STUDIES[0].sector}</span>
                 <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary">{CASE_STUDIES[0].client}</h3>
                 <p className="text-white/50 font-light mb-10 text-lg leading-relaxed font-secondary max-w-lg">{CASE_STUDIES[0].challenge}</p>
-                <div className="flex gap-4 font-secondary mb-12">
+                <div className="flex gap-4 font-secondary mb-12 flex-wrap">
                    {CASE_STUDIES[0].tags.map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-white/70 uppercase tracking-widest">{t}</span>)}
                 </div>
                 <div className="mt-auto flex items-center gap-2 text-white/70 group-hover:text-white transition-colors font-medium font-secondary">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
@@ -1822,7 +2142,7 @@ const WorkPage = ({ navigate }) => {
           </div>
         </FadeUp>
 
-        <FadeUp delay={0.2} className="flex gap-4 mb-12 border-b border-white/10 pb-6 overflow-x-auto font-secondary w-full">
+        <FadeUp delay={0.2} className="flex gap-4 mb-12 border-b border-white/10 pb-6 overflow-x-auto font-secondary w-full custom-scrollbar">
           <button className="px-4 py-2 rounded-full border border-white text-white text-sm shrink-0">All Projects</button>
           <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">Brand Boulevard</button>
           <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">SciArt Saga</button>
@@ -1834,7 +2154,7 @@ const WorkPage = ({ navigate }) => {
              const hexColor = palette[cs.type] || palette.primary;
              return (
               <StaggerItem key={i}>
-                <div className="group relative border border-white/5 rounded-[24px] overflow-hidden flex flex-col transition-all duration-700 cursor-pointer text-left h-[450px] w-full" style={{ backgroundColor: palette.panel }}>
+                <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/5 rounded-[24px] overflow-hidden flex flex-col transition-all duration-700 cursor-pointer text-left h-[450px] w-full" style={{ backgroundColor: palette.panel }}>
                   <div className="h-[250px] relative overflow-hidden border-b border-white/5 bg-white/[0.02]">
                     <div className={`absolute inset-0 opacity-20 mix-blend-screen group-hover:scale-110 transition-transform duration-1000 ease-out`} style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
                     <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 group-hover:text-white/30 transition-colors duration-700 text-5xl">{cs.client.split(' ')[0]}</span></div>
@@ -1851,14 +2171,14 @@ const WorkPage = ({ navigate }) => {
                   </div>
                 </div>
               </StaggerItem>
-            )
+             )
           })}
         </StaggerGroup>
 
         <FadeUp className="border border-white/10 rounded-[32px] p-16 text-center bg-[#010825] relative overflow-hidden w-full">
            <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20" style={{ backgroundColor: palette.blue }} />
            <h3 className="text-4xl font-light mb-6 font-primary text-white">Ready to start your project?</h3>
-           <p className="text-lg text-white/50 font-secondary mb-10 max-w-xl mx-auto">Skip the generic agency pitch. Diagnose your brand instantly using our Scope Builder.</p>
+           <p className="text-lg text-white/50 font-secondary mb-10 max-w-xl mx-auto">Skip the generic agency pitch. Map your brand needs instantly using our Scope Builder.</p>
            <PremiumButton onClick={() => navigate('assessment')} className="px-10 py-4">Build My Brand Scope</PremiumButton>
         </FadeUp>
       </div>
@@ -1893,7 +2213,7 @@ const JournalPage = ({ navigate }) => {
           </div>
         </FadeUp>
 
-        <FadeUp delay={0.2} className="flex gap-4 mb-12 border-b border-white/10 pb-6 overflow-x-auto font-secondary w-full">
+        <FadeUp delay={0.2} className="flex gap-4 mb-12 border-b border-white/10 pb-6 overflow-x-auto font-secondary w-full custom-scrollbar">
           <button className="px-4 py-2 rounded-full border border-white text-white text-sm shrink-0">All Perspectives</button>
           <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">Frameworks</button>
           <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">Culture</button>
@@ -1977,7 +2297,7 @@ const ArticlePage = ({ navigate, articleId }) => {
              </div>
           </StaggerItem>
           <StaggerItem>
-             <p>As we continue to co-create with breakthrough innovators, the methodology remains the same: diagnose the root cause, map the correct ecosystem, and execute with relentless precision.</p>
+             <p>As we continue to co-create with breakthrough innovators, the methodology remains the same: uncover the root cause, map the correct ecosystem, and execute with relentless precision.</p>
           </StaggerItem>
         </StaggerGroup>
 
@@ -2057,7 +2377,7 @@ const ContactPage = ({ navigate }) => {
           <div className="border border-white/10 rounded-[24px] p-10 flex flex-col justify-between w-full" style={{ backgroundColor: palette.panel }}>
             <div>
               <h3 className="text-2xl font-light mb-4 font-primary">I know what I need.</h3>
-              <p className="text-white/50 font-light mb-8 font-secondary max-w-md">Skip the assessment and send us a direct message outlining your requirements.</p>
+              <p className="text-white/50 font-light mb-8 font-secondary max-w-md">Skip the discovery flow and send us a direct message outlining your requirements.</p>
             </div>
             <form className="space-y-4 text-left w-full font-secondary" onSubmit={(e) => e.preventDefault()}>
               <input required placeholder="Your Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
@@ -2158,7 +2478,7 @@ const AdminDashboard = ({ navigate }) => {
         <div className="flex justify-between items-end mb-12">
           <div>
             <h1 className="text-3xl font-light mb-2 font-primary">Lead Intelligence Dashboard</h1>
-            <p className="text-white/40 text-sm font-secondary">Strategic assessments captured via Brand Scope Builder.</p>
+            <p className="text-white/40 text-sm font-secondary">Brand discoveries captured via Brand Scope Builder.</p>
           </div>
           <PremiumButton variant="ghost" onClick={() => navigate('home')} className="px-0 font-secondary">Exit System <ArrowRight className="w-4 h-4 ml-2"/></PremiumButton>
         </div>
@@ -2177,7 +2497,7 @@ const AdminDashboard = ({ navigate }) => {
               </thead>
               <tbody className="divide-y divide-white/5">
                 {GLOBAL_LEADS.length === 0 ? (
-                  <tr><td colSpan="6" className="p-12 text-center text-white/30 italic">No leads captured yet. Run the assessment to see data.</td></tr>
+                  <tr><td colSpan="6" className="p-12 text-center text-white/30 italic">No leads captured yet. Run the discovery flow to see data.</td></tr>
                 ) : (
                   GLOBAL_LEADS.map((lead, i) => (
                     <tr key={i} className="hover:bg-white/[0.01] transition-colors group">
@@ -2230,9 +2550,9 @@ const Footer = ({ navigate }) => {
             <h4 className="text-white/80 font-medium mb-6 text-sm">Services</h4>
             <div className="flex flex-col space-y-4 text-white/40 text-sm font-light">
               <button onClick={() => navigate('services')} className="hover:text-white transition-colors text-left">Overview</button>
-              <button onClick={() => navigate('services/bb')} className="hover:text-white transition-colors text-left">Brand Boulevard</button>
-              <button onClick={() => navigate('services/sas')} className="hover:text-white transition-colors text-left">SciArt Saga</button>
-              <button onClick={() => navigate('services/stc')} className="hover:text-white transition-colors text-left">Storytelling Corner</button>
+              <button onClick={() => navigate('service-detail/bb')} className="hover:text-white transition-colors text-left">Brand Boulevard</button>
+              <button onClick={() => navigate('service-detail/sas')} className="hover:text-white transition-colors text-left">SciArt Saga</button>
+              <button onClick={() => navigate('service-detail/stc')} className="hover:text-white transition-colors text-left">Storytelling Corner</button>
             </div>
           </div>
           <div className="flex flex-col items-start font-secondary md:col-span-1">
@@ -2255,27 +2575,38 @@ const Footer = ({ navigate }) => {
 
 export default function App() {
   const [routeState, setRouteState] = useState({ page: 'home', data: null });
+  const [activeServiceModal, setActiveServiceModal] = useState(null);
 
   const navigate = (path, data = null) => {
-    if (path.startsWith('services/')) {
+    if (path.startsWith('service-modal/')) {
+      setActiveServiceModal(path.split('/')[1]);
+    } else if (path.startsWith('service-detail/')) {
       setRouteState({ page: 'service-detail', data: path.split('/')[1] });
+      setActiveServiceModal(null);
+    } else if (path.startsWith('services/') && path !== 'services') {
+      setActiveServiceModal(path.split('/')[1]);
     } else if (path.startsWith('article/')) {
       setRouteState({ page: 'article-detail', data: path.split('/')[1] });
+      setActiveServiceModal(null);
+    } else if (path.startsWith('work/') && path !== 'work') {
+      setRouteState({ page: 'work-detail', data: path.split('/')[1] });
+      setActiveServiceModal(null);
     } else {
       setRouteState({ page: path, data });
+      setActiveServiceModal(null);
     }
   };
 
   useEffect(() => { 
     window.scrollTo({ top: 0, behavior: 'auto' }); 
 
-    let title = "PurpleBlue House | SciArt Brand Communication";
-    let description = "We co-create brands backed by cutting-edge innovation with a SciArt-driven approach.";
+    let title = "PurpleBlue House | Breakthrough Brand Communication";
+    let description = "We co-create breakthrough brands backed by strategic logic and SciArt execution.";
 
     switch(routeState.page) {
       case 'about':
         title = "About Us | PurpleBlue House";
-        description = "Discover our SciArt philosophy, vision, and mission to elevate Indian innovation globally.";
+        description = "Discover our SciArt philosophy, vision, and mission to elevate innovation globally.";
         break;
       case 'method':
         title = "The PBH Method | PurpleBlue House";
@@ -2283,7 +2614,7 @@ export default function App() {
         break;
       case 'story':
         title = "Our Story | PurpleBlue House";
-        description = "The journey of PurpleBlue House: Where science meets art to build unbreakable brands.";
+        description = "The journey of PurpleBlue House: Where science meets art to build unbreakable breakthrough brands.";
         break;
       case 'team':
         title = "The Team | PurpleBlue House";
@@ -2293,17 +2624,17 @@ export default function App() {
         title = "Consulting Ecosystems | PurpleBlue House";
         description = "Three strategic routes. One connected brand system. Discover Brand Boulevard, SciArt Saga, and Storytelling Corner.";
         break;
-      case 'service-detail':
-        const sTitle = ROUTES_INFO[routeState.data?.toUpperCase()]?.title || "Service";
-        title = `${sTitle} | PurpleBlue House Services`;
-        break;
       case 'work':
         title = "Selected Work | PurpleBlue House";
         description = "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns.";
         break;
+      case 'work-detail':
+        const wTitle = CASE_STUDIES.find(c => c.id === routeState.data)?.client || "Case Study";
+        title = `${wTitle} | PurpleBlue House Work`;
+        break;
       case 'journal':
         title = "The Journal | PurpleBlue House";
-        description = "Essays, frameworks, and perspectives on building brands that matter.";
+        description = "Essays, frameworks, and perspectives on building breakthrough brands that matter.";
         break;
       case 'article-detail':
         const aTitle = JOURNAL_ARTICLES.find(a => a.id === routeState.data)?.title || "Journal Article";
@@ -2315,7 +2646,7 @@ export default function App() {
         break;
       case 'assessment':
         title = "Build Your Brand Scope | PurpleBlue House";
-        description = "Diagnose your brand gaps and build a strategic scope before the first call.";
+        description = "Map your brand gaps and build a strategic scope before the first call.";
         break;
       case 'admin':
         title = "Lead Intelligence | PBH Admin";
@@ -2384,6 +2715,7 @@ export default function App() {
             {routeState.page === 'services' && <ServicesPage key="services" navigate={navigate} />}
             {routeState.page === 'service-detail' && <ServiceDetailPage key="service-detail" navigate={navigate} routeId={routeState.data} />}
             {routeState.page === 'work' && <WorkPage key="work" navigate={navigate} />}
+            {routeState.page === 'work-detail' && <WorkDetailPage key="work-detail" navigate={navigate} projectId={routeState.data} />}
             {routeState.page === 'journal' && <JournalPage key="journal" navigate={navigate} />}
             {routeState.page === 'article-detail' && <ArticlePage key="article-detail" navigate={navigate} articleId={routeState.data} />}
             {routeState.page === 'contact' && <ContactPage key="contact" navigate={navigate} />}
@@ -2394,6 +2726,10 @@ export default function App() {
 
         {routeState.page !== 'admin' && routeState.page !== 'assessment' && <Footer navigate={navigate} />}
       </div>
+
+      <AnimatePresence>
+        {activeServiceModal && <ServiceModal routeId={activeServiceModal} onClose={() => setActiveServiceModal(null)} navigate={navigate} />}
+      </AnimatePresence>
     </div>
   );
 }
