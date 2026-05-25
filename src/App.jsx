@@ -7,8 +7,40 @@ import {
   Mail, MessageSquare, Terminal, Layers, Compass, PenTool,
   ChevronUp, ChevronDown, Check, Briefcase, FileText, User, Users, Activity,
   Shield, Lock, Scale, Target, BarChart2, Command, ArrowUpRight, CheckSquare,
-  Quote, Printer, Download, MonitorPlay, MapPin, Phone, Clock, Plus
+  Quote, Printer, Download, MonitorPlay, MapPin, Phone, Clock, Plus, Loader2, AlertCircle
 } from 'lucide-react';
+
+// --- RESEND CONFIGURATION ---
+const RESEND_API_KEY = 're_91xvk8RE_42FqghKyaUk8QFJ1HqP51Kzn';
+const EMAIL_FROM = 'PBH Client <system@emails.liaisonit.com>';
+const EMAIL_TO = 'Anant Mishra <complete.anant@gmail.com>';
+
+const sendEmailViaResend = async (subject, htmlContent) => {
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_API_KEY}`
+      },
+      body: JSON.stringify({
+        from: EMAIL_FROM,
+        to: EMAIL_TO,
+        subject: subject,
+        html: htmlContent
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to send email');
+    }
+    return { success: true, data };
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return { success: false, error: error.message };
+  }
+};
 
 // --- GLOBAL PALETTE & TYPOGRAPHY (V2) ---
 const palette = {
@@ -43,27 +75,122 @@ const hexToRgbStr = (hex) => {
 
 const QUIZ_QUESTIONS = [
   { id: 'stage', title: 'Where is your brand right now?', options: [ { id: 's1', label: 'We are launching a new brand' }, { id: 's2', label: 'We are repositioning an existing brand' }, { id: 's3', label: 'We have grown, but our brand has not evolved' }, { id: 's4', label: 'We need better campaigns and communication' }, { id: 's5', label: 'We need a full strategic reset' } ] },
-  { id: 'messaging', title: 'What feels most inconsistent about your brand right now?', options: [ { id: 'm1', label: 'Different teams communicate differently', cluster: 'Messaging Inconsistency', routes: ['BB'] }, { id: 'm2', label: 'Our message changes across platforms', cluster: 'Messaging Inconsistency', routes: ['BB'] }, { id: 'm3', label: 'Our brand story lacks depth or emotional pull', cluster: 'Weak Narrative', routes: ['SAS', 'STC'] }, { id: 'm4', label: 'Our visual identity feels generic or outdated', cluster: 'Generic Identity', routes: ['BB'] } ] },
-  { id: 'execution', title: 'How does your team currently execute brand communication?', options: [ { id: 'e1', label: 'Everyone creates things differently', cluster: 'Lack of Systems', routes: ['BB'] }, { id: 'e2', label: 'There are no reusable design templates or playbooks', cluster: 'Lack of Systems', routes: ['BB', 'STC'] }, { id: 'e3', label: 'Campaigns do not create enough response', cluster: 'Execution Gap', routes: ['STC'] }, { id: 'e4', label: 'Translating complex ideas to market is difficult', cluster: 'Execution Gap', routes: ['SAS'] } ] }
+  { id: 'q1', title: 'What feels most inconsistent about your brand right now?', options: [ { id: 'o1', label: 'Different teams communicate differently', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o2', label: 'We have no central messaging guidelines', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o3', label: 'Our visuals feel outdated and generic', cluster: 'Generic Identity', weight: 2 } ] },
+  { id: 'q2', title: 'How is your campaign and content engagement?', options: [ { id: 'o4', label: 'Low engagement and weak emotional pull', cluster: 'Weak Narrative', weight: 2 }, { id: 'o5', label: 'Good engagement, but execution feels messy', cluster: 'Lack of Systems', weight: 2 } ] },
+  { id: 'q3', title: 'How does your team currently execute?', options: [ { id: 'o6', label: 'Teams are misaligned with no clear playbook', cluster: 'Lack of Systems', weight: 2 }, { id: 'o7', label: 'Our brand has grown but our execution hasn\'t evolved', cluster: 'Execution Gap', weight: 1 } ] },
+  { id: 'q4', title: 'What best describes your visual identity?', options: [ { id: 'o8', label: 'Generic visuals with no distinctiveness', cluster: 'Generic Identity', weight: 2 }, { id: 'o9', label: 'Aesthetically pleasing but lacks deep storytelling', cluster: 'Weak Narrative', weight: 2 } ] },
+  { id: 'q5', title: 'What is your biggest bottleneck for growth?', options: [ { id: 'o10', label: 'Lack of internal systems and repeatable templates', cluster: 'Lack of Systems', weight: 2 }, { id: 'o11', label: 'Execution is too slow and disconnected from strategy', cluster: 'Execution Gap', weight: 1 }, { id: 'o12', label: 'Messaging inconsistency across touchpoints', cluster: 'Messaging Inconsistency', weight: 2 } ] }
 ];
 
+const clusterToRoute = {
+  'Messaging Inconsistency': 'BB',
+  'Weak Narrative': 'SAS',
+  'Generic Identity': 'BB',
+  'Lack of Systems': 'BB',
+  'Execution Gap': 'STC'
+};
+
 const ROUTES_INFO = {
-  'BB': { id: 'BB', title: 'Brand Boulevard', desc: 'Identity, positioning, messaging, and comprehensive brand systems.', icon: <Fingerprint className="w-6 h-6" />, type: 'primary', bestFor: 'Companies seeking a complete structural overhaul, from foundational positioning to a scalable visual identity system.', lineItems: [ { id: 'BB1', name: 'Brand Workshop & Audit' }, { id: 'BB2', name: 'Brand Identity System' }, { id: 'BB3', name: 'Design Systems' } ] },
-  'SAS': { id: 'SAS', title: 'SciArt Saga', desc: 'Storytelling, innovation communication, and experience-led narratives.', icon: <Lightbulb className="w-6 h-6" />, type: 'blue', bestFor: 'Deep-tech or highly complex innovations needing to translate technical features into compelling, human-centric stories.', lineItems: [ { id: 'SAS1', name: 'Innovation Frameworks' }, { id: 'SAS2', name: 'Product Storytelling' }, { id: 'SAS3', name: 'GTM Communication' } ] },
-  'STC': { id: 'STC', title: 'Storytelling Corner', desc: 'Campaign ideas, creative direction, and execution-ready content.', icon: <Rocket className="w-6 h-6" />, type: 'purple', bestFor: 'Established brands looking for high-impact campaign execution, continuous content systems, and creative direction.', lineItems: [ { id: 'STC1', name: 'Creative Direction' }, { id: 'STC2', name: 'Campaign Storytelling' }, { id: 'STC3', name: 'Content Systems' } ] }
+  'BB': { id: 'BB', title: 'Brand Boulevard', desc: 'Identity, positioning, messaging, and comprehensive brand systems.', icon: <Fingerprint className="w-6 h-6" />, type: 'primary', bestFor: 'Companies seeking a complete structural overhaul, from foundational positioning to a scalable visual identity system.', lineItems: [ { id: 'BB1', name: 'Brand Workshop & Audit' }, { id: 'BB2', name: 'Brand Identity System' }, { id: 'BB3', name: 'Design Systems' }, { id: 'BB4', name: 'Giveaways & Collaterals' } ] },
+  'SAS': { id: 'SAS', title: 'SciArt Saga', desc: 'Storytelling, innovation communication, and experience-led narratives.', icon: <Lightbulb className="w-6 h-6" />, type: 'blue', bestFor: 'Deep-tech or highly complex innovations needing to translate technical features into compelling, human-centric stories.', lineItems: [ { id: 'SS1', name: 'Innovation Frameworks' }, { id: 'SS2', name: 'Experience & IP Strategy' }, { id: 'SS3', name: 'Product Storytelling' }, { id: 'SS4', name: 'GTM Communication' } ] },
+  'STC': { id: 'STC', title: 'Storytelling Corner', desc: 'Campaign ideas, creative direction, and execution-ready content.', icon: <Rocket className="w-6 h-6" />, type: 'purple', bestFor: 'Established brands looking for high-impact campaign execution, continuous content systems, and creative direction.', lineItems: [ { id: 'SC1', name: 'Creative Direction' }, { id: 'SC2', name: 'Social & Influencer' }, { id: 'SC3', name: 'Website Framework' }, { id: 'SC4', name: 'Event Branding' } ] }
 };
 
 const DELIVERABLES_MASTER = [
-  { id: 'd1', lineItem: 'BB1', name: 'Brand Audit', priority: 'Strategic Foundation', desc: 'Comprehensive review of current brand assets.' },
-  { id: 'd2', lineItem: 'BB1', name: 'Positioning Territories', priority: 'Strategic Foundation', desc: 'Defining the strategic market gap.' },
-  { id: 'd3', lineItem: 'BB2', name: 'Visual Identity System', priority: 'Core', desc: 'Logos, colors, typography, and visual language.' },
-  { id: 'd4', lineItem: 'BB3', name: 'Brand Guidelines', priority: 'Execution Support', desc: 'Scalable rules for your internal teams.' },
-  { id: 'd5', lineItem: 'SAS1', name: 'Innovation Narrative', priority: 'Strategic Foundation', desc: 'The overarching story of your innovation.' },
-  { id: 'd6', lineItem: 'SAS2', name: 'Use Case Stories', priority: 'Core', desc: 'Translating features into human benefits.' },
-  { id: 'd7', lineItem: 'SAS3', name: 'Launch Strategy', priority: 'Launch Critical', desc: 'GTM messaging and channel communication plan.' },
-  { id: 'd8', lineItem: 'STC1', name: 'Creative Strategy & Moodboard', priority: 'Strategic Foundation', desc: 'Visual direction for shoots and assets.' },
-  { id: 'd9', lineItem: 'STC2', name: 'Campaign Idea & Narrative', priority: 'Launch Critical', desc: 'The big idea for your next launch.' },
-  { id: 'd10', lineItem: 'STC3', name: 'Content Playbook & Templates', priority: 'Execution Support', desc: 'Recurring formats and publishing workflow.' }
+  { id: 'D001', lineItem: 'BB1', name: 'Brand Discovery Workshop', interdependence: 'None' },
+  { id: 'D002', lineItem: 'BB1', name: 'Brand Audit', interdependence: 'None' },
+  { id: 'D003', lineItem: 'BB1', name: 'Stakeholder Interviews Summary', interdependence: 'D001' },
+  { id: 'D004', lineItem: 'BB1', name: 'Competitor Landscape Mapping', interdependence: 'D002' },
+  { id: 'D005', lineItem: 'BB1', name: 'Audience Understanding Snapshot', interdependence: 'D001' },
+  { id: 'D006', lineItem: 'BB1', name: 'Brand Gap Analysis', interdependence: 'D002, D003, D004' },
+  { id: 'D007', lineItem: 'BB1', name: 'Positioning Territories', interdependence: 'D006' },
+  { id: 'D008', lineItem: 'BB1', name: 'Workshop Summary Deck', interdependence: 'D001, D006' },
+  { id: 'D009', lineItem: 'BB2', name: 'Logo (Primary)', interdependence: 'D007' },
+  { id: 'D010', lineItem: 'BB2', name: 'Logo Variations', interdependence: 'D009' },
+  { id: 'D011', lineItem: 'BB2', name: 'Logo Usage Guidelines', interdependence: 'D009' },
+  { id: 'D012', lineItem: 'BB2', name: 'Typography System', interdependence: 'D007' },
+  { id: 'D013', lineItem: 'BB2', name: 'Color Palette', interdependence: 'D007' },
+  { id: 'D014', lineItem: 'BB2', name: 'Visual Language', interdependence: 'D009, D013' },
+  { id: 'D015', lineItem: 'BB2', name: 'Iconography Style', interdependence: 'D014' },
+  { id: 'D016', lineItem: 'BB2', name: 'Imagery Direction', interdependence: 'D014' },
+  { id: 'D017', lineItem: 'BB2', name: 'Brand Guidelines', interdependence: 'D009, D012, D013, D014' },
+  { id: 'D018', lineItem: 'BB2', name: 'Quick Brand Reference Sheet', interdependence: 'D017' },
+  { id: 'D019', lineItem: 'BB3', name: 'Layout Grid System', interdependence: 'D017' },
+  { id: 'D020', lineItem: 'BB3', name: 'Typography Hierarchy', interdependence: 'D012' },
+  { id: 'D021', lineItem: 'BB3', name: 'Color Application Rules', interdependence: 'D013' },
+  { id: 'D022', lineItem: 'BB3', name: 'Visual Consistency Rules', interdependence: 'D014' },
+  { id: 'D023', lineItem: 'BB3', name: 'Social Templates', interdependence: 'D019, D021' },
+  { id: 'D024', lineItem: 'BB3', name: 'Presentation Templates', interdependence: 'D019' },
+  { id: 'D025', lineItem: 'BB3', name: 'Document Templates', interdependence: 'D019' },
+  { id: 'D026', lineItem: 'BB3', name: 'UI Components', interdependence: 'D019, D014' },
+  { id: 'D027', lineItem: 'BB3', name: 'Design System Manual', interdependence: 'D019-D026' },
+  { id: 'D028', lineItem: 'BB4', name: 'Visiting Cards', interdependence: 'D017' },
+  { id: 'D029', lineItem: 'BB4', name: 'Letterheads', interdependence: 'D017' },
+  { id: 'D030', lineItem: 'BB4', name: 'Email Signatures', interdependence: 'D017' },
+  { id: 'D031', lineItem: 'BB4', name: 'Merchandise', interdependence: 'D014' },
+  { id: 'D032', lineItem: 'BB4', name: 'Brochures / Flyers', interdependence: 'D017' },
+  { id: 'D033', lineItem: 'BB4', name: 'Lanyards / Badges', interdependence: 'D034' },
+  { id: 'D034', lineItem: 'BB4', name: 'Event Collaterals', interdependence: 'D014' },
+  { id: 'D035', lineItem: 'BB4', name: 'Packaging Design', interdependence: 'D013, D014' },
+  { id: 'D036', lineItem: 'BB4', name: 'Packaging System', interdependence: 'D035' },
+  { id: 'D037', lineItem: 'SS1', name: 'Innovation Framework', interdependence: 'None' },
+  { id: 'D038', lineItem: 'SS1', name: 'Concept Simplification Models', interdependence: 'D037' },
+  { id: 'D039', lineItem: 'SS1', name: 'Science-to-Human Translation', interdependence: 'D038' },
+  { id: 'D040', lineItem: 'SS1', name: 'Narrative Framework', interdependence: 'D037' },
+  { id: 'D041', lineItem: 'SS1', name: 'Metaphor Systems', interdependence: 'D040' },
+  { id: 'D042', lineItem: 'SS1', name: 'Knowledge Architecture', interdependence: 'D037' },
+  { id: 'D043', lineItem: 'SS1', name: 'Framework Deck', interdependence: 'D037-D042' },
+  { id: 'D044', lineItem: 'SS2', name: 'Brand IP Concepts', interdependence: 'D040' },
+  { id: 'D045', lineItem: 'SS2', name: 'Experience Concepts', interdependence: 'D044' },
+  { id: 'D046', lineItem: 'SS2', name: 'Signature Properties', interdependence: 'D044' },
+  { id: 'D047', lineItem: 'SS2', name: 'Campaignable Formats', interdependence: 'D044' },
+  { id: 'D048', lineItem: 'SS2', name: 'Ecosystem Hooks', interdependence: 'D044' },
+  { id: 'D049', lineItem: 'SS2', name: 'Story Arcs', interdependence: 'D040' },
+  { id: 'D050', lineItem: 'SS2', name: 'IP Strategy Document', interdependence: 'D044-D049' },
+  { id: 'D051', lineItem: 'SS3', name: 'Product Narrative', interdependence: 'D040' },
+  { id: 'D052', lineItem: 'SS3', name: 'Feature-Benefit Mapping', interdependence: 'D051' },
+  { id: 'D053', lineItem: 'SS3', name: 'Use-case Storytelling', interdependence: 'D052' },
+  { id: 'D054', lineItem: 'SS3', name: 'Product Positioning', interdependence: 'D051' },
+  { id: 'D055', lineItem: 'SS3', name: 'Product Naming', interdependence: 'D054' },
+  { id: 'D056', lineItem: 'SS3', name: 'Packaging Story', interdependence: 'D051' },
+  { id: 'D057', lineItem: 'SS3', name: 'Product Story Deck', interdependence: 'D051-D056' },
+  { id: 'D058', lineItem: 'SS4', name: 'GTM Narrative', interdependence: 'D051' },
+  { id: 'D059', lineItem: 'SS4', name: 'Messaging Framework', interdependence: 'D058' },
+  { id: 'D060', lineItem: 'SS4', name: 'Audience Segmentation', interdependence: 'D058' },
+  { id: 'D061', lineItem: 'SS4', name: 'Campaign Hooks', interdependence: 'D059' },
+  { id: 'D062', lineItem: 'SS4', name: 'Launch Concepts', interdependence: 'D061' },
+  { id: 'D063', lineItem: 'SS4', name: 'Content Direction', interdependence: 'D059' },
+  { id: 'D064', lineItem: 'SS4', name: 'Rollout Plan', interdependence: 'D058' },
+  { id: 'D065', lineItem: 'SS4', name: 'GTM Playbook', interdependence: 'D058-D064' },
+  { id: 'D066', lineItem: 'SC1', name: 'Campaign Concepts', interdependence: 'D061' },
+  { id: 'D067', lineItem: 'SC1', name: 'Visual Direction Boards', interdependence: 'D014' },
+  { id: 'D068', lineItem: 'SC1', name: 'Content Themes', interdependence: 'D072' },
+  { id: 'D069', lineItem: 'SC1', name: 'Art Direction', interdependence: 'D067' },
+  { id: 'D070', lineItem: 'SC1', name: 'Shoot Direction', interdependence: 'D069' },
+  { id: 'D071', lineItem: 'SC1', name: 'Creative Deck', interdependence: 'D066-D070' },
+  { id: 'D072', lineItem: 'SC2', name: 'Content Strategy', interdependence: 'D059' },
+  { id: 'D073', lineItem: 'SC2', name: 'Content Buckets', interdependence: 'D072' },
+  { id: 'D074', lineItem: 'SC2', name: 'Monthly Plan', interdependence: 'D073' },
+  { id: 'D075', lineItem: 'SC2', name: 'Influencer Strategy', interdependence: 'D072' },
+  { id: 'D076', lineItem: 'SC2', name: 'Campaign Ideas', interdependence: 'D061' },
+  { id: 'D077', lineItem: 'SC2', name: 'Post/Reel Directions', interdependence: 'D072' },
+  { id: 'D078', lineItem: 'SC2', name: 'Engagement Hooks', interdependence: 'D072' },
+  { id: 'D079', lineItem: 'SC2', name: 'Social Playbook', interdependence: 'D072-D078' },
+  { id: 'D080', lineItem: 'SC3', name: 'Information Architecture', interdependence: 'D058' },
+  { id: 'D081', lineItem: 'SC3', name: 'Page Flow', interdependence: 'D080' },
+  { id: 'D082', lineItem: 'SC3', name: 'User Journey Mapping', interdependence: 'D080' },
+  { id: 'D083', lineItem: 'SC3', name: 'Copy Direction', interdependence: 'D058' },
+  { id: 'D084', lineItem: 'SC3', name: 'Interaction Ideas', interdependence: 'D081' },
+  { id: 'D085', lineItem: 'SC3', name: 'CTA Strategy', interdependence: 'D058' },
+  { id: 'D086', lineItem: 'SC3', name: 'Developer Brief', interdependence: 'D080-D085' },
+  { id: 'D087', lineItem: 'SC4', name: 'Event Theme', interdependence: 'D058' },
+  { id: 'D088', lineItem: 'SC4', name: 'Event Identity', interdependence: 'D087' },
+  { id: 'D089', lineItem: 'SC4', name: 'Stage Design', interdependence: 'D088' },
+  { id: 'D090', lineItem: 'SC4', name: 'Collateral System', interdependence: 'D088' },
+  { id: 'D091', lineItem: 'SC4', name: 'Delegate Kits', interdependence: 'D090' },
+  { id: 'D092', lineItem: 'SC4', name: 'Signage System', interdependence: 'D090' },
+  { id: 'D093', lineItem: 'SC4', name: 'Hybrid Integration', interdependence: 'D088' },
+  { id: 'D094', lineItem: 'SC4', name: 'Event Toolkit', interdependence: 'D087-D093' }
 ];
 
 const CASE_STUDIES = [
@@ -119,6 +246,87 @@ const PROBLEM_DATA = [
 ];
 
 let GLOBAL_LEADS = [];
+
+// --- UTILITIES FOR DEPENDENCY PARSING (TEMPLATE 2/3/5) ---
+const parsePrerequisites = (field) => {
+  if (field === "None" || !field) return [];
+  const results = [];
+  const parts = field.split(",");
+  for (let part of parts) {
+    part = part.trim();
+    const rangeMatch = part.match(/^D(\d{3})[–-]D(\d{3})$/);
+    if (rangeMatch) {
+      const start = parseInt(rangeMatch[1]);
+      const end = parseInt(rangeMatch[2]);
+      for (let n = start; n <= end; n++) {
+        results.push("D" + String(n).padStart(3, "0"));
+      }
+    } else if (part.match(/^D\d{3}$/)) {
+      results.push(part);
+    }
+  }
+  return results;
+};
+
+const findUnmetPrerequisites = (deliverableId, currentSelections) => {
+  const unmet = [];
+  const queue = [deliverableId];
+  const visited = new Set();
+  
+  while (queue.length > 0) {
+    const current = queue.pop();
+    if (visited.has(current)) continue;
+    visited.add(current);
+    
+    const deliv = DELIVERABLES_MASTER.find(d => d.id === current);
+    if (!deliv || deliv.interdependence === "None") continue;
+    
+    const prerequisites = parsePrerequisites(deliv.interdependence);
+    for (const prereq of prerequisites) {
+      if (!currentSelections.includes(prereq) && !unmet.includes(prereq)) {
+        unmet.push(prereq);
+        queue.push(prereq);
+      }
+    }
+  }
+  return unmet;
+};
+
+const findAllDependents = (deliverableId, currentSelections) => {
+  const dependents = [];
+  for (const sel of currentSelections) {
+    if (sel === deliverableId) continue;
+    const unmet = findUnmetPrerequisites(sel, currentSelections.filter(x => x !== deliverableId));
+    if (unmet.includes(deliverableId)) {
+      dependents.push(sel);
+    }
+  }
+  return dependents;
+};
+
+const computeSuggestedStartingPoint = (selectedDelivs, priorities) => {
+  const fullScope = [...new Set(selectedDelivs)];
+  for (const d of selectedDelivs) {
+     const unmet = findUnmetPrerequisites(d, fullScope);
+     fullScope.push(...unmet);
+  }
+  
+  const uniqueScope = [...new Set(fullScope)];
+  const scopeObjects = uniqueScope.map(id => DELIVERABLES_MASTER.find(x => x.id === id)).filter(Boolean);
+  
+  // Layer 0 and 1 items
+  const layer01Ids = ['D001','D002','D003','D004','D005','D006','D007','D008','D037','D038','D039','D040','D041','D042','D043'];
+  const foundations = scopeObjects.filter(d => layer01Ids.includes(d.id));
+  
+  if (foundations.length === 0) return scopeObjects[0]?.name || "N/A";
+  if (foundations.length === 1) return foundations[0].name;
+  
+  const highPriorityPicks = selectedDelivs.filter(id => priorities[id] === 'High' || priorities[id] === 'Critical');
+  if (highPriorityPicks.length > 0) {
+     return foundations[0].name; // Simplified resolution for demo
+  }
+  return foundations[0].name;
+};
 
 // --- ANIMATION UTILITIES ---
 const FadeUp = ({ children, delay = 0, className = "" }) => {
@@ -443,28 +651,118 @@ const StrategicEngine = ({ navigate }) => {
   const [routes, setRoutes] = useState([]);
   const [selectedRoutes, setSelectedRoutes] = useState([]);
   const [selectedDeliverables, setSelectedDeliverables] = useState([]);
+  const [priorities, setPriorities] = useState({});
+  const [warnings, setWarnings] = useState([]);
   const [context, setContext] = useState({ depth: '', timeline: '' });
   const [leadForm, setLeadForm] = useState({ name: '', email: '', company: '' });
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [dependencyModal, setDependencyModal] = useState(null);
+
+  const N_QUIZ = QUIZ_QUESTIONS.length;
 
   const handleQuizSelect = (questionId, option) => {
     const newAnswers = { ...answers, [questionId]: option };
     setAnswers(newAnswers);
-    setTimeout(() => { if (step < QUIZ_QUESTIONS.length) { setStep(step + 1); } else { processDiagnosis(newAnswers); } }, 400);
+    setTimeout(() => { if (step < N_QUIZ) { setStep(step + 1); } else { processDiagnosis(newAnswers); } }, 400);
   };
 
   const processDiagnosis = (finalAnswers) => {
-    const foundClusters = new Set(); const foundRoutes = new Set();
-    Object.values(finalAnswers).forEach(opt => { if (opt.cluster) foundClusters.add(opt.cluster); if (opt.routes) opt.routes.forEach(r => foundRoutes.add(r)); });
-    setClusters(Array.from(foundClusters));
+    const clusterScores = {};
+    Object.values(finalAnswers).forEach(opt => { 
+       if (opt.cluster) {
+           clusterScores[opt.cluster] = (clusterScores[opt.cluster] || 0) + (opt.weight || 1);
+       }
+    });
+    
+    let maxScore = 0;
+    let topClusters = [];
+    for (const [cluster, score] of Object.entries(clusterScores)) {
+       if (score > maxScore) {
+          maxScore = score;
+          topClusters = [cluster];
+       } else if (score === maxScore) {
+          topClusters.push(cluster);
+       }
+    }
+    
+    setClusters(topClusters);
+    
+    const foundRoutes = new Set();
+    topClusters.forEach(c => {
+       if (clusterToRoute[c]) foundRoutes.add(clusterToRoute[c]);
+    });
+    
     const recRoutes = Array.from(foundRoutes).length > 0 ? Array.from(foundRoutes) : ['BB'];
-    setRoutes(recRoutes); setSelectedRoutes(recRoutes); setStep(4);
+    setRoutes(recRoutes); 
+    setSelectedRoutes(recRoutes); 
+    setStep(N_QUIZ + 1);
   };
 
-  const submitLead = (e) => {
+  const handleDeliverableToggle = (dId) => {
+    const isSelected = selectedDeliverables.includes(dId);
+    if (isSelected) {
+      const dependents = findAllDependents(dId, selectedDeliverables);
+      if (dependents.length > 0) {
+        setDependencyModal({ type: 'remove', deliverable: dId, related: dependents });
+      } else {
+        setSelectedDeliverables(prev => prev.filter(x => x !== dId));
+        setWarnings(prev => prev.filter(x => x !== dId));
+      }
+    } else {
+      const unmet = findUnmetPrerequisites(dId, selectedDeliverables);
+      if (unmet.length > 0) {
+        setDependencyModal({ type: 'add', deliverable: dId, related: unmet });
+      } else {
+        setSelectedDeliverables(prev => [...prev, dId]);
+      }
+    }
+  };
+
+  const submitLead = async (e) => {
     e.preventDefault();
-    GLOBAL_LEADS.push({ ...leadForm, stage: answers.stage?.label, clusters, routes, deliverables: selectedDeliverables, ...context, date: new Date().toISOString(), status: 'New', score: Math.floor(Math.random() * 40) + 60 });
-    setStep(9);
+    setIsSubmitting(true);
+    
+    const startingPoint = computeSuggestedStartingPoint(selectedDeliverables, priorities);
+
+    const leadData = { ...leadForm, stage: answers.stage?.label, clusters, routes, deliverables: selectedDeliverables, ...context, startingPoint, date: new Date().toISOString(), status: 'New', score: Math.floor(Math.random() * 40) + 60 };
+    GLOBAL_LEADS.push(leadData);
+
+    const subject = `New Lead: ${leadForm.company} - Scope Builder`;
+    const htmlContent = `
+      <div style="font-family: sans-serif; padding: 20px; max-width: 600px;">
+        <h2 style="color: #6865FA;">New Strategic Scope Lead</h2>
+        <p><strong>Name:</strong> ${leadForm.name}</p>
+        <p><strong>Email:</strong> ${leadForm.email}</p>
+        <p><strong>Company:</strong> ${leadForm.company}</p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;"/>
+        
+        <h3 style="color: #333;">Context</h3>
+        <p><strong>Brand Stage:</strong> ${leadData.stage}</p>
+        <p><strong>Engagement Depth:</strong> ${leadData.depth}</p>
+        <p><strong>Timeline:</strong> ${leadData.timeline}</p>
+        <p><strong>Suggested Starting Point:</strong> ${startingPoint}</p>
+        
+        <h3 style="color: #333;">Identified Gaps</h3>
+        <ul>${clusters.map(c => `<li>${c}</li>`).join('')}</ul>
+        
+        <h3 style="color: #333;">Recommended Routes</h3>
+        <ul>${routes.map(r => `<li>${ROUTES_INFO[r]?.title || r}</li>`).join('')}</ul>
+        
+        <h3 style="color: #333;">Selected Deliverables</h3>
+        <ul>${selectedDeliverables.map(d => {
+            const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
+            const prio = priorities[d] || 'Standard';
+            const warn = warnings.includes(d) ? ' (Warning: Prereqs Missed)' : '';
+            return `<li>[${prio}] ${deliv ? deliv.name : d}${warn}</li>`;
+        }).join('')}</ul>
+      </div>
+    `;
+
+    await sendEmailViaResend(subject, htmlContent);
+    
+    setIsSubmitting(false);
+    setStep(N_QUIZ + 6);
   };
 
   const LiveScopePreview = () => (
@@ -472,17 +770,17 @@ const StrategicEngine = ({ navigate }) => {
       <div className="absolute top-0 right-0 w-[300px] h-[300px] opacity-[0.03] blur-[100px] pointer-events-none" style={{ backgroundColor: palette.primary }} />
       <h3 className="text-xs font-medium text-white/40 uppercase tracking-widest mb-8 border-b border-white/5 pb-4 font-primary">Live Blueprint</h3>
       <div className="space-y-6 flex-grow overflow-y-auto pr-2 custom-scrollbar">
-        <div className={`transition-opacity duration-500 ${answers.stage ? 'opacity-100' : 'opacity-20'}`}>
+        <div className={`transition-opacity duration-500 opacity-100`}>
           <div className="text-[10px] text-white/30 uppercase tracking-wider mb-1 font-primary">Brand Stage</div>
           <div className="text-sm font-light text-white font-secondary">{answers.stage ? answers.stage.label : 'Pending...'}</div>
         </div>
-        <div className={`transition-opacity duration-500 ${clusters.length > 0 ? 'opacity-100' : 'opacity-20'}`}>
+        <div className={`transition-opacity duration-500 opacity-100`}>
           <div className="text-[10px] text-white/30 uppercase tracking-wider mb-2 font-primary">Identified Gaps</div>
           <div className="flex flex-wrap gap-2">
-            {clusters.map(c => <span key={c} className="px-2 py-1 text-[10px] uppercase tracking-widest rounded border font-secondary" style={{ backgroundColor: hexToRgba(palette.primary, 0.1), color: palette.primary, borderColor: hexToRgba(palette.primary, 0.2) }}>{c}</span>)}
+            {clusters.length > 0 ? clusters.map(c => <span key={c} className="px-2 py-1 text-[10px] uppercase tracking-widest rounded border font-secondary" style={{ backgroundColor: hexToRgba(palette.primary, 0.1), color: palette.primary, borderColor: hexToRgba(palette.primary, 0.2) }}>{c}</span>) : <span className="text-xs font-light text-white/30 italic font-secondary">Awaiting diagnosis...</span>}
           </div>
         </div>
-        <div className={`transition-opacity duration-500 ${selectedDeliverables.length > 0 ? 'opacity-100' : 'opacity-20'}`}>
+        <div className={`transition-opacity duration-500 opacity-100`}>
           <div className="text-[10px] text-white/30 uppercase tracking-wider mb-2 font-primary">Scope Blueprint</div>
           {selectedDeliverables.length > 0 ? (
             <ul className="space-y-2">
@@ -496,8 +794,8 @@ const StrategicEngine = ({ navigate }) => {
     </div>
   );
 
-  const steps = [
-    // Step 0: Welcome
+  const stepsArray = [
+    // 0: Welcome
     <div key="s0" className="flex flex-col justify-center h-full text-left w-full mx-auto md:mx-0">
       <FadeUp>
         <div className="w-16 h-16 border rounded-[16px] flex items-center justify-center mb-8" style={{ backgroundColor: hexToRgba(palette.primary, 0.8), borderColor: hexToRgba(palette.primary, 0.3) }}><Fingerprint className="w-8 h-8" style={{ color: palette.bgDeep }} /></div>
@@ -510,11 +808,11 @@ const StrategicEngine = ({ navigate }) => {
       </FadeUp>
     </div>,
 
-    // Steps 1-3: Quiz Questions
+    // 1 to N: Quiz Questions
     ...QUIZ_QUESTIONS.map((q, i) => (
       <div key={`q${i}`} className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
         <FadeUp>
-          <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery ({i+1}/3)</div>
+          <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery ({i+1}/{N_QUIZ})</div>
           <h2 className="text-3xl md:text-4xl font-light mb-10 font-primary">{q.title}</h2>
           <StaggerGroup className="space-y-3 w-full max-w-3xl">
             {q.options.map((opt, j) => {
@@ -538,8 +836,8 @@ const StrategicEngine = ({ navigate }) => {
       </div>
     )),
 
-    // Step 4: Diagnosis Result
-    <div key="s4" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
+    // N+1: Diagnosis Result
+    <div key="diag" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
         <div className="text-xs font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4"/> Discovery Insights</div>
         <h2 className="text-3xl md:text-4xl font-light mb-6 font-primary">Your brand opportunity areas.</h2>
@@ -559,14 +857,14 @@ const StrategicEngine = ({ navigate }) => {
           })}
         </StaggerGroup>
         <div className="flex gap-6 items-center">
-          <PremiumButton onClick={() => setStep(5)}>Customize Scope</PremiumButton>
-          <button onClick={() => setStep(3)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
+          <PremiumButton onClick={() => setStep(N_QUIZ + 2)}>Customize Scope</PremiumButton>
+          <button onClick={() => setStep(N_QUIZ)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
     </div>,
 
-    // Step 5: Route Selection
-    <div key="s5" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
+    // N+2: Route Selection
+    <div key="routeSel" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
         <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 2 / Architecture</div>
         <h2 className="text-3xl md:text-4xl font-light mb-6 font-primary">Select your service routes.</h2>
@@ -588,14 +886,14 @@ const StrategicEngine = ({ navigate }) => {
           })}
         </StaggerGroup>
         <div className="flex gap-6 items-center">
-          <PremiumButton disabled={selectedRoutes.length === 0} onClick={() => setStep(6)}>Select Deliverables</PremiumButton>
-          <button onClick={() => setStep(4)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
+          <PremiumButton disabled={selectedRoutes.length === 0} onClick={() => setStep(N_QUIZ + 3)}>Select Deliverables</PremiumButton>
+          <button onClick={() => setStep(N_QUIZ + 1)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
     </div>,
 
-    // Step 6: Deliverables Selection
-    <div key="s6" className="flex flex-col h-full w-full py-10 text-left mx-auto md:mx-0">
+    // N+3: Deliverables Selection
+    <div key="delivSel" className="flex flex-col h-full w-full py-10 text-left mx-auto md:mx-0">
       <FadeUp>
         <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 3 / Details</div>
         <h2 className="text-3xl md:text-4xl font-light mb-2 font-primary">Build Your Scope</h2>
@@ -617,14 +915,27 @@ const StrategicEngine = ({ navigate }) => {
                         <div className="grid gap-3 w-full">
                           {delivs.map(d => {
                             const isSelected = selectedDeliverables.includes(d.id);
+                            const isWarning = warnings.includes(d.id);
                             return (
-                              <button key={d.id} onClick={() => setSelectedDeliverables(prev => isSelected ? prev.filter(x => x !== d.id) : [...prev, d.id])} className="p-4 rounded-[8px] border text-left transition-all flex items-start gap-4 font-secondary hover:translate-x-1 w-full" style={{ borderColor: isSelected ? palette.blue : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.blue, 0.1) : 'rgba(255,255,255,0.03)' }}>
-                                <div className="w-4 h-4 rounded-sm border mt-1 flex items-center justify-center shrink-0" style={{ backgroundColor: isSelected ? palette.blue : 'transparent', borderColor: isSelected ? palette.blue : 'rgba(255,255,255,0.3)' }}>{isSelected && <Check className="w-3 h-3 text-white" />}</div>
-                                <div>
-                                  <div className={`font-medium text-sm mb-1 ${isSelected ? 'text-white' : 'text-white/70'}`}>{d.name}</div>
-                                  <div className="text-xs text-white/40">{d.desc}</div>
+                              <div key={d.id} className={`p-4 rounded-[8px] border transition-all flex flex-col gap-3 font-secondary w-full ${isSelected ? 'border-[#2A97D9] bg-[#2A97D9]/10' : 'border-white/10 bg-white/[0.03] hover:-translate-y-[1px]'}`}>
+                                <div className="flex items-start gap-4 cursor-pointer" onClick={() => handleDeliverableToggle(d.id)}>
+                                  <div className={`w-4 h-4 rounded-sm border mt-1 flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#2A97D9] border-[#2A97D9]' : 'border-white/30'}`}>{isSelected && <Check className="w-3 h-3 text-white" />}</div>
+                                  <div className="flex-1 text-left">
+                                    <div className={`font-medium text-sm mb-1 ${isSelected ? 'text-white' : 'text-white/70'}`}>{d.name} {isWarning && <span className="ml-2 text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded border border-yellow-500/30">Missing Prereqs</span>}</div>
+                                    <div className="text-xs text-white/40">ID: {d.id} {d.interdependence !== 'None' && `| Requires: ${d.interdependence}`}</div>
+                                  </div>
                                 </div>
-                              </button>
+                                {isSelected && (
+                                  <div className="pl-8 flex items-center gap-3 mt-2 border-t border-white/5 pt-3">
+                                    <span className="text-[10px] uppercase tracking-widest text-white/40">Priority:</span>
+                                    <select value={priorities[d.id] || 'Standard'} onChange={e => setPriorities(p => ({...p, [d.id]: e.target.value}))} className="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white outline-none">
+                                       <option value="Standard">Standard</option>
+                                       <option value="High">High</option>
+                                       <option value="Critical">Critical</option>
+                                    </select>
+                                  </div>
+                                )}
+                              </div>
                             )
                           })}
                         </div>
@@ -637,20 +948,20 @@ const StrategicEngine = ({ navigate }) => {
           })}
         </StaggerGroup>
         <div className="pt-8 border-t border-white/10 mt-auto flex gap-6 items-center">
-          <PremiumButton disabled={selectedDeliverables.length === 0} onClick={() => setStep(7)}>Next: Project Context</PremiumButton>
-          <button onClick={() => setStep(5)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
+          <PremiumButton disabled={selectedDeliverables.length === 0} onClick={() => setStep(N_QUIZ + 4)}>Next: Project Context</PremiumButton>
+          <button onClick={() => setStep(N_QUIZ + 2)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
     </div>,
 
-    // Step 7: Context
-    <div key="s7" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
+    // N+4: Context
+    <div key="ctxSel" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
         <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 4 / Execution</div>
         <h2 className="text-3xl md:text-4xl font-light mb-10 font-primary">Project Context.</h2>
         <div className="space-y-6 w-full mb-12 max-w-3xl">
           <div className="w-full">
-            <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">What level of support are you looking for?</label>
+            <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">What level of support are you looking for? (Depth)</label>
             <select value={context.depth} onChange={e=>setContext({...context, depth: e.target.value})} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
               <option value="" style={{ backgroundColor: palette.bgDeep }}>Select depth...</option>
               <option value="Light-touch consulting" style={{ backgroundColor: palette.bgDeep }}>Light-touch consulting</option>
@@ -659,7 +970,7 @@ const StrategicEngine = ({ navigate }) => {
             </select>
           </div>
           <div className="w-full">
-            <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">When do you want to begin?</label>
+            <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">When do you want to begin? (Timeline)</label>
             <select value={context.timeline} onChange={e=>setContext({...context, timeline: e.target.value})} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
               <option value="" style={{ backgroundColor: palette.bgDeep }}>Select timeline...</option>
               <option value="Immediately" style={{ backgroundColor: palette.bgDeep }}>Immediately</option>
@@ -669,14 +980,14 @@ const StrategicEngine = ({ navigate }) => {
           </div>
         </div>
         <div className="flex gap-6 items-center">
-          <PremiumButton disabled={!context.depth || !context.timeline} onClick={() => setStep(8)}>Finalize Blueprint</PremiumButton>
-          <button onClick={() => setStep(6)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
+          <PremiumButton disabled={!context.depth || !context.timeline} onClick={() => setStep(N_QUIZ + 5)}>Finalize Blueprint</PremiumButton>
+          <button onClick={() => setStep(N_QUIZ + 3)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
     </div>,
 
-    // Step 8: Lead Capture
-    <div key="s8" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
+    // N+5: Lead Capture
+    <div key="leadCap" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
         <div className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.blue }}>Final Step</div>
         <h2 className="text-3xl md:text-4xl font-light mb-6 font-primary">Where should we send your Scope Snapshot?</h2>
@@ -686,15 +997,17 @@ const StrategicEngine = ({ navigate }) => {
           <input required type="email" placeholder="Work Email" value={leadForm.email} onChange={e=>setLeadForm({...leadForm, email: e.target.value})} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <input required type="text" placeholder="Company / Brand Name" value={leadForm.company} onChange={e=>setLeadForm({...leadForm, company: e.target.value})} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <div className="pt-6 flex gap-4 items-center">
-            <PremiumButton type="submit" className="w-full sm:w-auto px-10">Generate Report & Send Brief</PremiumButton>
-            <button type="button" onClick={() => setStep(7)} className="text-white/40 hover:text-white text-sm transition-colors">Back</button>
+            <PremiumButton type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-10">
+              {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing...</> : 'Generate Report & Send Brief'}
+            </PremiumButton>
+            <button type="button" onClick={() => setStep(N_QUIZ + 4)} disabled={isSubmitting} className="text-white/40 hover:text-white text-sm transition-colors disabled:opacity-50">Back</button>
           </div>
         </form>
       </FadeUp>
     </div>,
 
-    // Step 9: The Scope Snapshot Report
-    <div key="s9" className="flex flex-col justify-center h-full w-full py-12">
+    // N+6: The Scope Snapshot Report
+    <div key="snap" className="flex flex-col justify-center h-full w-full py-12">
       <FadeUp className="relative p-[1px] rounded-[24px] bg-gradient-to-b from-white/20 to-white/5 w-full">
         <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)]" style={{ backgroundColor: palette.bgDeep }}>
           <div className="flex flex-col md:flex-row justify-between items-start border-b border-white/10 pb-8 mb-10 relative z-10 gap-6 w-full">
@@ -728,7 +1041,8 @@ const StrategicEngine = ({ navigate }) => {
                 <div className="text-sm text-white/70 font-light space-y-3 bg-white/[0.02] p-6 rounded-[12px] border border-white/5 font-secondary w-full">
                   <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Brand Stage</span> <span className="text-right">{answers.stage?.label}</span></p>
                   <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Timeline</span> <span className="text-right">{context.timeline}</span></p>
-                  <p className="flex justify-between"><span className="text-white/40">Engagement Depth</span> <span className="text-right">{context.depth}</span></p>
+                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Engagement Depth</span> <span className="text-right">{context.depth}</span></p>
+                  <p className="flex justify-between"><span className="text-white/40 text-left">Suggested Starting Point</span> <span className="text-right text-[#6865FA]">{computeSuggestedStartingPoint(selectedDeliverables, priorities)}</span></p>
                 </div>
               </div>
             </div>
@@ -738,10 +1052,13 @@ const StrategicEngine = ({ navigate }) => {
               <ul className="space-y-4 w-full">
                 {DELIVERABLES_MASTER.filter(d => selectedDeliverables.includes(d.id)).map(d => (
                   <li key={d.id} className="flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full">
-                    <div className="p-1.5 rounded-md shrink-0" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4" style={{ color: palette.blue }} /></div>
+                    <div className="p-1.5 rounded-md shrink-0 mt-0.5" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4" style={{ color: palette.blue }} /></div>
                     <div className="w-full">
-                      <div className="text-sm font-medium text-white mb-1 font-secondary">{d.name}</div>
-                      <div className="text-xs text-white/40 leading-relaxed font-secondary">{d.desc}</div>
+                      <div className="text-sm font-medium text-white mb-1 font-secondary flex items-center justify-between">
+                        <span>{d.name} {warnings.includes(d.id) && <AlertCircle className="w-3 h-3 inline text-yellow-400 ml-1"/>}</span>
+                        <span className="text-[10px] uppercase tracking-widest text-white/40">{priorities[d.id] || 'Standard'}</span>
+                      </div>
+                      <div className="text-xs text-white/40 leading-relaxed font-secondary">ID: {d.id}</div>
                     </div>
                   </li>
                 ))}
@@ -763,26 +1080,76 @@ const StrategicEngine = ({ navigate }) => {
 
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative overflow-hidden w-full" style={{ backgroundColor: palette.bgDeep }}>
-      {step > 0 && step < 9 && (
+      {dependencyModal && (
+        <div className="fixed inset-0 z-[200000] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm text-left">
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#0C185C] border border-white/10 p-8 rounded-[24px] max-w-lg w-full shadow-2xl">
+            {dependencyModal.type === 'add' ? (
+              <>
+                <h3 className="text-2xl font-light mb-4 text-white font-primary">Missing Prerequisites</h3>
+                <p className="text-white/60 mb-6 font-secondary">This deliverable requires {dependencyModal.related.length} other foundation(s) to be executed properly:</p>
+                <ul className="mb-8 space-y-2 max-h-40 overflow-y-auto custom-scrollbar font-secondary border border-white/5 bg-white/[0.02] p-4 rounded-lg">
+                  {dependencyModal.related.map(id => {
+                    const d = DELIVERABLES_MASTER.find(x => x.id === id);
+                    return <li key={id} className="text-sm text-white/80 flex items-center gap-2"><ArrowRight className="w-3 h-3 text-[#6865FA] shrink-0"/> {d?.name || id}</li>;
+                  })}
+                </ul>
+                <div className="flex flex-col gap-3 font-secondary">
+                  <button onClick={() => {
+                    setSelectedDeliverables(prev => [...new Set([...prev, dependencyModal.deliverable, ...dependencyModal.related])]);
+                    setDependencyModal(null);
+                  }} className="bg-[#6865FA] text-white py-3 rounded-[8px] font-medium text-sm hover:brightness-110">Add all required prerequisites</button>
+                  <button onClick={() => {
+                    setSelectedDeliverables(prev => [...prev, dependencyModal.deliverable]);
+                    setWarnings(prev => [...prev, dependencyModal.deliverable]);
+                    setDependencyModal(null);
+                  }} className="bg-white/5 border border-white/10 text-white py-3 rounded-[8px] font-medium text-sm hover:bg-white/10">Keep this deliverable with a warning</button>
+                  <button onClick={() => setDependencyModal(null)} className="text-white/50 py-2 text-sm hover:text-white">Cancel</button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h3 className="text-2xl font-light mb-4 text-white font-primary">Warning: Breaking Dependencies</h3>
+                <p className="text-white/60 mb-6 font-secondary">Removing this will also break the foundation for {dependencyModal.related.length} dependent deliverable(s):</p>
+                <ul className="mb-8 space-y-2 max-h-40 overflow-y-auto custom-scrollbar font-secondary border border-white/5 bg-white/[0.02] p-4 rounded-lg">
+                  {dependencyModal.related.map(id => {
+                    const d = DELIVERABLES_MASTER.find(x => x.id === id);
+                    return <li key={id} className="text-sm text-white/80 flex items-center gap-2"><X className="w-3 h-3 text-red-400 shrink-0"/> {d?.name || id}</li>;
+                  })}
+                </ul>
+                <div className="flex flex-col gap-3 font-secondary">
+                  <button onClick={() => {
+                    setSelectedDeliverables(prev => prev.filter(x => x !== dependencyModal.deliverable && !dependencyModal.related.includes(x)));
+                    setWarnings(prev => prev.filter(x => x !== dependencyModal.deliverable && !dependencyModal.related.includes(x)));
+                    setDependencyModal(null);
+                  }} className="bg-red-500/20 border border-red-500/30 text-red-400 py-3 rounded-[8px] font-medium text-sm hover:bg-red-500/30">Remove this and all dependents</button>
+                  <button onClick={() => setDependencyModal(null)} className="text-white/50 py-2 text-sm hover:text-white">Cancel (Keep in scope)</button>
+                </div>
+              </>
+            )}
+          </motion.div>
+        </div>
+      )}
+
+      {step > 0 && step < (N_QUIZ + 6) && (
         <div className="fixed top-[72px] md:top-[88px] left-0 w-full h-[2px] bg-white/10 z-20">
-          <motion.div className="h-full" style={{ backgroundColor: palette.primary }} initial={{ width: 0 }} animate={{ width: `${(step / 8) * 100}%` }} transition={{ duration: 0.5 }} />
+          <motion.div className="h-full" style={{ backgroundColor: palette.primary }} initial={{ width: 0 }} animate={{ width: `${(step / (N_QUIZ + 5)) * 100}%` }} transition={{ duration: 0.5 }} />
         </div>
       )}
       <div className="w-full px-[3%] flex flex-col md:flex-row justify-between relative gap-8">
         <div className="flex-1 flex items-center justify-start pt-12 pb-32 md:pb-12 min-h-[80vh] w-full">
           <AnimatePresence mode="wait">
             <motion.div key={step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.4 }} className="w-full h-full flex flex-col justify-center">
-              {steps[step]}
+              {stepsArray[step]}
             </motion.div>
           </AnimatePresence>
         </div>
-        {step > 0 && step < 9 && (
+        {step > 0 && step < (N_QUIZ + 6) && (
           <div className="hidden md:block w-[350px] lg:w-[450px] shrink-0 sticky top-32 h-[calc(100vh-160px)] pb-8 z-10">
              <LiveScopePreview />
           </div>
         )}
       </div>
-      {step > 0 && step < 9 && (
+      {step > 0 && step < (N_QUIZ + 6) && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 w-full">
           <button onClick={() => setIsMobilePreviewOpen(!isMobilePreviewOpen)} className="w-full border-t border-white/10 p-4 flex items-center justify-between text-sm font-medium backdrop-blur-xl font-secondary" style={{ backgroundColor: palette.panel }}>
             <span className="flex items-center gap-2"><FileText className="w-4 h-4" style={{ color: palette.primary }}/> View Live Scope {selectedDeliverables.length > 0 && `(${selectedDeliverables.length})`}</span>
@@ -2361,6 +2728,40 @@ const LeafletMap = () => {
 };
 
 const ContactPage = ({ navigate }) => {
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState(null); // 'success' or 'error'
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatus(null);
+
+    const subject = `Direct Contact: ${formData.name}`;
+    const htmlContent = `
+      <div style="font-family: sans-serif; padding: 20px; max-width: 600px;">
+        <h2 style="color: #6865FA;">New Direct Message</h2>
+        <p><strong>Name:</strong> ${formData.name}</p>
+        <p><strong>Email:</strong> ${formData.email}</p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;"/>
+        <h3 style="color: #333;">Message:</h3>
+        <p style="white-space: pre-wrap; color: #555;">${formData.message}</p>
+      </div>
+    `;
+
+    const result = await sendEmailViaResend(subject, htmlContent);
+    
+    setIsSubmitting(false);
+    
+    if (result.success) {
+      setStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+      setTimeout(() => setStatus(null), 5000);
+    } else {
+      setStatus('error');
+    }
+  };
+
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
@@ -2379,10 +2780,17 @@ const ContactPage = ({ navigate }) => {
               <h3 className="text-2xl font-light mb-4 font-primary">I know what I need.</h3>
               <p className="text-white/50 font-light mb-8 font-secondary max-w-md">Skip the discovery flow and send us a direct message outlining your requirements.</p>
             </div>
-            <form className="space-y-4 text-left w-full font-secondary" onSubmit={(e) => e.preventDefault()}>
-              <input required placeholder="Your Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
-              <input required type="email" placeholder="Work Email" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
-              <PremiumButton type="submit" className="w-full">Send Message</PremiumButton>
+            <form className="space-y-4 text-left w-full font-secondary" onSubmit={handleSubmit}>
+              <input required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="Your Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
+              <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="Work Email" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
+              <textarea required value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} placeholder="Tell us about your project..." rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30 resize-none custom-scrollbar" />
+              
+              {status === 'success' && <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-[12px] text-sm">Message sent successfully! We'll be in touch soon.</div>}
+              {status === 'error' && <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-[12px] text-sm">Failed to send message. Please try again.</div>}
+              
+              <PremiumButton type="submit" disabled={isSubmitting} className="w-full">
+                {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</> : 'Send Message'}
+              </PremiumButton>
             </form>
           </div>
           <div className="border rounded-[24px] p-10 flex flex-col justify-center text-center items-center relative overflow-hidden w-full" style={{ background: `linear-gradient(to bottom right, ${hexToRgba(palette.primary, 0.1)}, transparent)`, borderColor: hexToRgba(palette.primary, 0.2) }}>
