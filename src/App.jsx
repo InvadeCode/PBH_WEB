@@ -7,7 +7,8 @@ import {
   Mail, MessageSquare, Terminal, Layers, Compass, PenTool,
   ChevronUp, ChevronDown, Check, Briefcase, FileText, User, Users, Activity,
   Shield, Lock, Scale, Target, BarChart2, Command, ArrowUpRight, CheckSquare,
-  Quote, Printer, Download, MonitorPlay, MapPin, Phone, Clock, Plus, Loader2, AlertCircle
+  Quote, Printer, Download, MonitorPlay, MapPin, Phone, Clock, Plus, Loader2, AlertCircle,
+  UploadCloud, Paperclip
 } from 'lucide-react';
 
 // --- RESEND CONFIGURATION ---
@@ -15,20 +16,26 @@ const RESEND_API_KEY = 're_91xvk8RE_42FqghKyaUk8QFJ1HqP51Kzn';
 const EMAIL_FROM = 'PBH Client <system@emails.liaisonit.com>';
 const EMAIL_TO = 'Anant Mishra <complete.anant@gmail.com>';
 
-const sendEmailViaResend = async (subject, htmlContent) => {
+const sendEmailViaResend = async (subject, htmlContent, attachments = []) => {
   try {
+    const payload = {
+      from: EMAIL_FROM,
+      to: EMAIL_TO,
+      subject: subject,
+      html: htmlContent
+    };
+
+    if (attachments && attachments.length > 0) {
+      payload.attachments = attachments;
+    }
+
     const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${RESEND_API_KEY}`
       },
-      body: JSON.stringify({
-        from: EMAIL_FROM,
-        to: EMAIL_TO,
-        subject: subject,
-        html: htmlContent
-      })
+      body: JSON.stringify(payload)
     });
 
     const data = await response.json();
@@ -41,6 +48,147 @@ const sendEmailViaResend = async (subject, htmlContent) => {
     return { success: false, error: error.message };
   }
 };
+
+// --- NEW CAREERS MODAL COMPONENT ---
+// --- NEW CAREERS MODAL COMPONENT ---
+const CareersModal = ({ onClose }) => {
+  const [file, setFile] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState(null);
+  
+  // New state for form fields
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    linkedin: '',
+    summary: ''
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedFile.type === 'application/pdf') {
+      setFile(selectedFile);
+    } else {
+      alert("Please select a valid PDF file (.pdf only).");
+      e.target.value = null; 
+      setFile(null);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!file) {
+      alert("Please attach your CV (PDF).");
+      return;
+    }
+    setIsSubmitting(true);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = async () => {
+      const base64Content = reader.result.split(',')[1];
+      
+      // Beautifully formatted email body with all the new data
+      const htmlContent = `
+        <div style="font-family: sans-serif; padding: 20px; max-width: 600px;">
+          <h2 style="color: #6865FA;">New Profile Submission</h2>
+          <p><strong>Name:</strong> ${formData.name}</p>
+          <p><strong>Email:</strong> <a href="mailto:${formData.email}">${formData.email}</a></p>
+          <p><strong>Phone:</strong> ${formData.phone}</p>
+          <p><strong>LinkedIn:</strong> <a href="${formData.linkedin}">${formData.linkedin}</a></p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;"/>
+          <h3 style="color: #333;">Summary:</h3>
+          <p style="white-space: pre-wrap; color: #555; line-height: 1.6;">${formData.summary}</p>
+        </div>
+      `;
+
+      const result = await sendEmailViaResend(
+        `New Application: ${formData.name}`,
+        htmlContent,
+        [{ filename: file.name, content: base64Content }]
+      );
+      
+      setIsSubmitting(false);
+      if (result.success) {
+        setStatus('success');
+        setTimeout(() => onClose(), 3000); 
+      } else {
+        setStatus('error');
+      }
+    };
+  };
+
+  return (
+    <div className="fixed inset-0 z-[200000] flex items-center justify-center p-4 sm:p-8 bg-black/60 backdrop-blur-md">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, y: 20 }} 
+        animate={{ opacity: 1, scale: 1, y: 0 }} 
+        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+        className="bg-[#0A103D] border border-white/10 p-8 sm:p-10 rounded-[24px] max-w-lg w-full shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar"
+      >
+        <button onClick={onClose} className="absolute top-6 right-6 text-white/40 hover:text-white transition-colors">
+          <X size={20}/>
+        </button>
+        
+        <h3 className="text-3xl font-light mb-2 text-white font-primary">Want to work with us?</h3>
+        <p className="text-white/50 mb-8 font-secondary text-sm leading-relaxed">
+          We are always looking for visionary strategists and artists. Send us your profile below.
+        </p>
+        
+        <form onSubmit={handleSubmit} className="space-y-4">
+           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+             <input required name="name" value={formData.name} onChange={handleInputChange} type="text" placeholder="Full Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+             <input required name="phone" value={formData.phone} onChange={handleInputChange} type="tel" placeholder="Phone Number" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+           </div>
+           
+           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+             <input required name="email" value={formData.email} onChange={handleInputChange} type="email" placeholder="Email Address" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+             <input required name="linkedin" value={formData.linkedin} onChange={handleInputChange} type="url" placeholder="LinkedIn Profile URL" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+           </div>
+
+           <textarea required name="summary" value={formData.summary} onChange={handleInputChange} placeholder="Tell us about yourself and what you do best..." rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary resize-none custom-scrollbar" />
+
+           <div className="border border-white/10 bg-white/[0.02] rounded-[16px] p-2 overflow-hidden focus-within:border-white/30 transition-colors mt-2">
+             <input 
+               type="file" 
+               accept="application/pdf" 
+               onChange={handleFileChange} 
+               required
+               className="w-full text-sm text-white/60 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:bg-white/10 file:text-white hover:file:bg-white/20 file:cursor-pointer font-secondary cursor-pointer"
+             />
+           </div>
+           
+           <div className="pt-4">
+             {status === 'success' ? (
+               <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-[12px] text-center font-secondary text-sm">
+                 Profile sent successfully!
+               </div>
+             ) : status === 'error' ? (
+               <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-[12px] text-center font-secondary text-sm">
+                 Failed to send. Please try again or email us directly.
+               </div>
+             ) : (
+               <button 
+                 disabled={!file || isSubmitting} 
+                 type="submit" 
+                 className="w-full py-4 rounded-[12px] bg-white text-black font-medium text-sm font-secondary hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+               >
+                 {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</> : 'Send Profile'}
+               </button>
+             )}
+           </div>
+        </form>
+      </motion.div>
+    </div>
+  );
+};
+
+
 
 // --- GLOBAL PALETTE & TYPOGRAPHY (V2) ---
 const palette = {
@@ -2107,6 +2255,7 @@ const OurStoryPage = ({ navigate }) => {
 };
 
 const TeamPage = ({ navigate }) => {
+  const [showCareers, setShowCareers] = useState(false);
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
@@ -2185,12 +2334,27 @@ const TeamPage = ({ navigate }) => {
           </StaggerGroup>
         </FadeUp>
 
+    
         {/* Section 5: Join the House CTA */}
-        <FadeUp className="text-center pt-16 border-t border-white/10 w-full">
-           <h3 className="text-3xl font-light mb-6 font-primary">Want to join the House?</h3>
-           <p className="text-lg text-white/50 font-secondary mb-10 max-w-2xl mx-auto">We are always looking for visionary strategists and artists.</p>
-           <PremiumButton variant="secondary" className="px-12 py-4 text-sm font-secondary">View Open Positions</PremiumButton>
+        <FadeUp className="text-center pt-32 pb-16 border-t border-white/10 w-full flex flex-col items-center">
+          {/* Little glowing dot from the design */}
+          <div className="w-3 h-3 rounded-full bg-[#FDE68A] mb-8 shadow-[0_0_20px_#FDE68A]" />
+          
+          <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary text-white">Want to join the House?</h3>
+          <p className="text-lg text-white/50 font-secondary mb-10 max-w-2xl mx-auto">We are always looking for visionary strategists and artists.</p>
+          
+          {/* Updated button to trigger the modal */}
+          <button 
+            onClick={() => setShowCareers(true)} 
+            className="px-8 py-3 rounded-[12px] border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] transition-all text-white text-sm font-medium font-secondary"
+          >
+            Send Your Profile
+          </button>
         </FadeUp>
+        <AnimatePresence>
+        {showCareers && <CareersModal onClose={() => setShowCareers(false)} />}
+        </AnimatePresence>
+
       </div>
     </div>
   );
