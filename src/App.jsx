@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
+import { useSanity } from './lib/useSanity';
+import { CASE_STUDIES_QUERY, GET_JOURNAL_ARTICLES, GET_PROBLEM_DATA, GET_QUIZ_QUESTIONS, GET_ROUTES_INFO, GET_DELIVERABLES, GET_SITE_SETTINGS, GET_TEAM_MEMBERS, GET_CORE_VALUES, GET_TIMELINE, GET_FRAMEWORK, GET_FAQS } from './lib/sanityQueries';
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useSpring, useMotionValue, useMotionTemplate, useAnimationFrame } from 'framer-motion';
 import { 
   ArrowRight, Sparkles, Zap, CheckCircle2, 
@@ -11,36 +13,34 @@ import {
   UploadCloud, Paperclip
 } from 'lucide-react';
 
+export const GlobalContext = createContext(null);
+
 // --- RESEND CONFIGURATION ---
-const RESEND_API_KEY = 're_91xvk8RE_42FqghKyaUk8QFJ1HqP51Kzn';
-const EMAIL_FROM = 'PBH Client <system@emails.liaisonit.com>';
-const EMAIL_TO = 'Anant Mishra <complete.anant@gmail.com>';
+// Configuration moved to Vercel environment variables securely.
+// See api/send-email.js
 
 const sendEmailViaResend = async (subject, htmlContent, attachments = []) => {
   try {
     const payload = {
-      from: EMAIL_FROM,
-      to: EMAIL_TO,
       subject: subject,
-      html: htmlContent
+      htmlContent: htmlContent
     };
 
     if (attachments && attachments.length > 0) {
       payload.attachments = attachments;
     }
 
-    const response = await fetch('https://api.resend.com/emails', {
+    const response = await fetch('/api/send-email', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${RESEND_API_KEY}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     });
 
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.message || 'Failed to send email');
+      throw new Error(data.error || 'Failed to send email');
     }
     return { success: true, data };
   } catch (error) {
@@ -342,6 +342,46 @@ const DELIVERABLES_MASTER = [
 ];
 
 const CASE_STUDIES = [
+  {
+    id: 'cs0',
+    client: 'Arise Ventures',
+    sector: 'Venture Capital',
+    challenge: 'Designing a fearless identity for bold capital and visionary founders.',
+    route: 'Brand Boulevard',
+    tags: ['Venture Capital', 'Brand Identity', 'Visual System'],
+    type: 'accent',
+    overview: 'Arise Ventures is a global early-stage venture capital firm investing in transformative tech startups across Consumer, Climate, and Enterprise sectors. The brand needed to move from a functional identity to a sharper, more unified presence that could carry its ambition, founder-first philosophy, and global outlook.',
+    solution: 'We translated the idea of “backing the bold” into a living brand system built around movement, momentum, and moonshots. The identity uses a ripple-inspired logomark, constellation-led visual language, and high-energy gradients to create a future-ready venture capital brand with confidence and depth.',
+    roles: [
+      'Brand Strategy',
+      'Visual Identity System',
+      'Logo & Logomark Design',
+      'Investor Communication',
+      'Social & Event Collaterals'
+    ],
+    results: [
+      'Unified identity across India, US, and Singapore presence',
+      'Sharper founder-facing brand narrative for Consumer, Climate, and Enterprise sectors',
+      'Scalable brand ecosystem across decks, social templates, banners, and digital touchpoints'
+    ],
+    colors: ['#FFCD00', '#6865FA', '#010D54', '#F4F4F5'],
+    fullStory: {
+      heroImg: 'https://static.wixstatic.com/media/32f09f_075a9f91e6064746bf9f928ac934a255~mv2.png?q=80&w=2564&auto=format&fit=crop',
+      challenge: 'Arise Ventures entered a critical growth phase where its brand needed to evolve to reflect its ambition and values. The existing visual identity lacked the coherence required to unify its presence across platforms and did not fully express its legacy.',
+      strategy: 'The rebrand began with one strategic question: what does it mean to back the bold? PBH translated that into a living visual identity rooted in movement, momentum, and moonshots.',
+      execution: 'Grounded in stakeholder conversations, we built a design system of gradients, ripple logic, and constellation-inspired elements reflecting scale and interconnectedness. From stage banners to social templates, the visual language is built to travel.',
+      stats: [
+        { label: 'Global Presence', val: 'IN, US, SG' },
+        { label: 'Sectors', val: 'Consumer, Climate, Enterprise' },
+        { label: 'Brand Ecosystem', val: 'Unified' }
+      ],
+      images: [
+        'https://static.wixstatic.com/media/32f09f_28b10af106e84cbfbbf05ba35bf0d70d~mv2.png?q=80&w=2000&auto=format&fit=crop',
+        'https://static.wixstatic.com/media/32f09f_02f0028942054129a7b05d02cebc118a~mv2.png?q=80&w=2000&auto=format&fit=crop',
+        'https://static.wixstatic.com/media/32f09f_f393263a5ec54885b6b72f37efaf2bf6~mv2.png?q=80&w=2000&auto=format&fit=crop'
+      ]
+    }
+  },
   { 
     id: 'cs1', client: 'Aura Skincare', sector: 'Beauty', challenge: 'Elevating a cult favorite skincare line into a globally recognized luxury lifestyle brand.', route: 'Visual Identity', tags: ['Beauty', 'Packaging', 'Identity'], type: 'primary',
     overview: 'Aura Skincare was beloved by dermatologists but ignored by the luxury lifestyle market. Their clinical aesthetic was highly functional but lacked the emotional resonance required to compete on a global stage.',
@@ -416,7 +456,7 @@ const parsePrerequisites = (field) => {
   return results;
 };
 
-const findUnmetPrerequisites = (deliverableId, currentSelections) => {
+const findUnmetPrerequisites = (deliverableId, currentSelections, deliverablesList = DELIVERABLES_MASTER) => {
   const unmet = [];
   const queue = [deliverableId];
   const visited = new Set();
@@ -426,7 +466,7 @@ const findUnmetPrerequisites = (deliverableId, currentSelections) => {
     if (visited.has(current)) continue;
     visited.add(current);
     
-    const deliv = DELIVERABLES_MASTER.find(d => d.id === current);
+    const deliv = deliverablesList.find(d => d.id === current);
     if (!deliv || deliv.interdependence === "None") continue;
     
     const prerequisites = parsePrerequisites(deliv.interdependence);
@@ -440,11 +480,11 @@ const findUnmetPrerequisites = (deliverableId, currentSelections) => {
   return unmet;
 };
 
-const findAllDependents = (deliverableId, currentSelections) => {
+const findAllDependents = (deliverableId, currentSelections, deliverablesList = DELIVERABLES_MASTER) => {
   const dependents = [];
   for (const sel of currentSelections) {
     if (sel === deliverableId) continue;
-    const unmet = findUnmetPrerequisites(sel, currentSelections.filter(x => x !== deliverableId));
+    const unmet = findUnmetPrerequisites(sel, currentSelections.filter(x => x !== deliverableId), deliverablesList);
     if (unmet.includes(deliverableId)) {
       dependents.push(sel);
     }
@@ -452,15 +492,15 @@ const findAllDependents = (deliverableId, currentSelections) => {
   return dependents;
 };
 
-const computeSuggestedStartingPoint = (selectedDelivs, priorities) => {
+const computeSuggestedStartingPoint = (selectedDelivs, priorities, deliverablesList = DELIVERABLES_MASTER) => {
   const fullScope = [...new Set(selectedDelivs)];
   for (const d of selectedDelivs) {
-     const unmet = findUnmetPrerequisites(d, fullScope);
+     const unmet = findUnmetPrerequisites(d, fullScope, deliverablesList);
      fullScope.push(...unmet);
   }
   
   const uniqueScope = [...new Set(fullScope)];
-  const scopeObjects = uniqueScope.map(id => DELIVERABLES_MASTER.find(x => x.id === id)).filter(Boolean);
+  const scopeObjects = uniqueScope.map(id => deliverablesList.find(x => x.id === id)).filter(Boolean);
   
   // Layer 0 and 1 items
   const layer01Ids = ['D001','D002','D003','D004','D005','D006','D007','D008','D037','D038','D039','D040','D041','D042','D043'];
@@ -793,6 +833,7 @@ const BrandHealthRadar = ({ clusters }) => {
 
 // --- STRATEGIC ENGINE (SCOPE BUILDER) ---
 const StrategicEngine = ({ navigate }) => {
+  const { QUIZ_QUESTIONS, ROUTES_INFO, DELIVERABLES_MASTER } = useContext(GlobalContext);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [clusters, setClusters] = useState([]);
@@ -1370,6 +1411,7 @@ const NavLink = ({ children, onClick, active, onMouseEnter, onMouseLeave }) => {
 };
 
 const Header = ({ navigate, current }) => {
+  const { SITE_SETTINGS, ROUTES_INFO, CASE_STUDIES } = useContext(GlobalContext);
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const timeoutRef = useRef(null);
@@ -1615,6 +1657,7 @@ const Header = ({ navigate, current }) => {
 };
 
 const HomePage = ({ navigate }) => {
+  const { SITE_SETTINGS, ROUTES_INFO, PROBLEM_DATA, CASE_STUDIES, JOURNAL_ARTICLES } = useContext(GlobalContext);
   const heroRef = useRef(null);
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(heroProgress, [0, 1], ["0%", "40%"]);
@@ -1669,12 +1712,11 @@ const HomePage = ({ navigate }) => {
         </motion.div>
 
         <div className="flex-1 flex flex-col justify-center w-full relative z-10 text-left">
-          <RevealText delay={0.1}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-1 font-primary">Breakthroughs happen</h1></RevealText>
-          <RevealText delay={0.2}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 flex items-baseline flex-wrap font-primary">when strategy and execution <AnimatedItalic className="text-white/60 ml-4">move as one.</AnimatedItalic></h1></RevealText>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs.</motion.p>
+          <RevealText delay={0.1}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-1 font-primary max-w-[1200px]">{SITE_SETTINGS.homeHeroTitle || "Breakthroughs happen when strategy and execution move as one."}</h1></RevealText>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">{SITE_SETTINGS.homeHeroSubtitle || "PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs."}</motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.7 }} className="mt-12 flex flex-col sm:flex-row gap-6">
-            <PremiumButton onClick={() => navigate('assessment')} className="min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(${rgbPrimary}, 0.2)` }}>Build My Brand Scope <Sparkles className="w-4 h-4 ml-2" /></PremiumButton>
-            <PremiumButton variant="secondary" onClick={() => navigate('work')} className="min-w-[240px]">Explore Our Work</PremiumButton>
+            <PremiumButton onClick={() => navigate('assessment')} className="min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(${rgbPrimary}, 0.2)` }}>{SITE_SETTINGS.assessmentButton || 'Build My Brand Scope'} <Sparkles className="w-4 h-4 ml-2" /></PremiumButton>
+            <PremiumButton variant="secondary" onClick={() => navigate('work')} className="min-w-[240px]">{SITE_SETTINGS.homeExploreButton || 'Explore Our Work'}</PremiumButton>
           </motion.div>
         </div>
       </section>
@@ -1857,8 +1899,8 @@ const HomePage = ({ navigate }) => {
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="relative z-10 w-full overflow-hidden flex whitespace-nowrap">
            <motion.div animate={{ x: ["0%", "-50%"] }} transition={{ repeat: Infinity, ease: "linear", duration: 20 }} className="flex gap-16 opacity-90 font-primary" style={{ color: palette.bgDeep }}>
-             <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">3 Ecosystems. 1 Connected System. Infinite Breakthroughs.</span>
-             <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">3 Ecosystems. 1 Connected System. Infinite Breakthroughs.</span>
+             <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">{SITE_SETTINGS?.marqueeText || "3 Ecosystems. 1 Connected System. Infinite Breakthroughs."}</span>
+             <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">{SITE_SETTINGS?.marqueeText || "3 Ecosystems. 1 Connected System. Infinite Breakthroughs."}</span>
            </motion.div>
         </div>
       </section>
@@ -1876,9 +1918,11 @@ const HomePage = ({ navigate }) => {
 };
 
 const WorkDetailPage = ({ navigate, projectId }) => {
-  const projectIndex = CASE_STUDIES.findIndex(p => p.id === projectId);
-  const project = CASE_STUDIES[projectIndex] || CASE_STUDIES[0];
-  const nextProject = CASE_STUDIES[(projectIndex + 1) % CASE_STUDIES.length];
+  const { CASE_STUDIES } = useContext(GlobalContext);
+  const caseStudies = CASE_STUDIES;
+  const projectIndex = caseStudies.findIndex(p => p.id === projectId);
+  const project = caseStudies[projectIndex] || caseStudies[0];
+  const nextProject = caseStudies[(projectIndex + 1) % caseStudies.length];
   const hexColor = palette[project.type] || palette.primary;
 
   useEffect(() => {
@@ -2043,6 +2087,56 @@ const WorkDetailPage = ({ navigate, projectId }) => {
         </div>
       </FadeUp>
 
+      {/* Full Story Block (Extended Content) */}
+      {project.fullStory && (
+        <section className="py-24 px-[3%] w-full bg-[#05050A] text-left border-t border-white/5">
+          <FadeUp className="max-w-7xl mx-auto w-full">
+             <div className="grid md:grid-cols-2 gap-16 mb-24">
+               {project.fullStory.strategy && (
+                 <div>
+                   <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Strategy</h4>
+                   <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.strategy}</p>
+                 </div>
+               )}
+               {project.fullStory.execution && (
+                 <div>
+                   <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Execution</h4>
+                   <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.execution}</p>
+                 </div>
+               )}
+             </div>
+             
+             {project.fullStory.heroImg && (
+               <div className="w-full aspect-[21/9] rounded-[32px] overflow-hidden mb-24 border border-white/10 shadow-2xl">
+                 <img src={project.fullStory.heroImg} alt="Hero representation" className="w-full h-full object-cover" />
+               </div>
+             )}
+
+             {project.fullStory.stats && (
+               <div className="grid md:grid-cols-3 gap-8 mb-24">
+                 {project.fullStory.stats.map(stat => (
+                   <div key={stat._key || stat.label} className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col justify-center shadow-lg relative overflow-hidden group">
+                     <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 group-hover:opacity-30 transition-opacity pointer-events-none" style={{ backgroundColor: hexColor }} />
+                     <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary relative z-10">{stat.label}</h4>
+                     <p className="text-3xl text-white font-light font-primary relative z-10">{stat.val}</p>
+                   </div>
+                 ))}
+               </div>
+             )}
+
+             {project.fullStory.images && project.fullStory.images.length > 0 && (
+               <div className="grid md:grid-cols-3 gap-6">
+                 {project.fullStory.images.map((img, i) => (
+                   <div key={i} className="aspect-square rounded-[24px] overflow-hidden border border-white/10">
+                     <img src={img} alt={`Detailed view ${i+1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                   </div>
+                 ))}
+               </div>
+             )}
+          </FadeUp>
+        </section>
+      )}
+
       {/* Results / Impact */}
       <section className="py-32 px-[3%] w-full border-t border-white/5 bg-[#010825] text-left">
          <FadeUp className="max-w-6xl mx-auto w-full">
@@ -2082,6 +2176,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
 
 
 const AboutPage = ({ navigate }) => {
+  const { SITE_SETTINGS, CORE_VALUES, TIMELINE } = useContext(GlobalContext);
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
@@ -2113,22 +2208,20 @@ const AboutPage = ({ navigate }) => {
         </FadeUp>
 
         {/* Section 4: Core Values */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary border-b border-white/10 pb-6">Our Core Values</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary border-b border-white/10 pb-6">{SITE_SETTINGS.coreValuesHeader}</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32 w-full">
-            {[
-              { title: "Collaboration", desc: "We co-create with you, not for you.", icon: <Users /> },
-              { title: "Science & Art", desc: "We bridge the divide between logic and imagination.", icon: <Dna /> },
-              { title: "Creator Empowerment", desc: "We ignite your vision with the fuel of science and art.", icon: <Zap /> },
-              { title: "Future-Oriented", desc: "We don't just build brands, we build legacies for the future.", icon: <Globe /> }
-            ].map((v, i) => (
+            {CORE_VALUES.map((v, i) => {
+              const Icon = i === 0 ? <Users /> : i === 1 ? <Dna /> : i === 2 ? <Zap /> : <Globe />;
+              return (
               <StaggerItem key={i}>
                 <div className="bg-white/[0.02] border border-white/5 rounded-[16px] p-8 hover:bg-white/[0.04] transition-colors h-full w-full">
-                  <div className="mb-6 w-12 h-12 rounded-[12px] flex items-center justify-center bg-white/5" style={{ color: palette.primary }}>{v.icon}</div>
+                  <div className="mb-6 w-12 h-12 rounded-[12px] flex items-center justify-center bg-white/5" style={{ color: palette.primary }}>{Icon}</div>
                   <h4 className="text-xl font-medium mb-4 text-white font-primary">{v.title}</h4>
-                  <p className="text-white/50 font-light font-secondary leading-relaxed">{v.desc}</p>
+                  <p className="text-white/50 font-light font-secondary leading-relaxed">{v.description}</p>
                 </div>
               </StaggerItem>
-            ))}
+              )
+            })}
         </StaggerGroup>
 
         {/* Section 5: The SciArt Philosophy */}
@@ -2173,6 +2266,7 @@ const AboutPage = ({ navigate }) => {
 };
 
 const OurStoryPage = ({ navigate }) => {
+  const { SITE_SETTINGS, TIMELINE } = useContext(GlobalContext);
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
@@ -2214,13 +2308,9 @@ const OurStoryPage = ({ navigate }) => {
 
         {/* Section 4: The Timeline */}
         <div className="mb-32 w-full">
-          <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">Our Journey</h3></FadeUp>
+          <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">{SITE_SETTINGS.ourJourneyHeader}</h3></FadeUp>
           <StaggerGroup className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent w-full">
-            {[
-              { year: "The Inception", title: "Identifying the Gap", desc: "Recognizing that Indian innovators lacked a premium voice on the global stage, the foundation of PBH was conceptualized." },
-              { year: "The Framework", title: "Building the SciArt Method", desc: "Developing our proprietary framework that ensures every aesthetic decision is backed by strategic logic." },
-              { year: "The Expansion", title: "The Global Shift", desc: "Co-creating with breakthrough brands worldwide, establishing the House as a premium strategic partner." }
-            ].map((milestone, idx) => (
+            {TIMELINE.map((milestone, idx) => (
               <StaggerItem key={idx} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active w-full">
                 <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-[#05050A] text-white/50 shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow" style={{ color: palette.primary }}>
                   <Sparkles className="w-4 h-4" />
@@ -2230,7 +2320,7 @@ const OurStoryPage = ({ navigate }) => {
                     <span className="font-primary text-sm tracking-widest uppercase" style={{ color: palette.primary }}>{milestone.year}</span>
                   </div>
                   <h4 className="text-xl font-medium text-white mb-2 font-primary">{milestone.title}</h4>
-                  <p className="text-white/50 text-sm font-secondary font-light leading-relaxed">{milestone.desc}</p>
+                  <p className="text-white/50 text-sm font-secondary font-light leading-relaxed">{milestone.description}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -2255,6 +2345,7 @@ const OurStoryPage = ({ navigate }) => {
 };
 
 const TeamPage = ({ navigate }) => {
+  const { TEAM_MEMBERS, SITE_SETTINGS } = useContext(GlobalContext);
   const [showCareers, setShowCareers] = useState(false);
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
@@ -2263,17 +2354,14 @@ const TeamPage = ({ navigate }) => {
         
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>The Team</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">The minds behind the magic.</h1>
+          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS.teamPageHeader || 'The Team'}</h2>
+          <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">{SITE_SETTINGS.teamPageSubtext || 'The minds behind the magic.'}</h1>
         </FadeUp>
         
         {/* Section 2: Leadership */}
         <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">Leadership</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 mb-32 w-full">
-          {[
-            { name: "Founder Name", role: "Chief Executive Officer", desc: "Visionary leader driving the SciArt philosophy and global strategy." },
-            { name: "Partner Name", role: "Creative Director", desc: "The artistic force translating complex logic into stunning visual narratives." }
-          ].map((leader, i) => (
+          {TEAM_MEMBERS.slice(0, 2).map((leader, i) => (
             <StaggerItem key={i}>
               <div className="border border-white/5 rounded-[24px] overflow-hidden flex flex-col sm:flex-row h-full w-full" style={{ backgroundColor: palette.panel }}>
                 <div className="sm:w-1/2 aspect-square bg-white/5 relative flex items-center justify-center border-r border-white/5">
@@ -2282,7 +2370,7 @@ const TeamPage = ({ navigate }) => {
                 <div className="p-8 sm:w-1/2 flex flex-col justify-center">
                    <h3 className="text-2xl font-medium text-white mb-2 font-primary">{leader.name}</h3>
                    <p className="text-sm tracking-widest uppercase mb-4 font-primary" style={{ color: palette.blue }}>{leader.role}</p>
-                   <p className="text-sm text-white/50 font-secondary leading-relaxed">{leader.desc}</p>
+                   <p className="text-sm text-white/50 font-secondary leading-relaxed">{leader.bio}</p>
                 </div>
               </div>
             </StaggerItem>
@@ -2292,12 +2380,7 @@ const TeamPage = ({ navigate }) => {
         {/* Section 3: The Innovators (Grid) */}
         <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">The Core House</h3></FadeUp>
         <StaggerGroup className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-32 w-full">
-          {[
-            { name: "Creator 1", role: "Brand Strategist" },
-            { name: "Creator 2", role: "Lead Designer" },
-            { name: "Creator 3", role: "Storyteller" },
-            { name: "Creator 4", role: "Digital Architect" }
-          ].map((member, idx) => (
+          {TEAM_MEMBERS.slice(2).map((member, idx) => (
             <StaggerItem key={idx}>
               <div className="border border-white/5 rounded-[16px] overflow-hidden group h-full w-full" style={{ backgroundColor: palette.panel }}>
                 <div className="aspect-square bg-white/[0.02] relative overflow-hidden flex items-center justify-center transition-colors group-hover:bg-white/[0.05]">
@@ -2361,6 +2444,7 @@ const TeamPage = ({ navigate }) => {
 };
 
 const MethodPage = ({ navigate }) => {
+  const { SITE_SETTINGS, FRAMEWORK } = useContext(GlobalContext);
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
@@ -2368,8 +2452,8 @@ const MethodPage = ({ navigate }) => {
         
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>The PBH Method</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-24 tracking-tight font-primary max-w-4xl">The blueprint for <AnimatedItalic className="text-white/50">breakthrough brands.</AnimatedItalic></h1>
+          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS.methodPageHeader}</h2>
+          <h1 className="text-5xl md:text-7xl font-light mb-24 tracking-tight font-primary max-w-4xl">{SITE_SETTINGS.methodPageSubtext}</h1>
         </FadeUp>
         
         {/* Section 2: Traditional vs PBH */}
@@ -2393,26 +2477,21 @@ const MethodPage = ({ navigate }) => {
         </FadeUp>
 
         {/* Section 3: The 4 Steps */}
-        <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">Our 4-Step Framework</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">{SITE_SETTINGS.frameworkHeader}</h3></FadeUp>
         <StaggerGroup className="space-y-24 mb-32 w-full">
-          {[
-            { step: "1", title: "Discovery", desc: "We begin by understanding the business, audience, market, internal teams, communication gaps, and growth context. We dig deep into the core mechanics of your innovation.", outputs: ["Brand Audit", "Stakeholder Interviews", "Competitor Landscape Mapping"] },
-            { step: "2", title: "Clarity & Alignment", desc: "We identify exactly where the brand is breaking — whether it's messaging, identity, storytelling, systems, campaigns, or internal execution pipelines.", outputs: ["Problem Clusters Identified", "Gap Analysis Document"] },
-            { step: "3", title: "Route Mapping", desc: "Based on these insights, we recommend one or more dedicated service ecosystems: Brand Boulevard (Identity), SciArt Saga (Innovation Story), or Storytelling Corner (Campaigns).", outputs: ["Strategic Route Assignment", "Resource Allocation"] },
-            { step: "4", title: "Scope Building", desc: "We lock in the foundation. Each route is broken down into specific line items, deliverables, priorities, dependencies, and precise timelines.", outputs: ["Custom Scope Blueprint", "Project Roadmap"] }
-          ].map((s, i) => (
+          {FRAMEWORK.map((s, i) => (
             <StaggerItem key={i}>
               <div className="grid md:grid-cols-12 gap-8 border-t border-white/5 pt-12 relative w-full">
                 <div className="absolute top-0 left-0 w-1/4 h-[1px]" style={{ background: `linear-gradient(to right, ${palette.primary}, transparent)` }} />
-                <div className="md:col-span-1 text-4xl font-serif italic text-white/30">0{s.step}</div>
+                <div className="md:col-span-1 text-4xl font-serif italic text-white/30">0{s.stepNumber}</div>
                 <div className="md:col-span-6 pr-8">
                    <h3 className="text-3xl font-light mb-4 font-primary">{s.title}</h3>
-                   <p className="text-white/50 font-light text-lg leading-relaxed font-secondary max-w-2xl">{s.desc}</p>
+                   <p className="text-white/50 font-light text-lg leading-relaxed font-secondary max-w-2xl">{s.description}</p>
                 </div>
                 <div className="md:col-span-5 md:pl-12 border-l border-white/5">
                   <h4 className="text-xs font-medium text-white/30 uppercase tracking-widest mb-6 font-primary">Key Outputs</h4>
                   <ul className="space-y-3 font-secondary">
-                    {s.outputs.map((out, j) => <li key={j} className="flex items-center gap-3 text-white/70 font-light text-sm bg-white/[0.02] border border-white/5 px-4 py-3 rounded-[8px]"><Check className="w-4 h-4 shrink-0" style={{ color: palette.accent }} /> {out}</li>)}
+                    {s.outputs?.map((out, j) => <li key={j} className="flex items-center gap-3 text-white/70 font-light text-sm bg-white/[0.02] border border-white/5 px-4 py-3 rounded-[8px]"><Check className="w-4 h-4 shrink-0" style={{ color: palette.accent }} /> {out}</li>)}
                   </ul>
                 </div>
               </div>
@@ -2457,12 +2536,13 @@ const MethodPage = ({ navigate }) => {
 };
 
 const ServicesPage = ({ navigate }) => {
+  const { SITE_SETTINGS, ROUTES_INFO, CASE_STUDIES } = useContext(GlobalContext);
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight max-w-4xl font-primary">Three strategic routes.<br/><AnimatedItalic className="text-white/50">One connected brand system.</AnimatedItalic></h1></RevealText>
-        <FadeUp><p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed font-secondary">PBH services are not isolated offerings. They are designed as connected routes that help brands move from clarity to communication to execution.</p></FadeUp>
+        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight max-w-4xl font-primary whitespace-pre-line">{SITE_SETTINGS.servicesHeader}</h1></RevealText>
+        <FadeUp><p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed font-secondary">{SITE_SETTINGS.servicesSubtext}</p></FadeUp>
         
         <StaggerGroup className="grid gap-12 mb-32 w-full">
           {Object.values(ROUTES_INFO).map((route, i) => {
@@ -2477,7 +2557,7 @@ const ServicesPage = ({ navigate }) => {
                       <p className="text-white/60 font-light leading-relaxed mb-8 lg:mb-10 font-secondary text-base md:text-lg max-w-md">{route.desc}</p>
                       
                       <div className="mt-auto pt-4 border-t border-white/10 lg:border-none lg:pt-0">
-                        <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent text-white group font-secondary text-base">Explore Route Details <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform"/></PremiumButton>
+                        <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent text-white group font-secondary text-base">{SITE_SETTINGS.servicesExploreButton || 'Explore Route Details'} <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform"/></PremiumButton>
                       </div>
                     </div>
                     
@@ -2535,6 +2615,7 @@ const ServicesPage = ({ navigate }) => {
 };
 
 const ServiceDetailPage = ({ navigate, routeId }) => {
+  const { ROUTES_INFO, DELIVERABLES_MASTER } = useContext(GlobalContext);
   const route = ROUTES_INFO[routeId?.toUpperCase()] || ROUTES_INFO['BB'];
   const rColor = palette[route.type] || palette.primary;
 
@@ -2577,7 +2658,7 @@ const ServiceDetailPage = ({ navigate, routeId }) => {
         <FadeUp className="border border-white/10 rounded-[24px] p-12 text-center w-full relative overflow-hidden" style={{ background: `linear-gradient(to bottom right, ${palette.panel}, ${palette.bgDeep})` }}>
            <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
            <h2 className="text-3xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
-           <PremiumButton onClick={() => navigate('assessment')} className="relative z-10">Build A Scope</PremiumButton>
+           <PremiumButton onClick={() => navigate('assessment')} className="relative z-10">{SITE_SETTINGS.assessmentButton || 'Build A Scope'}</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -2647,26 +2728,28 @@ const ServiceModal = ({ navigate, routeId, onClose }) => {
 };
 
 const WorkPage = ({ navigate }) => {
+  const { SITE_SETTINGS, CASE_STUDIES } = useContext(GlobalContext);
+  const caseStudies = CASE_STUDIES;
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">Our Work.</h1></RevealText>
-        <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">Case studies and full visual archive proving our thinking across strategy, identity, and campaigns.</p></FadeUp>
+        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">{SITE_SETTINGS.workPageHeader}</h1></RevealText>
+        <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">{SITE_SETTINGS.workPageSubtext}</p></FadeUp>
         
         {/* Featured Case Study Hero */}
         <FadeUp delay={0.1} className="mb-24 w-full">
-          <div onClick={() => navigate('work/' + CASE_STUDIES[0].id)} className="group relative border border-white/5 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
+          <div onClick={() => navigate('work/' + caseStudies[0].id)} className="group relative border border-white/5 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
              <div className="md:w-1/2 relative overflow-hidden h-[300px] md:h-full bg-white/[0.02] w-full">
                <div className="absolute inset-0 opacity-30 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105" style={{ background: `linear-gradient(to bottom right, ${palette.primary}, transparent)` }} />
-               <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 text-7xl md:text-9xl">{CASE_STUDIES[0].client.split(' ')[0]}</span></div>
+               <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 text-7xl md:text-9xl">{caseStudies[0].client.split(' ')[0]}</span></div>
              </div>
              <div className="md:w-1/2 p-12 md:p-16 flex flex-col justify-center w-full">
-                <span className="text-[10px] font-medium tracking-widest uppercase block mb-4 font-primary" style={{ color: palette.primary }}>Featured Case Study • {CASE_STUDIES[0].sector}</span>
-                <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary">{CASE_STUDIES[0].client}</h3>
-                <p className="text-white/50 font-light mb-10 text-lg leading-relaxed font-secondary max-w-lg">{CASE_STUDIES[0].challenge}</p>
+                <span className="text-[10px] font-medium tracking-widest uppercase block mb-4 font-primary" style={{ color: palette.primary }}>Featured Case Study • {caseStudies[0].sector}</span>
+                <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary">{caseStudies[0].client}</h3>
+                <p className="text-white/50 font-light mb-10 text-lg leading-relaxed font-secondary max-w-lg">{caseStudies[0].challenge}</p>
                 <div className="flex gap-4 font-secondary mb-12 flex-wrap">
-                   {CASE_STUDIES[0].tags.map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-white/70 uppercase tracking-widest">{t}</span>)}
+                   {caseStudies[0].tags.map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-white/70 uppercase tracking-widest">{t}</span>)}
                 </div>
                 <div className="mt-auto flex items-center gap-2 text-white/70 group-hover:text-white transition-colors font-medium font-secondary">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
              </div>
@@ -2681,7 +2764,7 @@ const WorkPage = ({ navigate }) => {
         </FadeUp>
 
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full mb-32">
-          {CASE_STUDIES.slice(1).map((cs, i) => {
+          {caseStudies.slice(1).map((cs, i) => {
              const hexColor = palette[cs.type] || palette.primary;
              return (
               <StaggerItem key={i}>
@@ -2718,12 +2801,13 @@ const WorkPage = ({ navigate }) => {
 };
 
 const JournalPage = ({ navigate }) => {
+  const { JOURNAL_ARTICLES, SITE_SETTINGS } = useContext(GlobalContext);
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">The Journal.</h1></RevealText>
-        <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">Essays, frameworks, and perspectives on building brands that matter.</p></FadeUp>
+        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">{SITE_SETTINGS.journalHeader || 'The Journal.'}</h1></RevealText>
+        <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">{SITE_SETTINGS.journalSubtext || 'Essays, frameworks, and perspectives on building brands that matter.'}</p></FadeUp>
 
         {/* Featured Article */}
         <FadeUp delay={0.1} className="mb-24 w-full">
@@ -2788,6 +2872,7 @@ const JournalPage = ({ navigate }) => {
 };
 
 const ArticlePage = ({ navigate, articleId }) => {
+  const { JOURNAL_ARTICLES } = useContext(GlobalContext);
   const article = JOURNAL_ARTICLES.find(a => a.id === articleId) || JOURNAL_ARTICLES[0];
   const artColor = palette[article.type] || palette.primary;
 
@@ -2892,6 +2977,7 @@ const LeafletMap = () => {
 };
 
 const ContactPage = ({ navigate }) => {
+  const { SITE_SETTINGS, FAQS } = useContext(GlobalContext);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState(null); // 'success' or 'error'
@@ -3023,18 +3109,14 @@ const ContactPage = ({ navigate }) => {
         <div className="w-full border-t border-white/10 pt-16">
           <FadeUp><h3 className="text-3xl font-light mb-8 font-primary text-center">Frequently Asked Questions</h3></FadeUp>
           <StaggerGroup className="space-y-4 font-secondary max-w-4xl mx-auto w-full">
-             <StaggerItem>
-               <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01] w-full">
-                 <h4 className="font-medium text-white mb-2">Do you work with international clients?</h4>
-                 <p className="text-sm text-white/50">Yes. While our roots and Global HQ are in India, we co-create with breakthrough innovators all over the world.</p>
-               </div>
-             </StaggerItem>
-             <StaggerItem>
-               <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01] w-full">
-                 <h4 className="font-medium text-white mb-2">Do you take on execution-only work?</h4>
-                 <p className="text-sm text-white/50">Rarely. We believe execution without strategy is bound to fail. We prefer to build the strategic foundation first.</p>
-               </div>
-             </StaggerItem>
+             {FAQS.map((faq, i) => (
+               <StaggerItem key={i}>
+                 <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01] w-full">
+                   <h4 className="font-medium text-white mb-2">{faq.question}</h4>
+                   <p className="text-sm text-white/50">{faq.answer}</p>
+                 </div>
+               </StaggerItem>
+             ))}
           </StaggerGroup>
         </div>
 
@@ -3092,6 +3174,7 @@ const AdminDashboard = ({ navigate }) => {
 };
 
 const Footer = ({ navigate }) => {
+  const { SITE_SETTINGS } = useContext(GlobalContext);
   return (
     <footer className="border-t border-white/5 pt-20 pb-12 px-[3%] relative z-10 w-full text-left" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full">
@@ -3099,12 +3182,16 @@ const Footer = ({ navigate }) => {
           <div className="md:col-span-2 flex flex-col items-start pr-8">
             <div className="flex items-center gap-3 text-xl font-medium tracking-wide mb-6 cursor-pointer font-primary" onClick={() => navigate('home')}>
               <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className="h-8 w-auto object-contain shrink-0" />
-              PurpleBlue House
+              {SITE_SETTINGS?.title || "PurpleBlue House"}
             </div>
-            <p className="text-white/40 font-light text-sm leading-relaxed mb-6 font-secondary max-w-sm">A premium brand, storytelling, and communication studio that understands your brand problem before you even speak to them.</p>
+            <p className="text-white/40 font-light text-sm leading-relaxed mb-6 font-secondary max-w-sm">{SITE_SETTINGS?.description || "A premium brand, storytelling, and communication studio that understands your brand problem before you even speak to them."}</p>
             <div className="flex gap-4 mb-6">
-              <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 cursor-pointer transition-all"><Globe className="w-3 h-3"/></div>
-              <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 cursor-pointer transition-all"><Mail className="w-3 h-3"/></div>
+              {SITE_SETTINGS?.contactEmail && (
+                <a href={`mailto:${SITE_SETTINGS.contactEmail}`} className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 cursor-pointer transition-all"><Mail className="w-3 h-3"/></a>
+              )}
+              {SITE_SETTINGS?.contactPhone && (
+                <a href={`tel:${SITE_SETTINGS.contactPhone}`} className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 cursor-pointer transition-all"><Globe className="w-3 h-3"/></a>
+              )}
             </div>
           </div>
           <div className="flex flex-col items-start font-secondary md:col-span-1">
@@ -3148,6 +3235,78 @@ const Footer = ({ navigate }) => {
 export default function App() {
   const [routeState, setRouteState] = useState({ page: 'home', data: null });
   const [activeServiceModal, setActiveServiceModal] = useState(null);
+
+  const { data: sanityJournal } = useSanity(GET_JOURNAL_ARTICLES);
+  const finalJournal = sanityJournal?.length > 0 ? sanityJournal : JOURNAL_ARTICLES;
+
+  const { data: sanityProblems } = useSanity(GET_PROBLEM_DATA);
+  const finalProblems = sanityProblems?.length > 0 ? sanityProblems.map(p => ({
+    ...p,
+    icon: p.iconName === 'MessageSquare' ? <MessageSquare className="w-5 h-5"/> : 
+          p.iconName === 'Fingerprint' ? <Fingerprint className="w-5 h-5"/> :
+          p.iconName === 'Activity' ? <Activity className="w-5 h-5"/> :
+          p.iconName === 'Layers' ? <Layers className="w-5 h-5"/> : <Command className="w-5 h-5"/>
+  })) : PROBLEM_DATA;
+
+  const { data: sanitySettings } = useSanity(GET_SITE_SETTINGS);
+  const finalSettings = sanitySettings || {
+    homeHeroTitle: "Elevating brands into movements.",
+    homeHeroSubtitle: "We are a strategic brand consultancy designed for the world's most ambitious innovations. We merge high-level strategy (Science) with cultural resonance (Art).",
+    servicesHeader: "Three strategic routes.\nOne connected brand system.",
+    servicesSubtext: "PBH services are not isolated offerings. They are designed as connected routes that help brands move from clarity to communication to execution.",
+    journalHeader: "Thoughts, theories, and unpolished truths.",
+    journalSubtext: "Explore our latest essays on brand building, deep-tech storytelling, and the SciArt methodology.",
+    footerCTA: "Experience the method yourself."
+  };
+
+  const { data: sanityRoutes } = useSanity(GET_ROUTES_INFO);
+  const finalRoutes = sanityRoutes?.length > 0 ? sanityRoutes.reduce((acc, r) => {
+    acc[r.id] = {
+      ...r,
+      icon: r.iconName === 'Fingerprint' ? <Fingerprint className="w-6 h-6"/> :
+            r.iconName === 'Lightbulb' ? <Lightbulb className="w-6 h-6"/> : <Rocket className="w-6 h-6"/>
+    };
+    return acc;
+  }, {}) : ROUTES_INFO;
+
+  const { data: sanityDeliverables } = useSanity(GET_DELIVERABLES);
+  const finalDeliverables = sanityDeliverables?.length > 0 ? sanityDeliverables : DELIVERABLES_MASTER;
+
+  const { data: sanityQuiz } = useSanity(GET_QUIZ_QUESTIONS);
+  const finalQuiz = sanityQuiz?.length > 0 ? sanityQuiz : QUIZ_QUESTIONS;
+
+  const { data: sanityCaseStudies } = useSanity(CASE_STUDIES_QUERY);
+  const finalCaseStudies = sanityCaseStudies?.length > 0 ? sanityCaseStudies : CASE_STUDIES;
+
+  const { data: sanityTeamMembers } = useSanity(GET_TEAM_MEMBERS);
+  const finalTeamMembers = sanityTeamMembers?.length > 0 ? sanityTeamMembers : [];
+
+  const { data: sanityCoreValues } = useSanity(GET_CORE_VALUES);
+  const finalCoreValues = sanityCoreValues?.length > 0 ? sanityCoreValues : [];
+
+  const { data: sanityTimeline } = useSanity(GET_TIMELINE);
+  const finalTimeline = sanityTimeline?.length > 0 ? sanityTimeline : [];
+
+  const { data: sanityFramework } = useSanity(GET_FRAMEWORK);
+  const finalFramework = sanityFramework?.length > 0 ? sanityFramework : [];
+
+  const { data: sanityFaqs } = useSanity(GET_FAQS);
+  const finalFaqs = sanityFaqs?.length > 0 ? sanityFaqs : [];
+
+  const globalData = {
+    JOURNAL_ARTICLES: finalJournal,
+    PROBLEM_DATA: finalProblems,
+    SITE_SETTINGS: finalSettings,
+    ROUTES_INFO: finalRoutes,
+    DELIVERABLES_MASTER: finalDeliverables,
+    QUIZ_QUESTIONS: finalQuiz,
+    CASE_STUDIES: finalCaseStudies,
+    TEAM_MEMBERS: finalTeamMembers,
+    CORE_VALUES: finalCoreValues,
+    TIMELINE: finalTimeline,
+    FRAMEWORK: finalFramework,
+    FAQS: finalFaqs
+  };
 
   const navigate = (path, data = null) => {
     if (path.startsWith('service-modal/')) {
@@ -3201,7 +3360,7 @@ export default function App() {
         description = "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns.";
         break;
       case 'work-detail':
-        const wTitle = CASE_STUDIES.find(c => c.id === routeState.data)?.client || "Case Study";
+        const wTitle = finalCaseStudies.find(c => c.id === routeState.data)?.client || "Case Study";
         title = `${wTitle} | PurpleBlue House Work`;
         break;
       case 'journal':
@@ -3209,7 +3368,7 @@ export default function App() {
         description = "Essays, frameworks, and perspectives on building breakthrough brands that matter.";
         break;
       case 'article-detail':
-        const aTitle = JOURNAL_ARTICLES.find(a => a.id === routeState.data)?.title || "Journal Article";
+        const aTitle = finalJournal.find(a => a.id === routeState.data)?.title || "Journal Article";
         title = `${aTitle} | PurpleBlue House Journal`;
         break;
       case 'contact':
@@ -3239,6 +3398,7 @@ export default function App() {
   }, [routeState.page, routeState.data]);
 
   return (
+    <GlobalContext.Provider value={globalData}>
     <div className="min-h-screen text-[#F4F4F5] w-[100vw] selection:text-white overflow-x-hidden font-secondary" style={{ backgroundColor: palette.bgDeep, scrollBehavior: 'smooth', '--tw-selection-color': palette.primary + '4D' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Space+Grotesk:wght@300..700&display=swap');
@@ -3303,5 +3463,6 @@ export default function App() {
         {activeServiceModal && <ServiceModal routeId={activeServiceModal} onClose={() => setActiveServiceModal(null)} navigate={navigate} />}
       </AnimatePresence>
     </div>
+    </GlobalContext.Provider>
   );
 }
