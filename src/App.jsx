@@ -2802,6 +2802,18 @@ const WorkPage = ({ navigate }) => {
 
 const JournalPage = ({ navigate }) => {
   const { JOURNAL_ARTICLES, SITE_SETTINGS } = useContext(GlobalContext);
+  const [activeTab, setActiveTab] = useState('All Perspectives');
+
+  const tabs = ['All Perspectives', 'Frameworks', 'Culture', 'Design Systems'];
+
+  const filteredArticles = JOURNAL_ARTICLES.slice(1).filter(article => {
+    if (activeTab === 'All Perspectives') return true;
+    if (activeTab === 'Frameworks') return article.tag.toLowerCase().includes('framework');
+    if (activeTab === 'Culture') return article.tag.toLowerCase().includes('culture');
+    if (activeTab === 'Design Systems') return article.tag.toLowerCase().includes('design') || article.title.toLowerCase().includes('design system') || article.tag.toLowerCase().includes('guide');
+    return true;
+  });
+
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
@@ -2829,14 +2841,19 @@ const JournalPage = ({ navigate }) => {
         </FadeUp>
 
         <FadeUp delay={0.2} className="flex gap-4 mb-12 border-b border-white/10 pb-6 overflow-x-auto font-secondary w-full custom-scrollbar">
-          <button className="px-4 py-2 rounded-full border border-white text-white text-sm shrink-0">All Perspectives</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">Frameworks</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">Culture</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">Design Systems</button>
+          {tabs.map(tab => (
+            <button 
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-4 py-2 rounded-full border text-sm shrink-0 transition-colors ${activeTab === tab ? 'border-white text-white' : 'border-white/10 text-white/50 hover:bg-white/5'}`}
+            >
+              {tab}
+            </button>
+          ))}
         </FadeUp>
 
         <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-32">
-          {JOURNAL_ARTICLES.slice(1).map((article, i) => (
+          {filteredArticles.length > 0 ? filteredArticles.map((article, i) => (
              <StaggerItem key={i}>
                <div onClick={() => navigate('article/' + article.id)} className="border border-white/10 rounded-[24px] p-8 h-[380px] flex flex-col hover:-translate-y-2 transition-transform cursor-pointer group shadow-xl w-full" style={{ backgroundColor: palette.panel }}>
                  <div className="text-[10px] tracking-widest uppercase mb-6 font-primary font-medium" style={{ color: palette[article.type] || palette.primary }}>{article.tag}</div>
@@ -2850,7 +2867,11 @@ const JournalPage = ({ navigate }) => {
                  </div>
                </div>
              </StaggerItem>
-          ))}
+          )) : (
+            <div className="col-span-full py-12 text-center text-white/40 font-secondary">
+              No articles found in this category.
+            </div>
+          )}
         </StaggerGroup>
 
         {/* Newsletter CTA */}
