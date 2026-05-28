@@ -1958,6 +1958,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
   const projectIndex = caseStudies.findIndex(p => p.id === projectId);
   const project = caseStudies[projectIndex] || caseStudies[0];
   const nextProject = caseStudies[(projectIndex + 1) % caseStudies.length];
+  const prevProject = caseStudies[(projectIndex - 1 + caseStudies.length) % caseStudies.length];
   const hexColor = palette[project.type] || palette.primary;
 
   useEffect(() => {
@@ -2190,19 +2191,36 @@ const WorkDetailPage = ({ navigate, projectId }) => {
          </FadeUp>
       </section>
 
-      {/* Next Project Footer */}
-      <section 
-        onClick={() => navigate('work/' + nextProject.id)} 
-        className="relative w-full h-[50vh] flex flex-col justify-center items-center cursor-pointer group overflow-hidden border-t border-white/10"
-      >
-         <div className="absolute inset-0 bg-[#05050A] z-0" />
-         <div className="absolute inset-0 opacity-20 mix-blend-screen transition-transform duration-1000 group-hover:scale-105 z-0" style={{ background: `radial-gradient(circle at center, ${palette[nextProject.type] || palette.primary}, transparent 70%)` }} />
-         
-         <div className="relative z-10 text-center">
-            <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary block text-white/50 group-hover:text-white transition-colors">Next Project</span>
-            <h2 className="text-5xl md:text-8xl font-light tracking-tight font-primary text-white group-hover:opacity-80 transition-opacity">
-              {nextProject.client}
-            </h2>
+      {/* Project Navigation Footer */}
+      <section className="relative w-full h-[50vh] flex flex-col md:flex-row border-t border-white/10">
+         {/* Previous Project */}
+         <div 
+           onClick={() => navigate('work/' + prevProject.id)} 
+           className="relative flex-1 flex flex-col justify-center items-center cursor-pointer group overflow-hidden border-b md:border-b-0 md:border-r border-white/10 h-full"
+         >
+           <div className="absolute inset-0 bg-[#05050A] z-0" />
+           <div className="absolute inset-0 opacity-20 mix-blend-screen transition-transform duration-1000 group-hover:scale-105 z-0" style={{ background: `radial-gradient(circle at center, ${palette[prevProject.type] || palette.primary}, transparent 70%)` }} />
+           <div className="relative z-10 text-center px-4">
+              <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary block text-white/50 group-hover:text-white transition-colors">Previous Project</span>
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white group-hover:opacity-80 transition-opacity">
+                {prevProject.client}
+              </h2>
+           </div>
+         </div>
+
+         {/* Next Project */}
+         <div 
+           onClick={() => navigate('work/' + nextProject.id)} 
+           className="relative flex-1 flex flex-col justify-center items-center cursor-pointer group overflow-hidden h-full"
+         >
+           <div className="absolute inset-0 bg-[#05050A] z-0" />
+           <div className="absolute inset-0 opacity-20 mix-blend-screen transition-transform duration-1000 group-hover:scale-105 z-0" style={{ background: `radial-gradient(circle at center, ${palette[nextProject.type] || palette.primary}, transparent 70%)` }} />
+           <div className="relative z-10 text-center px-4">
+              <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary block text-white/50 group-hover:text-white transition-colors">Next Project</span>
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white group-hover:opacity-80 transition-opacity">
+                {nextProject.client}
+              </h2>
+           </div>
          </div>
       </section>
     </div>
