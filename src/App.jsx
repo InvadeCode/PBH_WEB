@@ -3250,8 +3250,8 @@ export default function App() {
 
   const { data: sanitySettings } = useSanity(GET_SITE_SETTINGS);
   const finalSettings = sanitySettings || {
-    homeHeroTitle: "Elevating brands into movements.",
-    homeHeroSubtitle: "We are a strategic brand consultancy designed for the world's most ambitious innovations. We merge high-level strategy (Science) with cultural resonance (Art).",
+    homeHeroTitle: "Breakthroughs happen when strategy and execution move as one.",
+    homeHeroSubtitle: "PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs.",
     servicesHeader: "Three strategic routes.\nOne connected brand system.",
     servicesSubtext: "PBH services are not isolated offerings. They are designed as connected routes that help brands move from clarity to communication to execution.",
     journalHeader: "Thoughts, theories, and unpolished truths.",
