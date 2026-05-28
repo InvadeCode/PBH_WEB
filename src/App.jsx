@@ -3232,15 +3232,25 @@ const Footer = ({ navigate }) => {
   )
 };
 
+const sortByRef = (array, referenceArray, key = 'id') => {
+  if (!array || !referenceArray) return array;
+  const orderMap = new Map(referenceArray.map((item, index) => [item[key], index]));
+  return [...array].sort((a, b) => {
+    const indexA = orderMap.has(a[key]) ? orderMap.get(a[key]) : Infinity;
+    const indexB = orderMap.has(b[key]) ? orderMap.get(b[key]) : Infinity;
+    return indexA - indexB;
+  });
+};
+
 export default function App() {
   const [routeState, setRouteState] = useState({ page: 'home', data: null });
   const [activeServiceModal, setActiveServiceModal] = useState(null);
 
   const { data: sanityJournal } = useSanity(GET_JOURNAL_ARTICLES);
-  const finalJournal = sanityJournal?.length > 0 ? sanityJournal : JOURNAL_ARTICLES;
+  const finalJournal = sanityJournal?.length > 0 ? sortByRef(sanityJournal, JOURNAL_ARTICLES) : JOURNAL_ARTICLES;
 
   const { data: sanityProblems } = useSanity(GET_PROBLEM_DATA);
-  const finalProblems = sanityProblems?.length > 0 ? sanityProblems.map(p => ({
+  const finalProblems = sanityProblems?.length > 0 ? sortByRef(sanityProblems, PROBLEM_DATA, 'title').map(p => ({
     ...p,
     icon: p.iconName === 'MessageSquare' ? <MessageSquare className="w-5 h-5"/> : 
           p.iconName === 'Fingerprint' ? <Fingerprint className="w-5 h-5"/> :
@@ -3270,13 +3280,13 @@ export default function App() {
   }, {}) : ROUTES_INFO;
 
   const { data: sanityDeliverables } = useSanity(GET_DELIVERABLES);
-  const finalDeliverables = sanityDeliverables?.length > 0 ? sanityDeliverables : DELIVERABLES_MASTER;
+  const finalDeliverables = sanityDeliverables?.length > 0 ? sortByRef(sanityDeliverables, DELIVERABLES_MASTER) : DELIVERABLES_MASTER;
 
   const { data: sanityQuiz } = useSanity(GET_QUIZ_QUESTIONS);
-  const finalQuiz = sanityQuiz?.length > 0 ? sanityQuiz : QUIZ_QUESTIONS;
+  const finalQuiz = sanityQuiz?.length > 0 ? sortByRef(sanityQuiz, QUIZ_QUESTIONS) : QUIZ_QUESTIONS;
 
   const { data: sanityCaseStudies } = useSanity(CASE_STUDIES_QUERY);
-  const finalCaseStudies = sanityCaseStudies?.length > 0 ? sanityCaseStudies : CASE_STUDIES;
+  const finalCaseStudies = sanityCaseStudies?.length > 0 ? sortByRef(sanityCaseStudies, CASE_STUDIES) : CASE_STUDIES;
 
   const { data: sanityTeamMembers } = useSanity(GET_TEAM_MEMBERS);
   const finalTeamMembers = sanityTeamMembers?.length > 0 ? sanityTeamMembers : [];
