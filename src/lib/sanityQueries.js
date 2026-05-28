@@ -13,7 +13,14 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(order asc) {
   colors,
   order,
   "imageUrl": image.asset->url,
-  fullStory
+  "fullStory": {
+    "challenge": fullStory.challenge,
+    "strategy": fullStory.strategy,
+    "execution": fullStory.execution,
+    "stats": fullStory.stats,
+    "heroImg": fullStory.heroImg.asset->url,
+    "images": fullStory.images[].asset->url
+  }
 }`;
 
 export const GET_JOURNAL_ARTICLES = `*[_type == "journalArticle"] | order(date desc) { id, tag, title, time, type, excerpt, author, date }`;
