@@ -3270,14 +3270,31 @@ export default function App() {
   };
 
   const { data: sanityRoutes } = useSanity(GET_ROUTES_INFO);
-  const finalRoutes = sanityRoutes?.length > 0 ? sanityRoutes.reduce((acc, r) => {
-    acc[r.id] = {
-      ...r,
-      icon: r.iconName === 'Fingerprint' ? <Fingerprint className="w-6 h-6"/> :
-            r.iconName === 'Lightbulb' ? <Lightbulb className="w-6 h-6"/> : <Rocket className="w-6 h-6"/>
-    };
-    return acc;
-  }, {}) : ROUTES_INFO;
+  const finalRoutes = sanityRoutes?.length > 0 ? (() => {
+    const sortedAcc = {};
+    Object.keys(ROUTES_INFO).forEach(key => {
+      const r = sanityRoutes.find(sr => sr.id === key);
+      if (r) {
+        sortedAcc[key] = {
+          ...r,
+          icon: r.iconName === 'Fingerprint' ? <Fingerprint className="w-6 h-6"/> :
+                r.iconName === 'Lightbulb' ? <Lightbulb className="w-6 h-6"/> : <Rocket className="w-6 h-6"/>
+        };
+      } else {
+        sortedAcc[key] = ROUTES_INFO[key];
+      }
+    });
+    sanityRoutes.forEach(r => {
+      if (!sortedAcc[r.id]) {
+        sortedAcc[r.id] = {
+          ...r,
+          icon: r.iconName === 'Fingerprint' ? <Fingerprint className="w-6 h-6"/> :
+                r.iconName === 'Lightbulb' ? <Lightbulb className="w-6 h-6"/> : <Rocket className="w-6 h-6"/>
+        };
+      }
+    });
+    return sortedAcc;
+  })() : ROUTES_INFO;
 
   const { data: sanityDeliverables } = useSanity(GET_DELIVERABLES);
   const finalDeliverables = sanityDeliverables?.length > 0 ? sortByRef(sanityDeliverables, DELIVERABLES_MASTER) : DELIVERABLES_MASTER;
