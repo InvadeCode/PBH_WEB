@@ -238,6 +238,40 @@ const clusterToRoute = {
   'Execution Gap': 'STC'
 };
 
+const TEAM_MEMBERS_MASTER = [
+  { id: "leader_1", name: "Founder Name", role: "Chief Executive Officer", bio: "Visionary leader driving the SciArt philosophy and global strategy.", image: null },
+  { id: "leader_2", name: "Partner Name", role: "Creative Director", bio: "The artistic force translating complex logic into stunning visual narratives.", image: null },
+  { id: "creator_1", name: "Creator 1", role: "Brand Strategist", image: null },
+  { id: "creator_2", name: "Creator 2", role: "Lead Designer", image: null },
+  { id: "creator_3", name: "Creator 3", role: "Storyteller", image: null },
+  { id: "creator_4", name: "Creator 4", role: "Digital Architect", image: null }
+];
+
+const CORE_VALUES_MASTER = [
+  { id: "cv_1", title: "Collaboration", desc: "We co-create with you, not for you." },
+  { id: "cv_2", title: "Science & Art", desc: "We bridge the divide between logic and imagination." },
+  { id: "cv_3", title: "Creator Empowerment", desc: "We ignite your vision with the fuel of science and art." },
+  { id: "cv_4", title: "Future-Oriented", desc: "We don't just build brands, we build legacies for the future." }
+];
+
+const TIMELINE_MASTER = [
+  { id: "tl_1", year: "The Inception", title: "Identifying the Gap", desc: "Recognizing that Indian innovators lacked a premium voice on the global stage, the foundation of PBH was conceptualized." },
+  { id: "tl_2", year: "The Framework", title: "Building the SciArt Method", desc: "Developing our proprietary framework that ensures every aesthetic decision is backed by strategic logic." },
+  { id: "tl_3", year: "The Expansion", title: "The Global Shift", desc: "Co-creating with breakthrough brands worldwide, establishing the House as a premium strategic partner." }
+];
+
+const FRAMEWORK_MASTER = [
+  { id: "fw_1", stepNumber: "1", title: "Discovery", description: "We begin by understanding the business, audience, market, internal teams, communication gaps, and growth context. We dig deep into the core mechanics of your innovation.", outputs: ["Brand Audit", "Stakeholder Interviews", "Competitor Landscape Mapping"] },
+  { id: "fw_2", stepNumber: "2", title: "Clarity & Alignment", description: "We identify exactly where the brand is breaking — whether it's messaging, identity, storytelling, systems, campaigns, or internal execution pipelines.", outputs: ["Problem Clusters Identified", "Gap Analysis Document"] },
+  { id: "fw_3", stepNumber: "3", title: "Route Mapping", description: "Based on these insights, we recommend one or more dedicated service ecosystems: Brand Boulevard (Identity), SciArt Saga (Innovation Story), or Storytelling Corner (Campaigns).", outputs: ["Strategic Route Assignment", "Resource Allocation"] },
+  { id: "fw_4", stepNumber: "4", title: "Scope Building", description: "We lock in the foundation. Each route is broken down into specific line items, deliverables, priorities, dependencies, and precise timelines.", outputs: ["Custom Scope Blueprint", "Project Roadmap"] }
+];
+
+const FAQS_MASTER = [
+  { id: "faq_1", question: "Do you work with international clients?", answer: "Yes. While our roots and Global HQ are in India, we co-create with breakthrough innovators all over the world." },
+  { id: "faq_2", question: "Do you take on execution-only work?", answer: "Rarely. We believe execution without strategy is bound to fail. We prefer to build the strategic foundation first." }
+];
+
 const ROUTES_INFO = {
   'BB': { id: 'BB', title: 'Brand Boulevard', desc: 'Identity, positioning, messaging, and comprehensive brand systems.', icon: <Fingerprint className="w-6 h-6" />, type: 'primary', bestFor: 'Companies seeking a complete structural overhaul, from foundational positioning to a scalable visual identity system.', lineItems: [ { id: 'BB1', name: 'Brand Workshop & Audit' }, { id: 'BB2', name: 'Brand Identity System' }, { id: 'BB3', name: 'Design Systems' }, { id: 'BB4', name: 'Giveaways & Collaterals' } ] },
   'SAS': { id: 'SAS', title: 'SciArt Saga', desc: 'Storytelling, innovation communication, and experience-led narratives.', icon: <Lightbulb className="w-6 h-6" />, type: 'blue', bestFor: 'Deep-tech or highly complex innovations needing to translate technical features into compelling, human-centric stories.', lineItems: [ { id: 'SS1', name: 'Innovation Frameworks' }, { id: 'SS2', name: 'Experience & IP Strategy' }, { id: 'SS3', name: 'Product Storytelling' }, { id: 'SS4', name: 'GTM Communication' } ] },
@@ -1712,8 +1746,9 @@ const HomePage = ({ navigate }) => {
         </motion.div>
 
         <div className="flex-1 flex flex-col justify-center w-full relative z-10 text-left">
-          <RevealText delay={0.1}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-1 font-primary max-w-[1200px]">{SITE_SETTINGS.homeHeroTitle || "Breakthroughs happen when strategy and execution move as one."}</h1></RevealText>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">{SITE_SETTINGS.homeHeroSubtitle || "PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs."}</motion.p>
+          <RevealText delay={0.1}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-1 font-primary">Breakthroughs happen</h1></RevealText>
+          <RevealText delay={0.2}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 flex items-baseline flex-wrap font-primary">when strategy and execution <AnimatedItalic className="text-white/60 ml-4">move as one.</AnimatedItalic></h1></RevealText>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs.</motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.7 }} className="mt-12 flex flex-col sm:flex-row gap-6">
             <PremiumButton onClick={() => navigate('assessment')} className="min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(${rgbPrimary}, 0.2)` }}>{SITE_SETTINGS.assessmentButton || 'Build My Brand Scope'} <Sparkles className="w-4 h-4 ml-2" /></PremiumButton>
             <PremiumButton variant="secondary" onClick={() => navigate('work')} className="min-w-[240px]">{SITE_SETTINGS.homeExploreButton || 'Explore Our Work'}</PremiumButton>
@@ -2208,7 +2243,7 @@ const AboutPage = ({ navigate }) => {
         </FadeUp>
 
         {/* Section 4: Core Values */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary border-b border-white/10 pb-6">{SITE_SETTINGS.coreValuesHeader}</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary border-b border-white/10 pb-6">Our Core Values</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32 w-full">
             {CORE_VALUES.map((v, i) => {
               const Icon = i === 0 ? <Users /> : i === 1 ? <Dna /> : i === 2 ? <Zap /> : <Globe />;
@@ -2308,7 +2343,7 @@ const OurStoryPage = ({ navigate }) => {
 
         {/* Section 4: The Timeline */}
         <div className="mb-32 w-full">
-          <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">{SITE_SETTINGS.ourJourneyHeader}</h3></FadeUp>
+          <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">Our Journey</h3></FadeUp>
           <StaggerGroup className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent w-full">
             {TIMELINE.map((milestone, idx) => (
               <StaggerItem key={idx} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active w-full">
@@ -2354,23 +2389,23 @@ const TeamPage = ({ navigate }) => {
         
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS.teamPageHeader || 'The Team'}</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">{SITE_SETTINGS.teamPageSubtext || 'The minds behind the magic.'}</h1>
+          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>The Team</h2>
+          <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">The minds behind the magic.</h1>
         </FadeUp>
         
         {/* Section 2: Leadership */}
         <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">Leadership</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 mb-32 w-full">
-          {TEAM_MEMBERS.slice(0, 2).map((leader, i) => (
+          {TEAM_MEMBERS.filter(m => m.id && m.id.startsWith('leader')).map((leader, i) => (
             <StaggerItem key={i}>
               <div className="border border-white/5 rounded-[24px] overflow-hidden flex flex-col sm:flex-row h-full w-full" style={{ backgroundColor: palette.panel }}>
                 <div className="sm:w-1/2 aspect-square bg-white/5 relative flex items-center justify-center border-r border-white/5">
-                   <User className="w-16 h-16 text-white/10" />
+                   {leader.image ? <img src={leader.image} alt={leader.name} className="w-full h-full object-cover" /> : <User className="w-16 h-16 text-white/10" />}
                 </div>
                 <div className="p-8 sm:w-1/2 flex flex-col justify-center">
                    <h3 className="text-2xl font-medium text-white mb-2 font-primary">{leader.name}</h3>
                    <p className="text-sm tracking-widest uppercase mb-4 font-primary" style={{ color: palette.blue }}>{leader.role}</p>
-                   <p className="text-sm text-white/50 font-secondary leading-relaxed">{leader.bio}</p>
+                   <p className="text-sm text-white/50 font-secondary leading-relaxed">{leader.bio || leader.desc}</p>
                 </div>
               </div>
             </StaggerItem>
@@ -2380,11 +2415,11 @@ const TeamPage = ({ navigate }) => {
         {/* Section 3: The Innovators (Grid) */}
         <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">The Core House</h3></FadeUp>
         <StaggerGroup className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-32 w-full">
-          {TEAM_MEMBERS.slice(2).map((member, idx) => (
+          {TEAM_MEMBERS.filter(m => m.id && m.id.startsWith('creator')).map((member, idx) => (
             <StaggerItem key={idx}>
               <div className="border border-white/5 rounded-[16px] overflow-hidden group h-full w-full" style={{ backgroundColor: palette.panel }}>
                 <div className="aspect-square bg-white/[0.02] relative overflow-hidden flex items-center justify-center transition-colors group-hover:bg-white/[0.05]">
-                  <User className="w-12 h-12 text-white/10" />
+                  {member.image ? <img src={member.image} alt={member.name} className="w-full h-full object-cover" /> : <User className="w-12 h-12 text-white/10" />}
                 </div>
                 <div className="p-5">
                   <h3 className="text-lg font-medium text-white mb-1 font-primary">{member.name}</h3>
@@ -2452,8 +2487,8 @@ const MethodPage = ({ navigate }) => {
         
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS.methodPageHeader}</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-24 tracking-tight font-primary max-w-4xl">{SITE_SETTINGS.methodPageSubtext}</h1>
+          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>The PBH Method</h2>
+          <h1 className="text-5xl md:text-7xl font-light mb-24 tracking-tight font-primary max-w-4xl">The blueprint for <AnimatedItalic className="text-white/50">breakthrough brands.</AnimatedItalic></h1>
         </FadeUp>
         
         {/* Section 2: Traditional vs PBH */}
@@ -2477,7 +2512,7 @@ const MethodPage = ({ navigate }) => {
         </FadeUp>
 
         {/* Section 3: The 4 Steps */}
-        <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">{SITE_SETTINGS.frameworkHeader}</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">Our 4-Step Framework</h3></FadeUp>
         <StaggerGroup className="space-y-24 mb-32 w-full">
           {FRAMEWORK.map((s, i) => (
             <StaggerItem key={i}>
@@ -2541,8 +2576,8 @@ const ServicesPage = ({ navigate }) => {
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight max-w-4xl font-primary whitespace-pre-line">{SITE_SETTINGS.servicesHeader}</h1></RevealText>
-        <FadeUp><p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed font-secondary">{SITE_SETTINGS.servicesSubtext}</p></FadeUp>
+        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight max-w-4xl font-primary">Three strategic routes.<br/><AnimatedItalic className="text-white/50">One connected brand system.</AnimatedItalic></h1></RevealText>
+        <FadeUp><p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed font-secondary">PBH services are not isolated offerings. They are designed as connected routes that help brands move from clarity to communication to execution.</p></FadeUp>
         
         <StaggerGroup className="grid gap-12 mb-32 w-full">
           {Object.values(ROUTES_INFO).map((route, i) => {
@@ -2557,7 +2592,7 @@ const ServicesPage = ({ navigate }) => {
                       <p className="text-white/60 font-light leading-relaxed mb-8 lg:mb-10 font-secondary text-base md:text-lg max-w-md">{route.desc}</p>
                       
                       <div className="mt-auto pt-4 border-t border-white/10 lg:border-none lg:pt-0">
-                        <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent text-white group font-secondary text-base">{SITE_SETTINGS.servicesExploreButton || 'Explore Route Details'} <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform"/></PremiumButton>
+                        <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent text-white group font-secondary text-base">Explore Route Details <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform"/></PremiumButton>
                       </div>
                     </div>
                     
@@ -2658,7 +2693,7 @@ const ServiceDetailPage = ({ navigate, routeId }) => {
         <FadeUp className="border border-white/10 rounded-[24px] p-12 text-center w-full relative overflow-hidden" style={{ background: `linear-gradient(to bottom right, ${palette.panel}, ${palette.bgDeep})` }}>
            <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
            <h2 className="text-3xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
-           <PremiumButton onClick={() => navigate('assessment')} className="relative z-10">{SITE_SETTINGS.assessmentButton || 'Build A Scope'}</PremiumButton>
+           <PremiumButton onClick={() => navigate('assessment')} className="relative z-10">Build A Scope</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -2734,8 +2769,8 @@ const WorkPage = ({ navigate }) => {
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">{SITE_SETTINGS.workPageHeader}</h1></RevealText>
-        <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">{SITE_SETTINGS.workPageSubtext}</p></FadeUp>
+        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">Our Work.</h1></RevealText>
+        <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">Case studies and full visual archive proving our thinking across strategy, identity, and campaigns.</p></FadeUp>
         
         {/* Featured Case Study Hero */}
         <FadeUp delay={0.1} className="mb-24 w-full">
@@ -2818,8 +2853,8 @@ const JournalPage = ({ navigate }) => {
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">{SITE_SETTINGS.journalHeader || 'The Journal.'}</h1></RevealText>
-        <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">{SITE_SETTINGS.journalSubtext || 'Essays, frameworks, and perspectives on building brands that matter.'}</p></FadeUp>
+        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">The Journal.</h1></RevealText>
+        <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">Essays, frameworks, and perspectives on building brands that matter.</p></FadeUp>
 
         {/* Featured Article */}
         <FadeUp delay={0.1} className="mb-24 w-full">
@@ -3263,6 +3298,67 @@ const sortByRef = (array, referenceArray, key = 'id') => {
   });
 };
 
+// --- PARITY STABILIZATION UTILITIES ---
+const isValidContent = (val) => {
+  if (val === null || val === undefined) return false;
+  if (typeof val === 'string' && val.trim() === '') return false;
+  if (Array.isArray(val) && val.length === 0) return false;
+  return true;
+};
+
+const mergeWithFallback = (masterArray, sanityArray, sectionName) => {
+  if (!masterArray) return [];
+  
+  // Unknown-Entry Detection
+  if (process.env.NODE_ENV === 'development' && sanityArray) {
+    sanityArray.forEach(sItem => {
+      // Assuming Sanity items have 'id' (from our query update) or we match by name/title as fallback.
+      // But since we just added 'id' to Sanity queries, if it's missing, it'll warn.
+      const match = masterArray.find(mItem => mItem.id === sItem.id);
+      if (!match) {
+        console.warn(`[Parity Audit] Unknown or un-ID'd CMS item in ${sectionName}:`, sItem.id || sItem.name || sItem.title || sItem.question);
+      }
+    });
+  }
+
+  return masterArray.map(masterItem => {
+    // We try to match by id. If Sanity hasn't updated the schema to use IDs yet, this will fallback gracefully.
+    let sanityItem = (sanityArray || []).find(item => item.id && item.id === masterItem.id);
+    
+    // Fuzzy matching fallback just in case the Sanity schema hasn't been updated with 'id' fields yet.
+    if (!sanityItem && sanityArray) {
+      if (masterItem.name) sanityItem = sanityArray.find(item => item.name === masterItem.name);
+      else if (masterItem.title) sanityItem = sanityArray.find(item => item.title === masterItem.title);
+      else if (masterItem.question) sanityItem = sanityArray.find(item => item.question === masterItem.question);
+    }
+
+    if (!sanityItem) return masterItem;
+    
+    const merged = { ...masterItem };
+    Object.keys(masterItem).forEach(key => {
+      // If Sanity has the key and it's valid, override the master.
+      if (isValidContent(sanityItem[key])) {
+        merged[key] = sanityItem[key];
+      }
+    });
+    return merged;
+  });
+};
+
+const assertParity = (masterArray, finalArray, sectionName) => {
+  if (process.env.NODE_ENV === 'development') {
+    if (masterArray.length !== finalArray.length) {
+      console.error(`[Parity Audit] Length mismatch in ${sectionName}. Expected ${masterArray.length}, got ${finalArray.length}`);
+    }
+    masterArray.forEach((item, index) => {
+      if (finalArray[index]?.id !== item.id) {
+        console.error(`[Parity Audit] Order/ID mismatch in ${sectionName} at index ${index}. Expected ${item.id}, got ${finalArray[index]?.id}`);
+      }
+    });
+  }
+};
+
+
 export default function App() {
   const [routeState, setRouteState] = useState({ page: 'home', data: null });
   const [activeServiceModal, setActiveServiceModal] = useState(null);
@@ -3327,19 +3423,24 @@ export default function App() {
   const finalCaseStudies = sanityCaseStudies?.length > 0 ? sortByRef(sanityCaseStudies, CASE_STUDIES) : CASE_STUDIES;
 
   const { data: sanityTeamMembers } = useSanity(GET_TEAM_MEMBERS);
-  const finalTeamMembers = sanityTeamMembers?.length > 0 ? sanityTeamMembers : [];
+  const finalTeamMembers = mergeWithFallback(TEAM_MEMBERS_MASTER, sanityTeamMembers, "Team");
+  assertParity(TEAM_MEMBERS_MASTER, finalTeamMembers, "Team");
 
   const { data: sanityCoreValues } = useSanity(GET_CORE_VALUES);
-  const finalCoreValues = sanityCoreValues?.length > 0 ? sanityCoreValues : [];
+  const finalCoreValues = mergeWithFallback(CORE_VALUES_MASTER, sanityCoreValues, "Core Values");
+  assertParity(CORE_VALUES_MASTER, finalCoreValues, "Core Values");
 
   const { data: sanityTimeline } = useSanity(GET_TIMELINE);
-  const finalTimeline = sanityTimeline?.length > 0 ? sanityTimeline : [];
+  const finalTimeline = mergeWithFallback(TIMELINE_MASTER, sanityTimeline, "Timeline");
+  assertParity(TIMELINE_MASTER, finalTimeline, "Timeline");
 
   const { data: sanityFramework } = useSanity(GET_FRAMEWORK);
-  const finalFramework = sanityFramework?.length > 0 ? sanityFramework : [];
+  const finalFramework = mergeWithFallback(FRAMEWORK_MASTER, sanityFramework, "Framework");
+  assertParity(FRAMEWORK_MASTER, finalFramework, "Framework");
 
   const { data: sanityFaqs } = useSanity(GET_FAQS);
-  const finalFaqs = sanityFaqs?.length > 0 ? sanityFaqs : [];
+  const finalFaqs = mergeWithFallback(FAQS_MASTER, sanityFaqs, "FAQs");
+  assertParity(FAQS_MASTER, finalFaqs, "FAQs");
 
   const globalData = {
     JOURNAL_ARTICLES: finalJournal,

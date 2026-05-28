@@ -34,12 +34,12 @@ export const GET_SITE_SETTINGS = `*[_type == "siteSettings"][0] {
   coreValuesHeader, ourJourneyHeader, frameworkHeader, timelineHeader
 }`;
 
-export const GET_TEAM_MEMBERS = `*[_type == "teamMember"] | order(order asc) { name, role, bio }`;
+export const GET_TEAM_MEMBERS = `*[_type == "teamMember"] | order(order asc) { id, name, role, bio }`;
 
-export const GET_CORE_VALUES = `*[_type == "coreValue"] | order(order asc) { title, description }`;
+export const GET_CORE_VALUES = `*[_type == "coreValue"] | order(order asc) { id, title, description }`;
 
-export const GET_TIMELINE = `*[_type == "timelineEvent"] | order(order asc) { year, title, description }`;
+export const GET_TIMELINE = `*[_type == "timelineEvent"] | order(order asc) { id, year, title, description }`;
 
-export const GET_FRAMEWORK = `*[_type == "frameworkStep"] | order(order asc) { stepNumber, title, description, outputs }`;
+export const GET_FRAMEWORK = `*[_type == "frameworkStep"] | order(order asc) { id, stepNumber, title, description, outputs }`;
 
-export const GET_FAQS = `*[_type == "faq"] | order(order asc) { question, answer, category }`;
+export const GET_FAQS = `*[_type == "faq"] | order(order asc) { id, question, answer, category }`;
