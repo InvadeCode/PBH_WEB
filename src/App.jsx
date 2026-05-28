@@ -2196,13 +2196,20 @@ const WorkDetailPage = ({ navigate, projectId }) => {
          {/* Previous Project */}
          <div 
            onClick={() => navigate('work/' + prevProject.id)} 
-           className="relative flex-1 flex flex-col justify-center items-center cursor-pointer group overflow-hidden border-b md:border-b-0 md:border-r border-white/10 h-full"
+           className="relative flex-1 flex flex-col justify-center items-start cursor-pointer group overflow-hidden border-b md:border-b-0 md:border-r border-white/10 h-full p-12 md:p-16 lg:p-24"
          >
            <div className="absolute inset-0 bg-[#05050A] z-0" />
-           <div className="absolute inset-0 opacity-20 mix-blend-screen transition-transform duration-1000 group-hover:scale-105 z-0" style={{ background: `radial-gradient(circle at center, ${palette[prevProject.type] || palette.primary}, transparent 70%)` }} />
-           <div className="relative z-10 text-center px-4">
-              <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary block text-white/50 group-hover:text-white transition-colors">Previous Project</span>
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white group-hover:opacity-80 transition-opacity">
+           {prevProject.imageUrl && (
+             <img src={prevProject.imageUrl} alt={prevProject.client} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-30 mix-blend-luminosity transition-all duration-1000 group-hover:scale-105 z-0" />
+           )}
+           <div className="absolute inset-0 opacity-40 mix-blend-screen transition-opacity duration-1000 group-hover:opacity-80 z-0" style={{ background: `linear-gradient(to right, ${palette[prevProject.type] || palette.primary}, transparent)` }} />
+           
+           <div className="relative z-10 text-left w-full">
+              <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary flex items-center justify-start gap-3 text-white/50 group-hover:text-white transition-colors">
+                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform duration-500" />
+                Previous Project
+              </span>
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white/80 group-hover:text-white transition-colors">
                 {prevProject.client}
               </h2>
            </div>
@@ -2211,13 +2218,20 @@ const WorkDetailPage = ({ navigate, projectId }) => {
          {/* Next Project */}
          <div 
            onClick={() => navigate('work/' + nextProject.id)} 
-           className="relative flex-1 flex flex-col justify-center items-center cursor-pointer group overflow-hidden h-full"
+           className="relative flex-1 flex flex-col justify-center items-end cursor-pointer group overflow-hidden h-full p-12 md:p-16 lg:p-24"
          >
            <div className="absolute inset-0 bg-[#05050A] z-0" />
-           <div className="absolute inset-0 opacity-20 mix-blend-screen transition-transform duration-1000 group-hover:scale-105 z-0" style={{ background: `radial-gradient(circle at center, ${palette[nextProject.type] || palette.primary}, transparent 70%)` }} />
-           <div className="relative z-10 text-center px-4">
-              <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary block text-white/50 group-hover:text-white transition-colors">Next Project</span>
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white group-hover:opacity-80 transition-opacity">
+           {nextProject.imageUrl && (
+             <img src={nextProject.imageUrl} alt={nextProject.client} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-30 mix-blend-luminosity transition-all duration-1000 group-hover:scale-105 z-0" />
+           )}
+           <div className="absolute inset-0 opacity-40 mix-blend-screen transition-opacity duration-1000 group-hover:opacity-80 z-0" style={{ background: `linear-gradient(to left, ${palette[nextProject.type] || palette.primary}, transparent)` }} />
+           
+           <div className="relative z-10 text-right w-full">
+              <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary flex items-center justify-end gap-3 text-white/50 group-hover:text-white transition-colors">
+                Next Project
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-500" />
+              </span>
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white/80 group-hover:text-white transition-colors">
                 {nextProject.client}
               </h2>
            </div>
