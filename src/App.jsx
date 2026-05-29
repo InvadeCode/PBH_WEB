@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef, createContext, useContext } from 'r
 import { useSanity } from './lib/useSanity';
 import { CASE_STUDIES_QUERY, GET_JOURNAL_ARTICLES, GET_PROBLEM_DATA, GET_QUIZ_QUESTIONS, GET_ROUTES_INFO, GET_DELIVERABLES, GET_SITE_SETTINGS, GET_TEAM_MEMBERS, GET_CORE_VALUES, GET_TIMELINE, GET_FRAMEWORK, GET_FAQS } from './lib/sanityQueries';
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useSpring, useMotionValue, useMotionTemplate, useAnimationFrame } from 'framer-motion';
-import { 
-  ArrowRight, Sparkles, Zap, CheckCircle2, 
+import {
+  ArrowRight, Sparkles, Zap, CheckCircle2,
   ArrowLeft, ArrowDown, Menu, X, Globe, MoveRight,
   Lightbulb, BookOpen, Fingerprint, Dna, Rocket,
   Mail, MessageSquare, Terminal, Layers, Compass, PenTool,
@@ -55,7 +55,7 @@ const CareersModal = ({ onClose }) => {
   const [file, setFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState(null);
-  
+
   // New state for form fields
   const [formData, setFormData] = useState({
     name: '',
@@ -75,7 +75,7 @@ const CareersModal = ({ onClose }) => {
       setFile(selectedFile);
     } else {
       alert("Please select a valid PDF file (.pdf only).");
-      e.target.value = null; 
+      e.target.value = null;
       setFile(null);
     }
   };
@@ -92,7 +92,7 @@ const CareersModal = ({ onClose }) => {
     reader.readAsDataURL(file);
     reader.onloadend = async () => {
       const base64Content = reader.result.split(',')[1];
-      
+
       // Beautifully formatted email body with all the new data
       const htmlContent = `
         <div style="font-family: sans-serif; padding: 20px; max-width: 600px;">
@@ -112,11 +112,11 @@ const CareersModal = ({ onClose }) => {
         htmlContent,
         [{ filename: file.name, content: base64Content }]
       );
-      
+
       setIsSubmitting(false);
       if (result.success) {
         setStatus('success');
-        setTimeout(() => onClose(), 3000); 
+        setTimeout(() => onClose(), 3000);
       } else {
         setStatus('error');
       }
@@ -125,63 +125,63 @@ const CareersModal = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 z-[200000] flex items-center justify-center p-4 sm:p-8 bg-black/60 backdrop-blur-md">
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.95, y: 20 }} 
-        animate={{ opacity: 1, scale: 1, y: 0 }} 
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         className="bg-[#0A103D] border border-white/10 p-8 sm:p-10 rounded-[24px] max-w-lg w-full shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar"
       >
         <button onClick={onClose} className="absolute top-6 right-6 text-white/40 hover:text-white transition-colors">
-          <X size={20}/>
+          <X size={20} />
         </button>
-        
+
         <h3 className="text-3xl font-light mb-2 text-white font-primary">Want to work with us?</h3>
         <p className="text-white/50 mb-8 font-secondary text-sm leading-relaxed">
           We are always looking for visionary strategists and artists. Send us your profile below.
         </p>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
-           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-             <input required name="name" value={formData.name} onChange={handleInputChange} type="text" placeholder="Full Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
-             <input required name="phone" value={formData.phone} onChange={handleInputChange} type="tel" placeholder="Phone Number" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
-           </div>
-           
-           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-             <input required name="email" value={formData.email} onChange={handleInputChange} type="email" placeholder="Email Address" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
-             <input required name="linkedin" value={formData.linkedin} onChange={handleInputChange} type="url" placeholder="LinkedIn Profile URL" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
-           </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input required name="name" value={formData.name} onChange={handleInputChange} type="text" placeholder="Full Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+            <input required name="phone" value={formData.phone} onChange={handleInputChange} type="tel" placeholder="Phone Number" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+          </div>
 
-           <textarea required name="summary" value={formData.summary} onChange={handleInputChange} placeholder="Tell us about yourself and what you do best..." rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary resize-none custom-scrollbar" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input required name="email" value={formData.email} onChange={handleInputChange} type="email" placeholder="Email Address" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+            <input required name="linkedin" value={formData.linkedin} onChange={handleInputChange} type="url" placeholder="LinkedIn Profile URL" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+          </div>
 
-           <div className="border border-white/10 bg-white/[0.02] rounded-[16px] p-2 overflow-hidden focus-within:border-white/30 transition-colors mt-2">
-             <input 
-               type="file" 
-               accept="application/pdf" 
-               onChange={handleFileChange} 
-               required
-               className="w-full text-sm text-white/60 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:bg-white/10 file:text-white hover:file:bg-white/20 file:cursor-pointer font-secondary cursor-pointer"
-             />
-           </div>
-           
-           <div className="pt-4">
-             {status === 'success' ? (
-               <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-[12px] text-center font-secondary text-sm">
-                 Profile sent successfully!
-               </div>
-             ) : status === 'error' ? (
-               <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-[12px] text-center font-secondary text-sm">
-                 Failed to send. Please try again or email us directly.
-               </div>
-             ) : (
-               <button 
-                 disabled={!file || isSubmitting} 
-                 type="submit" 
-                 className="w-full py-4 rounded-[12px] bg-white text-black font-medium text-sm font-secondary hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-               >
-                 {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</> : 'Send Profile'}
-               </button>
-             )}
-           </div>
+          <textarea required name="summary" value={formData.summary} onChange={handleInputChange} placeholder="Tell us about yourself and what you do best..." rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary resize-none custom-scrollbar" />
+
+          <div className="border border-white/10 bg-white/[0.02] rounded-[16px] p-2 overflow-hidden focus-within:border-white/30 transition-colors mt-2">
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileChange}
+              required
+              className="w-full text-sm text-white/60 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:bg-white/10 file:text-white hover:file:bg-white/20 file:cursor-pointer font-secondary cursor-pointer"
+            />
+          </div>
+
+          <div className="pt-4">
+            {status === 'success' ? (
+              <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-[12px] text-center font-secondary text-sm">
+                Profile sent successfully!
+              </div>
+            ) : status === 'error' ? (
+              <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-[12px] text-center font-secondary text-sm">
+                Failed to send. Please try again or email us directly.
+              </div>
+            ) : (
+              <button
+                disabled={!file || isSubmitting}
+                type="submit"
+                className="w-full py-4 rounded-[12px] bg-white text-black font-medium text-sm font-secondary hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              >
+                {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</> : 'Send Profile'}
+              </button>
+            )}
+          </div>
         </form>
       </motion.div>
     </div>
@@ -222,12 +222,12 @@ const hexToRgbStr = (hex) => {
 // --- STRATEGIC DATA DICTIONARY ---
 
 const QUIZ_QUESTIONS = [
-  { id: 'stage', title: 'Where is your brand right now?', options: [ { id: 's1', label: 'We are launching a new brand' }, { id: 's2', label: 'We are repositioning an existing brand' }, { id: 's3', label: 'We have grown, but our brand has not evolved' }, { id: 's4', label: 'We need better campaigns and communication' }, { id: 's5', label: 'We need a full strategic reset' } ] },
-  { id: 'q1', title: 'What feels most inconsistent about your brand right now?', options: [ { id: 'o1', label: 'Different teams communicate differently', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o2', label: 'We have no central messaging guidelines', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o3', label: 'Our visuals feel outdated and generic', cluster: 'Generic Identity', weight: 2 } ] },
-  { id: 'q2', title: 'How is your campaign and content engagement?', options: [ { id: 'o4', label: 'Low engagement and weak emotional pull', cluster: 'Weak Narrative', weight: 2 }, { id: 'o5', label: 'Good engagement, but execution feels messy', cluster: 'Lack of Systems', weight: 2 } ] },
-  { id: 'q3', title: 'How does your team currently execute?', options: [ { id: 'o6', label: 'Teams are misaligned with no clear playbook', cluster: 'Lack of Systems', weight: 2 }, { id: 'o7', label: 'Our brand has grown but our execution hasn\'t evolved', cluster: 'Execution Gap', weight: 1 } ] },
-  { id: 'q4', title: 'What best describes your visual identity?', options: [ { id: 'o8', label: 'Generic visuals with no distinctiveness', cluster: 'Generic Identity', weight: 2 }, { id: 'o9', label: 'Aesthetically pleasing but lacks deep storytelling', cluster: 'Weak Narrative', weight: 2 } ] },
-  { id: 'q5', title: 'What is your biggest bottleneck for growth?', options: [ { id: 'o10', label: 'Lack of internal systems and repeatable templates', cluster: 'Lack of Systems', weight: 2 }, { id: 'o11', label: 'Execution is too slow and disconnected from strategy', cluster: 'Execution Gap', weight: 1 }, { id: 'o12', label: 'Messaging inconsistency across touchpoints', cluster: 'Messaging Inconsistency', weight: 2 } ] }
+  { id: 'stage', title: 'Where is your brand right now?', options: [{ id: 's1', label: 'We are launching a new brand' }, { id: 's2', label: 'We are repositioning an existing brand' }, { id: 's3', label: 'We have grown, but our brand has not evolved' }, { id: 's4', label: 'We need better campaigns and communication' }, { id: 's5', label: 'We need a full strategic reset' }] },
+  { id: 'q1', title: 'What feels most inconsistent about your brand right now?', options: [{ id: 'o1', label: 'Different teams communicate differently', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o2', label: 'We have no central messaging guidelines', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o3', label: 'Our visuals feel outdated and generic', cluster: 'Generic Identity', weight: 2 }] },
+  { id: 'q2', title: 'How is your campaign and content engagement?', options: [{ id: 'o4', label: 'Low engagement and weak emotional pull', cluster: 'Weak Narrative', weight: 2 }, { id: 'o5', label: 'Good engagement, but execution feels messy', cluster: 'Lack of Systems', weight: 2 }] },
+  { id: 'q3', title: 'How does your team currently execute?', options: [{ id: 'o6', label: 'Teams are misaligned with no clear playbook', cluster: 'Lack of Systems', weight: 2 }, { id: 'o7', label: 'Our brand has grown but our execution hasn\'t evolved', cluster: 'Execution Gap', weight: 1 }] },
+  { id: 'q4', title: 'What best describes your visual identity?', options: [{ id: 'o8', label: 'Generic visuals with no distinctiveness', cluster: 'Generic Identity', weight: 2 }, { id: 'o9', label: 'Aesthetically pleasing but lacks deep storytelling', cluster: 'Weak Narrative', weight: 2 }] },
+  { id: 'q5', title: 'What is your biggest bottleneck for growth?', options: [{ id: 'o10', label: 'Lack of internal systems and repeatable templates', cluster: 'Lack of Systems', weight: 2 }, { id: 'o11', label: 'Execution is too slow and disconnected from strategy', cluster: 'Execution Gap', weight: 1 }, { id: 'o12', label: 'Messaging inconsistency across touchpoints', cluster: 'Messaging Inconsistency', weight: 2 }] }
 ];
 
 const clusterToRoute = {
@@ -273,9 +273,9 @@ const FAQS_MASTER = [
 ];
 
 const ROUTES_INFO = {
-  'BB': { id: 'BB', title: 'Brand Boulevard', desc: 'Identity, positioning, messaging, and comprehensive brand systems.', icon: <Fingerprint className="w-6 h-6" />, type: 'primary', bestFor: 'Companies seeking a complete structural overhaul, from foundational positioning to a scalable visual identity system.', lineItems: [ { id: 'BB1', name: 'Brand Workshop & Audit' }, { id: 'BB2', name: 'Brand Identity System' }, { id: 'BB3', name: 'Design Systems' }, { id: 'BB4', name: 'Giveaways & Collaterals' } ] },
-  'SAS': { id: 'SAS', title: 'SciArt Saga', desc: 'Storytelling, innovation communication, and experience-led narratives.', icon: <Lightbulb className="w-6 h-6" />, type: 'blue', bestFor: 'Deep-tech or highly complex innovations needing to translate technical features into compelling, human-centric stories.', lineItems: [ { id: 'SS1', name: 'Innovation Frameworks' }, { id: 'SS2', name: 'Experience & IP Strategy' }, { id: 'SS3', name: 'Product Storytelling' }, { id: 'SS4', name: 'GTM Communication' } ] },
-  'STC': { id: 'STC', title: 'Storytelling Corner', desc: 'Campaign ideas, creative direction, and execution-ready content.', icon: <Rocket className="w-6 h-6" />, type: 'purple', bestFor: 'Established brands looking for high-impact campaign execution, continuous content systems, and creative direction.', lineItems: [ { id: 'SC1', name: 'Creative Direction' }, { id: 'SC2', name: 'Social & Influencer' }, { id: 'SC3', name: 'Website Framework' }, { id: 'SC4', name: 'Event Branding' } ] }
+  'BB': { id: 'BB', title: 'Brand Boulevard', desc: 'Identity, positioning, messaging, and comprehensive brand systems.', icon: <Fingerprint className="w-6 h-6" />, type: 'primary', bestFor: 'Companies seeking a complete structural overhaul, from foundational positioning to a scalable visual identity system.', lineItems: [{ id: 'BB1', name: 'Brand Workshop & Audit' }, { id: 'BB2', name: 'Brand Identity System' }, { id: 'BB3', name: 'Design Systems' }, { id: 'BB4', name: 'Giveaways & Collaterals' }] },
+  'SAS': { id: 'SAS', title: 'SciArt Saga', desc: 'Storytelling, innovation communication, and experience-led narratives.', icon: <Lightbulb className="w-6 h-6" />, type: 'blue', bestFor: 'Deep-tech or highly complex innovations needing to translate technical features into compelling, human-centric stories.', lineItems: [{ id: 'SS1', name: 'Innovation Frameworks' }, { id: 'SS2', name: 'Experience & IP Strategy' }, { id: 'SS3', name: 'Product Storytelling' }, { id: 'SS4', name: 'GTM Communication' }] },
+  'STC': { id: 'STC', title: 'Storytelling Corner', desc: 'Campaign ideas, creative direction, and execution-ready content.', icon: <Rocket className="w-6 h-6" />, type: 'purple', bestFor: 'Established brands looking for high-impact campaign execution, continuous content systems, and creative direction.', lineItems: [{ id: 'SC1', name: 'Creative Direction' }, { id: 'SC2', name: 'Social & Influencer' }, { id: 'SC3', name: 'Website Framework' }, { id: 'SC4', name: 'Event Branding' }] }
 };
 
 const DELIVERABLES_MASTER = [
@@ -416,7 +416,7 @@ const CASE_STUDIES = [
       ]
     }
   },
-  { 
+  {
     id: 'cs1', client: 'Aura Skincare', sector: 'Beauty', challenge: 'Elevating a cult favorite skincare line into a globally recognized luxury lifestyle brand.', route: 'Visual Identity', tags: ['Beauty', 'Packaging', 'Identity'], type: 'primary',
     overview: 'Aura Skincare was beloved by dermatologists but ignored by the luxury lifestyle market. Their clinical aesthetic was highly functional but lacked the emotional resonance required to compete on a global stage.',
     solution: 'We stripped away the clinical sterility and introduced a warm, ethereal aesthetic. The new system relies on subtle gradients, elegant serif typography, and tactile, sustainable packaging that feels like a premium lifestyle choice rather than a medical prescription.',
@@ -424,7 +424,7 @@ const CASE_STUDIES = [
     results: ['400% increase in D2C sales in Q1', 'Stocked in 50+ premium retail locations', 'Awarded "Best Rebrand" at Beauty Innovator Awards'],
     colors: ['#6865FA', '#E8E7FF', '#010D54', '#FFFFFF']
   },
-  { 
+  {
     id: 'cs2', client: 'Lumina Tech', sector: 'Technology', challenge: 'Humanizing a complex AI platform through an approachable, vibrant, and modern design system.', route: 'Digital Experience', tags: ['Tech', 'UI/UX', 'Digital'], type: 'blue',
     overview: 'Lumina’s AI engine was incredibly powerful, but their enterprise interface was intimidating and overly technical, causing high drop-off rates during initial user onboarding.',
     solution: 'We designed a "SciArt" interface that uses dynamic data visualizations as art. We replaced dense tables with fluid, color-coded components, turning complex data processing into an intuitive, visually stunning user experience.',
@@ -432,7 +432,7 @@ const CASE_STUDIES = [
     results: ['Reduced onboarding time by 65%', 'Increased daily active users by 210%', 'Secured Series B funding post-launch'],
     colors: ['#2A97D9', '#051838', '#FFCD00', '#F4F4F5']
   },
-  { 
+  {
     id: 'cs3', client: 'Novus Fin', sector: 'Finance', challenge: 'Transforming a legacy financial institution into a modern, creator-led fintech platform.', route: 'Brand Strategy', tags: ['Fintech', 'Positioning', 'Campaign'], type: 'purple',
     overview: 'Novus Fin was seen as a traditional, slow-moving bank. To capture the next generation of wealth creators, they needed a radical departure from corporate finance tropes.',
     solution: 'We rebuilt the Novus narrative around "Empowered Creation." The visual identity was shifted to high-contrast neon on dark mode backgrounds, speaking the language of modern tech rather than legacy banking.',
@@ -440,7 +440,7 @@ const CASE_STUDIES = [
     results: ['Acquired 100k+ new Gen-Z users in 3 months', 'Ranked Top 3 Fintech Apps on App Store', 'Viral social media launch campaign'],
     colors: ['#AF73DD', '#111111', '#93D435', '#FFFFFF']
   },
-  { 
+  {
     id: 'cs4', client: 'Aero Dynamics', sector: 'Aviation', challenge: 'Communicating sustainable aviation solutions through powerful SciArt storytelling.', route: 'Narrative', tags: ['Sustainability', 'Storytelling', 'B2B'], type: 'green',
     overview: 'Aero Dynamics engineered a zero-emission propulsion system, but their B2B marketing material was bogged down in engineering specs, failing to communicate the global impact.',
     solution: 'We crafted the "Blue Sky Protocol" narrative. Moving away from technical jargon, we built an immersive B2B digital experience that visualized the environmental and economic impact of their engines through striking 3D web experiences.',
@@ -494,15 +494,15 @@ const findUnmetPrerequisites = (deliverableId, currentSelections, deliverablesLi
   const unmet = [];
   const queue = [deliverableId];
   const visited = new Set();
-  
+
   while (queue.length > 0) {
     const current = queue.pop();
     if (visited.has(current)) continue;
     visited.add(current);
-    
+
     const deliv = deliverablesList.find(d => d.id === current);
     if (!deliv || deliv.interdependence === "None") continue;
-    
+
     const prerequisites = parsePrerequisites(deliv.interdependence);
     for (const prereq of prerequisites) {
       if (!currentSelections.includes(prereq) && !unmet.includes(prereq)) {
@@ -529,23 +529,23 @@ const findAllDependents = (deliverableId, currentSelections, deliverablesList = 
 const computeSuggestedStartingPoint = (selectedDelivs, priorities, deliverablesList = DELIVERABLES_MASTER) => {
   const fullScope = [...new Set(selectedDelivs)];
   for (const d of selectedDelivs) {
-     const unmet = findUnmetPrerequisites(d, fullScope, deliverablesList);
-     fullScope.push(...unmet);
+    const unmet = findUnmetPrerequisites(d, fullScope, deliverablesList);
+    fullScope.push(...unmet);
   }
-  
+
   const uniqueScope = [...new Set(fullScope)];
   const scopeObjects = uniqueScope.map(id => deliverablesList.find(x => x.id === id)).filter(Boolean);
-  
+
   // Layer 0 and 1 items
-  const layer01Ids = ['D001','D002','D003','D004','D005','D006','D007','D008','D037','D038','D039','D040','D041','D042','D043'];
+  const layer01Ids = ['D001', 'D002', 'D003', 'D004', 'D005', 'D006', 'D007', 'D008', 'D037', 'D038', 'D039', 'D040', 'D041', 'D042', 'D043'];
   const foundations = scopeObjects.filter(d => layer01Ids.includes(d.id));
-  
+
   if (foundations.length === 0) return scopeObjects[0]?.name || "N/A";
   if (foundations.length === 1) return foundations[0].name;
-  
+
   const highPriorityPicks = selectedDelivs.filter(id => priorities[id] === 'High' || priorities[id] === 'Critical');
   if (highPriorityPicks.length > 0) {
-     return foundations[0].name; // Simplified resolution for demo
+    return foundations[0].name; // Simplified resolution for demo
   }
   return foundations[0].name;
 };
@@ -684,9 +684,9 @@ const DiagnoseVisual = () => {
       <div className="border border-white/10 rounded-[16px] p-6 w-full max-w-sm mb-4 shadow-2xl relative z-10" style={{ backgroundColor: palette.bgDeep }}>
         <div className="w-1/2 h-2 bg-white/10 rounded-full mb-8" />
         <div className="space-y-4">
-          <motion.div animate={{ borderColor: ['rgba(255,255,255,0.05)', `rgba(${rgbPrimary},0.6)`, 'rgba(255,255,255,0.05)'] }} transition={{ duration: 2, repeat: Infinity }} className="h-12 bg-white/[0.02] border rounded-[8px] flex items-center px-4"><div className="w-4 h-4 rounded-full border border-white/20 mr-4"/><div className="w-2/3 h-2 bg-white/20 rounded-full"/></motion.div>
-          <div className="h-12 bg-white/[0.02] border border-white/5 rounded-[8px] flex items-center px-4"><div className="w-4 h-4 rounded-full border border-white/20 mr-4"/><div className="w-1/2 h-2 bg-white/10 rounded-full"/></div>
-          <div className="h-12 bg-white/[0.02] border border-white/5 rounded-[8px] flex items-center px-4"><div className="w-4 h-4 rounded-full border border-white/20 mr-4"/><div className="w-3/4 h-2 bg-white/10 rounded-full"/></div>
+          <motion.div animate={{ borderColor: ['rgba(255,255,255,0.05)', `rgba(${rgbPrimary},0.6)`, 'rgba(255,255,255,0.05)'] }} transition={{ duration: 2, repeat: Infinity }} className="h-12 bg-white/[0.02] border rounded-[8px] flex items-center px-4"><div className="w-4 h-4 rounded-full border border-white/20 mr-4" /><div className="w-2/3 h-2 bg-white/20 rounded-full" /></motion.div>
+          <div className="h-12 bg-white/[0.02] border border-white/5 rounded-[8px] flex items-center px-4"><div className="w-4 h-4 rounded-full border border-white/20 mr-4" /><div className="w-1/2 h-2 bg-white/10 rounded-full" /></div>
+          <div className="h-12 bg-white/[0.02] border border-white/5 rounded-[8px] flex items-center px-4"><div className="w-4 h-4 rounded-full border border-white/20 mr-4" /><div className="w-3/4 h-2 bg-white/10 rounded-full" /></div>
         </div>
       </div>
     </motion.div>
@@ -706,7 +706,7 @@ const MapVisual = () => {
         <div className="flex-1 flex flex-col items-center"><motion.div className="h-[2px] w-full" style={{ background: `linear-gradient(to right, transparent, ${palette.blue}, transparent)` }} animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} /></div>
         <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.4 }} className="flex-1 border p-6 rounded-[16px] text-center flex flex-col items-center justify-center aspect-square shadow-2xl" style={{ background: `linear-gradient(to bottom right, rgba(${rgbBlue},0.2), transparent)`, borderColor: `rgba(${rgbBlue},0.3)` }}>
           <Layers className="w-8 h-8 mb-3" style={{ color: palette.blue }} />
-          <div className="text-xs text-white font-medium tracking-wide font-primary">Brand<br/>Boulevard</div>
+          <div className="text-xs text-white font-medium tracking-wide font-primary">Brand<br />Boulevard</div>
         </motion.div>
       </div>
     </motion.div>
@@ -719,7 +719,7 @@ const BuildVisual = () => {
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }} className="absolute inset-0 flex items-center justify-center p-8">
       <div className="absolute inset-0" style={{ background: `radial-gradient(circle at center, rgba(${rgbPrimary},0.15) 0%, transparent 60%)` }} />
       <div className="border border-white/10 rounded-[16px] p-8 w-full max-w-sm shadow-2xl relative z-10" style={{ backgroundColor: palette.bgDeep }}>
-        <h4 className="text-[10px] uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><PenTool className="w-4 h-4"/> Scope Blueprint</h4>
+        <h4 className="text-[10px] uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><PenTool className="w-4 h-4" /> Scope Blueprint</h4>
         <div className="space-y-4">
           {[1, 2, 3, 4].map(i => (
             <motion.div key={i} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.15 }} className="flex items-center gap-4">
@@ -761,36 +761,36 @@ const InteractiveHowItWorks = () => {
     <div className="flex flex-col lg:flex-row gap-16 items-center w-full relative z-10 text-left">
       <div className="w-full lg:w-5/12 flex flex-col relative">
         <div className="absolute left-[47px] top-12 bottom-12 w-[2px] bg-white/5 overflow-hidden">
-          <motion.div 
-             className="absolute left-0 w-full rounded-full" 
-             style={{ background: `linear-gradient(to bottom, ${palette.primary}, ${palette.blue})` }} 
-             animate={{ top: `${activeStep * 33.33}%`, height: '33.33%' }} 
-             transition={{ type: 'spring', stiffness: 300, damping: 30 }} 
+          <motion.div
+            className="absolute left-0 w-full rounded-full"
+            style={{ background: `linear-gradient(to bottom, ${palette.primary}, ${palette.blue})` }}
+            animate={{ top: `${activeStep * 33.33}%`, height: '33.33%' }}
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           />
         </div>
         {steps.map((s, i) => {
-            const isActive = activeStep === i;
-            return (
-              <div key={i} onMouseEnter={() => setActiveStep(i)} className={`relative flex items-start gap-8 p-6 rounded-[16px] cursor-pointer transition-all duration-500 w-full ${isActive ? 'bg-white/[0.02]' : 'hover:bg-white/[0.01]'}`}>
-                <div className={`relative z-10 w-12 h-12 rounded-full border flex items-center justify-center shrink-0 transition-all duration-500`} style={{ borderColor: isActive ? palette.primary : 'rgba(255,255,255,0.1)', backgroundColor: isActive ? hexToRgba(palette.primary, 0.3) : palette.panel }}>
-                  <div className={`w-3 h-3 rounded-full transition-all duration-500 ${isActive ? 'scale-100' : 'bg-white/20 scale-50'}`} style={{ backgroundColor: isActive ? 'white' : '' }} />
-                </div>
-                <div className="w-full">
-                  <h3 className={`text-2xl font-light mb-2 transition-colors duration-500 font-primary ${isActive ? 'text-white' : 'text-white/40'}`}>{s.num}. {s.title}</h3>
-                  <AnimatePresence>
-                    {isActive && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="text-sm font-light text-white/50 leading-relaxed overflow-hidden font-secondary">{s.desc}</motion.p>}
-                  </AnimatePresence>
-                </div>
+          const isActive = activeStep === i;
+          return (
+            <div key={i} onMouseEnter={() => setActiveStep(i)} className={`relative flex items-start gap-8 p-6 rounded-[16px] cursor-pointer transition-all duration-500 w-full ${isActive ? 'bg-white/[0.02]' : 'hover:bg-white/[0.01]'}`}>
+              <div className={`relative z-10 w-12 h-12 rounded-full border flex items-center justify-center shrink-0 transition-all duration-500`} style={{ borderColor: isActive ? palette.primary : 'rgba(255,255,255,0.1)', backgroundColor: isActive ? hexToRgba(palette.primary, 0.3) : palette.panel }}>
+                <div className={`w-3 h-3 rounded-full transition-all duration-500 ${isActive ? 'scale-100' : 'bg-white/20 scale-50'}`} style={{ backgroundColor: isActive ? 'white' : '' }} />
               </div>
-            );
+              <div className="w-full">
+                <h3 className={`text-2xl font-light mb-2 transition-colors duration-500 font-primary ${isActive ? 'text-white' : 'text-white/40'}`}>{s.num}. {s.title}</h3>
+                <AnimatePresence>
+                  {isActive && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="text-sm font-light text-white/50 leading-relaxed overflow-hidden font-secondary">{s.desc}</motion.p>}
+                </AnimatePresence>
+              </div>
+            </div>
+          );
         })}
       </div>
       <div className="w-full lg:w-7/12 h-[450px] border border-white/10 rounded-[24px] relative overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)]" style={{ backgroundColor: palette.panel }}>
         <AnimatePresence mode="wait">
-            {activeStep === 0 && <DiagnoseVisual key="diag" />}
-            {activeStep === 1 && <MapVisual key="map" />}
-            {activeStep === 2 && <BuildVisual key="build" />}
-            {activeStep === 3 && <StartVisual key="start" />}
+          {activeStep === 0 && <DiagnoseVisual key="diag" />}
+          {activeStep === 1 && <MapVisual key="map" />}
+          {activeStep === 2 && <BuildVisual key="build" />}
+          {activeStep === 3 && <StartVisual key="start" />}
         </AnimatePresence>
       </div>
     </div>
@@ -799,7 +799,7 @@ const InteractiveHowItWorks = () => {
 
 const AnimatedItalic = ({ children, className = "" }) => {
   return (
-    <span 
+    <span
       className={`inline-block font-serif italic cursor-default transition-all duration-500 pr-2 ${className}`}
       style={{ '--hover-shadow': `0 0 20px ${hexToRgba(palette.primary, 0.6)}` }}
       onMouseEnter={(e) => e.currentTarget.style.filter = `drop-shadow(0 0 20px ${hexToRgba(palette.primary, 0.6)})`}
@@ -892,33 +892,33 @@ const StrategicEngine = ({ navigate }) => {
 
   const processDiagnosis = (finalAnswers) => {
     const clusterScores = {};
-    Object.values(finalAnswers).forEach(opt => { 
-       if (opt.cluster) {
-           clusterScores[opt.cluster] = (clusterScores[opt.cluster] || 0) + (opt.weight || 1);
-       }
+    Object.values(finalAnswers).forEach(opt => {
+      if (opt.cluster) {
+        clusterScores[opt.cluster] = (clusterScores[opt.cluster] || 0) + (opt.weight || 1);
+      }
     });
-    
+
     let maxScore = 0;
     let topClusters = [];
     for (const [cluster, score] of Object.entries(clusterScores)) {
-       if (score > maxScore) {
-          maxScore = score;
-          topClusters = [cluster];
-       } else if (score === maxScore) {
-          topClusters.push(cluster);
-       }
+      if (score > maxScore) {
+        maxScore = score;
+        topClusters = [cluster];
+      } else if (score === maxScore) {
+        topClusters.push(cluster);
+      }
     }
-    
+
     setClusters(topClusters);
-    
+
     const foundRoutes = new Set();
     topClusters.forEach(c => {
-       if (clusterToRoute[c]) foundRoutes.add(clusterToRoute[c]);
+      if (clusterToRoute[c]) foundRoutes.add(clusterToRoute[c]);
     });
-    
+
     const recRoutes = Array.from(foundRoutes).length > 0 ? Array.from(foundRoutes) : ['BB'];
-    setRoutes(recRoutes); 
-    setSelectedRoutes(recRoutes); 
+    setRoutes(recRoutes);
+    setSelectedRoutes(recRoutes);
     setStep(N_QUIZ + 1);
   };
 
@@ -945,7 +945,7 @@ const StrategicEngine = ({ navigate }) => {
   const submitLead = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     const startingPoint = computeSuggestedStartingPoint(selectedDeliverables, priorities);
 
     const leadData = { ...leadForm, stage: answers.stage?.label, clusters, routes, deliverables: selectedDeliverables, ...context, startingPoint, date: new Date().toISOString(), status: 'New', score: Math.floor(Math.random() * 40) + 60 };
@@ -966,6 +966,13 @@ const StrategicEngine = ({ navigate }) => {
         <p><strong>Timeline:</strong> ${leadData.timeline}</p>
         <p><strong>Suggested Starting Point:</strong> ${startingPoint}</p>
         
+        <h3 style="color: #333;">Quiz Responses (Comprehensive)</h3>
+        <ul>${QUIZ_QUESTIONS.map((q, i) => {
+            const ans = answers[q.id];
+            if (!ans) return '';
+            return `<li style="margin-bottom: 12px;"><strong>Q${i+1}: ${q.question}</strong><br/>Answer: ${ans.label} ${ans.desc ? `<i>(${ans.desc})</i>` : ''}</li>`;
+        }).join('')}</ul>
+        
         <h3 style="color: #333;">Identified Gaps</h3>
         <ul>${clusters.map(c => `<li>${c}</li>`).join('')}</ul>
         
@@ -982,7 +989,43 @@ const StrategicEngine = ({ navigate }) => {
       </div>
     `;
 
-    await sendEmailViaResend(subject, htmlContent);
+    // Generate Comprehensive File Attachment
+    let reportText = `PBH SCOPE BUILDER - COMPREHENSIVE RESPONSES\n`;
+    reportText += `Generated: ${new Date().toLocaleString()}\n\n`;
+    reportText += `--- CLIENT DETAILS ---\n`;
+    reportText += `Name: ${leadForm.name}\n`;
+    reportText += `Email: ${leadForm.email}\n`;
+    reportText += `Company: ${leadForm.company}\n\n`;
+    
+    reportText += `--- QUIZ RESPONSES ---\n`;
+    QUIZ_QUESTIONS.forEach((q, i) => {
+      const ans = answers[q.id];
+      if (ans) {
+        reportText += `Q${i+1}: ${q.question}\n`;
+        reportText += `Selected: ${ans.label}\n`;
+        if (ans.desc) reportText += `Detail: ${ans.desc}\n`;
+        reportText += `\n`;
+      }
+    });
+
+    reportText += `--- STRATEGY BLUEPRINT ---\n`;
+    reportText += `Brand Stage: ${leadData.stage}\n`;
+    reportText += `Engagement Depth: ${leadData.depth}\n`;
+    reportText += `Timeline: ${leadData.timeline}\n`;
+    reportText += `Suggested Starting Point: ${startingPoint}\n\n`;
+
+    reportText += `--- SELECTED DELIVERABLES ---\n`;
+    selectedDeliverables.forEach(d => {
+      const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
+      const prio = priorities[d] || 'Standard';
+      reportText += `- [${prio}] ${deliv ? deliv.name : d}\n`;
+    });
+
+    const safeCompanyName = leadForm.company ? leadForm.company.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'client';
+    const base64Report = btoa(unescape(encodeURIComponent(reportText)));
+    const attachments = [{ filename: `${safeCompanyName}_scope_responses.txt`, content: base64Report }];
+
+    await sendEmailViaResend(subject, htmlContent, attachments);
     
     setIsSubmitting(false);
     setStep(N_QUIZ + 6);
@@ -1026,7 +1069,7 @@ const StrategicEngine = ({ navigate }) => {
         <p className="text-lg md:text-xl text-white/50 font-light mb-12 leading-relaxed font-secondary max-w-3xl">This is not a generic form. It is a guided discovery system. We’ll map your gaps, define service priorities, and generate a customized roadmap before our first conversation.</p>
         <div className="flex flex-col sm:flex-row items-center gap-6">
           <PremiumButton onClick={() => setStep(1)} className="w-full sm:w-auto px-10 py-5">Begin Discovery</PremiumButton>
-          <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 py-2 font-secondary w-full sm:w-auto"><ArrowLeft className="w-4 h-4"/> Back to Home</button>
+          <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 py-2 font-secondary w-full sm:w-auto"><ArrowLeft className="w-4 h-4" /> Back to Home</button>
         </div>
       </FadeUp>
     </div>,
@@ -1035,26 +1078,26 @@ const StrategicEngine = ({ navigate }) => {
     ...QUIZ_QUESTIONS.map((q, i) => (
       <div key={`q${i}`} className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
         <FadeUp>
-          <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery ({i+1}/{N_QUIZ})</div>
+          <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery ({i + 1}/{N_QUIZ})</div>
           <h2 className="text-3xl md:text-4xl font-light mb-10 font-primary">{q.title}</h2>
           <StaggerGroup className="space-y-3 w-full max-w-3xl">
             {q.options.map((opt, j) => {
-                const isSelected = answers[q.id]?.id === opt.id;
-                return (
-                  <StaggerItem key={opt.id}>
-                    <button 
-                      onClick={() => handleQuizSelect(q.id, opt)} 
-                      className="w-full text-left p-5 rounded-[12px] border transition-all duration-300 flex items-center gap-4 font-secondary hover:translate-x-1"
-                      style={{ borderColor: isSelected ? palette.primary : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.primary, 0.1) : 'rgba(255,255,255,0.02)', color: isSelected ? 'white' : 'rgba(255,255,255,0.6)' }}
-                    >
-                      <span className="font-serif italic opacity-40 text-lg w-6 shrink-0">0{j+1}</span>
-                      <span className="text-lg font-light">{opt.label}</span>
-                    </button>
-                  </StaggerItem>
-                )
+              const isSelected = answers[q.id]?.id === opt.id;
+              return (
+                <StaggerItem key={opt.id}>
+                  <button
+                    onClick={() => handleQuizSelect(q.id, opt)}
+                    className="w-full text-left p-5 rounded-[12px] border transition-all duration-300 flex items-center gap-4 font-secondary hover:translate-x-1"
+                    style={{ borderColor: isSelected ? palette.primary : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.primary, 0.1) : 'rgba(255,255,255,0.02)', color: isSelected ? 'white' : 'rgba(255,255,255,0.6)' }}
+                  >
+                    <span className="font-serif italic opacity-40 text-lg w-6 shrink-0">0{j + 1}</span>
+                    <span className="text-lg font-light">{opt.label}</span>
+                  </button>
+                </StaggerItem>
+              )
             })}
           </StaggerGroup>
-          <div className="mt-8 flex"><button onClick={() => setStep(step === 1 ? 0 : step - 1)} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 font-secondary"><ArrowLeft className="w-4 h-4"/> Back</button></div>
+          <div className="mt-8 flex"><button onClick={() => setStep(step === 1 ? 0 : step - 1)} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 font-secondary"><ArrowLeft className="w-4 h-4" /> Back</button></div>
         </FadeUp>
       </div>
     )),
@@ -1062,7 +1105,7 @@ const StrategicEngine = ({ navigate }) => {
     // N+1: Diagnosis Result
     <div key="diag" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-xs font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4"/> Discovery Insights</div>
+        <div className="text-xs font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4" /> Discovery Insights</div>
         <h2 className="text-3xl md:text-4xl font-light mb-6 font-primary">Your brand opportunity areas.</h2>
         <p className="text-white/50 font-light mb-12 text-lg font-secondary max-w-3xl">Based on your answers, your communication is currently breaking due to <strong className="text-white">{clusters.join(' & ')}</strong>. We recommend structuring your project around these core ecosystems:</p>
         <StaggerGroup className="grid sm:grid-cols-2 gap-4 mb-12 w-full max-w-4xl">
@@ -1098,7 +1141,7 @@ const StrategicEngine = ({ navigate }) => {
             return (
               <StaggerItem key={route.id}>
                 <button onClick={() => setSelectedRoutes(prev => isSelected ? prev.filter(r => r !== route.id) : [...prev, route.id])} className="w-full text-left p-6 rounded-[16px] border transition-all duration-300 flex items-center gap-6" style={{ borderColor: isSelected ? palette.blue : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.blue, 0.1) : 'rgba(255,255,255,0.02)' }}>
-                  <div className="w-6 h-6 rounded flex items-center justify-center border shrink-0" style={{ backgroundColor: isSelected ? palette.blue : 'transparent', borderColor: isSelected ? palette.blue : 'rgba(255,255,255,0.3)' }}>{isSelected && <Check className="w-4 h-4 text-white"/>}</div>
+                  <div className="w-6 h-6 rounded flex items-center justify-center border shrink-0" style={{ backgroundColor: isSelected ? palette.blue : 'transparent', borderColor: isSelected ? palette.blue : 'rgba(255,255,255,0.3)' }}>{isSelected && <Check className="w-4 h-4 text-white" />}</div>
                   <div>
                     <div className={`text-lg font-medium mb-1 font-primary ${isSelected ? 'text-white' : 'text-white/70'}`}>{route.title}</div>
                     <div className="text-sm font-light text-white/40 font-secondary">{route.desc}</div>
@@ -1151,10 +1194,10 @@ const StrategicEngine = ({ navigate }) => {
                                 {isSelected && (
                                   <div className="pl-8 flex items-center gap-3 mt-2 border-t border-white/5 pt-3">
                                     <span className="text-[10px] uppercase tracking-widest text-white/40">Priority:</span>
-                                    <select value={priorities[d.id] || 'Standard'} onChange={e => setPriorities(p => ({...p, [d.id]: e.target.value}))} className="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white outline-none">
-                                       <option value="Standard">Standard</option>
-                                       <option value="High">High</option>
-                                       <option value="Critical">Critical</option>
+                                    <select value={priorities[d.id] || 'Standard'} onChange={e => setPriorities(p => ({ ...p, [d.id]: e.target.value }))} className="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white outline-none">
+                                      <option value="Standard">Standard</option>
+                                      <option value="High">High</option>
+                                      <option value="Critical">Critical</option>
                                     </select>
                                   </div>
                                 )}
@@ -1185,7 +1228,7 @@ const StrategicEngine = ({ navigate }) => {
         <div className="space-y-6 w-full mb-12 max-w-3xl">
           <div className="w-full">
             <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">What level of support are you looking for? (Depth)</label>
-            <select value={context.depth} onChange={e=>setContext({...context, depth: e.target.value})} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
+            <select value={context.depth} onChange={e => setContext({ ...context, depth: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
               <option value="" style={{ backgroundColor: palette.bgDeep }}>Select depth...</option>
               <option value="Light-touch consulting" style={{ backgroundColor: palette.bgDeep }}>Light-touch consulting</option>
               <option value="Strategic direction + selected assets" style={{ backgroundColor: palette.bgDeep }}>Strategic direction + selected assets</option>
@@ -1194,7 +1237,7 @@ const StrategicEngine = ({ navigate }) => {
           </div>
           <div className="w-full">
             <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">When do you want to begin? (Timeline)</label>
-            <select value={context.timeline} onChange={e=>setContext({...context, timeline: e.target.value})} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
+            <select value={context.timeline} onChange={e => setContext({ ...context, timeline: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
               <option value="" style={{ backgroundColor: palette.bgDeep }}>Select timeline...</option>
               <option value="Immediately" style={{ backgroundColor: palette.bgDeep }}>Immediately</option>
               <option value="Within 2-4 weeks" style={{ backgroundColor: palette.bgDeep }}>Within 2–4 weeks</option>
@@ -1216,9 +1259,9 @@ const StrategicEngine = ({ navigate }) => {
         <h2 className="text-3xl md:text-4xl font-light mb-6 font-primary">Where should we send your Scope Snapshot?</h2>
         <p className="text-white/50 font-light mb-10 text-lg font-secondary max-w-3xl">Enter your details below to instantly generate your strategy report and brief our consulting team.</p>
         <form onSubmit={submitLead} className="space-y-4 w-full font-secondary max-w-3xl">
-          <input required type="text" placeholder="Full Name" value={leadForm.name} onChange={e=>setLeadForm({...leadForm, name: e.target.value})} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
-          <input required type="email" placeholder="Work Email" value={leadForm.email} onChange={e=>setLeadForm({...leadForm, email: e.target.value})} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
-          <input required type="text" placeholder="Company / Brand Name" value={leadForm.company} onChange={e=>setLeadForm({...leadForm, company: e.target.value})} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
+          <input required type="text" placeholder="Full Name" value={leadForm.name} onChange={e => setLeadForm({ ...leadForm, name: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
+          <input required type="email" placeholder="Work Email" value={leadForm.email} onChange={e => setLeadForm({ ...leadForm, email: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
+          <input required type="text" placeholder="Company / Brand Name" value={leadForm.company} onChange={e => setLeadForm({ ...leadForm, company: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <div className="pt-6 flex gap-4 items-center">
             <PremiumButton type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-10">
               {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing...</> : 'Generate Report & Send Brief'}
@@ -1235,7 +1278,7 @@ const StrategicEngine = ({ navigate }) => {
         <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)]" style={{ backgroundColor: palette.bgDeep }}>
           <div className="flex flex-col md:flex-row justify-between items-start border-b border-white/10 pb-8 mb-10 relative z-10 gap-6 w-full">
             <div>
-              <div className="text-xs uppercase tracking-widest mb-3 font-medium flex items-center gap-2 font-primary" style={{ color: palette.primary }}><FileText className="w-4 h-4"/> Official Scope Snapshot</div>
+              <div className="text-xs uppercase tracking-widest mb-3 font-medium flex items-center gap-2 font-primary" style={{ color: palette.primary }}><FileText className="w-4 h-4" /> Official Scope Snapshot</div>
               <h2 className="text-4xl font-light text-white mb-2 font-primary">{leadForm.company || 'Your Brand'}</h2>
               <p className="text-white/50 text-sm font-secondary">Prepared for {leadForm.name || 'Client'}</p>
             </div>
@@ -1248,8 +1291,8 @@ const StrategicEngine = ({ navigate }) => {
           <div className="grid md:grid-cols-2 gap-16 relative z-10 w-full">
             <div className="space-y-10 w-full">
               <div className="bg-white/[0.02] border border-white/5 rounded-[16px] p-8 mb-8 relative overflow-hidden w-full">
-                 <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-8 font-primary">Brand Alignment Profile</h4>
-                 <BrandHealthRadar clusters={clusters} />
+                <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-8 font-primary">Brand Alignment Profile</h4>
+                <BrandHealthRadar clusters={clusters} />
               </div>
 
               <div className="w-full">
@@ -1258,7 +1301,7 @@ const StrategicEngine = ({ navigate }) => {
                   {selectedRoutes.map(r => <span key={r} className="px-3 py-1.5 bg-white/5 text-white/70 text-xs border border-white/10 rounded-full flex items-center gap-2 font-secondary">{ROUTES_INFO[r]?.icon} {ROUTES_INFO[r]?.title}</span>)}
                 </div>
               </div>
-              
+
               <div className="w-full">
                 <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Execution Context</h4>
                 <div className="text-sm text-white/70 font-light space-y-3 bg-white/[0.02] p-6 rounded-[12px] border border-white/5 font-secondary w-full">
@@ -1269,7 +1312,7 @@ const StrategicEngine = ({ navigate }) => {
                 </div>
               </div>
             </div>
-            
+
             <div className="w-full">
               <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Selected Deliverables Blueprint</h4>
               <ul className="space-y-4 w-full">
@@ -1278,7 +1321,7 @@ const StrategicEngine = ({ navigate }) => {
                     <div className="p-1.5 rounded-md shrink-0 mt-0.5" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4" style={{ color: palette.blue }} /></div>
                     <div className="w-full">
                       <div className="text-sm font-medium text-white mb-1 font-secondary flex items-center justify-between">
-                        <span>{d.name} {warnings.includes(d.id) && <AlertCircle className="w-3 h-3 inline text-yellow-400 ml-1"/>}</span>
+                        <span>{d.name} {warnings.includes(d.id) && <AlertCircle className="w-3 h-3 inline text-yellow-400 ml-1" />}</span>
                         <span className="text-[10px] uppercase tracking-widest text-white/40">{priorities[d.id] || 'Standard'}</span>
                       </div>
                       <div className="text-xs text-white/40 leading-relaxed font-secondary">ID: {d.id}</div>
@@ -1313,7 +1356,7 @@ const StrategicEngine = ({ navigate }) => {
                 <ul className="mb-8 space-y-2 max-h-40 overflow-y-auto custom-scrollbar font-secondary border border-white/5 bg-white/[0.02] p-4 rounded-lg">
                   {dependencyModal.related.map(id => {
                     const d = DELIVERABLES_MASTER.find(x => x.id === id);
-                    return <li key={id} className="text-sm text-white/80 flex items-center gap-2"><ArrowRight className="w-3 h-3 text-[#6865FA] shrink-0"/> {d?.name || id}</li>;
+                    return <li key={id} className="text-sm text-white/80 flex items-center gap-2"><ArrowRight className="w-3 h-3 text-[#6865FA] shrink-0" /> {d?.name || id}</li>;
                   })}
                 </ul>
                 <div className="flex flex-col gap-3 font-secondary">
@@ -1336,7 +1379,7 @@ const StrategicEngine = ({ navigate }) => {
                 <ul className="mb-8 space-y-2 max-h-40 overflow-y-auto custom-scrollbar font-secondary border border-white/5 bg-white/[0.02] p-4 rounded-lg">
                   {dependencyModal.related.map(id => {
                     const d = DELIVERABLES_MASTER.find(x => x.id === id);
-                    return <li key={id} className="text-sm text-white/80 flex items-center gap-2"><X className="w-3 h-3 text-red-400 shrink-0"/> {d?.name || id}</li>;
+                    return <li key={id} className="text-sm text-white/80 flex items-center gap-2"><X className="w-3 h-3 text-red-400 shrink-0" /> {d?.name || id}</li>;
                   })}
                 </ul>
                 <div className="flex flex-col gap-3 font-secondary">
@@ -1368,15 +1411,15 @@ const StrategicEngine = ({ navigate }) => {
         </div>
         {step > 0 && step < (N_QUIZ + 6) && (
           <div className="hidden md:block w-[350px] lg:w-[450px] shrink-0 sticky top-32 h-[calc(100vh-160px)] pb-8 z-10">
-             <LiveScopePreview />
+            <LiveScopePreview />
           </div>
         )}
       </div>
       {step > 0 && step < (N_QUIZ + 6) && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 w-full">
           <button onClick={() => setIsMobilePreviewOpen(!isMobilePreviewOpen)} className="w-full border-t border-white/10 p-4 flex items-center justify-between text-sm font-medium backdrop-blur-xl font-secondary" style={{ backgroundColor: palette.panel }}>
-            <span className="flex items-center gap-2"><FileText className="w-4 h-4" style={{ color: palette.primary }}/> View Live Scope {selectedDeliverables.length > 0 && `(${selectedDeliverables.length})`}</span>
-            {isMobilePreviewOpen ? <ChevronDown className="w-4 h-4"/> : <ChevronUp className="w-4 h-4"/>}
+            <span className="flex items-center gap-2"><FileText className="w-4 h-4" style={{ color: palette.primary }} /> View Live Scope {selectedDeliverables.length > 0 && `(${selectedDeliverables.length})`}</span>
+            {isMobilePreviewOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
           </button>
           <AnimatePresence>
             {isMobilePreviewOpen && (
@@ -1408,7 +1451,7 @@ const MenuHoverCard = ({ children, color, onClick }) => {
       initial="initial"
       whileHover="hover"
       className="group relative cursor-pointer p-6 rounded-[16px] border border-white/15 hover:border-white/30 transition-all duration-500 overflow-hidden h-full flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.45)] hover:-translate-y-1 w-full"
-      style={{ 
+      style={{
         backgroundColor: `${palette.bgDeep}`,
         borderBottom: `4px solid ${color}`,
         backdropFilter: 'blur(16px) saturate(140%)',
@@ -1419,7 +1462,7 @@ const MenuHoverCard = ({ children, color, onClick }) => {
         className="pointer-events-none absolute -inset-px rounded-[16px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0 w-full"
         style={{ background: useMotionTemplate`radial-gradient(350px circle at ${mouseX}px ${mouseY}px, ${color}15, transparent 80%)` }}
       />
-      <motion.div 
+      <motion.div
         variants={{ initial: { scale: 0.8, opacity: 0, rotate: 0 }, hover: { scale: 1.8, opacity: 0.1, rotate: 90 } }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="absolute -right-12 -bottom-12 w-48 h-48 blur-[40px] rounded-[100%] pointer-events-none z-0"
@@ -1485,7 +1528,7 @@ const Header = ({ navigate, current }) => {
         <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 border" style={{ backgroundColor: palette.primary, borderColor: hexToRgba(palette.primary, 0.2), color: palette.bgDeep }}><Layers className="w-6 h-6" /></div>
         <h3 className="text-2xl font-light mb-4 text-white font-primary">Consulting Ecosystems</h3>
         <p className="text-white/50 text-sm leading-relaxed mb-8 font-secondary">We deliver across three distinct pillars depending on your growth stage and communication gaps.</p>
-        <button onClick={() => { navigate('services'); setActiveMenu(null); }} className="text-sm text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">View All Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform"/></button>
+        <button onClick={() => { navigate('services'); setActiveMenu(null); }} className="text-sm text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">View All Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></button>
       </div>
       <div className="w-2/3 grid grid-cols-3 gap-6">
         {Object.values(ROUTES_INFO).map(route => {
@@ -1508,7 +1551,7 @@ const Header = ({ navigate, current }) => {
         <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 border" style={{ backgroundColor: palette.blue, borderColor: hexToRgba(palette.blue, 0.2), color: palette.bgDeep }}><Briefcase className="w-6 h-6" /></div>
         <h3 className="text-2xl font-light mb-4 text-white font-primary">Selected Work</h3>
         <p className="text-white/50 text-sm leading-relaxed mb-8 font-secondary">Case studies and full visual archive proving our thinking across strategy, identity, and campaigns.</p>
-        <button onClick={() => { navigate('work'); setActiveMenu(null); }} className="text-sm text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">View Full Archive <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform"/></button>
+        <button onClick={() => { navigate('work'); setActiveMenu(null); }} className="text-sm text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">View Full Archive <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></button>
       </div>
       <div className="w-2/3 grid grid-cols-2 gap-6">
         {CASE_STUDIES.slice(0, 2).map((cs, i) => {
@@ -1541,22 +1584,22 @@ const Header = ({ navigate, current }) => {
         <p className="text-white/50 text-sm leading-relaxed mb-8 font-secondary">A Brand Communication Studio which co-creates brands backed by cutting-edge innovation; with a SciArt-Driven Approach.</p>
       </div>
       <div className="w-2/3 grid grid-cols-2 gap-6 w-full">
-         <MenuHoverCard color={palette.primary} onClick={() => { navigate('about'); setActiveMenu(null); }}>
-           <h4 className="text-lg font-medium text-white mb-2 font-primary">About PBH</h4>
-           <p className="text-xs text-white/40 font-secondary">Our Vision, Mission, and Core Values.</p>
-         </MenuHoverCard>
-         <MenuHoverCard color={palette.blue} onClick={() => { navigate('method'); setActiveMenu(null); }}>
-           <h4 className="text-lg font-medium text-white mb-2 font-primary">The PBH Method</h4>
-           <p className="text-xs text-white/40 font-secondary">Our step-by-step strategic process.</p>
-         </MenuHoverCard>
-         <MenuHoverCard color={palette.accent} onClick={() => { navigate('story'); setActiveMenu(null); }}>
-           <h4 className="text-lg font-medium text-white mb-2 font-primary">Our Story</h4>
-           <p className="text-xs text-white/40 font-secondary">How art and science collided.</p>
-         </MenuHoverCard>
-         <MenuHoverCard color={palette.purple} onClick={() => { navigate('team'); setActiveMenu(null); }}>
-           <h4 className="text-lg font-medium text-white mb-2 font-primary">The Team</h4>
-           <p className="text-xs text-white/40 font-secondary">The innovators behind the curtain.</p>
-         </MenuHoverCard>
+        <MenuHoverCard color={palette.primary} onClick={() => { navigate('about'); setActiveMenu(null); }}>
+          <h4 className="text-lg font-medium text-white mb-2 font-primary">About PBH</h4>
+          <p className="text-xs text-white/40 font-secondary">Our Vision, Mission, and Core Values.</p>
+        </MenuHoverCard>
+        <MenuHoverCard color={palette.blue} onClick={() => { navigate('method'); setActiveMenu(null); }}>
+          <h4 className="text-lg font-medium text-white mb-2 font-primary">The PBH Method</h4>
+          <p className="text-xs text-white/40 font-secondary">Our step-by-step strategic process.</p>
+        </MenuHoverCard>
+        <MenuHoverCard color={palette.accent} onClick={() => { navigate('story'); setActiveMenu(null); }}>
+          <h4 className="text-lg font-medium text-white mb-2 font-primary">Our Story</h4>
+          <p className="text-xs text-white/40 font-secondary">How art and science collided.</p>
+        </MenuHoverCard>
+        <MenuHoverCard color={palette.purple} onClick={() => { navigate('team'); setActiveMenu(null); }}>
+          <h4 className="text-lg font-medium text-white mb-2 font-primary">The Team</h4>
+          <p className="text-xs text-white/40 font-secondary">The innovators behind the curtain.</p>
+        </MenuHoverCard>
       </div>
     </div>
   );
@@ -1567,11 +1610,10 @@ const Header = ({ navigate, current }) => {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
       }}
       onMouseLeave={handleMouseLeave}
-      className={`fixed top-0 left-0 right-0 z-[10000] isolate w-full transition-all duration-300 border-b ${
-        scrolled || activeMenu
+      className={`fixed top-0 left-0 right-0 z-[10000] isolate w-full transition-all duration-300 border-b ${scrolled || activeMenu
           ? 'py-3 shadow-[0_24px_90px_rgba(0,0,0,0.85)] border-white/10'
           : 'py-6 border-transparent bg-transparent'
-      }`}
+        }`}
       style={{
         backgroundColor: scrolled || activeMenu ? `${palette.bgDeep}FA` : 'transparent',
         backdropFilter: scrolled || activeMenu ? 'blur(18px) saturate(140%)' : 'none',
@@ -1583,19 +1625,19 @@ const Header = ({ navigate, current }) => {
           <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className={`w-auto object-contain shrink-0 transition-all duration-300 ${scrolled || activeMenu ? 'h-5' : 'h-6'}`} />
           PurpleBlue House
         </div>
-        
+
         <nav className="hidden lg:flex items-center gap-2 text-sm font-medium tracking-wide bg-white/[0.04] border border-white/10 rounded-full px-3 py-2 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_50px_rgba(0,0,0,0.35)] font-secondary">
-          <NavLink onClick={() => {navigate('work'); setActiveMenu(null);}} onMouseEnter={() => handleMouseEnter('work')} active={current.startsWith('work') || activeMenu === 'work'}>Work</NavLink>
-          <NavLink onClick={() => {navigate('services'); setActiveMenu(null);}} onMouseEnter={() => handleMouseEnter('services')} active={current.startsWith('services') || activeMenu === 'services'}>Services</NavLink>
-          <NavLink onClick={() => {navigate('about'); setActiveMenu(null);}} onMouseEnter={() => handleMouseEnter('about')} active={['about', 'method', 'story', 'team'].includes(current) || activeMenu === 'about'}>About Us</NavLink>
-          <NavLink onClick={() => {navigate('journal'); setActiveMenu(null);}} onMouseEnter={() => setActiveMenu(null)} active={current.startsWith('journal') || current.startsWith('article')}>Journal</NavLink>
-          <NavLink onClick={() => {navigate('contact'); setActiveMenu(null);}} onMouseEnter={() => setActiveMenu(null)} active={current === 'contact'}>Contact Us</NavLink>
+          <NavLink onClick={() => { navigate('work'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('work')} active={current.startsWith('work') || activeMenu === 'work'}>Work</NavLink>
+          <NavLink onClick={() => { navigate('services'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('services')} active={current.startsWith('services') || activeMenu === 'services'}>Services</NavLink>
+          <NavLink onClick={() => { navigate('about'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('about')} active={['about', 'method', 'story', 'team'].includes(current) || activeMenu === 'about'}>About Us</NavLink>
+          <NavLink onClick={() => { navigate('journal'); setActiveMenu(null); }} onMouseEnter={() => setActiveMenu(null)} active={current.startsWith('journal') || current.startsWith('article')}>Journal</NavLink>
+          <NavLink onClick={() => { navigate('contact'); setActiveMenu(null); }} onMouseEnter={() => setActiveMenu(null)} active={current === 'contact'}>Contact Us</NavLink>
         </nav>
-        
+
         <div className="hidden lg:flex items-center">
-            <PremiumButton onClick={() => {navigate('assessment'); setActiveMenu(null);}} className="px-6 py-2.5 rounded-[9px] text-xs font-secondary shadow-lg">Build My Brand Scope</PremiumButton>
+          <PremiumButton onClick={() => { navigate('assessment'); setActiveMenu(null); }} className="px-6 py-2.5 rounded-[9px] text-xs font-secondary shadow-lg">Build My Brand Scope</PremiumButton>
         </div>
-        
+
         <div className="lg:hidden flex items-center">
           <button onClick={() => navigate('assessment')} className="text-[10px] font-medium text-white px-4 py-2 rounded-[6px] uppercase tracking-widest shadow-md font-secondary" style={{ background: `linear-gradient(to right, ${palette.primary}, ${palette.blue})` }}>Build Scope</button>
         </div>
@@ -1704,7 +1746,7 @@ const HomePage = ({ navigate }) => {
   const smoothMouseY = useSpring(mouseY, { stiffness: 30, damping: 20 });
   const smoothMousePx = useSpring(mousePx, { stiffness: 100, damping: 25, mass: 0.5 });
   const smoothMousePy = useSpring(mousePy, { stiffness: 100, damping: 25, mass: 0.5 });
-  
+
   const orbX = useTransform(smoothMouseX, v => v * -40); const orbY = useTransform(smoothMouseY, v => v * -40);
   const gridX = useTransform(smoothMouseX, v => v * 20); const gridY = useTransform(smoothMouseY, v => v * 20);
   const spotlightX = useTransform(smoothMousePx, v => v - 400); const spotlightY = useTransform(smoothMousePy, v => v - 400);
@@ -1738,8 +1780,8 @@ const HomePage = ({ navigate }) => {
           </motion.div>
           <motion.div style={{ x: gridX, y: gridY }} animate={{ rotate: 360 }} transition={{ duration: 150, repeat: Infinity, ease: "linear" }} className="absolute inset-0 opacity-[0.15] flex items-center justify-center origin-center">
             <svg className="w-full max-w-[1000px] h-auto" viewBox="0 0 1000 1000" fill="none">
-              <circle cx="500" cy="500" r="300" stroke="url(#paint0_linear)" strokeWidth="0.5" strokeDasharray="4 8"/><circle cx="500" cy="500" r="450" stroke="url(#paint1_linear)" strokeWidth="0.5" /><circle cx="500" cy="500" r="200" stroke="url(#paint0_linear)" strokeWidth="1" strokeDasharray="1 16"/>
-              <defs><linearGradient id="paint0_linear" x1="200" y1="200" x2="800" y2="800" gradientUnits="userSpaceOnUse"><stop stopColor="white" stopOpacity="0.5"/><stop offset="1" stopColor="white" stopOpacity="0"/></linearGradient><linearGradient id="paint1_linear" x1="500" y1="50" x2="500" y2="950" gradientUnits="userSpaceOnUse"><stop stopColor={palette.primary} stopOpacity="0.4"/><stop offset="1" stopColor="white" stopOpacity="0"/></linearGradient></defs>
+              <circle cx="500" cy="500" r="300" stroke="url(#paint0_linear)" strokeWidth="0.5" strokeDasharray="4 8" /><circle cx="500" cy="500" r="450" stroke="url(#paint1_linear)" strokeWidth="0.5" /><circle cx="500" cy="500" r="200" stroke="url(#paint0_linear)" strokeWidth="1" strokeDasharray="1 16" />
+              <defs><linearGradient id="paint0_linear" x1="200" y1="200" x2="800" y2="800" gradientUnits="userSpaceOnUse"><stop stopColor="white" stopOpacity="0.5" /><stop offset="1" stopColor="white" stopOpacity="0" /></linearGradient><linearGradient id="paint1_linear" x1="500" y1="50" x2="500" y2="950" gradientUnits="userSpaceOnUse"><stop stopColor={palette.primary} stopOpacity="0.4" /><stop offset="1" stopColor="white" stopOpacity="0" /></linearGradient></defs>
             </svg>
           </motion.div>
           <InteractiveFlowingLines />
@@ -1768,7 +1810,7 @@ const HomePage = ({ navigate }) => {
       </section>
 
       <section className="py-24 px-[3%] relative w-full border-y border-white/5 text-left" style={{ backgroundColor: palette.bg }}>
-        <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-16 font-primary">Scaling a breakthrough <br/><AnimatedItalic className="text-white/50">requires deep alignment.</AnimatedItalic></h2></RevealText>
+        <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-16 font-primary">Scaling a breakthrough <br /><AnimatedItalic className="text-white/50">requires deep alignment.</AnimatedItalic></h2></RevealText>
         <FadeUp><p className="text-xl text-white/50 font-light max-w-3xl mb-16 leading-relaxed font-secondary">Low engagement, inconsistent visuals, and scattered teams aren't just creative issues—they are strategic bottlenecks. We align your brand thinking with execution to drive sustainable, long-term growth.</p></FadeUp>
         <StaggerGroup className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full">
           {PROBLEM_DATA.map((prob, i) => (
@@ -1779,29 +1821,29 @@ const HomePage = ({ navigate }) => {
 
       <section className="py-32 px-[3%] w-full border-b border-white/5 text-left" style={{ backgroundColor: palette.bgDeep }}>
         <div className="max-w-4xl mb-24">
-          <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6 font-primary">Breakthrough innovation <br/><AnimatedItalic className="text-white/50">demands a new model.</AnimatedItalic></h2></RevealText>
+          <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6 font-primary">Breakthrough innovation <br /><AnimatedItalic className="text-white/50">demands a new model.</AnimatedItalic></h2></RevealText>
           <FadeUp><p className="text-xl text-white/50 font-light leading-relaxed font-secondary">Traditional execution models struggle to translate complex ideas into scalable systems. We build a strategic foundation first, ensuring every asset accelerates your 5-year vision and market impact.</p></FadeUp>
         </div>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full">
           <StaggerItem>
             <div className="border border-white/5 rounded-[24px] p-10 md:p-14 h-full w-full" style={{ backgroundColor: palette.panel }}>
-               <h3 className="text-white/40 text-sm tracking-widest uppercase mb-10 font-primary">The Old Way</h3>
-               <ul className="space-y-8 font-secondary">
-                 <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Execution disconnected from core business objectives.</span></li>
-                 <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Short-term aesthetic fixes over long-term strategic systems.</span></li>
-                 <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Disjointed touchpoints that dilute the brand's potential.</span></li>
-               </ul>
+              <h3 className="text-white/40 text-sm tracking-widest uppercase mb-10 font-primary">The Old Way</h3>
+              <ul className="space-y-8 font-secondary">
+                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Execution disconnected from core business objectives.</span></li>
+                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Short-term aesthetic fixes over long-term strategic systems.</span></li>
+                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Disjointed touchpoints that dilute the brand's potential.</span></li>
+              </ul>
             </div>
           </StaggerItem>
           <StaggerItem>
             <div className="border rounded-[24px] p-10 md:p-14 relative overflow-hidden h-full w-full" style={{ background: `linear-gradient(to bottom right, rgba(${rgbPrimary},0.1), transparent)`, borderColor: `rgba(${rgbPrimary},0.2)` }}>
-               <div className="absolute bottom-0 right-0 w-64 h-64 opacity-[0.1] blur-[80px] pointer-events-none" style={{ backgroundColor: palette.primary }} />
-               <h3 className="text-sm tracking-widest uppercase mb-10 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>The PBH Way</h3>
-               <ul className="space-y-8 relative z-10 font-secondary">
-                 <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Mapping the root business gap before designing anything.</span></li>
-                 <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Modular scoping based on exact strategic requirements.</span></li>
-                 <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Building connected systems where strategy dictates execution.</span></li>
-               </ul>
+              <div className="absolute bottom-0 right-0 w-64 h-64 opacity-[0.1] blur-[80px] pointer-events-none" style={{ backgroundColor: palette.primary }} />
+              <h3 className="text-sm tracking-widest uppercase mb-10 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>The PBH Way</h3>
+              <ul className="space-y-8 relative z-10 font-secondary">
+                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Mapping the root business gap before designing anything.</span></li>
+                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Modular scoping based on exact strategic requirements.</span></li>
+                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Building connected systems where strategy dictates execution.</span></li>
+              </ul>
             </div>
           </StaggerItem>
         </StaggerGroup>
@@ -1811,28 +1853,28 @@ const HomePage = ({ navigate }) => {
       <section className="py-32 px-[3%] relative w-full border-b border-white/5 text-left" style={{ backgroundColor: palette.bg }}>
         <div className="grid md:grid-cols-2 gap-16 items-center w-full">
           <FadeUp>
-             <h3 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>Our Philosophy</h3>
-             <h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary mb-6 leading-tight">Engineering breakthroughs <br/>with the <AnimatedItalic className="text-white/80">SciArt</AnimatedItalic> framework.</h2>
-             <p className="text-lg text-white/60 font-light leading-relaxed font-secondary">We bridge the divide between rigorous strategic logic and intense imagination. Science gives us the framework, the data, and the scalable systems. Art gives us the empathy, the visual impact, and the connection. Together, they create brands engineered for the future.</p>
+            <h3 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>Our Philosophy</h3>
+            <h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary mb-6 leading-tight">Engineering breakthroughs <br />with the <AnimatedItalic className="text-white/80">SciArt</AnimatedItalic> framework.</h2>
+            <p className="text-lg text-white/60 font-light leading-relaxed font-secondary">We bridge the divide between rigorous strategic logic and intense imagination. Science gives us the framework, the data, and the scalable systems. Art gives us the empathy, the visual impact, and the connection. Together, they create brands engineered for the future.</p>
           </FadeUp>
           <FadeUp delay={0.2} className="relative h-[300px] md:h-[400px] flex items-center justify-center rounded-[32px] border border-white/10 overflow-hidden shadow-2xl w-full" style={{ backgroundColor: palette.bgDeep }}>
             <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
             <div className="absolute inset-0" style={{ background: `radial-gradient(circle at center, ${hexToRgba(palette.primary, 0.1)} 0%, transparent 70%)` }} />
             <div className="flex gap-6 items-center z-10">
-               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center border border-white/10 backdrop-blur-md shadow-[0_0_40px_rgba(42,151,217,0.2)]" style={{ background: `linear-gradient(135deg, ${palette.blue}4D, transparent)`}}>
-                 <span className="font-primary text-base md:text-xl tracking-widest text-white/90">SCI</span>
-               </div>
-               <Plus className="w-6 h-6 md:w-8 md:h-8 text-white/30" />
-               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center border border-white/10 backdrop-blur-md shadow-[0_0_40px_rgba(104,101,250,0.2)]" style={{ background: `linear-gradient(135deg, ${palette.primary}4D, transparent)`}}>
-                 <span className="font-primary text-base md:text-xl tracking-widest text-white/90">ART</span>
-               </div>
-             </div>
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center border border-white/10 backdrop-blur-md shadow-[0_0_40px_rgba(42,151,217,0.2)]" style={{ background: `linear-gradient(135deg, ${palette.blue}4D, transparent)` }}>
+                <span className="font-primary text-base md:text-xl tracking-widest text-white/90">SCI</span>
+              </div>
+              <Plus className="w-6 h-6 md:w-8 md:h-8 text-white/30" />
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center border border-white/10 backdrop-blur-md shadow-[0_0_40px_rgba(104,101,250,0.2)]" style={{ background: `linear-gradient(135deg, ${palette.primary}4D, transparent)` }}>
+                <span className="font-primary text-base md:text-xl tracking-widest text-white/90">ART</span>
+              </div>
+            </div>
           </FadeUp>
         </div>
       </section>
 
       <section className="py-32 px-[3%] relative w-full text-left" style={{ backgroundColor: palette.panel }}>
-        <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-20 font-primary">We connect strategy, <br/><AnimatedItalic>story, and execution.</AnimatedItalic></h2></RevealText>
+        <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-20 font-primary">We connect strategy, <br /><AnimatedItalic>story, and execution.</AnimatedItalic></h2></RevealText>
         <StaggerGroup className="grid md:grid-cols-3 gap-6 w-full">
           {Object.values(ROUTES_INFO).map((route, i) => {
             const rColor = palette[route.type] || palette.primary;
@@ -1861,28 +1903,28 @@ const HomePage = ({ navigate }) => {
       </section>
 
       <section className="py-32 px-[3%] w-full text-center flex flex-col items-center justify-center border-b border-white/5 relative overflow-hidden" style={{ backgroundColor: palette.panel }}>
-         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-[0.03] blur-[100px] pointer-events-none rounded-full" style={{ backgroundColor: palette.primary }} />
-         <FadeUp className="opacity-40 mb-10 relative z-10" style={{ color: palette.primary }}><Quote className="w-16 h-16 mx-auto" /></FadeUp>
-         <FadeUp delay={0.1}>
-           <h2 className="text-3xl md:text-5xl lg:text-6xl font-light leading-[1.4] max-w-5xl text-white/90 relative z-10 font-primary">
-             "PurpleBlue House completely rewired how we communicate. They didn't just give us a brand identity—they gave us an <AnimatedItalic>operating system for growth.</AnimatedItalic>"
-           </h2>
-         </FadeUp>
-         <FadeUp delay={0.2} className="mt-16 flex flex-col items-center relative z-10 font-secondary">
-           <div className="w-12 h-[1px] bg-white/20 mb-6" />
-           <span className="text-white tracking-wide font-medium">Chief Marketing Officer</span>
-           <span className="text-white/40 text-xs mt-2 uppercase tracking-widest">Global Tech Enterprise</span>
-         </FadeUp>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-[0.03] blur-[100px] pointer-events-none rounded-full" style={{ backgroundColor: palette.primary }} />
+        <FadeUp className="opacity-40 mb-10 relative z-10" style={{ color: palette.primary }}><Quote className="w-16 h-16 mx-auto" /></FadeUp>
+        <FadeUp delay={0.1}>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-light leading-[1.4] max-w-5xl text-white/90 relative z-10 font-primary">
+            "PurpleBlue House completely rewired how we communicate. They didn't just give us a brand identity—they gave us an <AnimatedItalic>operating system for growth.</AnimatedItalic>"
+          </h2>
+        </FadeUp>
+        <FadeUp delay={0.2} className="mt-16 flex flex-col items-center relative z-10 font-secondary">
+          <div className="w-12 h-[1px] bg-white/20 mb-6" />
+          <span className="text-white tracking-wide font-medium">Chief Marketing Officer</span>
+          <span className="text-white/40 text-xs mt-2 uppercase tracking-widest">Global Tech Enterprise</span>
+        </FadeUp>
       </section>
 
       {/* Global Mission */}
       <section className="py-32 px-[3%] text-center border-b border-white/5 relative overflow-hidden w-full" style={{ backgroundColor: palette.bgDeep }}>
-         <div className="absolute top-0 right-0 w-[500px] h-[500px] opacity-[0.05] blur-[100px] pointer-events-none rounded-full" style={{ backgroundColor: palette.blue }} />
-         <FadeUp>
-           <Globe className="w-12 h-12 mx-auto mb-8 opacity-40" style={{ color: palette.blue }} />
-           <h2 className="text-3xl md:text-5xl font-light mb-8 font-primary max-w-4xl mx-auto leading-tight">Elevating Indian Innovation to the <AnimatedItalic className="text-white/80">Global Stage.</AnimatedItalic></h2>
-           <p className="text-lg md:text-xl text-white/50 font-secondary max-w-2xl mx-auto leading-relaxed">Championing the rise of breakthrough ideas, fostering a future where creativity and ingenuity fuel human progress on a worldwide scale.</p>
-         </FadeUp>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] opacity-[0.05] blur-[100px] pointer-events-none rounded-full" style={{ backgroundColor: palette.blue }} />
+        <FadeUp>
+          <Globe className="w-12 h-12 mx-auto mb-8 opacity-40" style={{ color: palette.blue }} />
+          <h2 className="text-3xl md:text-5xl font-light mb-8 font-primary max-w-4xl mx-auto leading-tight">Elevating Indian Innovation to the <AnimatedItalic className="text-white/80">Global Stage.</AnimatedItalic></h2>
+          <p className="text-lg md:text-xl text-white/50 font-secondary max-w-2xl mx-auto leading-relaxed">Championing the rise of breakthrough ideas, fostering a future where creativity and ingenuity fuel human progress on a worldwide scale.</p>
+        </FadeUp>
       </section>
 
       <section className="py-32 px-[3%] relative w-full border-b border-white/5" style={{ backgroundColor: palette.bgDeep }}>
@@ -1892,8 +1934,8 @@ const HomePage = ({ navigate }) => {
         </div>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full">
           {CASE_STUDIES.slice(0, 2).map((cs, i) => {
-             const hexColor = palette[cs.type] || palette.primary;
-             return (
+            const hexColor = palette[cs.type] || palette.primary;
+            return (
               <StaggerItem key={i}>
                 <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/5 rounded-[24px] overflow-hidden flex flex-col transition-all duration-700 cursor-pointer text-left h-[450px] w-full" style={{ backgroundColor: palette.panel }}>
                   <div className="h-[250px] relative overflow-hidden border-b border-white/5 bg-white/[0.02]">
@@ -1912,7 +1954,7 @@ const HomePage = ({ navigate }) => {
                   </div>
                 </div>
               </StaggerItem>
-             )
+            )
           })}
         </StaggerGroup>
       </section>
@@ -1921,33 +1963,33 @@ const HomePage = ({ navigate }) => {
       <section className="py-32 px-[3%] relative w-full border-b border-white/5 text-left" style={{ backgroundColor: palette.panel }}>
         <div className="flex flex-col sm:flex-row justify-between items-end mb-16 gap-6 w-full text-left">
           <RevealText delay={0.1}><h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary">From the <AnimatedItalic className="text-white/50">House.</AnimatedItalic></h2></RevealText>
-          <span onClick={() => navigate('journal')} className="text-sm font-secondary text-white/40 hover:text-white cursor-pointer transition-colors flex items-center gap-2 group">View Journal <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform"/></span>
+          <span onClick={() => navigate('journal')} className="text-sm font-secondary text-white/40 hover:text-white cursor-pointer transition-colors flex items-center gap-2 group">View Journal <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
         </div>
         <StaggerGroup className="grid md:grid-cols-3 gap-6 w-full">
-           {JOURNAL_ARTICLES.slice(0, 3).map((article, i) => (
-              <StaggerItem key={i}>
-                <div onClick={() => navigate('article/' + article.id)} className="border border-white/10 rounded-[24px] p-8 h-full flex flex-col hover:-translate-y-2 transition-transform cursor-pointer group shadow-xl w-full" style={{ backgroundColor: palette.bgDeep }}>
-                  <div className="text-[10px] tracking-widest uppercase mb-6 font-primary font-medium" style={{ color: palette[article.type] }}>{article.tag}</div>
-                  <h4 className="text-2xl font-light text-white mb-12 font-primary group-hover:text-white/80 transition-colors leading-snug">{article.title}</h4>
-                  <div className="mt-auto flex justify-between items-center text-xs text-white/40 font-secondary pt-6 border-t border-white/5 w-full">
-                    <span>{article.time}</span>
-                    <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all">
-                      <ArrowRight className="w-3 h-3 group-hover:text-white" />
-                    </div>
+          {JOURNAL_ARTICLES.slice(0, 3).map((article, i) => (
+            <StaggerItem key={i}>
+              <div onClick={() => navigate('article/' + article.id)} className="border border-white/10 rounded-[24px] p-8 h-full flex flex-col hover:-translate-y-2 transition-transform cursor-pointer group shadow-xl w-full" style={{ backgroundColor: palette.bgDeep }}>
+                <div className="text-[10px] tracking-widest uppercase mb-6 font-primary font-medium" style={{ color: palette[article.type] }}>{article.tag}</div>
+                <h4 className="text-2xl font-light text-white mb-12 font-primary group-hover:text-white/80 transition-colors leading-snug">{article.title}</h4>
+                <div className="mt-auto flex justify-between items-center text-xs text-white/40 font-secondary pt-6 border-t border-white/5 w-full">
+                  <span>{article.time}</span>
+                  <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all">
+                    <ArrowRight className="w-3 h-3 group-hover:text-white" />
                   </div>
                 </div>
-              </StaggerItem>
-           ))}
+              </div>
+            </StaggerItem>
+          ))}
         </StaggerGroup>
       </section>
 
       <section className="py-32 px-[3%] w-full text-center flex items-center justify-center overflow-hidden relative" style={{ backgroundColor: palette.primary }}>
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="relative z-10 w-full overflow-hidden flex whitespace-nowrap">
-           <motion.div animate={{ x: ["0%", "-50%"] }} transition={{ repeat: Infinity, ease: "linear", duration: 20 }} className="flex gap-16 opacity-90 font-primary" style={{ color: palette.bgDeep }}>
-             <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">{SITE_SETTINGS?.marqueeText || "3 Ecosystems. 1 Connected System. Infinite Breakthroughs."}</span>
-             <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">{SITE_SETTINGS?.marqueeText || "3 Ecosystems. 1 Connected System. Infinite Breakthroughs."}</span>
-           </motion.div>
+          <motion.div animate={{ x: ["0%", "-50%"] }} transition={{ repeat: Infinity, ease: "linear", duration: 20 }} className="flex gap-16 opacity-90 font-primary" style={{ color: palette.bgDeep }}>
+            <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">{SITE_SETTINGS?.marqueeText || "3 Ecosystems. 1 Connected System. Infinite Breakthroughs."}</span>
+            <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">{SITE_SETTINGS?.marqueeText || "3 Ecosystems. 1 Connected System. Infinite Breakthroughs."}</span>
+          </motion.div>
         </div>
       </section>
 
@@ -1955,7 +1997,7 @@ const HomePage = ({ navigate }) => {
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-[100%] blur-[200px] opacity-[0.08] pointer-events-none" style={{ backgroundColor: palette.blue }} />
         <FadeUp className="relative z-10 w-full flex flex-col items-center">
           <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.blue }}>Start with clarity.</h2>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light mb-12 tracking-tight font-primary">Build your brand scope <br/><AnimatedItalic className="text-white/60">before the first call.</AnimatedItalic></h1>
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light mb-12 tracking-tight font-primary">Build your brand scope <br /><AnimatedItalic className="text-white/60">before the first call.</AnimatedItalic></h1>
           <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-6 text-lg w-full sm:w-auto font-secondary">Begin Brand Discovery</PremiumButton>
         </FadeUp>
       </section>
@@ -1978,20 +2020,20 @@ const WorkDetailPage = ({ navigate, projectId }) => {
 
   return (
     <div className="min-h-screen text-[#F4F4F5] w-full" style={{ backgroundColor: palette.bgDeep }}>
-      
+
       {/* Hero Section */}
       <section className="relative w-full h-[70vh] md:h-[90vh] flex flex-col justify-end p-[3%] overflow-hidden">
         <motion.div initial={{ scale: 1.1 }} animate={{ scale: 1 }} transition={{ duration: 1.5, ease: "easeOut" }} className="absolute inset-0 z-0">
-           <div className="absolute inset-0 opacity-40 mix-blend-screen" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
-           <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/60 to-transparent" />
-           <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none"><span className="font-serif italic text-9xl md:text-[15rem] whitespace-nowrap overflow-hidden">{project.client.split(' ')[0]}</span></div>
+          <div className="absolute inset-0 opacity-40 mix-blend-screen" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/60 to-transparent" />
+          <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none"><span className="font-serif italic text-9xl md:text-[15rem] whitespace-nowrap overflow-hidden">{project.client.split(' ')[0]}</span></div>
         </motion.div>
-        
+
         <div className="relative z-10 w-full pb-12 text-left">
-          <button onClick={() => navigate('work')} className="text-white/60 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Selected Work</button>
+          <button onClick={() => navigate('work')} className="text-white/60 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Selected Work</button>
           <FadeUp>
             <div className="flex gap-3 mb-6 flex-wrap font-secondary">
-               {project.tags.map(t => <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-xs text-white uppercase tracking-widest backdrop-blur-md">{t}</span>)}
+              {project.tags.map(t => <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-xs text-white uppercase tracking-widest backdrop-blur-md">{t}</span>)}
             </div>
             <h1 className="text-5xl md:text-8xl font-light tracking-tight font-primary text-white mb-6 leading-[1.1]">{project.client}</h1>
             <p className="text-xl md:text-2xl text-white/70 font-light font-secondary max-w-3xl leading-relaxed">{project.challenge}</p>
@@ -2001,52 +2043,52 @@ const WorkDetailPage = ({ navigate, projectId }) => {
 
       {/* Meta Data Grid */}
       <section className="border-y border-white/10 w-full" style={{ backgroundColor: palette.panel }}>
-         <div className="grid grid-cols-2 md:grid-cols-4 w-full divide-x divide-y md:divide-y-0 divide-white/10 text-left font-secondary">
-           <div className="p-8 md:p-12">
-             <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Client</h4>
-             <p className="text-lg text-white font-light">{project.client}</p>
-           </div>
-           <div className="p-8 md:p-12">
-             <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Sector</h4>
-             <p className="text-lg text-white font-light">{project.sector}</p>
-           </div>
-           <div className="p-8 md:p-12">
-             <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Core Route</h4>
-             <p className="text-lg text-white font-light">{project.route}</p>
-           </div>
-           <div className="p-8 md:p-12">
-             <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Year</h4>
-             <p className="text-lg text-white font-light">2025</p>
-           </div>
-         </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 w-full divide-x divide-y md:divide-y-0 divide-white/10 text-left font-secondary">
+          <div className="p-8 md:p-12">
+            <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Client</h4>
+            <p className="text-lg text-white font-light">{project.client}</p>
+          </div>
+          <div className="p-8 md:p-12">
+            <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Sector</h4>
+            <p className="text-lg text-white font-light">{project.sector}</p>
+          </div>
+          <div className="p-8 md:p-12">
+            <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Core Route</h4>
+            <p className="text-lg text-white font-light">{project.route}</p>
+          </div>
+          <div className="p-8 md:p-12">
+            <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Year</h4>
+            <p className="text-lg text-white font-light">2025</p>
+          </div>
+        </div>
       </section>
 
       {/* Story & Context */}
       <section className="py-32 px-[3%] w-full">
-         <div className="grid md:grid-cols-12 gap-16 w-full text-left">
-           <div className="md:col-span-4">
-             <FadeUp>
-               <h3 className="text-3xl font-light mb-8 font-primary text-white border-b border-white/10 pb-6">Core Deliverables</h3>
-               <ul className="space-y-4 font-secondary">
-                 {project.roles.map(r => (
-                   <li key={r} className="flex items-center gap-3 text-white/70 text-lg font-light"><CheckCircle2 className="w-5 h-5" style={{ color: hexColor }}/> {r}</li>
-                 ))}
-               </ul>
-             </FadeUp>
-           </div>
-           <div className="md:col-span-8">
-             <StaggerGroup className="space-y-16 font-secondary text-white/70 font-light text-xl leading-relaxed">
-               <StaggerItem>
-                 <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">The Challenge</h4>
-                 <p>{project.overview}</p>
-               </StaggerItem>
-               <StaggerItem>
-                 <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">The PBH Solution</h4>
-                 <p className="text-2xl text-white font-medium leading-snug">{project.solution}</p>
-               </StaggerItem>
-             </StaggerGroup>
-           </div>
-         </div>
+        <div className="grid md:grid-cols-12 gap-16 w-full text-left">
+          <div className="md:col-span-4">
+            <FadeUp>
+              <h3 className="text-3xl font-light mb-8 font-primary text-white border-b border-white/10 pb-6">Core Deliverables</h3>
+              <ul className="space-y-4 font-secondary">
+                {project.roles.map(r => (
+                  <li key={r} className="flex items-center gap-3 text-white/70 text-lg font-light"><CheckCircle2 className="w-5 h-5" style={{ color: hexColor }} /> {r}</li>
+                ))}
+              </ul>
+            </FadeUp>
+          </div>
+          <div className="md:col-span-8">
+            <StaggerGroup className="space-y-16 font-secondary text-white/70 font-light text-xl leading-relaxed">
+              <StaggerItem>
+                <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">The Challenge</h4>
+                <p>{project.overview}</p>
+              </StaggerItem>
+              <StaggerItem>
+                <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">The PBH Solution</h4>
+                <p className="text-2xl text-white font-medium leading-snug">{project.solution}</p>
+              </StaggerItem>
+            </StaggerGroup>
+          </div>
+        </div>
       </section>
 
       {/* Visual Block 1 (Mock Aesthetic Shot) */}
@@ -2057,80 +2099,80 @@ const WorkDetailPage = ({ navigate, projectId }) => {
           <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }} className="w-full max-w-2xl aspect-square border border-white/5 rounded-full absolute mix-blend-overlay" />
           <motion.div animate={{ rotate: -360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} className="w-full max-w-4xl aspect-square border border-white/5 rounded-[100%] absolute mix-blend-overlay" />
           <div className="relative z-10 text-center px-4">
-             <span className="font-serif italic text-6xl md:text-8xl lg:text-[10rem] text-white/90 drop-shadow-2xl">{project.client.split(' ')[0]}</span>
+            <span className="font-serif italic text-6xl md:text-8xl lg:text-[10rem] text-white/90 drop-shadow-2xl">{project.client.split(' ')[0]}</span>
           </div>
         </div>
       </FadeUp>
 
       {/* Design System & Colors */}
       <section className="py-32 px-[3%] w-full border-t border-white/5 bg-[#010626] text-left">
-         <FadeUp className="max-w-6xl mx-auto w-full">
-           <h3 className="text-3xl font-light mb-16 font-primary text-center">Design System</h3>
-           
-           <div className="grid md:grid-cols-2 gap-16 mb-24 w-full items-center">
-             <div>
-               <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Typography</h4>
-               <div className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col gap-8">
-                 <div className="border-b border-white/10 pb-6">
-                   <p className="text-sm text-white/40 mb-2 font-secondary">Primary Display (Serif)</p>
-                   <p className="text-5xl font-serif italic text-white">Ogg / Playfair</p>
-                   <p className="text-xl font-serif text-white/50 mt-4 break-words">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm</p>
-                 </div>
-                 <div>
-                   <p className="text-sm text-white/40 mb-2 font-secondary">Secondary Body (Sans)</p>
-                   <p className="text-4xl font-primary font-light text-white">Space Grotesk</p>
-                   <p className="text-lg font-primary text-white/50 mt-4 break-words font-light">0123456789 !@#$%^&*()</p>
-                 </div>
-               </div>
-             </div>
-             
-             <div>
-               <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Color Palette</h4>
-               <div className="grid grid-cols-2 gap-4">
-                 {(project.colors || [hexColor, '#FFFFFF', '#111111', '#555555']).map((col, i) => (
-                   <div key={i} className="rounded-[16px] overflow-hidden border border-white/10 bg-white/[0.02] flex flex-col h-40 shadow-inner group">
-                     <div className="flex-1 transition-transform group-hover:scale-105 origin-bottom" style={{ backgroundColor: col }} />
-                     <div className="p-4 font-mono text-xs text-white/70 bg-[#0A0A0A] flex justify-between">
-                       <span>{i === 0 ? 'Primary' : `Accent 0${i}`}</span>
-                       <span>{col}</span>
-                     </div>
-                   </div>
-                 ))}
-               </div>
-             </div>
-           </div>
-         </FadeUp>
+        <FadeUp className="max-w-6xl mx-auto w-full">
+          <h3 className="text-3xl font-light mb-16 font-primary text-center">Design System</h3>
+
+          <div className="grid md:grid-cols-2 gap-16 mb-24 w-full items-center">
+            <div>
+              <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Typography</h4>
+              <div className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col gap-8">
+                <div className="border-b border-white/10 pb-6">
+                  <p className="text-sm text-white/40 mb-2 font-secondary">Primary Display (Serif)</p>
+                  <p className="text-5xl font-serif italic text-white">Ogg / Playfair</p>
+                  <p className="text-xl font-serif text-white/50 mt-4 break-words">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm</p>
+                </div>
+                <div>
+                  <p className="text-sm text-white/40 mb-2 font-secondary">Secondary Body (Sans)</p>
+                  <p className="text-4xl font-primary font-light text-white">Space Grotesk</p>
+                  <p className="text-lg font-primary text-white/50 mt-4 break-words font-light">0123456789 !@#$%^&*()</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Color Palette</h4>
+              <div className="grid grid-cols-2 gap-4">
+                {(project.colors || [hexColor, '#FFFFFF', '#111111', '#555555']).map((col, i) => (
+                  <div key={i} className="rounded-[16px] overflow-hidden border border-white/10 bg-white/[0.02] flex flex-col h-40 shadow-inner group">
+                    <div className="flex-1 transition-transform group-hover:scale-105 origin-bottom" style={{ backgroundColor: col }} />
+                    <div className="p-4 font-mono text-xs text-white/70 bg-[#0A0A0A] flex justify-between">
+                      <span>{i === 0 ? 'Primary' : `Accent 0${i}`}</span>
+                      <span>{col}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </FadeUp>
       </section>
 
       {/* Visual Block 2 (UI / Packaging Mock) */}
       <FadeUp className="w-full px-[3%] mb-32 pt-32 text-left">
         <div className="grid md:grid-cols-2 gap-6 w-full">
-           <div className="aspect-square rounded-[32px] bg-white/[0.02] border border-white/5 flex flex-col p-12 overflow-hidden relative shadow-2xl items-center justify-center group">
-              <div className="absolute inset-0 opacity-20 transition-transform duration-1000 group-hover:scale-110" style={{ background: `radial-gradient(circle at bottom left, ${hexColor}, transparent 60%)` }} />
-              <div className="w-2/3 h-3/4 bg-[#05050A] rounded-[24px] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-10 flex flex-col p-6">
-                <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                  <div className="flex gap-2"><div className="w-3 h-3 rounded-full bg-white/20"/><div className="w-3 h-3 rounded-full bg-white/20"/></div>
-                  <div className="w-24 h-2 rounded-full bg-white/10"/>
+          <div className="aspect-square rounded-[32px] bg-white/[0.02] border border-white/5 flex flex-col p-12 overflow-hidden relative shadow-2xl items-center justify-center group">
+            <div className="absolute inset-0 opacity-20 transition-transform duration-1000 group-hover:scale-110" style={{ background: `radial-gradient(circle at bottom left, ${hexColor}, transparent 60%)` }} />
+            <div className="w-2/3 h-3/4 bg-[#05050A] rounded-[24px] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-10 flex flex-col p-6">
+              <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+                <div className="flex gap-2"><div className="w-3 h-3 rounded-full bg-white/20" /><div className="w-3 h-3 rounded-full bg-white/20" /></div>
+                <div className="w-24 h-2 rounded-full bg-white/10" />
+              </div>
+              <div className="w-full h-32 rounded-[12px] mb-4" style={{ backgroundColor: `${hexColor}33` }} />
+              <div className="w-3/4 h-4 rounded-full bg-white/20 mb-3" />
+              <div className="w-1/2 h-4 rounded-full bg-white/10 mb-8" />
+              <div className="mt-auto w-full h-12 rounded-[8px] bg-white/5" />
+            </div>
+          </div>
+
+          <div className="aspect-square rounded-[32px] bg-white/[0.02] border border-white/5 flex flex-col p-12 overflow-hidden relative shadow-2xl items-center justify-center group">
+            <div className="absolute inset-0 opacity-20 transition-transform duration-1000 group-hover:scale-110" style={{ background: `radial-gradient(circle at top right, ${hexColor}, transparent 60%)` }} />
+            <div className="w-1/2 h-full bg-[#05050A] rounded-full border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-10 flex items-center justify-center p-8 text-center">
+              <div>
+                <span className="font-serif italic text-4xl text-white/90 block mb-8">{project.client.split(' ')[0]}</span>
+                <div className="w-16 h-1 rounded-full bg-white/20 mx-auto mb-8" />
+                <div className="w-full aspect-square rounded-full border border-white/10 flex items-center justify-center" style={{ backgroundColor: `${hexColor}1A` }}>
+                  <div className="w-1/2 h-1/2 rounded-full bg-white/5" />
                 </div>
-                <div className="w-full h-32 rounded-[12px] mb-4" style={{ backgroundColor: `${hexColor}33` }} />
-                <div className="w-3/4 h-4 rounded-full bg-white/20 mb-3" />
-                <div className="w-1/2 h-4 rounded-full bg-white/10 mb-8" />
-                <div className="mt-auto w-full h-12 rounded-[8px] bg-white/5" />
               </div>
-           </div>
-           
-           <div className="aspect-square rounded-[32px] bg-white/[0.02] border border-white/5 flex flex-col p-12 overflow-hidden relative shadow-2xl items-center justify-center group">
-              <div className="absolute inset-0 opacity-20 transition-transform duration-1000 group-hover:scale-110" style={{ background: `radial-gradient(circle at top right, ${hexColor}, transparent 60%)` }} />
-              <div className="w-1/2 h-full bg-[#05050A] rounded-full border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-10 flex items-center justify-center p-8 text-center">
-                 <div>
-                    <span className="font-serif italic text-4xl text-white/90 block mb-8">{project.client.split(' ')[0]}</span>
-                    <div className="w-16 h-1 rounded-full bg-white/20 mx-auto mb-8" />
-                    <div className="w-full aspect-square rounded-full border border-white/10 flex items-center justify-center" style={{ backgroundColor: `${hexColor}1A` }}>
-                      <div className="w-1/2 h-1/2 rounded-full bg-white/5" />
-                    </div>
-                 </div>
-              </div>
-           </div>
+            </div>
+          </div>
         </div>
       </FadeUp>
 
@@ -2138,115 +2180,115 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       {project.fullStory && (
         <section className="py-24 px-[3%] w-full bg-[#05050A] text-left border-t border-white/5">
           <FadeUp className="max-w-7xl mx-auto w-full">
-             <div className="grid md:grid-cols-2 gap-16 mb-24">
-               {project.fullStory.strategy && (
-                 <div>
-                   <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Strategy</h4>
-                   <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.strategy}</p>
-                 </div>
-               )}
-               {project.fullStory.execution && (
-                 <div>
-                   <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Execution</h4>
-                   <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.execution}</p>
-                 </div>
-               )}
-             </div>
-             
-             {project.fullStory.heroImg && (
-               <div className="w-full aspect-[21/9] rounded-[32px] overflow-hidden mb-24 border border-white/10 shadow-2xl">
-                 <img src={project.fullStory.heroImg} alt="Hero representation" className="w-full h-full object-cover" />
-               </div>
-             )}
+            <div className="grid md:grid-cols-2 gap-16 mb-24">
+              {project.fullStory.strategy && (
+                <div>
+                  <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Strategy</h4>
+                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.strategy}</p>
+                </div>
+              )}
+              {project.fullStory.execution && (
+                <div>
+                  <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Execution</h4>
+                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.execution}</p>
+                </div>
+              )}
+            </div>
 
-             {project.fullStory.stats && (
-               <div className="grid md:grid-cols-3 gap-8 mb-24">
-                 {project.fullStory.stats.map(stat => (
-                   <div key={stat._key || stat.label} className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col justify-center shadow-lg relative overflow-hidden group">
-                     <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 group-hover:opacity-30 transition-opacity pointer-events-none" style={{ backgroundColor: hexColor }} />
-                     <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary relative z-10">{stat.label}</h4>
-                     <p className="text-3xl text-white font-light font-primary relative z-10">{stat.val}</p>
-                   </div>
-                 ))}
-               </div>
-             )}
+            {project.fullStory.heroImg && (
+              <div className="w-full aspect-[21/9] rounded-[32px] overflow-hidden mb-24 border border-white/10 shadow-2xl">
+                <img src={project.fullStory.heroImg} alt="Hero representation" className="w-full h-full object-cover" />
+              </div>
+            )}
 
-             {project.fullStory.images && project.fullStory.images.length > 0 && (
-               <div className="grid md:grid-cols-3 gap-6">
-                 {project.fullStory.images.map((img, i) => (
-                   <div key={i} className="aspect-square rounded-[24px] overflow-hidden border border-white/10">
-                     <img src={img} alt={`Detailed view ${i+1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-                   </div>
-                 ))}
-               </div>
-             )}
+            {project.fullStory.stats && (
+              <div className="grid md:grid-cols-3 gap-8 mb-24">
+                {project.fullStory.stats.map(stat => (
+                  <div key={stat._key || stat.label} className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col justify-center shadow-lg relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 group-hover:opacity-30 transition-opacity pointer-events-none" style={{ backgroundColor: hexColor }} />
+                    <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary relative z-10">{stat.label}</h4>
+                    <p className="text-3xl text-white font-light font-primary relative z-10">{stat.val}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {project.fullStory.images && project.fullStory.images.length > 0 && (
+              <div className="grid md:grid-cols-3 gap-6">
+                {project.fullStory.images.map((img, i) => (
+                  <div key={i} className="aspect-square rounded-[24px] overflow-hidden border border-white/10">
+                    <img src={img} alt={`Detailed view ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                  </div>
+                ))}
+              </div>
+            )}
           </FadeUp>
         </section>
       )}
 
       {/* Results / Impact */}
       <section className="py-32 px-[3%] w-full border-t border-white/5 bg-[#010825] text-left">
-         <FadeUp className="max-w-6xl mx-auto w-full">
-           <h3 className="text-3xl font-light mb-16 font-primary text-center">Project Impact</h3>
-           <div className="grid md:grid-cols-3 gap-8">
-             {project.results.map((res, i) => (
-               <div key={i} className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col items-center text-center shadow-lg relative overflow-hidden group">
-                 <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 transition-opacity group-hover:opacity-30 pointer-events-none" style={{ backgroundColor: hexColor }} />
-                 <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center mb-8 bg-[#05050A] text-white relative z-10">
-                   {i === 0 ? <BarChart2 className="w-6 h-6" style={{ color: hexColor }}/> : i === 1 ? <Target className="w-6 h-6" style={{ color: hexColor }}/> : <Sparkles className="w-6 h-6" style={{ color: hexColor }}/>}
-                 </div>
-                 <p className="text-xl text-white/90 font-light font-secondary leading-relaxed relative z-10">{res}</p>
-               </div>
-             ))}
-           </div>
-         </FadeUp>
+        <FadeUp className="max-w-6xl mx-auto w-full">
+          <h3 className="text-3xl font-light mb-16 font-primary text-center">Project Impact</h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            {project.results.map((res, i) => (
+              <div key={i} className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col items-center text-center shadow-lg relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 transition-opacity group-hover:opacity-30 pointer-events-none" style={{ backgroundColor: hexColor }} />
+                <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center mb-8 bg-[#05050A] text-white relative z-10">
+                  {i === 0 ? <BarChart2 className="w-6 h-6" style={{ color: hexColor }} /> : i === 1 ? <Target className="w-6 h-6" style={{ color: hexColor }} /> : <Sparkles className="w-6 h-6" style={{ color: hexColor }} />}
+                </div>
+                <p className="text-xl text-white/90 font-light font-secondary leading-relaxed relative z-10">{res}</p>
+              </div>
+            ))}
+          </div>
+        </FadeUp>
       </section>
 
       {/* Project Navigation Footer */}
       <section className="relative w-full h-[50vh] flex flex-col md:flex-row border-t border-white/10">
-         {/* Previous Project */}
-         <div 
-           onClick={() => navigate('work/' + prevProject.id)} 
-           className="relative flex-1 flex flex-col justify-center items-start cursor-pointer group overflow-hidden border-b md:border-b-0 md:border-r border-white/10 h-full p-12 md:p-16 lg:p-24"
-         >
-           <div className="absolute inset-0 bg-[#05050A] z-0" />
-           {prevProject.imageUrl && (
-             <img src={prevProject.imageUrl} alt={prevProject.client} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-30 mix-blend-luminosity transition-all duration-1000 group-hover:scale-105 z-0" />
-           )}
-           <div className="absolute inset-0 opacity-40 mix-blend-screen transition-opacity duration-1000 group-hover:opacity-80 z-0" style={{ background: `linear-gradient(to right, ${palette[prevProject.type] || palette.primary}, transparent)` }} />
-           
-           <div className="relative z-10 text-left w-full">
-              <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary flex items-center justify-start gap-3 text-white/50 group-hover:text-white transition-colors">
-                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform duration-500" />
-                Previous Project
-              </span>
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white/80 group-hover:text-white transition-colors">
-                {prevProject.client}
-              </h2>
-           </div>
-         </div>
+        {/* Previous Project */}
+        <div
+          onClick={() => navigate('work/' + prevProject.id)}
+          className="relative flex-1 flex flex-col justify-center items-start cursor-pointer group overflow-hidden border-b md:border-b-0 md:border-r border-white/10 h-full p-12 md:p-16 lg:p-24"
+        >
+          <div className="absolute inset-0 bg-[#05050A] z-0" />
+          {prevProject.imageUrl && (
+            <img src={prevProject.imageUrl} alt={prevProject.client} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-30 mix-blend-luminosity transition-all duration-1000 group-hover:scale-105 z-0" />
+          )}
+          <div className="absolute inset-0 opacity-40 mix-blend-screen transition-opacity duration-1000 group-hover:opacity-80 z-0" style={{ background: `linear-gradient(to right, ${palette[prevProject.type] || palette.primary}, transparent)` }} />
 
-         {/* Next Project */}
-         <div 
-           onClick={() => navigate('work/' + nextProject.id)} 
-           className="relative flex-1 flex flex-col justify-center items-end cursor-pointer group overflow-hidden h-full p-12 md:p-16 lg:p-24"
-         >
-           <div className="absolute inset-0 bg-[#05050A] z-0" />
-           {nextProject.imageUrl && (
-             <img src={nextProject.imageUrl} alt={nextProject.client} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-30 mix-blend-luminosity transition-all duration-1000 group-hover:scale-105 z-0" />
-           )}
-           <div className="absolute inset-0 opacity-40 mix-blend-screen transition-opacity duration-1000 group-hover:opacity-80 z-0" style={{ background: `linear-gradient(to left, ${palette[nextProject.type] || palette.primary}, transparent)` }} />
-           
-           <div className="relative z-10 text-right w-full">
-              <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary flex items-center justify-end gap-3 text-white/50 group-hover:text-white transition-colors">
-                Next Project
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-500" />
-              </span>
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white/80 group-hover:text-white transition-colors">
-                {nextProject.client}
-              </h2>
-           </div>
-         </div>
+          <div className="relative z-10 text-left w-full">
+            <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary flex items-center justify-start gap-3 text-white/50 group-hover:text-white transition-colors">
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform duration-500" />
+              Previous Project
+            </span>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white/80 group-hover:text-white transition-colors">
+              {prevProject.client}
+            </h2>
+          </div>
+        </div>
+
+        {/* Next Project */}
+        <div
+          onClick={() => navigate('work/' + nextProject.id)}
+          className="relative flex-1 flex flex-col justify-center items-end cursor-pointer group overflow-hidden h-full p-12 md:p-16 lg:p-24"
+        >
+          <div className="absolute inset-0 bg-[#05050A] z-0" />
+          {nextProject.imageUrl && (
+            <img src={nextProject.imageUrl} alt={nextProject.client} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-30 mix-blend-luminosity transition-all duration-1000 group-hover:scale-105 z-0" />
+          )}
+          <div className="absolute inset-0 opacity-40 mix-blend-screen transition-opacity duration-1000 group-hover:opacity-80 z-0" style={{ background: `linear-gradient(to left, ${palette[nextProject.type] || palette.primary}, transparent)` }} />
+
+          <div className="relative z-10 text-right w-full">
+            <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary flex items-center justify-end gap-3 text-white/50 group-hover:text-white transition-colors">
+              Next Project
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-500" />
+            </span>
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white/80 group-hover:text-white transition-colors">
+              {nextProject.client}
+            </h2>
+          </div>
+        </div>
       </section>
     </div>
   );
@@ -2258,14 +2300,14 @@ const AboutPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        
+        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+
         {/* Section 1: Hero */}
         <FadeUp>
           <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>About PurpleBlue House</h2>
           <h1 className="text-5xl md:text-7xl font-light mb-12 tracking-tight max-w-5xl font-primary">We build breakthrough brands backed by cutting-edge innovation, powered by a <AnimatedItalic>SciArt approach.</AnimatedItalic></h1>
         </FadeUp>
-        
+
         {/* Section 2: Vision & Mission */}
         <FadeUp delay={0.2} className="grid md:grid-cols-2 gap-16 border-t border-white/10 pt-24 mb-24 w-full">
           <div>
@@ -2280,17 +2322,17 @@ const AboutPage = ({ navigate }) => {
 
         {/* Section 3: Purpose */}
         <FadeUp className="border border-white/10 rounded-[24px] p-12 md:p-16 mb-24 text-center relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
-            <div className="absolute inset-0 opacity-10 mix-blend-screen pointer-events-none w-full" style={{ background: `radial-gradient(circle at 50% 0%, ${palette.primary}, transparent 70%)` }} />
-            <h3 className="text-sm tracking-widest uppercase mb-6 font-primary" style={{ color: palette.blue }}>Our Purpose</h3>
-            <h2 className="text-3xl md:text-5xl font-light font-primary leading-tight max-w-4xl mx-auto text-white/90">We exist to turn complex innovations into undeniable <AnimatedItalic>market breakthroughs.</AnimatedItalic></h2>
+          <div className="absolute inset-0 opacity-10 mix-blend-screen pointer-events-none w-full" style={{ background: `radial-gradient(circle at 50% 0%, ${palette.primary}, transparent 70%)` }} />
+          <h3 className="text-sm tracking-widest uppercase mb-6 font-primary" style={{ color: palette.blue }}>Our Purpose</h3>
+          <h2 className="text-3xl md:text-5xl font-light font-primary leading-tight max-w-4xl mx-auto text-white/90">We exist to turn complex innovations into undeniable <AnimatedItalic>market breakthroughs.</AnimatedItalic></h2>
         </FadeUp>
 
         {/* Section 4: Core Values */}
         <FadeUp><h3 className="text-3xl font-light mb-12 font-primary border-b border-white/10 pb-6">Our Core Values</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32 w-full">
-            {CORE_VALUES.map((v, i) => {
-              const Icon = i === 0 ? <Users /> : i === 1 ? <Dna /> : i === 2 ? <Zap /> : <Globe />;
-              return (
+          {CORE_VALUES.map((v, i) => {
+            const Icon = i === 0 ? <Users /> : i === 1 ? <Dna /> : i === 2 ? <Zap /> : <Globe />;
+            return (
               <StaggerItem key={i}>
                 <div className="bg-white/[0.02] border border-white/5 rounded-[16px] p-8 hover:bg-white/[0.04] transition-colors h-full w-full">
                   <div className="mb-6 w-12 h-12 rounded-[12px] flex items-center justify-center bg-white/5" style={{ color: palette.primary }}>{Icon}</div>
@@ -2298,8 +2340,8 @@ const AboutPage = ({ navigate }) => {
                   <p className="text-white/50 font-light font-secondary leading-relaxed">{v.description}</p>
                 </div>
               </StaggerItem>
-              )
-            })}
+            )
+          })}
         </StaggerGroup>
 
         {/* Section 5: The SciArt Philosophy */}
@@ -2312,16 +2354,16 @@ const AboutPage = ({ navigate }) => {
             </p>
           </div>
           <div className="relative min-h-[400px] flex items-center justify-center bg-[#010825] overflow-hidden w-full">
-             <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
-             <div className="flex gap-4 items-center z-10">
-               <div className="w-32 h-32 rounded-full flex items-center justify-center border border-white/10 backdrop-blur-md" style={{ background: `linear-gradient(135deg, ${palette.blue}4D, transparent)`}}>
-                 <span className="font-primary text-xl tracking-widest text-white/80">SCI</span>
-               </div>
-               <Plus className="w-8 h-8 text-white/20" />
-               <div className="w-32 h-32 rounded-full flex items-center justify-center border border-white/10 backdrop-blur-md" style={{ background: `linear-gradient(135deg, ${palette.primary}4D, transparent)`}}>
-                 <span className="font-primary text-xl tracking-widest text-white/80">ART</span>
-               </div>
-             </div>
+            <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+            <div className="flex gap-4 items-center z-10">
+              <div className="w-32 h-32 rounded-full flex items-center justify-center border border-white/10 backdrop-blur-md" style={{ background: `linear-gradient(135deg, ${palette.blue}4D, transparent)` }}>
+                <span className="font-primary text-xl tracking-widest text-white/80">SCI</span>
+              </div>
+              <Plus className="w-8 h-8 text-white/20" />
+              <div className="w-32 h-32 rounded-full flex items-center justify-center border border-white/10 backdrop-blur-md" style={{ background: `linear-gradient(135deg, ${palette.primary}4D, transparent)` }}>
+                <span className="font-primary text-xl tracking-widest text-white/80">ART</span>
+              </div>
+            </div>
           </div>
         </FadeUp>
 
@@ -2336,7 +2378,7 @@ const AboutPage = ({ navigate }) => {
 
         {/* Section 7: Final CTA */}
         <FadeUp className="text-center pt-16 border-t border-white/10 w-full">
-           <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-lg">Co-create your brand scope</PremiumButton>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-lg">Co-create your brand scope</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -2348,39 +2390,39 @@ const OurStoryPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        
+        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+
         {/* Section 1: Hero */}
         <FadeUp>
           <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>Our Story</h2>
           <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">Where Science Meets Art.</h1>
         </FadeUp>
-        
+
         {/* Section 2: The Spark */}
         <StaggerGroup className="space-y-8 text-lg font-light text-white/70 font-secondary leading-relaxed mb-32 w-full">
-            <StaggerItem><p className="text-2xl text-white mb-10 leading-tight max-w-4xl">PurpleBlue House was founded to solve a critical bottleneck: breakthrough innovations were failing to reach their market potential due to fragmented communication.</p></StaggerItem>
-            <StaggerItem><p className="max-w-4xl">We observed that visionary teams often struggle to translate complex, cutting-edge technology into clear, scalable narratives. They engineer incredible products, but the strategic story gets lost in execution.</p></StaggerItem>
-            <StaggerItem><p className="max-w-4xl">Meanwhile, standard creative approaches focus heavily on surface-level aesthetics without grasping the underlying functional truths. This disconnect limits long-term growth and dilutes the breakthrough.</p></StaggerItem>
-            <StaggerItem><p className="max-w-4xl">We built a collaborative ecosystem where rigorous logic and strategic imagination drive every decision, ensuring tomorrow's breakthroughs communicate with clarity today.</p></StaggerItem>
+          <StaggerItem><p className="text-2xl text-white mb-10 leading-tight max-w-4xl">PurpleBlue House was founded to solve a critical bottleneck: breakthrough innovations were failing to reach their market potential due to fragmented communication.</p></StaggerItem>
+          <StaggerItem><p className="max-w-4xl">We observed that visionary teams often struggle to translate complex, cutting-edge technology into clear, scalable narratives. They engineer incredible products, but the strategic story gets lost in execution.</p></StaggerItem>
+          <StaggerItem><p className="max-w-4xl">Meanwhile, standard creative approaches focus heavily on surface-level aesthetics without grasping the underlying functional truths. This disconnect limits long-term growth and dilutes the breakthrough.</p></StaggerItem>
+          <StaggerItem><p className="max-w-4xl">We built a collaborative ecosystem where rigorous logic and strategic imagination drive every decision, ensuring tomorrow's breakthroughs communicate with clarity today.</p></StaggerItem>
         </StaggerGroup>
 
         {/* Section 3: The Meaning Behind the Name */}
         <FadeUp className="border border-white/5 rounded-[24px] p-12 md:p-16 mb-32 flex flex-col md:flex-row gap-12 items-center w-full" style={{ backgroundColor: palette.panel }}>
           <div className="flex gap-4 md:w-1/3 justify-center">
-             <div className="w-16 h-32 rounded-full" style={{ backgroundColor: palette.primary }} />
-             <div className="w-16 h-32 rounded-full" style={{ backgroundColor: palette.blue }} />
+            <div className="w-16 h-32 rounded-full" style={{ backgroundColor: palette.primary }} />
+            <div className="w-16 h-32 rounded-full" style={{ backgroundColor: palette.blue }} />
           </div>
           <div className="md:w-2/3">
-             <h3 className="text-3xl font-light mb-6 font-primary">Why Purple and Blue?</h3>
-             <p className="font-secondary font-light text-white/70 leading-relaxed mb-4">
-               <strong className="text-white">Purple</strong> represents Art. It is the color of imagination, creativity, emotion, and the boundless creator spirit.
-             </p>
-             <p className="font-secondary font-light text-white/70 leading-relaxed mb-4">
-               <strong className="text-white">Blue</strong> represents Science. It is the color of depth, logic, technology, truth, and structural foundation.
-             </p>
-             <p className="font-secondary font-light text-white/70 leading-relaxed">
-               The <strong className="text-white">House</strong> is where they live together. A collaborative ecosystem built for the future.
-             </p>
+            <h3 className="text-3xl font-light mb-6 font-primary">Why Purple and Blue?</h3>
+            <p className="font-secondary font-light text-white/70 leading-relaxed mb-4">
+              <strong className="text-white">Purple</strong> represents Art. It is the color of imagination, creativity, emotion, and the boundless creator spirit.
+            </p>
+            <p className="font-secondary font-light text-white/70 leading-relaxed mb-4">
+              <strong className="text-white">Blue</strong> represents Science. It is the color of depth, logic, technology, truth, and structural foundation.
+            </p>
+            <p className="font-secondary font-light text-white/70 leading-relaxed">
+              The <strong className="text-white">House</strong> is where they live together. A collaborative ecosystem built for the future.
+            </p>
           </div>
         </FadeUp>
 
@@ -2415,7 +2457,7 @@ const OurStoryPage = ({ navigate }) => {
 
         {/* Section 6: CTA */}
         <FadeUp className="text-center pt-16 border-t border-white/10 w-full">
-           <PremiumButton onClick={() => navigate('contact')} className="px-12 py-5 text-lg">Be part of our story</PremiumButton>
+          <PremiumButton onClick={() => navigate('contact')} className="px-12 py-5 text-lg">Be part of our story</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -2428,14 +2470,14 @@ const TeamPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        
+        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+
         {/* Section 1: Hero */}
         <FadeUp>
           <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>The Team</h2>
           <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">The minds behind the magic.</h1>
         </FadeUp>
-        
+
         {/* Section 2: Leadership */}
         <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">Leadership</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 mb-32 w-full">
@@ -2443,12 +2485,12 @@ const TeamPage = ({ navigate }) => {
             <StaggerItem key={i}>
               <div className="border border-white/5 rounded-[24px] overflow-hidden flex flex-col sm:flex-row h-full w-full" style={{ backgroundColor: palette.panel }}>
                 <div className="sm:w-1/2 aspect-square bg-white/5 relative flex items-center justify-center border-r border-white/5">
-                   {leader.image ? <img src={leader.image} alt={leader.name} className="w-full h-full object-cover" /> : <User className="w-16 h-16 text-white/10" />}
+                  {leader.image ? <img src={leader.image} alt={leader.name} className="w-full h-full object-cover" /> : <User className="w-16 h-16 text-white/10" />}
                 </div>
                 <div className="p-8 sm:w-1/2 flex flex-col justify-center">
-                   <h3 className="text-2xl font-medium text-white mb-2 font-primary">{leader.name}</h3>
-                   <p className="text-sm tracking-widest uppercase mb-4 font-primary" style={{ color: palette.blue }}>{leader.role}</p>
-                   <p className="text-sm text-white/50 font-secondary leading-relaxed">{leader.bio || leader.desc}</p>
+                  <h3 className="text-2xl font-medium text-white mb-2 font-primary">{leader.name}</h3>
+                  <p className="text-sm tracking-widest uppercase mb-4 font-primary" style={{ color: palette.blue }}>{leader.role}</p>
+                  <p className="text-sm text-white/50 font-secondary leading-relaxed">{leader.bio || leader.desc}</p>
                 </div>
               </div>
             </StaggerItem>
@@ -2478,42 +2520,42 @@ const TeamPage = ({ navigate }) => {
           <h3 className="text-3xl font-light mb-10 font-primary text-center">Our Culture</h3>
           <StaggerGroup className="grid md:grid-cols-3 gap-8 w-full">
             <StaggerItem className="text-center">
-               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Globe className="w-5 h-5 text-white/70" /></div>
-               <h4 className="text-lg font-medium text-white mb-3 font-primary">No Silos</h4>
-               <p className="text-sm text-white/50 font-secondary leading-relaxed">Strategy, design, and execution sit at the same table. We believe in cross-pollination of ideas.</p>
+              <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Globe className="w-5 h-5 text-white/70" /></div>
+              <h4 className="text-lg font-medium text-white mb-3 font-primary">No Silos</h4>
+              <p className="text-sm text-white/50 font-secondary leading-relaxed">Strategy, design, and execution sit at the same table. We believe in cross-pollination of ideas.</p>
             </StaggerItem>
             <StaggerItem className="text-center">
-               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Zap className="w-5 h-5 text-white/70" /></div>
-               <h4 className="text-lg font-medium text-white mb-3 font-primary">Creator-First</h4>
-               <p className="text-sm text-white/50 font-secondary leading-relaxed">We empower our team to take ownership, innovate fearlessly, and challenge the status quo.</p>
+              <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Zap className="w-5 h-5 text-white/70" /></div>
+              <h4 className="text-lg font-medium text-white mb-3 font-primary">Creator-First</h4>
+              <p className="text-sm text-white/50 font-secondary leading-relaxed">We empower our team to take ownership, innovate fearlessly, and challenge the status quo.</p>
             </StaggerItem>
             <StaggerItem className="text-center">
-               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><BookOpen className="w-5 h-5 text-white/70" /></div>
-               <h4 className="text-lg font-medium text-white mb-3 font-primary">Continuous Learning</h4>
-               <p className="text-sm text-white/50 font-secondary leading-relaxed">In a world driven by rapid innovation, we are perpetual students of science, art, and human behavior.</p>
+              <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><BookOpen className="w-5 h-5 text-white/70" /></div>
+              <h4 className="text-lg font-medium text-white mb-3 font-primary">Continuous Learning</h4>
+              <p className="text-sm text-white/50 font-secondary leading-relaxed">In a world driven by rapid innovation, we are perpetual students of science, art, and human behavior.</p>
             </StaggerItem>
           </StaggerGroup>
         </FadeUp>
 
-    
+
         {/* Section 5: Join the House CTA */}
         <FadeUp className="text-center pt-32 pb-16 border-t border-white/10 w-full flex flex-col items-center">
           {/* Little glowing dot from the design */}
           <div className="w-3 h-3 rounded-full bg-[#FDE68A] mb-8 shadow-[0_0_20px_#FDE68A]" />
-          
+
           <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary text-white">Want to join the House?</h3>
           <p className="text-lg text-white/50 font-secondary mb-10 max-w-2xl mx-auto">We are always looking for visionary strategists and artists.</p>
-          
+
           {/* Updated button to trigger the modal */}
-          <button 
-            onClick={() => setShowCareers(true)} 
+          <button
+            onClick={() => setShowCareers(true)}
             className="px-8 py-3 rounded-[12px] border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] transition-all text-white text-sm font-medium font-secondary"
           >
             Send Your Profile
           </button>
         </FadeUp>
         <AnimatePresence>
-        {showCareers && <CareersModal onClose={() => setShowCareers(false)} />}
+          {showCareers && <CareersModal onClose={() => setShowCareers(false)} />}
         </AnimatePresence>
 
       </div>
@@ -2526,31 +2568,31 @@ const MethodPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        
+        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+
         {/* Section 1: Hero */}
         <FadeUp>
           <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>The PBH Method</h2>
           <h1 className="text-5xl md:text-7xl font-light mb-24 tracking-tight font-primary max-w-4xl">The blueprint for <AnimatedItalic className="text-white/50">breakthrough brands.</AnimatedItalic></h1>
         </FadeUp>
-        
+
         {/* Section 2: Traditional vs PBH */}
         <FadeUp className="grid md:grid-cols-2 gap-8 w-full mb-32">
           <div className="border border-white/5 rounded-[24px] p-10 relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
-             <h3 className="text-white/40 text-sm tracking-widest uppercase mb-8 font-primary">The Traditional Model</h3>
-             <ul className="space-y-6 font-secondary">
-               <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Execution disconnected from core business objectives.</span></li>
-               <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Short-term aesthetic fixes over long-term systems.</span></li>
-               <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Disjointed touchpoints that dilute brand potential.</span></li>
-             </ul>
+            <h3 className="text-white/40 text-sm tracking-widest uppercase mb-8 font-primary">The Traditional Model</h3>
+            <ul className="space-y-6 font-secondary">
+              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Execution disconnected from core business objectives.</span></li>
+              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Short-term aesthetic fixes over long-term systems.</span></li>
+              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Disjointed touchpoints that dilute brand potential.</span></li>
+            </ul>
           </div>
           <div className="border rounded-[24px] p-10 relative overflow-hidden w-full" style={{ background: `linear-gradient(to bottom right, ${hexToRgba(palette.primary, 0.1)}, transparent)`, borderColor: hexToRgba(palette.primary, 0.2) }}>
-             <h3 className="text-sm tracking-widest uppercase mb-8 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>The PBH Method</h3>
-             <ul className="space-y-6 relative z-10 font-secondary">
-               <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Mapping the root business gap before designing anything.</span></li>
-               <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Modular scoping based on exact strategic requirements.</span></li>
-               <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Building connected systems where strategy dictates execution.</span></li>
-             </ul>
+            <h3 className="text-sm tracking-widest uppercase mb-8 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>The PBH Method</h3>
+            <ul className="space-y-6 relative z-10 font-secondary">
+              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Mapping the root business gap before designing anything.</span></li>
+              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Modular scoping based on exact strategic requirements.</span></li>
+              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Building connected systems where strategy dictates execution.</span></li>
+            </ul>
           </div>
         </FadeUp>
 
@@ -2563,8 +2605,8 @@ const MethodPage = ({ navigate }) => {
                 <div className="absolute top-0 left-0 w-1/4 h-[1px]" style={{ background: `linear-gradient(to right, ${palette.primary}, transparent)` }} />
                 <div className="md:col-span-1 text-4xl font-serif italic text-white/30">0{s.stepNumber}</div>
                 <div className="md:col-span-6 pr-8">
-                   <h3 className="text-3xl font-light mb-4 font-primary">{s.title}</h3>
-                   <p className="text-white/50 font-light text-lg leading-relaxed font-secondary max-w-2xl">{s.description}</p>
+                  <h3 className="text-3xl font-light mb-4 font-primary">{s.title}</h3>
+                  <p className="text-white/50 font-light text-lg leading-relaxed font-secondary max-w-2xl">{s.description}</p>
                 </div>
                 <div className="md:col-span-5 md:pl-12 border-l border-white/5">
                   <h4 className="text-xs font-medium text-white/30 uppercase tracking-widest mb-6 font-primary">Key Outputs</h4>
@@ -2588,19 +2630,19 @@ const MethodPage = ({ navigate }) => {
         {/* Section 5: Timeline Overview */}
         <FadeUp><h3 className="text-3xl font-light mb-12 font-primary text-center">Typical Engagement Timeline</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-4 gap-4 mb-32 w-full">
-            {[
-              { phase: "Weeks 1-2", focus: "Discovery & Alignment", color: palette.primary },
-              { phase: "Weeks 3-4", focus: "Strategy & Narrative", color: palette.blue },
-              { phase: "Weeks 5-7", focus: "Design & Systems", color: palette.purple },
-              { phase: "Week 8+", focus: "Handoff & Execution", color: palette.accent }
-            ].map((t, idx) => (
-              <StaggerItem key={idx}>
-                <div className="p-6 border border-white/5 rounded-[16px] text-center h-full w-full" style={{ backgroundColor: palette.bgDeep }}>
-                  <div className="text-[10px] uppercase tracking-widest mb-3 font-primary font-medium" style={{ color: t.color }}>{t.phase}</div>
-                  <div className="text-white font-secondary font-light">{t.focus}</div>
-                </div>
-              </StaggerItem>
-            ))}
+          {[
+            { phase: "Weeks 1-2", focus: "Discovery & Alignment", color: palette.primary },
+            { phase: "Weeks 3-4", focus: "Strategy & Narrative", color: palette.blue },
+            { phase: "Weeks 5-7", focus: "Design & Systems", color: palette.purple },
+            { phase: "Week 8+", focus: "Handoff & Execution", color: palette.accent }
+          ].map((t, idx) => (
+            <StaggerItem key={idx}>
+              <div className="p-6 border border-white/5 rounded-[16px] text-center h-full w-full" style={{ backgroundColor: palette.bgDeep }}>
+                <div className="text-[10px] uppercase tracking-widest mb-3 font-primary font-medium" style={{ color: t.color }}>{t.phase}</div>
+                <div className="text-white font-secondary font-light">{t.focus}</div>
+              </div>
+            </StaggerItem>
+          ))}
         </StaggerGroup>
 
         {/* Section 6: Final CTA */}
@@ -2618,10 +2660,10 @@ const ServicesPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight max-w-4xl font-primary">Three strategic routes.<br/><AnimatedItalic className="text-white/50">One connected brand system.</AnimatedItalic></h1></RevealText>
+        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight max-w-4xl font-primary">Three strategic routes.<br /><AnimatedItalic className="text-white/50">One connected brand system.</AnimatedItalic></h1></RevealText>
         <FadeUp><p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed font-secondary">PBH services are not isolated offerings. They are designed as connected routes that help brands move from clarity to communication to execution.</p></FadeUp>
-        
+
         <StaggerGroup className="grid gap-12 mb-32 w-full">
           {Object.values(ROUTES_INFO).map((route, i) => {
             const rColor = palette[route.type] || palette.primary;
@@ -2633,29 +2675,29 @@ const ServicesPage = ({ navigate }) => {
                       <div className="w-20 h-20 rounded-[20px] flex items-center justify-center mb-8 lg:mb-10 shadow-lg shrink-0" style={{ backgroundColor: rColor, color: palette.bgDeep }}>{route.icon}</div>
                       <h3 className="text-3xl md:text-4xl font-light mb-4 lg:mb-6 font-primary text-white">{route.title}</h3>
                       <p className="text-white/60 font-light leading-relaxed mb-8 lg:mb-10 font-secondary text-base md:text-lg max-w-md">{route.desc}</p>
-                      
+
                       <div className="mt-auto pt-4 border-t border-white/10 lg:border-none lg:pt-0">
-                        <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent text-white group font-secondary text-base">Explore Route Details <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform"/></PremiumButton>
+                        <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent text-white group font-secondary text-base">Explore Route Details <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform" /></PremiumButton>
                       </div>
                     </div>
-                    
+
                     <div className="lg:w-7/12 flex flex-col gap-10 font-secondary">
                       <div>
-                        <h4 className="text-xs md:text-sm font-medium text-white/40 uppercase tracking-widest mb-6 font-primary flex items-center gap-3"><Layers className="w-4 h-4"/> Core Line Items</h4>
+                        <h4 className="text-xs md:text-sm font-medium text-white/40 uppercase tracking-widest mb-6 font-primary flex items-center gap-3"><Layers className="w-4 h-4" /> Core Line Items</h4>
                         <ul className="grid sm:grid-cols-2 gap-4">
                           {route.lineItems.map(li => (
                             <li key={li.id} className="text-base md:text-lg font-medium text-white/90 flex items-start gap-3 bg-white/[0.02] border border-white/5 p-5 rounded-[16px] shadow-sm">
-                              <Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }}/> 
+                              <Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }} />
                               <span className="leading-snug">{li.name}</span>
                             </li>
                           ))}
                         </ul>
                       </div>
-                      
+
                       <div className="bg-white/[0.03] border border-white/10 rounded-[24px] p-8 flex flex-col h-full relative overflow-hidden mt-auto shadow-inner">
-                         <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
-                         <h4 className="text-xs md:text-sm font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-4 h-4"/> Best For</h4>
-                         <p className="text-base md:text-lg font-light text-white/80 leading-relaxed relative z-10">{route.bestFor}</p>
+                        <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
+                        <h4 className="text-xs md:text-sm font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-4 h-4" /> Best For</h4>
+                        <p className="text-base md:text-lg font-light text-white/80 leading-relaxed relative z-10">{route.bestFor}</p>
                       </div>
                     </div>
                   </div>
@@ -2669,23 +2711,23 @@ const ServicesPage = ({ navigate }) => {
         <div className="w-full border-t border-white/10 pt-16 mb-24">
           <FadeUp><h3 className="text-3xl font-light mb-8 font-primary text-center">Service FAQs</h3></FadeUp>
           <StaggerGroup className="space-y-4 font-secondary max-w-4xl mx-auto">
-             <StaggerItem>
-               <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01]">
-                 <h4 className="font-medium text-white mb-2">Can we choose just one deliverable?</h4>
-                 <p className="text-sm text-white/50">We strongly recommend going through our assessment first. If a single deliverable solves the root problem, yes. If not, we will recommend a connected system.</p>
-               </div>
-             </StaggerItem>
-             <StaggerItem>
-               <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01]">
-                 <h4 className="font-medium text-white mb-2">How do we know which route is right for us?</h4>
-                 <p className="text-sm text-white/50">You don't need to guess. Use our "Build My Brand Scope" tool, and our strategic engine will diagnose your gaps and assign the perfect route automatically.</p>
-               </div>
-             </StaggerItem>
+            <StaggerItem>
+              <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01]">
+                <h4 className="font-medium text-white mb-2">Can we choose just one deliverable?</h4>
+                <p className="text-sm text-white/50">We strongly recommend going through our assessment first. If a single deliverable solves the root problem, yes. If not, we will recommend a connected system.</p>
+              </div>
+            </StaggerItem>
+            <StaggerItem>
+              <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01]">
+                <h4 className="font-medium text-white mb-2">How do we know which route is right for us?</h4>
+                <p className="text-sm text-white/50">You don't need to guess. Use our "Build My Brand Scope" tool, and our strategic engine will diagnose your gaps and assign the perfect route automatically.</p>
+              </div>
+            </StaggerItem>
           </StaggerGroup>
         </div>
 
         <FadeUp className="text-center w-full">
-           <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-lg">Build Your Scope</PremiumButton>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-lg">Build Your Scope</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -2704,7 +2746,7 @@ const ServiceDetailPage = ({ navigate, routeId }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('services')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Services</button>
+        <button onClick={() => navigate('services')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Services</button>
         <FadeUp>
           <div className="w-20 h-20 rounded-[20px] flex items-center justify-center mb-10 shadow-lg" style={{ backgroundColor: rColor, color: palette.bgDeep }}>{route.icon}</div>
           <h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h1>
@@ -2712,11 +2754,11 @@ const ServiceDetailPage = ({ navigate, routeId }) => {
         </FadeUp>
 
         <FadeUp className="bg-white/[0.03] border border-white/10 rounded-[24px] p-8 mb-16 max-w-4xl relative overflow-hidden shadow-inner">
-           <div className="absolute top-0 right-0 w-64 h-64 blur-[80px] opacity-10 pointer-events-none" style={{ backgroundColor: rColor }} />
-           <h4 className="text-sm font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-5 h-5"/> Best For</h4>
-           <p className="text-xl font-light text-white/90 leading-relaxed relative z-10">{route.bestFor}</p>
+          <div className="absolute top-0 right-0 w-64 h-64 blur-[80px] opacity-10 pointer-events-none" style={{ backgroundColor: rColor }} />
+          <h4 className="text-sm font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-5 h-5" /> Best For</h4>
+          <p className="text-xl font-light text-white/90 leading-relaxed relative z-10">{route.bestFor}</p>
         </FadeUp>
-        
+
         <FadeUp><h3 className="text-3xl font-light mb-10 border-b border-white/10 pb-6 font-primary text-white">What's Included</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 w-full">
           {route.lineItems.map((li, i) => (
@@ -2725,18 +2767,18 @@ const ServiceDetailPage = ({ navigate, routeId }) => {
                 <h4 className="text-2xl font-medium mb-8 text-white font-primary">{li.name}</h4>
                 <ul className="space-y-4 font-secondary">
                   {DELIVERABLES_MASTER.filter(d => d.lineItem === li.id).map(d => (
-                    <li key={d.id} className="text-base md:text-lg font-light text-white/80 flex items-start gap-3"><Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }}/> <span className="leading-snug">{d.name}</span></li>
+                    <li key={d.id} className="text-base md:text-lg font-light text-white/80 flex items-start gap-3"><Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }} /> <span className="leading-snug">{d.name}</span></li>
                   ))}
                 </ul>
               </div>
             </StaggerItem>
           ))}
         </StaggerGroup>
-        
+
         <FadeUp className="border border-white/10 rounded-[24px] p-12 text-center w-full relative overflow-hidden" style={{ background: `linear-gradient(to bottom right, ${palette.panel}, ${palette.bgDeep})` }}>
-           <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
-           <h2 className="text-3xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
-           <PremiumButton onClick={() => navigate('assessment')} className="relative z-10">Build A Scope</PremiumButton>
+          <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
+          <h2 className="text-3xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
+          <PremiumButton onClick={() => navigate('assessment')} className="relative z-10">Build A Scope</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -2768,18 +2810,18 @@ const ServiceModal = ({ navigate, routeId, onClose }) => {
             <X className="w-5 h-5" />
           </button>
         </div>
-        
+
         <div className="px-8 md:px-16 pb-16 -mt-10 relative z-10">
           <div className="w-20 h-20 rounded-[20px] flex items-center justify-center mb-10 shadow-lg" style={{ backgroundColor: rColor, color: palette.bgDeep }}>{route.icon}</div>
           <h2 className="text-4xl md:text-6xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h2>
           <p className="text-xl text-white/50 font-light mb-12 max-w-3xl leading-relaxed font-secondary">{route.desc}</p>
-          
+
           <div className="bg-white/[0.03] border border-white/10 rounded-[24px] p-8 mb-16 max-w-4xl relative overflow-hidden shadow-inner">
-             <div className="absolute top-0 right-0 w-64 h-64 blur-[80px] opacity-10 pointer-events-none" style={{ backgroundColor: rColor }} />
-             <h4 className="text-sm font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-5 h-5"/> Best For</h4>
-             <p className="text-xl font-light text-white/90 leading-relaxed relative z-10">{route.bestFor}</p>
+            <div className="absolute top-0 right-0 w-64 h-64 blur-[80px] opacity-10 pointer-events-none" style={{ backgroundColor: rColor }} />
+            <h4 className="text-sm font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-5 h-5" /> Best For</h4>
+            <p className="text-xl font-light text-white/90 leading-relaxed relative z-10">{route.bestFor}</p>
           </div>
-          
+
           <h3 className="text-3xl font-light mb-10 border-b border-white/10 pb-6 font-primary text-white">What's Included</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 w-full">
             {route.lineItems.map((li, i) => (
@@ -2787,17 +2829,17 @@ const ServiceModal = ({ navigate, routeId, onClose }) => {
                 <h4 className="text-2xl font-medium mb-8 text-white font-primary">{li.name}</h4>
                 <ul className="space-y-4 font-secondary">
                   {DELIVERABLES_MASTER.filter(d => d.lineItem === li.id).map(d => (
-                    <li key={d.id} className="text-base md:text-lg font-light text-white/80 flex items-start gap-3"><Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }}/> <span className="leading-snug">{d.name}</span></li>
+                    <li key={d.id} className="text-base md:text-lg font-light text-white/80 flex items-start gap-3"><Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }} /> <span className="leading-snug">{d.name}</span></li>
                   ))}
                 </ul>
               </motion.div>
             ))}
           </div>
-          
+
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="border border-white/10 rounded-[24px] p-12 text-center w-full relative overflow-hidden" style={{ background: `linear-gradient(to bottom right, ${palette.panel}, ${palette.bgDeep})` }}>
-             <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
-             <h2 className="text-3xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
-             <PremiumButton onClick={() => { onClose(); navigate('assessment'); }} className="relative z-10">Build A Scope</PremiumButton>
+            <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
+            <h2 className="text-3xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
+            <PremiumButton onClick={() => { onClose(); navigate('assessment'); }} className="relative z-10">Build A Scope</PremiumButton>
           </motion.div>
         </div>
       </motion.div>
@@ -2811,26 +2853,26 @@ const WorkPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
+        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
         <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">Our Work.</h1></RevealText>
         <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">Case studies and full visual archive proving our thinking across strategy, identity, and campaigns.</p></FadeUp>
-        
+
         {/* Featured Case Study Hero */}
         <FadeUp delay={0.1} className="mb-24 w-full">
           <div onClick={() => navigate('work/' + caseStudies[0].id)} className="group relative border border-white/5 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
-             <div className="md:w-1/2 relative overflow-hidden h-[300px] md:h-full bg-white/[0.02] w-full">
-               <div className="absolute inset-0 opacity-30 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105" style={{ background: `linear-gradient(to bottom right, ${palette.primary}, transparent)` }} />
-               <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 text-7xl md:text-9xl">{caseStudies[0].client.split(' ')[0]}</span></div>
-             </div>
-             <div className="md:w-1/2 p-12 md:p-16 flex flex-col justify-center w-full">
-                <span className="text-[10px] font-medium tracking-widest uppercase block mb-4 font-primary" style={{ color: palette.primary }}>Featured Case Study • {caseStudies[0].sector}</span>
-                <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary">{caseStudies[0].client}</h3>
-                <p className="text-white/50 font-light mb-10 text-lg leading-relaxed font-secondary max-w-lg">{caseStudies[0].challenge}</p>
-                <div className="flex gap-4 font-secondary mb-12 flex-wrap">
-                   {caseStudies[0].tags.map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-white/70 uppercase tracking-widest">{t}</span>)}
-                </div>
-                <div className="mt-auto flex items-center gap-2 text-white/70 group-hover:text-white transition-colors font-medium font-secondary">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
-             </div>
+            <div className="md:w-1/2 relative overflow-hidden h-[300px] md:h-full bg-white/[0.02] w-full">
+              <div className="absolute inset-0 opacity-30 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105" style={{ background: `linear-gradient(to bottom right, ${palette.primary}, transparent)` }} />
+              <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 text-7xl md:text-9xl">{caseStudies[0].client.split(' ')[0]}</span></div>
+            </div>
+            <div className="md:w-1/2 p-12 md:p-16 flex flex-col justify-center w-full">
+              <span className="text-[10px] font-medium tracking-widest uppercase block mb-4 font-primary" style={{ color: palette.primary }}>Featured Case Study • {caseStudies[0].sector}</span>
+              <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary">{caseStudies[0].client}</h3>
+              <p className="text-white/50 font-light mb-10 text-lg leading-relaxed font-secondary max-w-lg">{caseStudies[0].challenge}</p>
+              <div className="flex gap-4 font-secondary mb-12 flex-wrap">
+                {caseStudies[0].tags.map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-white/70 uppercase tracking-widest">{t}</span>)}
+              </div>
+              <div className="mt-auto flex items-center gap-2 text-white/70 group-hover:text-white transition-colors font-medium font-secondary">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
+            </div>
           </div>
         </FadeUp>
 
@@ -2843,8 +2885,8 @@ const WorkPage = ({ navigate }) => {
 
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full mb-32">
           {caseStudies.slice(1).map((cs, i) => {
-             const hexColor = palette[cs.type] || palette.primary;
-             return (
+            const hexColor = palette[cs.type] || palette.primary;
+            return (
               <StaggerItem key={i}>
                 <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/5 rounded-[24px] overflow-hidden flex flex-col transition-all duration-700 cursor-pointer text-left h-[450px] w-full" style={{ backgroundColor: palette.panel }}>
                   <div className="h-[250px] relative overflow-hidden border-b border-white/5 bg-white/[0.02]">
@@ -2863,15 +2905,15 @@ const WorkPage = ({ navigate }) => {
                   </div>
                 </div>
               </StaggerItem>
-             )
+            )
           })}
         </StaggerGroup>
 
         <FadeUp className="border border-white/10 rounded-[32px] p-16 text-center bg-[#010825] relative overflow-hidden w-full">
-           <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20" style={{ backgroundColor: palette.blue }} />
-           <h3 className="text-4xl font-light mb-6 font-primary text-white">Ready to start your project?</h3>
-           <p className="text-lg text-white/50 font-secondary mb-10 max-w-xl mx-auto">Skip the generic agency pitch. Map your brand needs instantly using our Scope Builder.</p>
-           <PremiumButton onClick={() => navigate('assessment')} className="px-10 py-4">Build My Brand Scope</PremiumButton>
+          <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20" style={{ backgroundColor: palette.blue }} />
+          <h3 className="text-4xl font-light mb-6 font-primary text-white">Ready to start your project?</h3>
+          <p className="text-lg text-white/50 font-secondary mb-10 max-w-xl mx-auto">Skip the generic agency pitch. Map your brand needs instantly using our Scope Builder.</p>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-10 py-4">Build My Brand Scope</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -2895,32 +2937,32 @@ const JournalPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
+        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
         <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">The Journal.</h1></RevealText>
         <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">Essays, frameworks, and perspectives on building brands that matter.</p></FadeUp>
 
         {/* Featured Article */}
         <FadeUp delay={0.1} className="mb-24 w-full">
           <div onClick={() => navigate('article/' + JOURNAL_ARTICLES[0].id)} className="group relative border border-white/10 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[500px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
-             <div className="md:w-1/2 p-12 md:p-16 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/10 w-full">
-                <span className="text-[10px] font-medium tracking-widest uppercase block mb-6 font-primary" style={{ color: palette.primary }}>Featured • {JOURNAL_ARTICLES[0].tag}</span>
-                <h3 className="text-4xl md:text-5xl font-light mb-8 font-primary group-hover:text-white/80 transition-colors leading-tight max-w-2xl">{JOURNAL_ARTICLES[0].title}</h3>
-                <p className="text-white/50 font-light mb-10 text-lg leading-relaxed font-secondary line-clamp-3 max-w-xl">{JOURNAL_ARTICLES[0].excerpt}</p>
-                <div className="mt-auto flex items-center justify-between font-secondary text-sm border-t border-white/5 pt-6 text-white/40">
-                   <span>{JOURNAL_ARTICLES[0].author}</span>
-                   <span>{JOURNAL_ARTICLES[0].time}</span>
-                </div>
-             </div>
-             <div className="md:w-1/2 relative overflow-hidden h-[300px] md:h-full bg-[#05050A] w-full">
-               <div className="absolute inset-0 opacity-40 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105" style={{ background: `radial-gradient(circle at center, ${palette.primary}, transparent)` }} />
-               <div className="absolute inset-0 flex items-center justify-center"><BookOpen className="w-32 h-32 text-white/10 transition-transform duration-700 group-hover:rotate-12" /></div>
-             </div>
+            <div className="md:w-1/2 p-12 md:p-16 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/10 w-full">
+              <span className="text-[10px] font-medium tracking-widest uppercase block mb-6 font-primary" style={{ color: palette.primary }}>Featured • {JOURNAL_ARTICLES[0].tag}</span>
+              <h3 className="text-4xl md:text-5xl font-light mb-8 font-primary group-hover:text-white/80 transition-colors leading-tight max-w-2xl">{JOURNAL_ARTICLES[0].title}</h3>
+              <p className="text-white/50 font-light mb-10 text-lg leading-relaxed font-secondary line-clamp-3 max-w-xl">{JOURNAL_ARTICLES[0].excerpt}</p>
+              <div className="mt-auto flex items-center justify-between font-secondary text-sm border-t border-white/5 pt-6 text-white/40">
+                <span>{JOURNAL_ARTICLES[0].author}</span>
+                <span>{JOURNAL_ARTICLES[0].time}</span>
+              </div>
+            </div>
+            <div className="md:w-1/2 relative overflow-hidden h-[300px] md:h-full bg-[#05050A] w-full">
+              <div className="absolute inset-0 opacity-40 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105" style={{ background: `radial-gradient(circle at center, ${palette.primary}, transparent)` }} />
+              <div className="absolute inset-0 flex items-center justify-center"><BookOpen className="w-32 h-32 text-white/10 transition-transform duration-700 group-hover:rotate-12" /></div>
+            </div>
           </div>
         </FadeUp>
 
         <FadeUp delay={0.2} className="flex gap-4 mb-12 border-b border-white/10 pb-6 overflow-x-auto font-secondary w-full custom-scrollbar">
           {tabs.map(tab => (
-            <button 
+            <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-full border text-sm shrink-0 transition-colors ${activeTab === tab ? 'border-white text-white' : 'border-white/10 text-white/50 hover:bg-white/5'}`}
@@ -2932,19 +2974,19 @@ const JournalPage = ({ navigate }) => {
 
         <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-32">
           {filteredArticles.length > 0 ? filteredArticles.map((article, i) => (
-             <StaggerItem key={i}>
-               <div onClick={() => navigate('article/' + article.id)} className="border border-white/10 rounded-[24px] p-8 h-[380px] flex flex-col hover:-translate-y-2 transition-transform cursor-pointer group shadow-xl w-full" style={{ backgroundColor: palette.panel }}>
-                 <div className="text-[10px] tracking-widest uppercase mb-6 font-primary font-medium" style={{ color: palette[article.type] || palette.primary }}>{article.tag}</div>
-                 <h4 className="text-2xl font-light text-white mb-6 font-primary group-hover:text-white/80 transition-colors leading-snug">{article.title}</h4>
-                 <p className="text-white/50 text-sm font-secondary font-light line-clamp-3 mb-8">{article.excerpt}</p>
-                 <div className="mt-auto flex justify-between items-center text-xs text-white/40 font-secondary pt-6 border-t border-white/5">
-                   <span>{article.time}</span>
-                   <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all">
-                     <ArrowRight className="w-3 h-3 group-hover:text-white" />
-                   </div>
-                 </div>
-               </div>
-             </StaggerItem>
+            <StaggerItem key={i}>
+              <div onClick={() => navigate('article/' + article.id)} className="border border-white/10 rounded-[24px] p-8 h-[380px] flex flex-col hover:-translate-y-2 transition-transform cursor-pointer group shadow-xl w-full" style={{ backgroundColor: palette.panel }}>
+                <div className="text-[10px] tracking-widest uppercase mb-6 font-primary font-medium" style={{ color: palette[article.type] || palette.primary }}>{article.tag}</div>
+                <h4 className="text-2xl font-light text-white mb-6 font-primary group-hover:text-white/80 transition-colors leading-snug">{article.title}</h4>
+                <p className="text-white/50 text-sm font-secondary font-light line-clamp-3 mb-8">{article.excerpt}</p>
+                <div className="mt-auto flex justify-between items-center text-xs text-white/40 font-secondary pt-6 border-t border-white/5">
+                  <span>{article.time}</span>
+                  <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all">
+                    <ArrowRight className="w-3 h-3 group-hover:text-white" />
+                  </div>
+                </div>
+              </div>
+            </StaggerItem>
           )) : (
             <div className="col-span-full py-12 text-center text-white/40 font-secondary">
               No articles found in this category.
@@ -2954,16 +2996,16 @@ const JournalPage = ({ navigate }) => {
 
         {/* Newsletter CTA */}
         <FadeUp className="border border-white/10 rounded-[32px] p-12 md:p-16 flex flex-col md:flex-row gap-12 items-center w-full" style={{ background: `linear-gradient(135deg, ${palette.panel}, ${palette.bgDeep})` }}>
-           <div className="md:w-1/2">
-             <h3 className="text-3xl font-light mb-4 font-primary text-white">Get insights in your inbox.</h3>
-             <p className="text-white/50 font-secondary text-lg leading-relaxed max-w-lg">Join innovators receiving our monthly digest on brand strategy, SciArt philosophy, and design thinking.</p>
-           </div>
-           <div className="md:w-1/2 w-full">
-             <form className="flex gap-4 w-full" onSubmit={(e) => e.preventDefault()}>
-               <input required type="email" placeholder="Email Address" className="w-full bg-white/[0.05] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none font-secondary" style={{ '--tw-ring-color': palette.primary }} />
-               <PremiumButton type="submit" className="shrink-0 px-8">Subscribe</PremiumButton>
-             </form>
-           </div>
+          <div className="md:w-1/2">
+            <h3 className="text-3xl font-light mb-4 font-primary text-white">Get insights in your inbox.</h3>
+            <p className="text-white/50 font-secondary text-lg leading-relaxed max-w-lg">Join innovators receiving our monthly digest on brand strategy, SciArt philosophy, and design thinking.</p>
+          </div>
+          <div className="md:w-1/2 w-full">
+            <form className="flex gap-4 w-full" onSubmit={(e) => e.preventDefault()}>
+              <input required type="email" placeholder="Email Address" className="w-full bg-white/[0.05] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none font-secondary" style={{ '--tw-ring-color': palette.primary }} />
+              <PremiumButton type="submit" className="shrink-0 px-8">Subscribe</PremiumButton>
+            </form>
+          </div>
         </FadeUp>
       </div>
     </div>
@@ -2978,8 +3020,8 @@ const ArticlePage = ({ navigate, articleId }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('journal')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-16 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Journal</button>
-        
+        <button onClick={() => navigate('journal')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-16 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Journal</button>
+
         <FadeUp className="w-full max-w-4xl mx-auto">
           <div className="text-[10px] tracking-widest uppercase mb-6 font-primary font-medium" style={{ color: artColor }}>{article.tag}</div>
           <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-8 font-primary leading-tight">{article.title}</h1>
@@ -2993,26 +3035,26 @@ const ArticlePage = ({ navigate, articleId }) => {
         </FadeUp>
 
         <FadeUp delay={0.1} className="w-full h-[300px] md:h-[400px] rounded-[24px] mb-16 overflow-hidden relative border border-white/5 max-w-5xl mx-auto" style={{ backgroundColor: palette.panel }}>
-           <div className="absolute inset-0 opacity-30 mix-blend-screen" style={{ background: `radial-gradient(circle at top right, ${artColor}, transparent 70%)` }} />
-           <div className="absolute inset-0 flex items-center justify-center"><BookOpen className="w-24 h-24 text-white/5" /></div>
+          <div className="absolute inset-0 opacity-30 mix-blend-screen" style={{ background: `radial-gradient(circle at top right, ${artColor}, transparent 70%)` }} />
+          <div className="absolute inset-0 flex items-center justify-center"><BookOpen className="w-24 h-24 text-white/5" /></div>
         </FadeUp>
 
         <StaggerGroup className="space-y-8 text-lg font-light text-white/70 font-secondary leading-relaxed mb-32 max-w-3xl mx-auto w-full">
           <StaggerItem><p className="text-2xl text-white font-medium mb-10 leading-snug">{article.excerpt}</p></StaggerItem>
           <StaggerItem>
-             <p>This is a placeholder for the rich text content of the article. In a fully implemented CMS, this section would parse Markdown or HTML blocks representing the body of the perspective.</p>
+            <p>This is a placeholder for the rich text content of the article. In a fully implemented CMS, this section would parse Markdown or HTML blocks representing the body of the perspective.</p>
           </StaggerItem>
           <StaggerItem>
-             <h3 className="text-2xl font-primary text-white mt-12 mb-6">The Strategic Imperative</h3>
-             <p>Every brand faces a moment where aesthetics alone are no longer enough to carry the narrative. This is where the structural integrity of science—the underlying logic of your product—must marry the emotional resonance of art.</p>
+            <h3 className="text-2xl font-primary text-white mt-12 mb-6">The Strategic Imperative</h3>
+            <p>Every brand faces a moment where aesthetics alone are no longer enough to carry the narrative. This is where the structural integrity of science—the underlying logic of your product—must marry the emotional resonance of art.</p>
           </StaggerItem>
           <StaggerItem>
-             <div className="p-8 border-l-4 border-white/20 bg-white/5 rounded-r-[16px] my-10 italic text-white">
-               "Design without direction is just decoration. The truest form of innovation is making complex things feel inevitable."
-             </div>
+            <div className="p-8 border-l-4 border-white/20 bg-white/5 rounded-r-[16px] my-10 italic text-white">
+              "Design without direction is just decoration. The truest form of innovation is making complex things feel inevitable."
+            </div>
           </StaggerItem>
           <StaggerItem>
-             <p>As we continue to co-create with breakthrough innovators, the methodology remains the same: uncover the root cause, map the correct ecosystem, and execute with relentless precision.</p>
+            <p>As we continue to co-create with breakthrough innovators, the methodology remains the same: uncover the root cause, map the correct ecosystem, and execute with relentless precision.</p>
           </StaggerItem>
         </StaggerGroup>
 
@@ -3040,7 +3082,7 @@ const ArticlePage = ({ navigate, articleId }) => {
 const LeafletMap = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    
+
     const initMap = () => {
       const mapEl = document.getElementById('pbh-hq-map');
       if (mapEl && window.L && !mapEl._leaflet_id) {
@@ -3099,9 +3141,9 @@ const ContactPage = ({ navigate }) => {
     `;
 
     const result = await sendEmailViaResend(subject, htmlContent);
-    
+
     setIsSubmitting(false);
-    
+
     if (result.success) {
       setStatus('success');
       setFormData({ name: '', email: '', message: '' });
@@ -3114,14 +3156,14 @@ const ContactPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform"/> Back to Home</button>
-        
+        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+
         {/* Section 1: Hero */}
         <FadeUp>
-          <h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">Start with a conversation. <br/><AnimatedItalic className="text-white/50">Or start with clarity.</AnimatedItalic></h1>
+          <h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">Start with a conversation. <br /><AnimatedItalic className="text-white/50">Or start with clarity.</AnimatedItalic></h1>
           <p className="text-white/50 mb-20 text-xl font-light font-secondary max-w-2xl">Have a project in mind? Choose how you want to begin your journey with PurpleBlue House.</p>
         </FadeUp>
-        
+
         {/* Section 2: Contact Options */}
         <FadeUp className="grid md:grid-cols-2 gap-8 mb-24 w-full">
           <div className="border border-white/10 rounded-[24px] p-10 flex flex-col justify-between w-full" style={{ backgroundColor: palette.panel }}>
@@ -3130,13 +3172,13 @@ const ContactPage = ({ navigate }) => {
               <p className="text-white/50 font-light mb-8 font-secondary max-w-md">Skip the discovery flow and send us a direct message outlining your requirements.</p>
             </div>
             <form className="space-y-4 text-left w-full font-secondary" onSubmit={handleSubmit}>
-              <input required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="Your Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
-              <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="Work Email" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
-              <textarea required value={formData.message} onChange={e => setFormData({...formData, message: e.target.value})} placeholder="Tell us about your project..." rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30 resize-none custom-scrollbar" />
-              
+              <input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="Your Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
+              <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} placeholder="Work Email" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
+              <textarea required value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} placeholder="Tell us about your project..." rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30 resize-none custom-scrollbar" />
+
               {status === 'success' && <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-[12px] text-sm">Message sent successfully! We'll be in touch soon.</div>}
               {status === 'error' && <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-[12px] text-sm">Failed to send message. Please try again.</div>}
-              
+
               <PremiumButton type="submit" disabled={isSubmitting} className="w-full">
                 {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</> : 'Send Message'}
               </PremiumButton>
@@ -3155,31 +3197,31 @@ const ContactPage = ({ navigate }) => {
           <div className="border border-white/10 rounded-[24px] p-10 flex flex-col justify-center w-full" style={{ backgroundColor: palette.panel }}>
             <h3 className="text-2xl font-light mb-8 font-primary">Direct Contact</h3>
             <div className="space-y-6 font-secondary">
-               <div className="flex items-start gap-4">
-                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Mail className="w-4 h-4 text-white/70" /></div>
-                 <div>
-                   <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Email</p>
-                   <p className="text-lg text-white">hello@purplebluehouse.com</p>
-                 </div>
-               </div>
-               <div className="flex items-start gap-4">
-                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Phone className="w-4 h-4 text-white/70" /></div>
-                 <div>
-                   <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Phone</p>
-                   <p className="text-lg text-white">+91 (123) 456-7890</p>
-                 </div>
-               </div>
-               <div className="flex items-start gap-4">
-                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><MapPin className="w-4 h-4 text-white/70" /></div>
-                 <div>
-                   <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Global HQ</p>
-                   <p className="text-lg text-white">Nehru Place, Delhi, IN</p>
-                 </div>
-               </div>
+              <div className="flex items-start gap-4">
+                <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Mail className="w-4 h-4 text-white/70" /></div>
+                <div>
+                  <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Email</p>
+                  <p className="text-lg text-white">hello@purplebluehouse.com</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Phone className="w-4 h-4 text-white/70" /></div>
+                <div>
+                  <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Phone</p>
+                  <p className="text-lg text-white">+91 (123) 456-7890</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-4">
+                <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><MapPin className="w-4 h-4 text-white/70" /></div>
+                <div>
+                  <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Global HQ</p>
+                  <p className="text-lg text-white">Nehru Place, Delhi, IN</p>
+                </div>
+              </div>
             </div>
           </div>
           <div className="rounded-[24px] overflow-hidden border border-white/10 relative shadow-2xl h-full w-full bg-[#05050A]">
-             <LeafletMap />
+            <LeafletMap />
           </div>
         </FadeUp>
 
@@ -3192,14 +3234,14 @@ const ContactPage = ({ navigate }) => {
               { num: "02", title: "Alignment Call", desc: "We schedule a 30-minute discovery session to ensure mutual fit and understanding.", icon: <Phone /> },
               { num: "03", title: "Custom Proposal", desc: "You receive a detailed roadmap, timeline, and resource allocation plan.", icon: <FileText /> }
             ].map((step, idx) => (
-               <StaggerItem key={idx}>
-                 <div className="border border-white/5 bg-white/[0.02] rounded-[16px] p-8 text-center relative overflow-hidden group h-full w-full">
-                   <div className="absolute top-0 right-0 p-4 text-6xl font-serif italic text-white/5 group-hover:text-white/10 transition-colors">{step.num}</div>
-                   <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5 relative z-10" style={{ color: palette.primary }}>{step.icon}</div>
-                   <h4 className="text-xl font-medium text-white mb-3 font-primary relative z-10">{step.title}</h4>
-                   <p className="text-white/50 font-secondary text-sm leading-relaxed relative z-10 max-w-sm mx-auto">{step.desc}</p>
-                 </div>
-               </StaggerItem>
+              <StaggerItem key={idx}>
+                <div className="border border-white/5 bg-white/[0.02] rounded-[16px] p-8 text-center relative overflow-hidden group h-full w-full">
+                  <div className="absolute top-0 right-0 p-4 text-6xl font-serif italic text-white/5 group-hover:text-white/10 transition-colors">{step.num}</div>
+                  <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5 relative z-10" style={{ color: palette.primary }}>{step.icon}</div>
+                  <h4 className="text-xl font-medium text-white mb-3 font-primary relative z-10">{step.title}</h4>
+                  <p className="text-white/50 font-secondary text-sm leading-relaxed relative z-10 max-w-sm mx-auto">{step.desc}</p>
+                </div>
+              </StaggerItem>
             ))}
           </StaggerGroup>
         </div>
@@ -3208,14 +3250,14 @@ const ContactPage = ({ navigate }) => {
         <div className="w-full border-t border-white/10 pt-16">
           <FadeUp><h3 className="text-3xl font-light mb-8 font-primary text-center">Frequently Asked Questions</h3></FadeUp>
           <StaggerGroup className="space-y-4 font-secondary max-w-4xl mx-auto w-full">
-             {FAQS.map((faq, i) => (
-               <StaggerItem key={i}>
-                 <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01] w-full">
-                   <h4 className="font-medium text-white mb-2">{faq.question}</h4>
-                   <p className="text-sm text-white/50">{faq.answer}</p>
-                 </div>
-               </StaggerItem>
-             ))}
+            {FAQS.map((faq, i) => (
+              <StaggerItem key={i}>
+                <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01] w-full">
+                  <h4 className="font-medium text-white mb-2">{faq.question}</h4>
+                  <p className="text-sm text-white/50">{faq.answer}</p>
+                </div>
+              </StaggerItem>
+            ))}
           </StaggerGroup>
         </div>
 
@@ -3233,7 +3275,7 @@ const AdminDashboard = ({ navigate }) => {
             <h1 className="text-3xl font-light mb-2 font-primary">Lead Intelligence Dashboard</h1>
             <p className="text-white/40 text-sm font-secondary">Brand discoveries captured via Brand Scope Builder.</p>
           </div>
-          <PremiumButton variant="ghost" onClick={() => navigate('home')} className="px-0 font-secondary">Exit System <ArrowRight className="w-4 h-4 ml-2"/></PremiumButton>
+          <PremiumButton variant="ghost" onClick={() => navigate('home')} className="px-0 font-secondary">Exit System <ArrowRight className="w-4 h-4 ml-2" /></PremiumButton>
         </div>
         <div className="border border-white/10 rounded-[16px] overflow-hidden" style={{ backgroundColor: palette.panel }}>
           <div className="overflow-x-auto font-secondary">
@@ -3254,7 +3296,7 @@ const AdminDashboard = ({ navigate }) => {
                 ) : (
                   GLOBAL_LEADS.map((lead, i) => (
                     <tr key={i} className="hover:bg-white/[0.01] transition-colors group">
-                      <td className="p-6"><div className="font-medium text-white mb-1">{lead.company}</div><div className="text-xs text-white/50 flex items-center gap-2"><User className="w-3 h-3"/> {lead.name}</div></td>
+                      <td className="p-6"><div className="font-medium text-white mb-1">{lead.company}</div><div className="text-xs text-white/50 flex items-center gap-2"><User className="w-3 h-3" /> {lead.name}</div></td>
                       <td className="p-6 text-white/70 font-light">{lead.stage}</td>
                       <td className="p-6"><span className="px-3 py-1 rounded-full text-xs border" style={{ backgroundColor: hexToRgba(palette.primary, 0.1), color: palette.primary, borderColor: hexToRgba(palette.primary, 0.2) }}>{lead.clusters[0]}</span></td>
                       <td className="p-6 text-xs text-white/60 font-light">{lead.routes.join(', ')}</td>
@@ -3286,10 +3328,10 @@ const Footer = ({ navigate }) => {
             <p className="text-white/40 font-light text-sm leading-relaxed mb-6 font-secondary max-w-sm">{SITE_SETTINGS?.description || "A premium brand, storytelling, and communication studio that understands your brand problem before you even speak to them."}</p>
             <div className="flex gap-4 mb-6">
               {SITE_SETTINGS?.contactEmail && (
-                <a href={`mailto:${SITE_SETTINGS.contactEmail}`} className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 cursor-pointer transition-all"><Mail className="w-3 h-3"/></a>
+                <a href={`mailto:${SITE_SETTINGS.contactEmail}`} className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 cursor-pointer transition-all"><Mail className="w-3 h-3" /></a>
               )}
               {SITE_SETTINGS?.contactPhone && (
-                <a href={`tel:${SITE_SETTINGS.contactPhone}`} className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 cursor-pointer transition-all"><Globe className="w-3 h-3"/></a>
+                <a href={`tel:${SITE_SETTINGS.contactPhone}`} className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 cursor-pointer transition-all"><Globe className="w-3 h-3" /></a>
               )}
             </div>
           </div>
@@ -3318,7 +3360,7 @@ const Footer = ({ navigate }) => {
             <div className="flex flex-col space-y-4 text-white/40 text-sm font-light">
               <button onClick={() => navigate('contact')} className="hover:text-white transition-colors text-left">Contact Us</button>
               <button onClick={() => navigate('assessment')} className="hover:text-white transition-colors text-left">Build Brand Scope</button>
-              <span className="cursor-pointer hover:text-white flex items-center gap-2 mt-4" onClick={()=>navigate('admin')}><Lock className="w-3 h-3"/> Admin Area</span>
+              <span className="cursor-pointer hover:text-white flex items-center gap-2 mt-4" onClick={() => navigate('admin')}><Lock className="w-3 h-3" /> Admin Area</span>
             </div>
           </div>
         </div>
@@ -3351,7 +3393,7 @@ const isValidContent = (val) => {
 
 const mergeWithFallback = (masterArray, sanityArray, sectionName) => {
   if (!masterArray) return [];
-  
+
   // Unknown-Entry Detection
   if (process.env.NODE_ENV === 'development' && sanityArray) {
     sanityArray.forEach(sItem => {
@@ -3367,7 +3409,7 @@ const mergeWithFallback = (masterArray, sanityArray, sectionName) => {
   return masterArray.map(masterItem => {
     // We try to match by id. If Sanity hasn't updated the schema to use IDs yet, this will fallback gracefully.
     let sanityItem = (sanityArray || []).find(item => item.id && item.id === masterItem.id);
-    
+
     // Fuzzy matching fallback just in case the Sanity schema hasn't been updated with 'id' fields yet.
     if (!sanityItem && sanityArray) {
       if (masterItem.name) sanityItem = sanityArray.find(item => item.name === masterItem.name);
@@ -3376,7 +3418,7 @@ const mergeWithFallback = (masterArray, sanityArray, sectionName) => {
     }
 
     if (!sanityItem) return masterItem;
-    
+
     const merged = { ...masterItem };
     Object.keys(masterItem).forEach(key => {
       // If Sanity has the key and it's valid, override the master.
@@ -3419,10 +3461,10 @@ export default function App() {
   const { data: sanityProblems } = useSanity(GET_PROBLEM_DATA);
   const finalProblems = sanityProblems?.length > 0 ? sortByRef(sanityProblems, PROBLEM_DATA, 'title').map(p => ({
     ...p,
-    icon: p.iconName === 'MessageSquare' ? <MessageSquare className="w-5 h-5"/> : 
-          p.iconName === 'Fingerprint' ? <Fingerprint className="w-5 h-5"/> :
-          p.iconName === 'Activity' ? <Activity className="w-5 h-5"/> :
-          p.iconName === 'Layers' ? <Layers className="w-5 h-5"/> : <Command className="w-5 h-5"/>
+    icon: p.iconName === 'MessageSquare' ? <MessageSquare className="w-5 h-5" /> :
+      p.iconName === 'Fingerprint' ? <Fingerprint className="w-5 h-5" /> :
+        p.iconName === 'Activity' ? <Activity className="w-5 h-5" /> :
+          p.iconName === 'Layers' ? <Layers className="w-5 h-5" /> : <Command className="w-5 h-5" />
   })) : PROBLEM_DATA;
 
   const { data: sanitySettings } = useSanity(GET_SITE_SETTINGS);
@@ -3444,8 +3486,8 @@ export default function App() {
       if (r) {
         sortedAcc[key] = {
           ...r,
-          icon: r.iconName === 'Fingerprint' ? <Fingerprint className="w-6 h-6"/> :
-                r.iconName === 'Lightbulb' ? <Lightbulb className="w-6 h-6"/> : <Rocket className="w-6 h-6"/>
+          icon: r.iconName === 'Fingerprint' ? <Fingerprint className="w-6 h-6" /> :
+            r.iconName === 'Lightbulb' ? <Lightbulb className="w-6 h-6" /> : <Rocket className="w-6 h-6" />
         };
       } else {
         sortedAcc[key] = ROUTES_INFO[key];
@@ -3455,8 +3497,8 @@ export default function App() {
       if (!sortedAcc[r.id]) {
         sortedAcc[r.id] = {
           ...r,
-          icon: r.iconName === 'Fingerprint' ? <Fingerprint className="w-6 h-6"/> :
-                r.iconName === 'Lightbulb' ? <Lightbulb className="w-6 h-6"/> : <Rocket className="w-6 h-6"/>
+          icon: r.iconName === 'Fingerprint' ? <Fingerprint className="w-6 h-6" /> :
+            r.iconName === 'Lightbulb' ? <Lightbulb className="w-6 h-6" /> : <Rocket className="w-6 h-6" />
         };
       }
     });
@@ -3527,13 +3569,13 @@ export default function App() {
     }
   };
 
-  useEffect(() => { 
-    window.scrollTo({ top: 0, behavior: 'auto' }); 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
 
     let title = "PurpleBlue House | Breakthrough Brand Communication";
     let description = "We co-create breakthrough brands backed by strategic logic and SciArt execution.";
 
-    switch(routeState.page) {
+    switch (routeState.page) {
       case 'about':
         title = "About Us | PurpleBlue House";
         description = "Discover our SciArt philosophy, vision, and mission to elevate innovation globally.";
@@ -3598,8 +3640,8 @@ export default function App() {
 
   return (
     <GlobalContext.Provider value={globalData}>
-    <div className="min-h-screen text-[#F4F4F5] w-[100vw] selection:text-white overflow-x-hidden font-secondary" style={{ backgroundColor: palette.bgDeep, scrollBehavior: 'smooth', '--tw-selection-color': palette.primary + '4D' }}>
-      <style>{`
+      <div className="min-h-screen text-[#F4F4F5] w-[100vw] selection:text-white overflow-x-hidden font-secondary" style={{ backgroundColor: palette.bgDeep, scrollBehavior: 'smooth', '--tw-selection-color': palette.primary + '4D' }}>
+        <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Space+Grotesk:wght@300..700&display=swap');
         
         .font-primary { font-family: ${palette.fonts.primary} !important; }
@@ -3631,37 +3673,37 @@ export default function App() {
           overflow-x: hidden;
         }
       `}</style>
-      <GlobalFilmGrain />
-      <CustomCursor />
-      {routeState.page !== 'admin' && <Header navigate={navigate} current={routeState.page} />}
-      
-      <div id="site-blur-layer" className="transition-[filter,transform,opacity] duration-300 ease-out">
-        <main className="w-full min-h-screen flex flex-col">
-          <AnimatePresence mode="wait">
-            {routeState.page === 'home' && <HomePage key="home" navigate={navigate} />}
-            {routeState.page === 'about' && <AboutPage key="about" navigate={navigate} />}
-            {routeState.page === 'method' && <MethodPage key="method" navigate={navigate} />}
-            {routeState.page === 'story' && <OurStoryPage key="story" navigate={navigate} />}
-            {routeState.page === 'team' && <TeamPage key="team" navigate={navigate} />}
-            {routeState.page === 'services' && <ServicesPage key="services" navigate={navigate} />}
-            {routeState.page === 'service-detail' && <ServiceDetailPage key="service-detail" navigate={navigate} routeId={routeState.data} />}
-            {routeState.page === 'work' && <WorkPage key="work" navigate={navigate} />}
-            {routeState.page === 'work-detail' && <WorkDetailPage key="work-detail" navigate={navigate} projectId={routeState.data} />}
-            {routeState.page === 'journal' && <JournalPage key="journal" navigate={navigate} />}
-            {routeState.page === 'article-detail' && <ArticlePage key="article-detail" navigate={navigate} articleId={routeState.data} />}
-            {routeState.page === 'contact' && <ContactPage key="contact" navigate={navigate} />}
-            {routeState.page === 'assessment' && <StrategicEngine key="engine" navigate={navigate} />}
-            {routeState.page === 'admin' && <AdminDashboard key="admin" navigate={navigate} />}
-          </AnimatePresence>
-        </main>
+        <GlobalFilmGrain />
+        <CustomCursor />
+        {routeState.page !== 'admin' && <Header navigate={navigate} current={routeState.page} />}
 
-        {routeState.page !== 'admin' && routeState.page !== 'assessment' && <Footer navigate={navigate} />}
+        <div id="site-blur-layer" className="transition-[filter,transform,opacity] duration-300 ease-out">
+          <main className="w-full min-h-screen flex flex-col">
+            <AnimatePresence mode="wait">
+              {routeState.page === 'home' && <HomePage key="home" navigate={navigate} />}
+              {routeState.page === 'about' && <AboutPage key="about" navigate={navigate} />}
+              {routeState.page === 'method' && <MethodPage key="method" navigate={navigate} />}
+              {routeState.page === 'story' && <OurStoryPage key="story" navigate={navigate} />}
+              {routeState.page === 'team' && <TeamPage key="team" navigate={navigate} />}
+              {routeState.page === 'services' && <ServicesPage key="services" navigate={navigate} />}
+              {routeState.page === 'service-detail' && <ServiceDetailPage key="service-detail" navigate={navigate} routeId={routeState.data} />}
+              {routeState.page === 'work' && <WorkPage key="work" navigate={navigate} />}
+              {routeState.page === 'work-detail' && <WorkDetailPage key="work-detail" navigate={navigate} projectId={routeState.data} />}
+              {routeState.page === 'journal' && <JournalPage key="journal" navigate={navigate} />}
+              {routeState.page === 'article-detail' && <ArticlePage key="article-detail" navigate={navigate} articleId={routeState.data} />}
+              {routeState.page === 'contact' && <ContactPage key="contact" navigate={navigate} />}
+              {routeState.page === 'assessment' && <StrategicEngine key="engine" navigate={navigate} />}
+              {routeState.page === 'admin' && <AdminDashboard key="admin" navigate={navigate} />}
+            </AnimatePresence>
+          </main>
+
+          {routeState.page !== 'admin' && routeState.page !== 'assessment' && <Footer navigate={navigate} />}
+        </div>
+
+        <AnimatePresence>
+          {activeServiceModal && <ServiceModal routeId={activeServiceModal} onClose={() => setActiveServiceModal(null)} navigate={navigate} />}
+        </AnimatePresence>
       </div>
-
-      <AnimatePresence>
-        {activeServiceModal && <ServiceModal routeId={activeServiceModal} onClose={() => setActiveServiceModal(null)} navigate={navigate} />}
-      </AnimatePresence>
-    </div>
     </GlobalContext.Provider>
   );
 }
