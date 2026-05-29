@@ -1746,9 +1746,20 @@ const HomePage = ({ navigate }) => {
         </motion.div>
 
         <div className="flex-1 flex flex-col justify-center w-full relative z-10 text-left">
-          <RevealText delay={0.1}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-1 font-primary">Breakthroughs happen</h1></RevealText>
-          <RevealText delay={0.2}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 flex items-baseline flex-wrap font-primary">when strategy and execution <AnimatedItalic className="text-white/60 ml-4">move as one.</AnimatedItalic></h1></RevealText>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs.</motion.p>
+          {renderHeroHeading(
+            SITE_SETTINGS?.homeHeroTitle,
+            "Breakthroughs happen when strategy and execution move as one.",
+            () => (
+              <>
+                <RevealText delay={0.1}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-1 font-primary">Breakthroughs happen</h1></RevealText>
+                <RevealText delay={0.2}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 flex items-baseline flex-wrap font-primary">when strategy and execution <AnimatedItalic className="text-white/60 ml-4">move as one.</AnimatedItalic></h1></RevealText>
+              </>
+            ),
+            (text) => (
+              <RevealText delay={0.1}><h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 font-primary whitespace-pre-wrap">{text}</h1></RevealText>
+            )
+          )}
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">{SITE_SETTINGS?.homeHeroSubtitle || "PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs."}</motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.7 }} className="mt-12 flex flex-col sm:flex-row gap-6">
             <PremiumButton onClick={() => navigate('assessment')} className="min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(${rgbPrimary}, 0.2)` }}>{SITE_SETTINGS.assessmentButton || 'Build My Brand Scope'} <Sparkles className="w-4 h-4 ml-2" /></PremiumButton>
             <PremiumButton variant="secondary" onClick={() => navigate('work')} className="min-w-[240px]">{SITE_SETTINGS.homeExploreButton || 'Explore Our Work'}</PremiumButton>
@@ -3390,6 +3401,13 @@ const assertParity = (masterArray, finalArray, sectionName) => {
   }
 };
 
+
+const renderHeroHeading = (sanityText, defaultText, animatedRenderer, plainRenderer) => {
+  if (!sanityText || sanityText.trim() === defaultText.trim()) {
+    return animatedRenderer();
+  }
+  return plainRenderer(sanityText);
+};
 
 export default function App() {
   const [routeState, setRouteState] = useState({ page: 'home', data: null });
