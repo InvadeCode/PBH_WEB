@@ -996,7 +996,7 @@ const StrategicEngine = ({ navigate }) => {
                 '<ul style="padding-left: 20px; color: #374151;">' + 
                 selectedDeliverables.map(d => {
                   const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
-                  return \`<li style="margin-bottom: 6px;">\${deliv ? deliv.name : d}</li>\`;
+                  return `<li style="margin-bottom: 6px;">${deliv ? deliv.name : d}</li>`;
                 }).join('') + 
                 '</ul>' 
                 : '<p style="color: #6b7280; font-style: italic;">No deliverables selected.</p>'
@@ -1009,12 +1009,12 @@ const StrategicEngine = ({ navigate }) => {
               ${QUIZ_QUESTIONS.map((q, i) => {
                   const ans = answers[q.id];
                   if (!ans) return '';
-                  return \`
+                  return `
                     <div style="margin-bottom: 16px; background: #f8fafc; padding: 16px; border-radius: 8px; border-left: 3px solid #6366f1;">
-                      <p style="margin: 0 0 8px 0; color: #0f172a; font-weight: 600; font-size: 14px;">\${q.question}</p>
-                      <p style="margin: 0; color: #475569; font-size: 13px;">\${ans.label} \${ans.desc ? \`<br/><span style="color: #94a3b8; font-size: 12px;">Notes: \${ans.desc}</span>\` : ''}</p>
+                      <p style="margin: 0 0 8px 0; color: #0f172a; font-weight: 600; font-size: 14px;">${q.question}</p>
+                      <p style="margin: 0; color: #475569; font-size: 13px;">${ans.label} ${ans.desc ? `<br/><span style="color: #94a3b8; font-size: 12px;">Notes: ${ans.desc}</span>` : ''}</p>
                     </div>
-                  \`;
+                  `;
               }).join('')}
             </div>
 
