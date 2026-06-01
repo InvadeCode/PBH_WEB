@@ -1642,11 +1642,27 @@ const StrategicEngine = ({ navigate }) => {
       console.error("Failed to generate Excel attachment:", err);
     }
 
-    const result = await sendEmailViaResend(subject, htmlContent, attachments);
+    const saveLeadPromise = fetch('/api/save-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        leadForm,
+        answers,
+        selectedDeliverables,
+        startingPoint
+      })
+    }).then(res => res.json()).catch(err => ({ success: false, error: err.message }));
+
+    const emailPromise = sendEmailViaResend(subject, htmlContent, attachments);
+
+    const [saveLeadResult, result] = await Promise.all([saveLeadPromise, emailPromise]);
     
     setIsSubmitting(false);
     
     if (result && result.success) {
+      if (!saveLeadResult.success) {
+        console.warn("Failed to save lead to Sanity:", saveLeadResult.error);
+      }
       setStep(N_QUIZ + 6);
     } else {
       alert("Failed to send the email report. Error: " + (result?.error || "Unknown Error from Resend API"));
