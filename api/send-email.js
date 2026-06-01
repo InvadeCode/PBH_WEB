@@ -12,13 +12,14 @@ export default async function handler(req, res) {
   }
 
   const { subject, htmlContent, attachments, to } = req.body;
-  // FOR TESTING: Only send to the email typed in the form (ignore PBH team)
-  const toList = [to || 'shravanikhurpe11@gmail.com'];
+  
+  // Use the email provided in the form, otherwise fallback to the admin email
+  const recipientEmail = EMAIL_TO;
 
   try {
     const payload = {
       from: EMAIL_FROM,
-      to: toList,
+      to: recipientEmail,
       subject: subject,
       html: htmlContent
     };

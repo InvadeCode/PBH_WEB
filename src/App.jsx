@@ -1642,7 +1642,7 @@ const StrategicEngine = ({ navigate }) => {
       console.error("Failed to generate Excel attachment:", err);
     }
 
-    const result = await sendEmailViaResend(subject, htmlContent, attachments, leadForm.email);
+    const result = await sendEmailViaResend(subject, htmlContent, attachments);
     
     setIsSubmitting(false);
     
