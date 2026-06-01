@@ -1378,16 +1378,17 @@ const StrategicEngine = ({ navigate }) => {
       // Create a single sheet with hidden gridlines for a clean PDF-like look
       const sheet = workbook.addWorksheet('Scope Report', { views: [{ showGridLines: false }] });
 
-      // Column Widths
-      sheet.getColumn(1).width = 30;
-      sheet.getColumn(2).width = 40;
-      sheet.getColumn(3).width = 55;
+      // Column Widths - Added a small left margin for better readability
+      sheet.getColumn(1).width = 4;
+      sheet.getColumn(2).width = 25;
+      sheet.getColumn(3).width = 40;
+      sheet.getColumn(4).width = 55;
 
       // 1. Header (Dark Purple PBH style)
-      const headerRow = sheet.addRow(["PURPLE BLUE HOUSE - SCOPE BUILDER"]);
+      const headerRow = sheet.addRow(["", "PURPLE BLUE HOUSE - SCOPE BUILDER", "", ""]);
       headerRow.font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
-      headerRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
-      sheet.mergeCells('A1:C1');
+      headerRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
+      sheet.mergeCells('B1:D1');
       headerRow.height = 35;
       headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
 
@@ -1395,18 +1396,18 @@ const StrategicEngine = ({ navigate }) => {
 
       // Helper function to add key-value rows
       const addField = (label, value) => {
-        const row = sheet.addRow([label, value]);
-        row.getCell(1).font = { bold: true, color: { argb: 'FF475569' } };
-        row.getCell(2).font = { color: { argb: 'FF0F172A' } };
-        row.getCell(1).border = { bottom: { style: 'thin', color: { argb: 'FFEEF2F6' } } };
+        const row = sheet.addRow(["", label, value, ""]);
+        row.getCell(2).font = { bold: true, color: { argb: 'FF475569' } };
+        row.getCell(3).font = { color: { argb: 'FF0F172A' } };
         row.getCell(2).border = { bottom: { style: 'thin', color: { argb: 'FFEEF2F6' } } };
-        sheet.mergeCells(`B${row.number}:C${row.number}`);
+        row.getCell(3).border = { bottom: { style: 'thin', color: { argb: 'FFEEF2F6' } } };
+        sheet.mergeCells(`C${row.number}:D${row.number}`);
       };
 
       // 2. Client Details Section
-      const clientHeader = sheet.addRow(["CLIENT DETAILS"]);
+      const clientHeader = sheet.addRow(["", "CLIENT DETAILS", "", ""]);
       clientHeader.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } }; // Indigo text
-      sheet.mergeCells(`A${clientHeader.number}:C${clientHeader.number}`);
+      sheet.mergeCells(`B${clientHeader.number}:D${clientHeader.number}`);
       
       addField("Name", leadForm.name);
       addField("Company", leadForm.company);
@@ -1415,9 +1416,9 @@ const StrategicEngine = ({ navigate }) => {
       sheet.addRow([]);
 
       // 3. Context & Timeline Section
-      const contextHeader = sheet.addRow(["CONTEXT & TIMELINE"]);
+      const contextHeader = sheet.addRow(["", "CONTEXT & TIMELINE", "", ""]);
       contextHeader.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } };
-      sheet.mergeCells(`A${contextHeader.number}:C${contextHeader.number}`);
+      sheet.mergeCells(`B${contextHeader.number}:D${contextHeader.number}`);
 
       addField("Brand Stage", leadData.stage || 'N/A');
       addField("Timeline", leadData.timeline || 'N/A');
@@ -1426,15 +1427,17 @@ const StrategicEngine = ({ navigate }) => {
       sheet.addRow([]);
 
       // 4. Deliverables Table Header
-      const tableTitleRow = sheet.addRow(["SELECTED DELIVERABLES"]);
+      const tableTitleRow = sheet.addRow(["", "SELECTED DELIVERABLES", "", ""]);
       tableTitleRow.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } };
-      sheet.mergeCells(`A${tableTitleRow.number}:C${tableTitleRow.number}`);
+      sheet.mergeCells(`B${tableTitleRow.number}:D${tableTitleRow.number}`);
 
-      const tableHeaderRow = sheet.addRow(["ROUTE", "CATEGORY / LINE ITEM", "DELIVERABLE NAME"]);
+      const tableHeaderRow = sheet.addRow(["", "ROUTE", "CATEGORY / LINE ITEM", "DELIVERABLE NAME"]);
       tableHeaderRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
       tableHeaderRow.height = 25;
-      tableHeaderRow.eachCell(cell => {
-        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF6366F1' } }; // Indigo Fill
+      
+      [2, 3, 4].forEach(colIdx => {
+        const cell = tableHeaderRow.getCell(colIdx);
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF6366F1' } };
         cell.alignment = { vertical: 'middle' };
         cell.border = {
           top: { style: 'thin', color: { argb: 'FF4F46E5' } },
@@ -1444,21 +1447,34 @@ const StrategicEngine = ({ navigate }) => {
         };
       });
 
-      // 5. Deliverables Data
+      // 5. Deliverables Data with Zebra Striping
+      let rowIndex = 0;
+      
+      const addDataRow = (routeTitle, lineItemName, deliverableName) => {
+        const row = sheet.addRow(["", routeTitle, lineItemName, deliverableName]);
+        const isEven = rowIndex % 2 === 0;
+        
+        [2, 3, 4].forEach(colIdx => {
+          const cell = row.getCell(colIdx);
+          cell.font = { color: { argb: 'FF334155' } };
+          if (isEven) {
+            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF8FAFC' } };
+          }
+          cell.border = {
+            bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+            left: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+            right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
+          };
+        });
+        rowIndex++;
+      };
+
       Object.keys(groupedDeliverables).forEach(routeId => {
         const route = groupedDeliverables[routeId];
         Object.keys(route.lineItems).forEach(liId => {
           const li = route.lineItems[liId];
           li.items.forEach(d => {
-            const row = sheet.addRow([route.title, li.name, d.name]);
-            row.eachCell(cell => {
-              cell.font = { color: { argb: 'FF334155' } };
-              cell.border = {
-                bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } },
-                left: { style: 'thin', color: { argb: 'FFE2E8F0' } },
-                right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
-              };
-            });
+            addDataRow(route.title, li.name, d.name);
           });
         });
       });
@@ -1466,15 +1482,7 @@ const StrategicEngine = ({ navigate }) => {
       // Ungrouped Data
       ungroupedIds.forEach(dId => {
         const deliv = DELIVERABLES_MASTER.find(x => x.id === dId);
-        const row = sheet.addRow(["Other", "Ungrouped", deliv ? deliv.name : dId]);
-        row.eachCell(cell => {
-          cell.font = { color: { argb: 'FF334155' } };
-          cell.border = {
-            bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } },
-            left: { style: 'thin', color: { argb: 'FFE2E8F0' } },
-            right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
-          };
-        });
+        addDataRow("Other", "Ungrouped", deliv ? deliv.name : dId);
       });
 
       // Write to ArrayBuffer and convert to Base64 in browser
