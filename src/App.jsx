@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
 import { jsPDF } from 'jspdf';
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 import { useSanity } from './lib/useSanity';
 import { CASE_STUDIES_QUERY, GET_JOURNAL_ARTICLES, GET_PROBLEM_DATA, GET_QUIZ_QUESTIONS, GET_ROUTES_INFO, GET_DELIVERABLES, GET_SITE_SETTINGS, GET_TEAM_MEMBERS, GET_CORE_VALUES, GET_TIMELINE, GET_FRAMEWORK, GET_FAQS } from './lib/sanityQueries';
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useSpring, useMotionValue, useMotionTemplate, useAnimationFrame } from 'framer-motion';
@@ -1373,52 +1373,119 @@ const StrategicEngine = ({ navigate }) => {
 
     // Generate Comprehensive Excel Sheet Attachment
     try {
-      const excelData = [];
+      const workbook = new ExcelJS.Workbook();
+      workbook.creator = 'Purple Blue House';
+      // Create a single sheet with hidden gridlines for a clean PDF-like look
+      const sheet = workbook.addWorksheet('Scope Report', { views: [{ showGridLines: false }] });
+
+      // Column Widths
+      sheet.getColumn(1).width = 30;
+      sheet.getColumn(2).width = 40;
+      sheet.getColumn(3).width = 55;
+
+      // 1. Header (Dark Purple PBH style)
+      const headerRow = sheet.addRow(["PURPLE BLUE HOUSE - SCOPE BUILDER"]);
+      headerRow.font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
+      headerRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
+      sheet.mergeCells('A1:C1');
+      headerRow.height = 35;
+      headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+
+      sheet.addRow([]);
+
+      // Helper function to add key-value rows
+      const addField = (label, value) => {
+        const row = sheet.addRow([label, value]);
+        row.getCell(1).font = { bold: true, color: { argb: 'FF475569' } };
+        row.getCell(2).font = { color: { argb: 'FF0F172A' } };
+        row.getCell(1).border = { bottom: { style: 'thin', color: { argb: 'FFEEF2F6' } } };
+        row.getCell(2).border = { bottom: { style: 'thin', color: { argb: 'FFEEF2F6' } } };
+        sheet.mergeCells(`B${row.number}:C${row.number}`);
+      };
+
+      // 2. Client Details Section
+      const clientHeader = sheet.addRow(["CLIENT DETAILS"]);
+      clientHeader.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } }; // Indigo text
+      sheet.mergeCells(`A${clientHeader.number}:C${clientHeader.number}`);
       
-      // 1. Client & Context Section
-      excelData.push(["PURPLE BLUE HOUSE - SCOPE BUILDER", "", ""]);
-      excelData.push(["", "", ""]);
-      
-      excelData.push(["CLIENT DETAILS", "", ""]);
-      excelData.push(["Name", leadForm.name, ""]);
-      excelData.push(["Company", leadForm.company, ""]);
-      excelData.push(["Email", leadForm.email, ""]);
-      excelData.push(["", "", ""]);
-      
-      excelData.push(["CONTEXT & TIMELINE", "", ""]);
-      excelData.push(["Brand Stage", leadData.stage || 'N/A', ""]);
-      excelData.push(["Timeline", leadData.timeline || 'N/A', ""]);
-      excelData.push(["Suggested Starting Point", startingPoint, ""]);
-      excelData.push(["", "", ""]);
-      
-      // 2. Deliverables Table Section
-      excelData.push(["SELECTED DELIVERABLES", "", ""]);
-      excelData.push(["ROUTE", "CATEGORY / LINE ITEM", "DELIVERABLE NAME"]);
-      
+      addField("Name", leadForm.name);
+      addField("Company", leadForm.company);
+      addField("Email", leadForm.email);
+
+      sheet.addRow([]);
+
+      // 3. Context & Timeline Section
+      const contextHeader = sheet.addRow(["CONTEXT & TIMELINE"]);
+      contextHeader.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } };
+      sheet.mergeCells(`A${contextHeader.number}:C${contextHeader.number}`);
+
+      addField("Brand Stage", leadData.stage || 'N/A');
+      addField("Timeline", leadData.timeline || 'N/A');
+      addField("Suggested Starting Point", startingPoint);
+
+      sheet.addRow([]);
+
+      // 4. Deliverables Table Header
+      const tableTitleRow = sheet.addRow(["SELECTED DELIVERABLES"]);
+      tableTitleRow.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } };
+      sheet.mergeCells(`A${tableTitleRow.number}:C${tableTitleRow.number}`);
+
+      const tableHeaderRow = sheet.addRow(["ROUTE", "CATEGORY / LINE ITEM", "DELIVERABLE NAME"]);
+      tableHeaderRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
+      tableHeaderRow.height = 25;
+      tableHeaderRow.eachCell(cell => {
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF6366F1' } }; // Indigo Fill
+        cell.alignment = { vertical: 'middle' };
+        cell.border = {
+          top: { style: 'thin', color: { argb: 'FF4F46E5' } },
+          bottom: { style: 'thin', color: { argb: 'FF4F46E5' } },
+          left: { style: 'thin', color: { argb: 'FFFFFFFF' } },
+          right: { style: 'thin', color: { argb: 'FFFFFFFF' } }
+        };
+      });
+
+      // 5. Deliverables Data
       Object.keys(groupedDeliverables).forEach(routeId => {
         const route = groupedDeliverables[routeId];
         Object.keys(route.lineItems).forEach(liId => {
           const li = route.lineItems[liId];
           li.items.forEach(d => {
-            excelData.push([route.title, li.name, d.name]);
+            const row = sheet.addRow([route.title, li.name, d.name]);
+            row.eachCell(cell => {
+              cell.font = { color: { argb: 'FF334155' } };
+              cell.border = {
+                bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+                left: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+                right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
+              };
+            });
           });
         });
       });
-      
+
+      // Ungrouped Data
       ungroupedIds.forEach(dId => {
         const deliv = DELIVERABLES_MASTER.find(x => x.id === dId);
-        excelData.push(["Other", "Ungrouped", deliv ? deliv.name : dId]);
+        const row = sheet.addRow(["Other", "Ungrouped", deliv ? deliv.name : dId]);
+        row.eachCell(cell => {
+          cell.font = { color: { argb: 'FF334155' } };
+          cell.border = {
+            bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+            left: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+            right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
+          };
+        });
       });
+
+      // Write to ArrayBuffer and convert to Base64 in browser
+      const buffer = await workbook.xlsx.writeBuffer();
+      let binary = '';
+      const bytes = new Uint8Array(buffer);
+      for (let i = 0; i < bytes.byteLength; i++) {
+          binary += String.fromCharCode(bytes[i]);
+      }
+      const excelBase64 = window.btoa(binary);
       
-      const ws = XLSX.utils.aoa_to_sheet(excelData);
-      
-      // Auto-size columns for a clean look
-      ws['!cols'] = [{wch: 30}, {wch: 40}, {wch: 50}];
-      
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Scope Report");
-      
-      const excelBase64 = XLSX.write(wb, { bookType: 'xlsx', type: 'base64' });
       attachments.push({ filename: `${safeCompanyName}_scope_report.xlsx`, content: excelBase64 });
     } catch (err) {
       console.error("Failed to generate Excel attachment:", err);
