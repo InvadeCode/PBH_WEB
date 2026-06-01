@@ -4,19 +4,22 @@ export default async function handler(req, res) {
   }
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
-  const EMAIL_FROM = process.env.EMAIL_FROM || 'PBH Scope Builder <no-reply@emails.liaisonit.com>';
-  const EMAIL_TO = process.env.EMAIL_TO || 'preciselyupdates@purplebluehouse.com';
+  const EMAIL_FROM = process.env.EMAIL_FROM || 'PBH Client <no-reply@emails.liaisonit.com>';
+  const EMAIL_TO = process.env.EMAIL_TO || 'shravanikhurpe11@gmail.com';
 
   if (!RESEND_API_KEY) {
     return res.status(500).json({ success: false, error: 'Missing RESEND_API_KEY environment variable.' });
   }
 
-  const { subject, htmlContent, attachments } = req.body;
+  const { subject, htmlContent, attachments, to } = req.body;
+  
+  // Use the email provided in the form, otherwise fallback to the admin email
+  const recipientEmail = to || EMAIL_TO;
 
   try {
     const payload = {
       from: EMAIL_FROM,
-      to: EMAIL_TO,
+      to: recipientEmail,
       subject: subject,
       html: htmlContent
     };
