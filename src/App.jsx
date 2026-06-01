@@ -1533,8 +1533,11 @@ const StrategicEngine = ({ navigate }) => {
         let rowIdx = 0;
         Object.keys(route.lineItems).forEach(liId => {
           const li = route.lineItems[liId];
-          li.items.forEach(d => {
-            const row = sheet.addRow(["", serialNo, li.name, d.name]);
+          const startRow = sheet.rowCount + 1;
+          
+          li.items.forEach((d, idx) => {
+            const liName = idx === 0 ? li.name : "";
+            const row = sheet.addRow(["", serialNo, liName, d.name]);
             const isEven = rowIdx % 2 === 0;
 
             [2, 3, 4].forEach(colIdx => {
@@ -1551,10 +1554,28 @@ const StrategicEngine = ({ navigate }) => {
             });
             // Number column alignment
             row.getCell(2).alignment = { horizontal: 'center', vertical: 'middle' };
+            
+            // Deliverable column alignment
+            row.getCell(4).alignment = { vertical: 'middle', wrapText: true };
 
             serialNo++;
             rowIdx++;
           });
+          
+          const endRow = sheet.rowCount;
+          if (endRow > startRow) {
+            sheet.mergeCells(`C${startRow}:C${endRow}`);
+          }
+          const groupCell = sheet.getCell(`C${startRow}`);
+          groupCell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+          // Keep the background consistent for the merged cell (take the first row's bg)
+          const firstRowEven = (rowIdx - li.items.length) % 2 === 0;
+          if (firstRowEven) {
+             groupCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F3FF' } };
+          } else {
+             // In case there is no fill on odd rows, ensure it's white to cover grid if any
+             groupCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
+          }
         });
 
         // Spacer row between routes
