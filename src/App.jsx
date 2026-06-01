@@ -953,6 +953,40 @@ const StrategicEngine = ({ navigate }) => {
     const leadData = { ...leadForm, stage: answers.stage?.label, clusters, routes, deliverables: selectedDeliverables, ...context, startingPoint, date: new Date().toISOString(), status: 'New', score: Math.floor(Math.random() * 40) + 60 };
     GLOBAL_LEADS.push(leadData);
 
+    // Group deliverables by Route and LineItem for both Email and PDF
+    const groupedDeliverables = {};
+    const groupedIds = new Set();
+    
+    selectedDeliverables.forEach(d => {
+      const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
+      if (!deliv) return;
+      
+      const lineItemId = deliv.lineItem;
+      let routeId = null;
+      let lineItemName = '';
+      
+      for (const [rId, route] of Object.entries(ROUTES_INFO)) {
+        const li = route.lineItems.find(x => x.id === lineItemId);
+        if (li) {
+          routeId = rId;
+          lineItemName = li.name;
+          break;
+        }
+      }
+      
+      if (routeId) {
+        if (!groupedDeliverables[routeId]) {
+          groupedDeliverables[routeId] = { title: ROUTES_INFO[routeId].title, lineItems: {} };
+        }
+        if (!groupedDeliverables[routeId].lineItems[lineItemId]) {
+          groupedDeliverables[routeId].lineItems[lineItemId] = { name: lineItemName, items: [] };
+        }
+        groupedDeliverables[routeId].lineItems[lineItemId].items.push(deliv);
+        groupedIds.add(d);
+      }
+    });
+    const ungroupedIds = selectedDeliverables.filter(d => !groupedIds.has(d));
+
     const subject = `New Lead: ${leadForm.company} - Scope Builder`;
     const htmlContent = `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #F3F4F6; padding: 40px 20px;">
@@ -993,15 +1027,37 @@ const StrategicEngine = ({ navigate }) => {
             <!-- Deliverables -->
             <h2 style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid #eef2f6; padding-bottom: 10px;">Selected Deliverables (${selectedDeliverables.length})</h2>
             <div style="margin-bottom: 30px;">
-              ${selectedDeliverables.length > 0 ? 
-                '<ul style="padding-left: 20px; color: #374151;">' + 
-                selectedDeliverables.map(d => {
-                  const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
-                  return `<li style="margin-bottom: 6px;">${deliv ? deliv.name : d}</li>`;
-                }).join('') + 
-                '</ul>' 
-                : '<p style="color: #6b7280; font-style: italic;">No deliverables selected.</p>'
-              }
+              ${selectedDeliverables.length === 0 ? '<p style="color: #6b7280; font-style: italic;">No deliverables selected.</p>' : ''}
+              ${Object.keys(groupedDeliverables).map(routeId => {
+                const route = groupedDeliverables[routeId];
+                return `
+                  <div style="margin-bottom: 20px;">
+                    <h3 style="color: #1e1e38; font-size: 14px; text-transform: uppercase; margin: 0 0 10px 0;">${route.title}</h3>
+                    ${Object.keys(route.lineItems).map(liId => {
+                      const li = route.lineItems[liId];
+                      return `
+                        <div style="margin-bottom: 12px; padding-left: 10px; border-left: 2px solid #eef2f6;">
+                          <h4 style="color: #64748b; font-size: 13px; font-weight: 600; margin: 0 0 6px 0;">${li.name}</h4>
+                          <ul style="margin: 0; padding-left: 20px; color: #374151; font-size: 13px;">
+                            ${li.items.map(d => `<li style="margin-bottom: 4px;">${d.name}</li>`).join('')}
+                          </ul>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                `;
+              }).join('')}
+              ${ungroupedIds.length > 0 ? `
+                  <div style="margin-bottom: 20px;">
+                    <h3 style="color: #1e1e38; font-size: 14px; text-transform: uppercase; margin: 0 0 10px 0;">Other Deliverables</h3>
+                    <ul style="margin: 0; padding-left: 20px; color: #374151; font-size: 13px;">
+                      ${ungroupedIds.map(d => {
+                        const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
+                        return `<li style="margin-bottom: 4px;">${deliv ? deliv.name : d}</li>`;
+                      }).join('')}
+                    </ul>
+                  </div>
+              ` : ''}
             </div>
             
             <!-- Quiz Responses -->
@@ -1164,42 +1220,9 @@ const StrategicEngine = ({ navigate }) => {
     console.log('[PDF DEBUG] selectedDeliverables:', selectedDeliverables);
     console.log('[PDF DEBUG] Total selected:', selectedDeliverables.length);
     
-    // 1. Group deliverables by Route and LineItem
-    const groupedDeliverables = {};
-    const groupedIds = new Set();
-    
-    selectedDeliverables.forEach(d => {
-      const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
-      if (!deliv) return;
-      
-      const lineItemId = deliv.lineItem;
-      let routeId = null;
-      let lineItemName = '';
-      
-      for (const [rId, route] of Object.entries(ROUTES_INFO)) {
-        const li = route.lineItems.find(x => x.id === lineItemId);
-        if (li) {
-          routeId = rId;
-          lineItemName = li.name;
-          break;
-        }
-      }
-      
-      if (routeId) {
-        if (!groupedDeliverables[routeId]) {
-          groupedDeliverables[routeId] = { title: ROUTES_INFO[routeId].title, lineItems: {} };
-        }
-        if (!groupedDeliverables[routeId].lineItems[lineItemId]) {
-          groupedDeliverables[routeId].lineItems[lineItemId] = { name: lineItemName, items: [] };
-        }
-        groupedDeliverables[routeId].lineItems[lineItemId].items.push(deliv);
-        groupedIds.add(d);
-      }
-    });
-
+    // Grouping is now done above for the email as well
     console.log('[PDF DEBUG] groupedDeliverables:', JSON.stringify(groupedDeliverables, null, 2));
-    console.log('[PDF DEBUG] groupedIds:', [...groupedIds]);
-    console.log('[PDF DEBUG] ungrouped:', selectedDeliverables.filter(d => !groupedIds.has(d)));
+    console.log('[PDF DEBUG] ungroupedIds:', ungroupedIds);
 
     const colWidth = (usableW - 15) / 2;
 
