@@ -1227,15 +1227,16 @@ const StrategicEngine = ({ navigate }) => {
         doc.text(liData.name, margin + 5, y);
         y += 15;
         
-        // Determine route colors
-        let fillColor = [248, 245, 255]; // STC default
+        // Determine route colors - strictly shades of purple
+        let fillColor = [248, 245, 255]; // Lightest purple (STC)
         let strokeColor = [220, 215, 240];
+        
         if (routeId === 'BB') {
-          fillColor = [252, 245, 255]; // Pinkish
-          strokeColor = [238, 215, 245];
+          fillColor = [240, 235, 255]; // Slightly deeper light purple
+          strokeColor = [210, 200, 240];
         } else if (routeId === 'SAS') {
-          fillColor = [245, 248, 255]; // Bluish
-          strokeColor = [215, 230, 250];
+          fillColor = [244, 240, 255]; // Mid light purple
+          strokeColor = [215, 205, 240];
         }
 
         // Draw 2-column grid of deliverables for this line item
