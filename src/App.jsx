@@ -1124,9 +1124,9 @@ const StrategicEngine = ({ navigate }) => {
         doc.setFont('helvetica', 'bold');
         doc.text(ansLines, margin + 35, currentY);
         
-        // Accent Arrow
+        // Accent Arrow (Changed from ↳ to • to fix font rendering issue)
         doc.setTextColor(99, 102, 241); // Indigo
-        doc.text("↳", margin + 18, currentY);
+        doc.text("•", margin + 18, currentY);
         
         currentY += ansLines.length * 12 + 2;
 
@@ -1227,6 +1227,17 @@ const StrategicEngine = ({ navigate }) => {
         doc.text(liData.name, margin + 5, y);
         y += 15;
         
+        // Determine route colors
+        let fillColor = [248, 245, 255]; // STC default
+        let strokeColor = [220, 215, 240];
+        if (routeId === 'BB') {
+          fillColor = [252, 245, 255]; // Pinkish
+          strokeColor = [238, 215, 245];
+        } else if (routeId === 'SAS') {
+          fillColor = [245, 248, 255]; // Bluish
+          strokeColor = [215, 230, 250];
+        }
+
         // Draw 2-column grid of deliverables for this line item
         const items = liData.items;
         for (let i = 0; i < items.length; i += 2) {
@@ -1234,8 +1245,8 @@ const StrategicEngine = ({ navigate }) => {
           
           // Draw Left Card
           const d1 = items[i];
-          doc.setFillColor(248, 245, 255);
-          doc.setDrawColor(220, 215, 240);
+          doc.setFillColor(...fillColor);
+          doc.setDrawColor(...strokeColor);
           doc.roundedRect(margin, y, colWidth, 34, 4, 4, 'FD');
           
           doc.setTextColor(99, 102, 241); // Indigo
@@ -1253,8 +1264,8 @@ const StrategicEngine = ({ navigate }) => {
             const d2 = items[i + 1];
             const rightX = margin + colWidth + 15;
             
-            doc.setFillColor(248, 245, 255);
-            doc.setDrawColor(220, 215, 240);
+            doc.setFillColor(...fillColor);
+            doc.setDrawColor(...strokeColor);
             doc.roundedRect(rightX, y, colWidth, 34, 4, 4, 'FD');
             
             doc.setTextColor(99, 102, 241);
