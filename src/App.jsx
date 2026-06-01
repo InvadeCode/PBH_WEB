@@ -1050,6 +1050,62 @@ const StrategicEngine = ({ navigate }) => {
     addText(`Company: ${leadForm.company}`, 12, [80, 80, 80]);
     addText(`Email: ${leadForm.email}`, 12, [80, 80, 80]);
 
+    // Detailed Diagnostic Responses
+    addSectionHeader('Diagnostic Responses');
+    QUIZ_QUESTIONS.forEach((q, i) => {
+      const ans = answers[q.id];
+      if (ans) {
+        // Calculate height
+        const titleLines = doc.splitTextToSize(`Q${i + 1}. ${q.title}`, usableW - 20);
+        const ansLines = doc.splitTextToSize(`${ans.label}`, usableW - 40);
+        let notesLines = [];
+        let blockHeight = 15 + (titleLines.length * 14) + (ansLines.length * 12) + 15;
+        if (ans.desc) {
+          notesLines = doc.splitTextToSize(`Notes: ${ans.desc}`, usableW - 40);
+          blockHeight += (notesLines.length * 12) + 5;
+        }
+
+        checkPage(blockHeight + 15);
+        
+        // Draw Background Block
+        doc.setFillColor(252, 252, 254);
+        doc.setDrawColor(225, 225, 235);
+        doc.roundedRect(margin, y, usableW, blockHeight, 6, 6, 'FD');
+        
+        let currentY = y + 20;
+        
+        // Question Title
+        doc.setFontSize(11);
+        doc.setTextColor(20, 20, 40);
+        doc.setFont('helvetica', 'bold');
+        doc.text(titleLines, margin + 15, currentY);
+        currentY += titleLines.length * 14 + 5;
+        
+        // Answer
+        doc.setFontSize(10);
+        doc.setTextColor(80, 80, 100);
+        doc.setFont('helvetica', 'bold');
+        doc.text(ansLines, margin + 35, currentY);
+        
+        // Accent Arrow
+        doc.setTextColor(99, 102, 241); // Indigo
+        doc.text("↳", margin + 18, currentY);
+        
+        currentY += ansLines.length * 12 + 2;
+
+        // Notes
+        if (ans.desc) {
+            currentY += 5;
+            doc.setFontSize(9);
+            doc.setTextColor(130, 130, 140);
+            doc.setFont('helvetica', 'normal');
+            doc.text(notesLines, margin + 35, currentY);
+        }
+        
+        y += blockHeight + 12;
+      }
+    });
+
     // Strategy Blueprint
     addSectionHeader('Strategy Blueprint');
     const blueprintItems = [
@@ -1121,22 +1177,6 @@ const StrategicEngine = ({ navigate }) => {
     }
     
     y += 10;
-
-    // Quiz Responses
-    addSectionHeader('Detailed Diagnostic Responses');
-    QUIZ_QUESTIONS.forEach((q, i) => {
-      const ans = answers[q.id];
-      if (ans) {
-        addText(`Q${i + 1}. ${q.title}`, 11, [40, 40, 60], true);
-        y += 2;
-        addText(`>  ${ans.label}`, 10, [80, 80, 120], false, 15);
-        if (ans.desc) {
-            y += 2;
-            addText(`Notes: ${ans.desc}`, 9, [120, 120, 120], false, 15);
-        }
-        y += 12;
-      }
-    });
 
     // Add footers to all pages
     const pageCount = doc.internal.getNumberOfPages();
