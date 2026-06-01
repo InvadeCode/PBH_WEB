@@ -1124,8 +1124,12 @@ const StrategicEngine = ({ navigate }) => {
     // Selected Deliverables
     addSectionHeader('Selected Deliverables');
     
+    console.log('[PDF DEBUG] selectedDeliverables:', selectedDeliverables);
+    console.log('[PDF DEBUG] Total selected:', selectedDeliverables.length);
+    
     // 1. Group deliverables by Route and LineItem
     const groupedDeliverables = {};
+    const groupedIds = new Set();
     
     selectedDeliverables.forEach(d => {
       const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
@@ -1152,8 +1156,13 @@ const StrategicEngine = ({ navigate }) => {
           groupedDeliverables[routeId].lineItems[lineItemId] = { name: lineItemName, items: [] };
         }
         groupedDeliverables[routeId].lineItems[lineItemId].items.push(deliv);
+        groupedIds.add(d);
       }
     });
+
+    console.log('[PDF DEBUG] groupedDeliverables:', JSON.stringify(groupedDeliverables, null, 2));
+    console.log('[PDF DEBUG] groupedIds:', [...groupedIds]);
+    console.log('[PDF DEBUG] ungrouped:', selectedDeliverables.filter(d => !groupedIds.has(d)));
 
     const colWidth = (usableW - 15) / 2;
 
@@ -1228,6 +1237,52 @@ const StrategicEngine = ({ navigate }) => {
       });
       y += 10; // Space after a route
     });
+
+    // Fallback: render any deliverables that were NOT grouped (safety net)
+    const ungrouped = selectedDeliverables.filter(d => !groupedIds.has(d));
+    if (ungrouped.length > 0) {
+      checkPage(40);
+      y += 10;
+      doc.setFontSize(12);
+      doc.setTextColor(30, 30, 60);
+      doc.setFont('helvetica', 'bold');
+      doc.text('OTHER DELIVERABLES', margin, y);
+      y += 20;
+      
+      for (let i = 0; i < ungrouped.length; i += 2) {
+        checkPage(45);
+        const d1 = DELIVERABLES_MASTER.find(x => x.id === ungrouped[i]);
+        const name1 = d1 ? d1.name : ungrouped[i];
+        
+        doc.setFillColor(250, 250, 253);
+        doc.setDrawColor(220, 220, 235);
+        doc.roundedRect(margin, y, colWidth, 34, 4, 4, 'FD');
+        doc.setTextColor(99, 102, 241);
+        doc.setFontSize(14);
+        doc.text("•", margin + 12, y + 22);
+        doc.setTextColor(40, 40, 50);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.text(name1, margin + 28, y + 21);
+        
+        if (i + 1 < ungrouped.length) {
+          const d2 = DELIVERABLES_MASTER.find(x => x.id === ungrouped[i + 1]);
+          const name2 = d2 ? d2.name : ungrouped[i + 1];
+          const rightX = margin + colWidth + 15;
+          doc.setFillColor(250, 250, 253);
+          doc.setDrawColor(220, 220, 235);
+          doc.roundedRect(rightX, y, colWidth, 34, 4, 4, 'FD');
+          doc.setTextColor(99, 102, 241);
+          doc.setFontSize(14);
+          doc.text("•", rightX + 12, y + 22);
+          doc.setTextColor(40, 40, 50);
+          doc.setFontSize(10);
+          doc.setFont('helvetica', 'bold');
+          doc.text(name2, rightX + 28, y + 21);
+        }
+        y += 44;
+      }
+    }
 
     // Add footers to all pages
     const pageCount = doc.internal.getNumberOfPages();
