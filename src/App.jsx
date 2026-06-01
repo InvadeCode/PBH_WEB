@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
+import { jsPDF } from 'jspdf';
 import { useSanity } from './lib/useSanity';
 import { CASE_STUDIES_QUERY, GET_JOURNAL_ARTICLES, GET_PROBLEM_DATA, GET_QUIZ_QUESTIONS, GET_ROUTES_INFO, GET_DELIVERABLES, GET_SITE_SETTINGS, GET_TEAM_MEMBERS, GET_CORE_VALUES, GET_TIMELINE, GET_FRAMEWORK, GET_FAQS } from './lib/sanityQueries';
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useSpring, useMotionValue, useMotionTemplate, useAnimationFrame } from 'framer-motion';
@@ -989,41 +990,91 @@ const StrategicEngine = ({ navigate }) => {
       </div>
     `;
 
-    // Generate Comprehensive File Attachment
-    let reportText = `PBH SCOPE BUILDER - COMPREHENSIVE RESPONSES\n`;
-    reportText += `Generated: ${new Date().toLocaleString()}\n\n`;
-    reportText += `--- CLIENT DETAILS ---\n`;
-    reportText += `Name: ${leadForm.name}\n`;
-    reportText += `Email: ${leadForm.email}\n`;
-    reportText += `Company: ${leadForm.company}\n\n`;
-    
-    reportText += `--- QUIZ RESPONSES ---\n`;
+    // Generate Comprehensive PDF Attachment
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+    const pageW = doc.internal.pageSize.getWidth();
+    const margin = 48;
+    const usableW = pageW - margin * 2;
+    let y = 60;
+
+    const addText = (text, size, color, bold = false, indent = 0) => {
+      if (y > doc.internal.pageSize.getHeight() - 60) { doc.addPage(); y = 60; }
+      doc.setFontSize(size);
+      doc.setTextColor(...color);
+      doc.setFont('helvetica', bold ? 'bold' : 'normal');
+      const lines = doc.splitTextToSize(text, usableW - indent);
+      doc.text(lines, margin + indent, y);
+      y += lines.length * size * 1.4;
+    };
+
+    const addDivider = () => {
+      if (y > doc.internal.pageSize.getHeight() - 80) { doc.addPage(); y = 60; }
+      doc.setDrawColor(200, 200, 200);
+      doc.line(margin, y, pageW - margin, y);
+      y += 16;
+    };
+
+    // Header
+    doc.setFillColor(18, 18, 40);
+    doc.rect(0, 0, pageW, 80, 'F');
+    doc.setFontSize(20);
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.text('PBH Scope Builder', margin, 38);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(180, 180, 220);
+    doc.text('Comprehensive Client Response Report', margin, 56);
+    doc.setFontSize(9);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, pageW - margin, 56, { align: 'right' });
+    y = 100;
+
+    // Client Details
+    addText('CLIENT DETAILS', 11, [100, 100, 200], true);
+    y += 4;
+    addText(`Name: ${leadForm.name}`, 10, [40, 40, 40]);
+    addText(`Email: ${leadForm.email}`, 10, [40, 40, 40]);
+    addText(`Company: ${leadForm.company}`, 10, [40, 40, 40]);
+    y += 8;
+    addDivider();
+
+    // Quiz Responses
+    addText('QUIZ RESPONSES', 11, [100, 100, 200], true);
+    y += 4;
     QUIZ_QUESTIONS.forEach((q, i) => {
       const ans = answers[q.id];
       if (ans) {
-        reportText += `Q${i+1}: ${q.question}\n`;
-        reportText += `Selected: ${ans.label}\n`;
-        if (ans.desc) reportText += `Detail: ${ans.desc}\n`;
-        reportText += `\n`;
+        addText(`Q${i + 1}: ${q.question}`, 10, [30, 30, 30], true);
+        addText(`Selected: ${ans.label}`, 10, [60, 60, 140], false, 12);
+        if (ans.desc) addText(`Detail: ${ans.desc}`, 9, [100, 100, 100], false, 12);
+        y += 6;
       }
     });
+    addDivider();
 
-    reportText += `--- STRATEGY BLUEPRINT ---\n`;
-    reportText += `Brand Stage: ${leadData.stage}\n`;
-    reportText += `Engagement Depth: ${leadData.depth}\n`;
-    reportText += `Timeline: ${leadData.timeline}\n`;
-    reportText += `Suggested Starting Point: ${startingPoint}\n\n`;
+    // Strategy Blueprint
+    addText('STRATEGY BLUEPRINT', 11, [100, 100, 200], true);
+    y += 4;
+    addText(`Brand Stage: ${leadData.stage}`, 10, [40, 40, 40]);
+    addText(`Engagement Depth: ${leadData.depth}`, 10, [40, 40, 40]);
+    addText(`Timeline: ${leadData.timeline}`, 10, [40, 40, 40]);
+    addText(`Suggested Starting Point: ${startingPoint}`, 10, [40, 40, 40]);
+    y += 8;
+    addDivider();
 
-    reportText += `--- SELECTED DELIVERABLES ---\n`;
+    // Selected Deliverables
+    addText('SELECTED DELIVERABLES', 11, [100, 100, 200], true);
+    y += 4;
     selectedDeliverables.forEach(d => {
       const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
       const prio = priorities[d] || 'Standard';
-      reportText += `- [${prio}] ${deliv ? deliv.name : d}\n`;
+      const warn = warnings.includes(d) ? ' ⚠ Prereqs Missed' : '';
+      addText(`• [${prio}] ${deliv ? deliv.name : d}${warn}`, 10, [40, 40, 40], false, 8);
     });
 
     const safeCompanyName = leadForm.company ? leadForm.company.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'client';
-    const base64Report = btoa(unescape(encodeURIComponent(reportText)));
-    const attachments = [{ filename: `${safeCompanyName}_scope_responses.txt`, content: base64Report }];
+    const pdfBase64 = doc.output('datauristring').split(',')[1];
+    const attachments = [{ filename: `${safeCompanyName}_scope_report.pdf`, content: pdfBase64 }];
 
     await sendEmailViaResend(subject, htmlContent, attachments);
     
