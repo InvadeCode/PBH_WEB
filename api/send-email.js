@@ -13,13 +13,17 @@ export default async function handler(req, res) {
 
   const { subject, htmlContent, attachments, to } = req.body;
   
-  // Use the email provided in the form, otherwise fallback to the admin email
-  const recipientEmail = to || EMAIL_TO;
+  // Determine recipients: ALWAYS send to the internal team (EMAIL_TO)
+  // If the user provided an email (to), send to them as well.
+  const toList = [EMAIL_TO];
+  if (to && to !== EMAIL_TO) {
+    toList.push(to);
+  }
 
   try {
     const payload = {
       from: EMAIL_FROM,
-      to: recipientEmail,
+      to: toList,
       subject: subject,
       html: htmlContent
     };
