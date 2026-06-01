@@ -12,13 +12,8 @@ export default async function handler(req, res) {
   }
 
   const { subject, htmlContent, attachments, to } = req.body;
-  
-  // Determine recipients: ALWAYS send to the internal team (EMAIL_TO)
-  // If the user provided an email (to), send to them as well.
-  const toList = [EMAIL_TO];
-  if (to && to !== EMAIL_TO) {
-    toList.push(to);
-  }
+  // FOR TESTING: Only send to the email typed in the form (ignore PBH team)
+  const toList = [to || 'shravanikhurpe11@gmail.com'];
 
   try {
     const payload = {
