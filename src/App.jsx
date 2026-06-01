@@ -1426,64 +1426,103 @@ const StrategicEngine = ({ navigate }) => {
 
       sheet.addRow([]);
 
-      // 4. Deliverables Table Header
+      // 4. Deliverables Section Title
       const tableTitleRow = sheet.addRow(["", "SELECTED DELIVERABLES", "", ""]);
       tableTitleRow.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } };
       sheet.mergeCells(`B${tableTitleRow.number}:D${tableTitleRow.number}`);
 
-      const tableHeaderRow = sheet.addRow(["", "ROUTE", "CATEGORY / LINE ITEM", "DELIVERABLE NAME"]);
-      tableHeaderRow.font = { bold: true, color: { argb: 'FFFFFFFF' } };
-      tableHeaderRow.height = 25;
-      
-      [2, 3, 4].forEach(colIdx => {
-        const cell = tableHeaderRow.getCell(colIdx);
-        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF6366F1' } };
-        cell.alignment = { vertical: 'middle' };
-        cell.border = {
-          top: { style: 'thin', color: { argb: 'FF4F46E5' } },
-          bottom: { style: 'thin', color: { argb: 'FF4F46E5' } },
-          left: { style: 'thin', color: { argb: 'FFFFFFFF' } },
-          right: { style: 'thin', color: { argb: 'FFFFFFFF' } }
-        };
-      });
-
-      // 5. Deliverables Data with Zebra Striping
-      let rowIndex = 0;
-      
-      const addDataRow = (routeTitle, lineItemName, deliverableName) => {
-        const row = sheet.addRow(["", routeTitle, lineItemName, deliverableName]);
-        const isEven = rowIndex % 2 === 0;
-        
-        [2, 3, 4].forEach(colIdx => {
-          const cell = row.getCell(colIdx);
-          cell.font = { color: { argb: 'FF334155' } };
-          if (isEven) {
-            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF8FAFC' } };
-          }
-          cell.border = {
-            bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } },
-            left: { style: 'thin', color: { argb: 'FFE2E8F0' } },
-            right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
-          };
-        });
-        rowIndex++;
-      };
+      // 5. Grouped Deliverables - Each route is a section header
+      let serialNo = 1;
 
       Object.keys(groupedDeliverables).forEach(routeId => {
         const route = groupedDeliverables[routeId];
+
+        // Route Header Row (purple band)
+        const routeRow = sheet.addRow(["", route.title, "", ""]);
+        routeRow.height = 24;
+        sheet.mergeCells(`B${routeRow.number}:D${routeRow.number}`);
+        routeRow.getCell(2).font = { bold: true, size: 11, color: { argb: 'FFFFFFFF' } };
+        routeRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF7C3AED' } };
+        routeRow.getCell(2).alignment = { vertical: 'middle' };
+
+        // Column sub-headers for this route
+        const subHeaderRow = sheet.addRow(["", "No.", "Line Item / Category", "Deliverable"]);
+        subHeaderRow.height = 22;
+        [2, 3, 4].forEach(colIdx => {
+          const cell = subHeaderRow.getCell(colIdx);
+          cell.font = { bold: true, size: 10, color: { argb: 'FF4C1D95' } };
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEDE9FE' } };
+          cell.alignment = { vertical: 'middle' };
+          cell.border = { bottom: { style: 'thin', color: { argb: 'FFDDD6FE' } } };
+        });
+
+        // Data rows under this route
+        let rowIdx = 0;
         Object.keys(route.lineItems).forEach(liId => {
           const li = route.lineItems[liId];
           li.items.forEach(d => {
-            addDataRow(route.title, li.name, d.name);
+            const row = sheet.addRow(["", serialNo, li.name, d.name]);
+            const isEven = rowIdx % 2 === 0;
+
+            [2, 3, 4].forEach(colIdx => {
+              const cell = row.getCell(colIdx);
+              cell.font = { color: { argb: 'FF334155' } };
+              if (isEven) {
+                cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F3FF' } };
+              }
+              cell.border = {
+                bottom: { style: 'thin', color: { argb: 'FFEDE9FE' } },
+                left: { style: 'thin', color: { argb: 'FFEDE9FE' } },
+                right: { style: 'thin', color: { argb: 'FFEDE9FE' } }
+              };
+            });
+            // Number column alignment
+            row.getCell(2).alignment = { horizontal: 'center', vertical: 'middle' };
+
+            serialNo++;
+            rowIdx++;
           });
         });
+
+        // Spacer row between routes
+        sheet.addRow([]);
       });
 
-      // Ungrouped Data
-      ungroupedIds.forEach(dId => {
-        const deliv = DELIVERABLES_MASTER.find(x => x.id === dId);
-        addDataRow("Other", "Ungrouped", deliv ? deliv.name : dId);
-      });
+      // Ungrouped Data (if any)
+      if (ungroupedIds.length > 0) {
+        const otherRow = sheet.addRow(["", "Other Deliverables", "", ""]);
+        otherRow.height = 24;
+        sheet.mergeCells(`B${otherRow.number}:D${otherRow.number}`);
+        otherRow.getCell(2).font = { bold: true, size: 11, color: { argb: 'FFFFFFFF' } };
+        otherRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF7C3AED' } };
+
+        const otherSubHeader = sheet.addRow(["", "No.", "Category", "Deliverable"]);
+        [2, 3, 4].forEach(colIdx => {
+          const cell = otherSubHeader.getCell(colIdx);
+          cell.font = { bold: true, size: 10, color: { argb: 'FF4C1D95' } };
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEDE9FE' } };
+          cell.border = { bottom: { style: 'thin', color: { argb: 'FFDDD6FE' } } };
+        });
+
+        ungroupedIds.forEach((dId, idx) => {
+          const deliv = DELIVERABLES_MASTER.find(x => x.id === dId);
+          const row = sheet.addRow(["", serialNo, "Ungrouped", deliv ? deliv.name : dId]);
+          row.getCell(2).alignment = { horizontal: 'center', vertical: 'middle' };
+          [2, 3, 4].forEach(colIdx => {
+            const cell = row.getCell(colIdx);
+            cell.font = { color: { argb: 'FF334155' } };
+            if (idx % 2 === 0) {
+              cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F3FF' } };
+            }
+            cell.border = {
+              bottom: { style: 'thin', color: { argb: 'FFEDE9FE' } },
+              left: { style: 'thin', color: { argb: 'FFEDE9FE' } },
+              right: { style: 'thin', color: { argb: 'FFEDE9FE' } }
+            };
+          });
+          serialNo++;
+        });
+      }
 
       // Write to ArrayBuffer and convert to Base64 in browser
       const buffer = await workbook.xlsx.writeBuffer();
