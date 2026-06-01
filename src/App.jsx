@@ -1375,22 +1375,51 @@ const StrategicEngine = ({ navigate }) => {
     try {
       const workbook = new ExcelJS.Workbook();
       workbook.creator = 'Purple Blue House';
-      // Create a single sheet with hidden gridlines for a clean PDF-like look
-      const sheet = workbook.addWorksheet('Scope Report', { views: [{ showGridLines: false }] });
+      const sheet = workbook.addWorksheet('Scope of Work', { views: [{ showGridLines: false }] });
 
-      // Column Widths - Added a small left margin for better readability
+      // Column Widths
       sheet.getColumn(1).width = 4;
       sheet.getColumn(2).width = 25;
       sheet.getColumn(3).width = 40;
       sheet.getColumn(4).width = 55;
 
-      // 1. Header (Dark Purple PBH style)
-      const headerRow = sheet.addRow(["", "PURPLE BLUE HOUSE - SCOPE BUILDER", "", ""]);
-      headerRow.font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FFFFFFFF' } };
+      // Count total deliverables
+      const totalDeliverables = selectedDeliverables.length;
+      const totalRoutes = Object.keys(groupedDeliverables).length;
+      const generatedDate = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+      // 1. Title Header
+      const headerRow = sheet.addRow(["", "SCOPE OF WORK", "", ""]);
+      headerRow.font = { name: 'Arial', size: 18, bold: true, color: { argb: 'FFFFFFFF' } };
       headerRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
+      headerRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
+      headerRow.getCell(4).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
       sheet.mergeCells('B1:D1');
-      headerRow.height = 35;
+      headerRow.height = 40;
       headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+
+      // Subtitle
+      const subtitleRow = sheet.addRow(["", `Purple Blue House - Brand Strategy Deliverables for ${leadForm.company || 'Client'}`, "", ""]);
+      subtitleRow.font = { name: 'Arial', size: 11, italic: true, color: { argb: 'FFA5B4FC' } };
+      subtitleRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
+      subtitleRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
+      subtitleRow.getCell(4).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
+      sheet.mergeCells(`B${subtitleRow.number}:D${subtitleRow.number}`);
+      subtitleRow.height = 22;
+      subtitleRow.alignment = { vertical: 'middle', horizontal: 'center' };
+
+      sheet.addRow([]);
+
+      // Summary Strip - Date | Deliverables Count | Routes
+      const summaryRow = sheet.addRow(["", `Generated: ${generatedDate}`, `${totalDeliverables} Deliverables Selected`, `Across ${totalRoutes} Route${totalRoutes !== 1 ? 's' : ''}`]);
+      summaryRow.height = 24;
+      [2, 3, 4].forEach(colIdx => {
+        const cell = summaryRow.getCell(colIdx);
+        cell.font = { size: 10, bold: true, color: { argb: 'FF4C1D95' } };
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEDE9FE' } };
+        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+        cell.border = { bottom: { style: 'thin', color: { argb: 'FFDDD6FE' } } };
+      });
 
       sheet.addRow([]);
 
@@ -1406,7 +1435,7 @@ const StrategicEngine = ({ navigate }) => {
 
       // 2. Client Details Section
       const clientHeader = sheet.addRow(["", "CLIENT DETAILS", "", ""]);
-      clientHeader.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } }; // Indigo text
+      clientHeader.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } };
       sheet.mergeCells(`B${clientHeader.number}:D${clientHeader.number}`);
       
       addField("Name", leadForm.name);
