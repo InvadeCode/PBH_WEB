@@ -1334,10 +1334,15 @@ const StrategicEngine = ({ navigate }) => {
     const pdfBase64 = doc.output('datauristring').split(',')[1];
     const attachments = [{ filename: `${safeCompanyName}_scope_report.pdf`, content: pdfBase64 }];
 
-    await sendEmailViaResend(subject, htmlContent, attachments);
+    const result = await sendEmailViaResend(subject, htmlContent, attachments);
     
     setIsSubmitting(false);
-    setStep(N_QUIZ + 6);
+    
+    if (result && result.success) {
+      setStep(N_QUIZ + 6);
+    } else {
+      alert("Failed to send the email report. Error: " + (result?.error || "Unknown Error from Resend API"));
+    }
   };
 
   const LiveScopePreview = () => (
