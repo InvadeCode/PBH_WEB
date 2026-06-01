@@ -1124,59 +1124,110 @@ const StrategicEngine = ({ navigate }) => {
     // Selected Deliverables
     addSectionHeader('Selected Deliverables');
     
-    const colWidth = (usableW - 15) / 2;
+    // 1. Group deliverables by Route and LineItem
+    const groupedDeliverables = {};
     
-    for (let i = 0; i < selectedDeliverables.length; i += 2) {
-      checkPage(45); // Check page once per ROW
+    selectedDeliverables.forEach(d => {
+      const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
+      if (!deliv) return;
       
-      // Draw Left Card
-      const d1 = selectedDeliverables[i];
-      const deliv1 = DELIVERABLES_MASTER.find(x => x.id === d1);
-      const name1 = deliv1 ? deliv1.name : d1;
+      const lineItemId = deliv.lineItem;
+      let routeId = null;
+      let lineItemName = '';
       
-      // Fill and subtle border
-      doc.setFillColor(250, 250, 253);
-      doc.setDrawColor(220, 220, 235);
-      doc.roundedRect(margin, y, colWidth, 34, 4, 4, 'FD');
-      
-      // Blue accent dot/icon
-      doc.setTextColor(99, 102, 241); // Indigo color
-      doc.setFontSize(14);
-      doc.text("•", margin + 12, y + 22); 
-      
-      doc.setTextColor(40, 40, 50);
-      doc.setFontSize(10);
-      doc.setFont('helvetica', 'bold');
-      const lines1 = doc.splitTextToSize(name1, colWidth - 35);
-      doc.text(lines1[0] + (lines1.length > 1 ? '...' : ''), margin + 28, y + 21);
-
-      // Draw Right Card (if it exists)
-      if (i + 1 < selectedDeliverables.length) {
-        const d2 = selectedDeliverables[i + 1];
-        const deliv2 = DELIVERABLES_MASTER.find(x => x.id === d2);
-        const name2 = deliv2 ? deliv2.name : d2;
-        
-        const rightX = margin + colWidth + 15;
-        
-        doc.setFillColor(250, 250, 253);
-        doc.setDrawColor(220, 220, 235);
-        doc.roundedRect(rightX, y, colWidth, 34, 4, 4, 'FD');
-        
-        doc.setTextColor(99, 102, 241);
-        doc.setFontSize(14);
-        doc.text("•", rightX + 12, y + 22);
-        
-        doc.setTextColor(40, 40, 50);
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
-        const lines2 = doc.splitTextToSize(name2, colWidth - 35);
-        doc.text(lines2[0] + (lines2.length > 1 ? '...' : ''), rightX + 28, y + 21);
+      for (const [rId, route] of Object.entries(ROUTES_INFO)) {
+        const li = route.lineItems.find(x => x.id === lineItemId);
+        if (li) {
+          routeId = rId;
+          lineItemName = li.name;
+          break;
+        }
       }
       
-      y += 44; // Move down for the next row
-    }
-    
-    y += 10;
+      if (routeId) {
+        if (!groupedDeliverables[routeId]) {
+          groupedDeliverables[routeId] = { title: ROUTES_INFO[routeId].title, lineItems: {} };
+        }
+        if (!groupedDeliverables[routeId].lineItems[lineItemId]) {
+          groupedDeliverables[routeId].lineItems[lineItemId] = { name: lineItemName, items: [] };
+        }
+        groupedDeliverables[routeId].lineItems[lineItemId].items.push(deliv);
+      }
+    });
+
+    const colWidth = (usableW - 15) / 2;
+
+    // 2. Render the grouped deliverables
+    Object.keys(groupedDeliverables).forEach(routeId => {
+      const routeData = groupedDeliverables[routeId];
+      
+      // Draw Route Title (e.g. SCIART SAGA)
+      checkPage(40);
+      y += 10;
+      doc.setFontSize(14);
+      doc.setTextColor(30, 30, 60);
+      doc.setFont('helvetica', 'bold');
+      doc.text(routeData.title.toUpperCase(), margin, y);
+      y += 20;
+      
+      Object.keys(routeData.lineItems).forEach(liId => {
+        const liData = routeData.lineItems[liId];
+        
+        // Draw Line Item Title (e.g. Innovation Frameworks)
+        checkPage(35);
+        doc.setFontSize(11);
+        doc.setTextColor(100, 100, 140);
+        doc.setFont('helvetica', 'bold');
+        doc.text(liData.name, margin + 5, y);
+        y += 15;
+        
+        // Draw 2-column grid of deliverables for this line item
+        const items = liData.items;
+        for (let i = 0; i < items.length; i += 2) {
+          checkPage(45);
+          
+          // Draw Left Card
+          const d1 = items[i];
+          doc.setFillColor(250, 250, 253);
+          doc.setDrawColor(220, 220, 235);
+          doc.roundedRect(margin, y, colWidth, 34, 4, 4, 'FD');
+          
+          doc.setTextColor(99, 102, 241); // Indigo
+          doc.setFontSize(14);
+          doc.text("•", margin + 12, y + 22); 
+          
+          doc.setTextColor(40, 40, 50);
+          doc.setFontSize(10);
+          doc.setFont('helvetica', 'bold');
+          const lines1 = doc.splitTextToSize(d1.name, colWidth - 35);
+          doc.text(lines1[0] + (lines1.length > 1 ? '...' : ''), margin + 28, y + 21);
+
+          // Draw Right Card (if it exists)
+          if (i + 1 < items.length) {
+            const d2 = items[i + 1];
+            const rightX = margin + colWidth + 15;
+            
+            doc.setFillColor(250, 250, 253);
+            doc.setDrawColor(220, 220, 235);
+            doc.roundedRect(rightX, y, colWidth, 34, 4, 4, 'FD');
+            
+            doc.setTextColor(99, 102, 241);
+            doc.setFontSize(14);
+            doc.text("•", rightX + 12, y + 22);
+            
+            doc.setTextColor(40, 40, 50);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'bold');
+            const lines2 = doc.splitTextToSize(d2.name, colWidth - 35);
+            doc.text(lines2[0] + (lines2.length > 1 ? '...' : ''), rightX + 28, y + 21);
+          }
+          
+          y += 44; 
+        }
+        y += 10; // Space after a line item
+      });
+      y += 10; // Space after a route
+    });
 
     // Add footers to all pages
     const pageCount = doc.internal.getNumberOfPages();
