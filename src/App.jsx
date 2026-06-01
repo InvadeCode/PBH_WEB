@@ -1450,12 +1450,56 @@ const StrategicEngine = ({ navigate }) => {
       sheet.mergeCells(`B${contextHeader.number}:D${contextHeader.number}`);
 
       addField("Brand Stage", leadData.stage || 'N/A');
+      addField("Engagement Depth", leadData.depth || 'N/A');
       addField("Timeline", leadData.timeline || 'N/A');
       addField("Suggested Starting Point", startingPoint);
 
       sheet.addRow([]);
 
-      // 4. Deliverables Section Title
+      // 4. Diagnostic Responses (Quiz Q&A) - This is what the PDF shows
+      const quizHeader = sheet.addRow(["", "DIAGNOSTIC RESPONSES", "", ""]);
+      quizHeader.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } };
+      sheet.mergeCells(`B${quizHeader.number}:D${quizHeader.number}`);
+
+      // Table header for Q&A
+      const qaHeaderRow = sheet.addRow(["", "No.", "Question", "Client's Answer"]);
+      qaHeaderRow.height = 22;
+      [2, 3, 4].forEach(colIdx => {
+        const cell = qaHeaderRow.getCell(colIdx);
+        cell.font = { bold: true, size: 10, color: { argb: 'FF4C1D95' } };
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEDE9FE' } };
+        cell.alignment = { vertical: 'middle' };
+        cell.border = { bottom: { style: 'thin', color: { argb: 'FFDDD6FE' } } };
+      });
+
+      let qNo = 1;
+      QUIZ_QUESTIONS.forEach(q => {
+        const ans = answers[q.id];
+        if (ans) {
+          const row = sheet.addRow(["", qNo, q.title, ans.label]);
+          const isEven = qNo % 2 === 0;
+          row.getCell(2).alignment = { horizontal: 'center', vertical: 'middle' };
+          row.getCell(3).alignment = { wrapText: true, vertical: 'middle' };
+          row.getCell(4).alignment = { wrapText: true, vertical: 'middle' };
+          [2, 3, 4].forEach(colIdx => {
+            const cell = row.getCell(colIdx);
+            cell.font = { color: { argb: 'FF334155' } };
+            if (isEven) {
+              cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F3FF' } };
+            }
+            cell.border = {
+              bottom: { style: 'thin', color: { argb: 'FFEDE9FE' } },
+              left: { style: 'thin', color: { argb: 'FFEDE9FE' } },
+              right: { style: 'thin', color: { argb: 'FFEDE9FE' } }
+            };
+          });
+          qNo++;
+        }
+      });
+
+      sheet.addRow([]);
+
+      // 5. Deliverables Section Title
       const tableTitleRow = sheet.addRow(["", "SELECTED DELIVERABLES", "", ""]);
       tableTitleRow.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } };
       sheet.mergeCells(`B${tableTitleRow.number}:D${tableTitleRow.number}`);
