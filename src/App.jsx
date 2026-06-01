@@ -954,39 +954,75 @@ const StrategicEngine = ({ navigate }) => {
 
     const subject = `New Lead: ${leadForm.company} - Scope Builder`;
     const htmlContent = `
-      <div style="font-family: sans-serif; padding: 20px; max-width: 600px;">
-        <h2 style="color: #6865FA;">New Strategic Scope Lead</h2>
-        <p><strong>Name:</strong> ${leadForm.name}</p>
-        <p><strong>Email:</strong> ${leadForm.email}</p>
-        <p><strong>Company:</strong> ${leadForm.company}</p>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;"/>
-        
-        <h3 style="color: #333;">Context</h3>
-        <p><strong>Brand Stage:</strong> ${leadData.stage}</p>
-        <p><strong>Engagement Depth:</strong> ${leadData.depth}</p>
-        <p><strong>Timeline:</strong> ${leadData.timeline}</p>
-        <p><strong>Suggested Starting Point:</strong> ${startingPoint}</p>
-        
-        <h3 style="color: #333;">Quiz Responses (Comprehensive)</h3>
-        <ul>${QUIZ_QUESTIONS.map((q, i) => {
-            const ans = answers[q.id];
-            if (!ans) return '';
-            return `<li style="margin-bottom: 12px;"><strong>Q${i+1}: ${q.question}</strong><br/>Answer: ${ans.label} ${ans.desc ? `<i>(${ans.desc})</i>` : ''}</li>`;
-        }).join('')}</ul>
-        
-        <h3 style="color: #333;">Identified Gaps</h3>
-        <ul>${clusters.map(c => `<li>${c}</li>`).join('')}</ul>
-        
-        <h3 style="color: #333;">Recommended Routes</h3>
-        <ul>${routes.map(r => `<li>${ROUTES_INFO[r]?.title || r}</li>`).join('')}</ul>
-        
-        <h3 style="color: #333;">Selected Deliverables</h3>
-        <ul>${selectedDeliverables.map(d => {
-            const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
-            const prio = priorities[d] || 'Standard';
-            const warn = warnings.includes(d) ? ' (Warning: Prereqs Missed)' : '';
-            return `<li>[${prio}] ${deliv ? deliv.name : d}${warn}</li>`;
-        }).join('')}</ul>
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #F3F4F6; padding: 40px 20px;">
+        <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+          
+          <!-- Header -->
+          <div style="background-color: #121228; padding: 30px; text-align: center;">
+            <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 700;">New Scope Builder Lead</h1>
+            <p style="color: #a0a0c0; margin: 8px 0 0 0; font-size: 14px;">Purple Blue House Strategy Blueprint</p>
+          </div>
+
+          <div style="padding: 30px;">
+            <!-- Client Details -->
+            <h2 style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid #eef2f6; padding-bottom: 10px;">Client Details</h2>
+            <div style="margin-bottom: 30px;">
+              <p style="margin: 8px 0; color: #374151;"><strong>Name:</strong> ${leadForm.name}</p>
+              <p style="margin: 8px 0; color: #374151;"><strong>Email:</strong> <a href="mailto:${leadForm.email}" style="color: #6366f1; text-decoration: none;">${leadForm.email}</a></p>
+              <p style="margin: 8px 0; color: #374151;"><strong>Company:</strong> ${leadForm.company}</p>
+            </div>
+            
+            <!-- Context -->
+            <h2 style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid #eef2f6; padding-bottom: 10px;">Context & Timeline</h2>
+            <div style="margin-bottom: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+              <div style="background: #f8fafc; padding: 12px; border-radius: 6px;">
+                <p style="margin: 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Brand Stage</p>
+                <p style="margin: 4px 0 0 0; color: #0f172a; font-weight: 600;">${leadData.stage || 'N/A'}</p>
+              </div>
+              <div style="background: #f8fafc; padding: 12px; border-radius: 6px;">
+                <p style="margin: 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Timeline</p>
+                <p style="margin: 4px 0 0 0; color: #0f172a; font-weight: 600;">${leadData.timeline || 'N/A'}</p>
+              </div>
+              <div style="background: #f8fafc; padding: 12px; border-radius: 6px; grid-column: span 2;">
+                <p style="margin: 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Starting Point</p>
+                <p style="margin: 4px 0 0 0; color: #0f172a; font-weight: 600;">${startingPoint}</p>
+              </div>
+            </div>
+            
+            <!-- Deliverables -->
+            <h2 style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid #eef2f6; padding-bottom: 10px;">Selected Deliverables (${selectedDeliverables.length})</h2>
+            <div style="margin-bottom: 30px;">
+              ${selectedDeliverables.length > 0 ? 
+                '<ul style="padding-left: 20px; color: #374151;">' + 
+                selectedDeliverables.map(d => {
+                  const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
+                  return \`<li style="margin-bottom: 6px;">\${deliv ? deliv.name : d}</li>\`;
+                }).join('') + 
+                '</ul>' 
+                : '<p style="color: #6b7280; font-style: italic;">No deliverables selected.</p>'
+              }
+            </div>
+            
+            <!-- Quiz Responses -->
+            <h2 style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid #eef2f6; padding-bottom: 10px;">Diagnostic Responses</h2>
+            <div>
+              ${QUIZ_QUESTIONS.map((q, i) => {
+                  const ans = answers[q.id];
+                  if (!ans) return '';
+                  return \`
+                    <div style="margin-bottom: 16px; background: #f8fafc; padding: 16px; border-radius: 8px; border-left: 3px solid #6366f1;">
+                      <p style="margin: 0 0 8px 0; color: #0f172a; font-weight: 600; font-size: 14px;">\${q.question}</p>
+                      <p style="margin: 0; color: #475569; font-size: 13px;">\${ans.label} \${ans.desc ? \`<br/><span style="color: #94a3b8; font-size: 12px;">Notes: \${ans.desc}</span>\` : ''}</p>
+                    </div>
+                  \`;
+              }).join('')}
+            </div>
+
+          </div>
+          <div style="background-color: #f8fafc; padding: 15px; text-align: center; border-top: 1px solid #eef2f6;">
+             <p style="color: #94a3b8; font-size: 12px; margin: 0;">See attached PDF for detailed report.</p>
+          </div>
+        </div>
       </div>
     `;
 
@@ -1197,8 +1233,8 @@ const StrategicEngine = ({ navigate }) => {
           
           // Draw Left Card
           const d1 = items[i];
-          doc.setFillColor(250, 250, 253);
-          doc.setDrawColor(220, 220, 235);
+          doc.setFillColor(248, 245, 255);
+          doc.setDrawColor(220, 215, 240);
           doc.roundedRect(margin, y, colWidth, 34, 4, 4, 'FD');
           
           doc.setTextColor(99, 102, 241); // Indigo
@@ -1216,8 +1252,8 @@ const StrategicEngine = ({ navigate }) => {
             const d2 = items[i + 1];
             const rightX = margin + colWidth + 15;
             
-            doc.setFillColor(250, 250, 253);
-            doc.setDrawColor(220, 220, 235);
+            doc.setFillColor(248, 245, 255);
+            doc.setDrawColor(220, 215, 240);
             doc.roundedRect(rightX, y, colWidth, 34, 4, 4, 'FD');
             
             doc.setTextColor(99, 102, 241);
@@ -1254,8 +1290,8 @@ const StrategicEngine = ({ navigate }) => {
         const d1 = DELIVERABLES_MASTER.find(x => x.id === ungrouped[i]);
         const name1 = d1 ? d1.name : ungrouped[i];
         
-        doc.setFillColor(250, 250, 253);
-        doc.setDrawColor(220, 220, 235);
+        doc.setFillColor(248, 245, 255);
+        doc.setDrawColor(220, 215, 240);
         doc.roundedRect(margin, y, colWidth, 34, 4, 4, 'FD');
         doc.setTextColor(99, 102, 241);
         doc.setFontSize(14);
@@ -1269,8 +1305,8 @@ const StrategicEngine = ({ navigate }) => {
           const d2 = DELIVERABLES_MASTER.find(x => x.id === ungrouped[i + 1]);
           const name2 = d2 ? d2.name : ungrouped[i + 1];
           const rightX = margin + colWidth + 15;
-          doc.setFillColor(250, 250, 253);
-          doc.setDrawColor(220, 220, 235);
+          doc.setFillColor(248, 245, 255);
+          doc.setDrawColor(220, 215, 240);
           doc.roundedRect(rightX, y, colWidth, 34, 4, 4, 'FD');
           doc.setTextColor(99, 102, 241);
           doc.setFontSize(14);
