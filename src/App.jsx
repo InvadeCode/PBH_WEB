@@ -1379,9 +1379,9 @@ const StrategicEngine = ({ navigate }) => {
 
       // Column Widths
       sheet.getColumn(1).width = 4;
-      sheet.getColumn(2).width = 25;
-      sheet.getColumn(3).width = 40;
-      sheet.getColumn(4).width = 55;
+      sheet.getColumn(2).width = 8;
+      sheet.getColumn(3).width = 35;
+      sheet.getColumn(4).width = 50;
 
       // Count total deliverables
       const totalDeliverables = selectedDeliverables.length;
@@ -1425,12 +1425,13 @@ const StrategicEngine = ({ navigate }) => {
 
       // Helper function to add key-value rows
       const addField = (label, value) => {
-        const row = sheet.addRow(["", label, value, ""]);
+        const row = sheet.addRow(["", label, "", value]);
+        sheet.mergeCells(`B${row.number}:C${row.number}`);
         row.getCell(2).font = { bold: true, color: { argb: 'FF475569' } };
-        row.getCell(3).font = { color: { argb: 'FF0F172A' } };
+        row.getCell(4).font = { color: { argb: 'FF0F172A' } };
         row.getCell(2).border = { bottom: { style: 'thin', color: { argb: 'FFEEF2F6' } } };
         row.getCell(3).border = { bottom: { style: 'thin', color: { argb: 'FFEEF2F6' } } };
-        sheet.mergeCells(`C${row.number}:D${row.number}`);
+        row.getCell(4).border = { bottom: { style: 'thin', color: { argb: 'FFEEF2F6' } } };
       };
 
       // 2. Client Details Section
@@ -1531,20 +1532,23 @@ const StrategicEngine = ({ navigate }) => {
 
         // Data rows under this route
         let rowIdx = 0;
+        let categoryIdx = 0;
         Object.keys(route.lineItems).forEach(liId => {
           const li = route.lineItems[liId];
           const startRow = sheet.rowCount + 1;
+          const isEvenCategory = categoryIdx % 2 === 0;
           
           li.items.forEach((d, idx) => {
             const liName = idx === 0 ? li.name : "";
             const row = sheet.addRow(["", serialNo, liName, d.name]);
-            const isEven = rowIdx % 2 === 0;
 
             [2, 3, 4].forEach(colIdx => {
               const cell = row.getCell(colIdx);
               cell.font = { color: { argb: 'FF334155' } };
-              if (isEven) {
+              if (isEvenCategory) {
                 cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F3FF' } };
+              } else {
+                cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
               }
               cell.border = {
                 bottom: { style: 'thin', color: { argb: 'FFEDE9FE' } },
@@ -1568,14 +1572,13 @@ const StrategicEngine = ({ navigate }) => {
           }
           const groupCell = sheet.getCell(`C${startRow}`);
           groupCell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-          // Keep the background consistent for the merged cell (take the first row's bg)
-          const firstRowEven = (rowIdx - li.items.length) % 2 === 0;
-          if (firstRowEven) {
+          // Keep the background consistent for the merged cell
+          if (isEvenCategory) {
              groupCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F3FF' } };
           } else {
-             // In case there is no fill on odd rows, ensure it's white to cover grid if any
              groupCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
           }
+          categoryIdx++;
         });
 
         // Spacer row between routes
