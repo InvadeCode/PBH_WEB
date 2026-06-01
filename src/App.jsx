@@ -993,84 +993,124 @@ const StrategicEngine = ({ navigate }) => {
     // Generate Comprehensive PDF Attachment
     const doc = new jsPDF({ unit: 'pt', format: 'a4' });
     const pageW = doc.internal.pageSize.getWidth();
-    const margin = 48;
+    const pageH = doc.internal.pageSize.getHeight();
+    const margin = 50;
     const usableW = pageW - margin * 2;
     let y = 60;
 
+    const checkPage = (heightNeeded) => {
+      if (y + heightNeeded > pageH - 50) {
+        doc.addPage();
+        y = 60;
+      }
+    };
+
     const addText = (text, size, color, bold = false, indent = 0) => {
-      if (y > doc.internal.pageSize.getHeight() - 60) { doc.addPage(); y = 60; }
       doc.setFontSize(size);
       doc.setTextColor(...color);
       doc.setFont('helvetica', bold ? 'bold' : 'normal');
       const lines = doc.splitTextToSize(text, usableW - indent);
+      checkPage(lines.length * size * 1.5);
       doc.text(lines, margin + indent, y);
-      y += lines.length * size * 1.4;
+      y += lines.length * size * 1.5;
     };
 
-    const addDivider = () => {
-      if (y > doc.internal.pageSize.getHeight() - 80) { doc.addPage(); y = 60; }
-      doc.setDrawColor(200, 200, 200);
+    const addSectionHeader = (title) => {
+      checkPage(60);
+      y += 10;
+      doc.setDrawColor(230, 230, 240);
       doc.line(margin, y, pageW - margin, y);
-      y += 16;
+      y += 20;
+      doc.setFontSize(12);
+      doc.setTextColor(90, 90, 160);
+      doc.setFont('helvetica', 'bold');
+      doc.text(title.toUpperCase(), margin, y);
+      y += 20;
     };
 
-    // Header
-    doc.setFillColor(18, 18, 40);
-    doc.rect(0, 0, pageW, 80, 'F');
-    doc.setFontSize(20);
+    // Beautiful Modern Header
+    doc.setFillColor(18, 18, 40); // Dark Purple/Blue PBH color
+    doc.rect(0, 0, pageW, 110, 'F');
+    
+    doc.setFontSize(28);
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
-    doc.text('PBH Scope Builder', margin, 38);
-    doc.setFontSize(10);
+    doc.text('Brand Scope Report', margin, 55);
+    
+    doc.setFontSize(11);
+    doc.setTextColor(150, 150, 200);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(180, 180, 220);
-    doc.text('Comprehensive Client Response Report', margin, 56);
-    doc.setFontSize(9);
-    doc.text(`Generated: ${new Date().toLocaleString()}`, pageW - margin, 56, { align: 'right' });
-    y = 100;
+    doc.text('CONFIDENTIAL & PROPRIETARY', margin, 75);
+    doc.text(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), pageW - margin, 75, { align: 'right' });
+
+    y = 140;
 
     // Client Details
-    addText('CLIENT DETAILS', 11, [100, 100, 200], true);
-    y += 4;
-    addText(`Name: ${leadForm.name}`, 10, [40, 40, 40]);
-    addText(`Email: ${leadForm.email}`, 10, [40, 40, 40]);
-    addText(`Company: ${leadForm.company}`, 10, [40, 40, 40]);
-    y += 8;
-    addDivider();
-
-    // Quiz Responses
-    addText('QUIZ RESPONSES', 11, [100, 100, 200], true);
-    y += 4;
-    QUIZ_QUESTIONS.forEach((q, i) => {
-      const ans = answers[q.id];
-      if (ans) {
-        addText(`Q${i + 1}: ${q.question}`, 10, [30, 30, 30], true);
-        addText(`Selected: ${ans.label}`, 10, [60, 60, 140], false, 12);
-        if (ans.desc) addText(`Detail: ${ans.desc}`, 9, [100, 100, 100], false, 12);
-        y += 6;
-      }
-    });
-    addDivider();
+    addText(`Client: ${leadForm.name}`, 14, [40, 40, 40], true);
+    addText(`Company: ${leadForm.company}`, 12, [80, 80, 80]);
+    addText(`Email: ${leadForm.email}`, 12, [80, 80, 80]);
 
     // Strategy Blueprint
-    addText('STRATEGY BLUEPRINT', 11, [100, 100, 200], true);
-    y += 4;
-    addText(`Brand Stage: ${leadData.stage}`, 10, [40, 40, 40]);
-    addText(`Engagement Depth: ${leadData.depth}`, 10, [40, 40, 40]);
-    addText(`Timeline: ${leadData.timeline}`, 10, [40, 40, 40]);
-    addText(`Suggested Starting Point: ${startingPoint}`, 10, [40, 40, 40]);
-    y += 8;
-    addDivider();
+    addSectionHeader('Strategy Blueprint');
+    const blueprintItems = [
+      { label: 'Brand Stage', val: leadData.stage },
+      { label: 'Engagement Depth', val: leadData.depth },
+      { label: 'Timeline', val: leadData.timeline },
+      { label: 'Suggested Starting Point', val: startingPoint }
+    ];
+    blueprintItems.forEach(item => {
+      addText(`${item.label}:`, 10, [100, 100, 100], true);
+      y -= 14;
+      addText(`${item.val}`, 11, [40, 40, 50], false, 150);
+      y += 4;
+    });
 
     // Selected Deliverables
-    addText('SELECTED DELIVERABLES', 11, [100, 100, 200], true);
-    y += 4;
+    addSectionHeader('Selected Deliverables');
     selectedDeliverables.forEach(d => {
       const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
       const prio = priorities[d] || 'Standard';
-      const warn = warnings.includes(d) ? ' ⚠ Prereqs Missed' : '';
-      addText(`• [${prio}] ${deliv ? deliv.name : d}${warn}`, 10, [40, 40, 40], false, 8);
+      const warn = warnings.includes(d) ? ' [Prereqs Missed]' : '';
+      
+      doc.setFillColor(245, 245, 250);
+      checkPage(30);
+      doc.rect(margin, y - 12, usableW, 24, 'F');
+      
+      const prioColor = prio === 'High' ? [200, 50, 50] : [100, 100, 150];
+      doc.setTextColor(...prioColor);
+      doc.setFontSize(8);
+      doc.setFont('helvetica', 'bold');
+      doc.text(prio.toUpperCase(), margin + 10, y + 2);
+      
+      addText(`${deliv ? deliv.name : d}${warn}`, 10, [40, 40, 40], true, 70);
+      y += 4;
     });
+
+    // Quiz Responses
+    addSectionHeader('Detailed Diagnostic Responses');
+    QUIZ_QUESTIONS.forEach((q, i) => {
+      const ans = answers[q.id];
+      if (ans) {
+        addText(`Q${i + 1}. ${q.title}`, 11, [40, 40, 60], true);
+        y += 2;
+        addText(`>  ${ans.label}`, 10, [80, 80, 120], false, 15);
+        if (ans.desc) {
+            y += 2;
+            addText(`Notes: ${ans.desc}`, 9, [120, 120, 120], false, 15);
+        }
+        y += 12;
+      }
+    });
+
+    // Add footers to all pages
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text(`Purple Blue House - Scope Builder Report`, margin, pageH - 25);
+      doc.text(`Page ${i} of ${pageCount}`, pageW - margin, pageH - 25, { align: 'right' });
+    }
 
     const safeCompanyName = leadForm.company ? leadForm.company.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'client';
     const pdfBase64 = doc.output('datauristring').split(',')[1];
