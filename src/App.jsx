@@ -1067,24 +1067,60 @@ const StrategicEngine = ({ navigate }) => {
 
     // Selected Deliverables
     addSectionHeader('Selected Deliverables');
-    selectedDeliverables.forEach(d => {
-      const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
-      const prio = priorities[d] || 'Standard';
-      const warn = warnings.includes(d) ? ' [Prereqs Missed]' : '';
+    
+    const colWidth = (usableW - 15) / 2;
+    
+    for (let i = 0; i < selectedDeliverables.length; i += 2) {
+      checkPage(45); // Check page once per ROW
       
-      doc.setFillColor(245, 245, 250);
-      checkPage(30);
-      doc.rect(margin, y - 12, usableW, 24, 'F');
+      // Draw Left Card
+      const d1 = selectedDeliverables[i];
+      const deliv1 = DELIVERABLES_MASTER.find(x => x.id === d1);
+      const name1 = deliv1 ? deliv1.name : d1;
       
-      const prioColor = prio === 'High' ? [200, 50, 50] : [100, 100, 150];
-      doc.setTextColor(...prioColor);
-      doc.setFontSize(8);
+      // Fill and subtle border
+      doc.setFillColor(250, 250, 253);
+      doc.setDrawColor(220, 220, 235);
+      doc.roundedRect(margin, y, colWidth, 34, 4, 4, 'FD');
+      
+      // Blue accent dot/icon
+      doc.setTextColor(99, 102, 241); // Indigo color
+      doc.setFontSize(14);
+      doc.text("•", margin + 12, y + 22); 
+      
+      doc.setTextColor(40, 40, 50);
+      doc.setFontSize(10);
       doc.setFont('helvetica', 'bold');
-      doc.text(prio.toUpperCase(), margin + 10, y + 2);
+      const lines1 = doc.splitTextToSize(name1, colWidth - 35);
+      doc.text(lines1[0] + (lines1.length > 1 ? '...' : ''), margin + 28, y + 21);
+
+      // Draw Right Card (if it exists)
+      if (i + 1 < selectedDeliverables.length) {
+        const d2 = selectedDeliverables[i + 1];
+        const deliv2 = DELIVERABLES_MASTER.find(x => x.id === d2);
+        const name2 = deliv2 ? deliv2.name : d2;
+        
+        const rightX = margin + colWidth + 15;
+        
+        doc.setFillColor(250, 250, 253);
+        doc.setDrawColor(220, 220, 235);
+        doc.roundedRect(rightX, y, colWidth, 34, 4, 4, 'FD');
+        
+        doc.setTextColor(99, 102, 241);
+        doc.setFontSize(14);
+        doc.text("•", rightX + 12, y + 22);
+        
+        doc.setTextColor(40, 40, 50);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        const lines2 = doc.splitTextToSize(name2, colWidth - 35);
+        doc.text(lines2[0] + (lines2.length > 1 ? '...' : ''), rightX + 28, y + 21);
+      }
       
-      addText(`${deliv ? deliv.name : d}${warn}`, 10, [40, 40, 40], true, 70);
-      y += 4;
-    });
+      y += 44; // Move down for the next row
+    }
+    
+    y += 10;
 
     // Quiz Responses
     addSectionHeader('Detailed Diagnostic Responses');
