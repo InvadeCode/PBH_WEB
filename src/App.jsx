@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
 import { jsPDF } from 'jspdf';
+import * as XLSX from 'xlsx';
 import { useSanity } from './lib/useSanity';
 import { CASE_STUDIES_QUERY, GET_JOURNAL_ARTICLES, GET_PROBLEM_DATA, GET_QUIZ_QUESTIONS, GET_ROUTES_INFO, GET_DELIVERABLES, GET_SITE_SETTINGS, GET_TEAM_MEMBERS, GET_CORE_VALUES, GET_TIMELINE, GET_FRAMEWORK, GET_FAQS } from './lib/sanityQueries';
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useSpring, useMotionValue, useMotionTemplate, useAnimationFrame } from 'framer-motion';
@@ -1369,6 +1370,56 @@ const StrategicEngine = ({ navigate }) => {
     const safeCompanyName = leadForm.company ? leadForm.company.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'client';
     const pdfBase64 = doc.output('datauristring').split(',')[1];
     const attachments = [{ filename: `${safeCompanyName}_scope_report.pdf`, content: pdfBase64 }];
+
+    // Generate Comprehensive Excel Sheet Attachment
+    try {
+      const excelData = [];
+      excelData.push(["Purple Blue House - Scope Builder Report"]);
+      excelData.push([]);
+      
+      excelData.push(["Client Details"]);
+      excelData.push(["Name", leadForm.name]);
+      excelData.push(["Company", leadForm.company]);
+      excelData.push(["Email", leadForm.email]);
+      excelData.push([]);
+      
+      excelData.push(["Context & Timeline"]);
+      excelData.push(["Brand Stage", leadData.stage || 'N/A']);
+      excelData.push(["Timeline", leadData.timeline || 'N/A']);
+      excelData.push(["Suggested Starting Point", startingPoint]);
+      excelData.push([]);
+      
+      excelData.push(["Selected Deliverables"]);
+      excelData.push(["Route", "Line Item", "Deliverable Name"]);
+      
+      Object.keys(groupedDeliverables).forEach(routeId => {
+        const route = groupedDeliverables[routeId];
+        Object.keys(route.lineItems).forEach(liId => {
+          const li = route.lineItems[liId];
+          li.items.forEach(d => {
+            excelData.push([route.title, li.name, d.name]);
+          });
+        });
+      });
+      
+      ungroupedIds.forEach(dId => {
+        const deliv = DELIVERABLES_MASTER.find(x => x.id === dId);
+        excelData.push(["Other", "Ungrouped", deliv ? deliv.name : dId]);
+      });
+      
+      const ws = XLSX.utils.aoa_to_sheet(excelData);
+      
+      // Auto-size columns slightly
+      ws['!cols'] = [{wch: 30}, {wch: 35}, {wch: 50}];
+      
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Scope Report");
+      
+      const excelBase64 = XLSX.write(wb, { bookType: 'xlsx', type: 'base64' });
+      attachments.push({ filename: `${safeCompanyName}_scope_report.xlsx`, content: excelBase64 });
+    } catch (err) {
+      console.error("Failed to generate Excel attachment:", err);
+    }
 
     const result = await sendEmailViaResend(subject, htmlContent, attachments, leadForm.email);
     
