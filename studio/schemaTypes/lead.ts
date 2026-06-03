@@ -1,4 +1,4 @@
-import { defineField, defineType } from 'sanity'
+import {defineField, defineType} from 'sanity'
 
 export default defineType({
   name: 'lead',
@@ -34,18 +34,18 @@ export default defineType({
       name: 'selectedDeliverables',
       title: 'Selected Deliverables',
       type: 'array',
-      of: [{ type: 'string' }]
+      of: [{type: 'string'}],
     }),
     defineField({
       name: 'submittedAt',
       title: 'Submitted At',
       type: 'datetime',
-    })
+    }),
   ],
   preview: {
     select: {
       title: 'company',
       subtitle: 'name',
-    }
-  }
+    },
+  },
 })

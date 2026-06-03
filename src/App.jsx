@@ -811,6 +811,18 @@ const AnimatedItalic = ({ children, className = "" }) => {
   );
 };
 
+// Helper: renders *text* as <AnimatedItalic> from CMS strings
+const renderWithItalics = (text, italicClassName = "") => {
+  if (!text) return null;
+  const parts = text.split(/(\*[^*]+\*)/g);
+  return parts.map((part, i) => {
+    if (part.startsWith('*') && part.endsWith('*')) {
+      return <AnimatedItalic key={i} className={italicClassName}>{part.slice(1, -1)}</AnimatedItalic>;
+    }
+    return part;
+  });
+};
+
 const PremiumButton = ({ children, onClick, variant = "primary", className = "", type = "button", disabled = false, style }) => {
   const buttonRef = useRef(null);
   const x = useMotionValue(0); const y = useMotionValue(0);
@@ -2942,27 +2954,27 @@ const AboutPage = ({ navigate }) => {
 
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>About PurpleBlue House</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-12 tracking-tight max-w-5xl font-primary">We build breakthrough brands backed by cutting-edge innovation, powered by a <AnimatedItalic>SciArt approach.</AnimatedItalic></h1>
+          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.aboutPage?.pageLabel || "About PurpleBlue House"}</h2>
+          <h1 className="text-5xl md:text-7xl font-light mb-12 tracking-tight max-w-5xl font-primary">{renderWithItalics(SITE_SETTINGS?.aboutPage?.heroTitle || "We build breakthrough brands backed by cutting-edge innovation, powered by a *SciArt approach.*")}</h1>
         </FadeUp>
 
         {/* Section 2: Vision & Mission */}
         <FadeUp delay={0.2} className="grid md:grid-cols-2 gap-16 border-t border-white/10 pt-24 mb-24 w-full">
           <div>
-            <h3 className="text-sm tracking-widest uppercase mb-6 font-primary text-white/40">Our Vision</h3>
-            <h2 className="text-3xl font-light font-primary leading-tight text-white/90">To be the defining strategic partner for the world's most ambitious breakthrough innovations, shaping the next era of global progress.</h2>
+            <h3 className="text-sm tracking-widest uppercase mb-6 font-primary text-white/40">{SITE_SETTINGS?.aboutPage?.visionLabel || "Our Vision"}</h3>
+            <h2 className="text-3xl font-light font-primary leading-tight text-white/90">{SITE_SETTINGS?.aboutPage?.visionText || "To be the defining strategic partner for the world's most ambitious breakthrough innovations, shaping the next era of global progress."}</h2>
           </div>
           <div>
-            <h3 className="text-sm tracking-widest uppercase mb-6 font-primary text-white/40">Our Mission</h3>
-            <p className="text-xl text-white/60 font-light font-secondary leading-relaxed">We empower forward-thinking organizations globally, translating complex capabilities into compelling narratives. By championing breakthrough ideas, we build resilient brand systems that scale across the next decade and beyond.</p>
+            <h3 className="text-sm tracking-widest uppercase mb-6 font-primary text-white/40">{SITE_SETTINGS?.aboutPage?.missionLabel || "Our Mission"}</h3>
+            <p className="text-xl text-white/60 font-light font-secondary leading-relaxed">{SITE_SETTINGS?.aboutPage?.missionText || "We empower forward-thinking organizations globally, translating complex capabilities into compelling narratives. By championing breakthrough ideas, we build resilient brand systems that scale across the next decade and beyond."}</p>
           </div>
         </FadeUp>
 
         {/* Section 3: Purpose */}
         <FadeUp className="border border-white/10 rounded-[24px] p-12 md:p-16 mb-24 text-center relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
           <div className="absolute inset-0 opacity-10 mix-blend-screen pointer-events-none w-full" style={{ background: `radial-gradient(circle at 50% 0%, ${palette.primary}, transparent 70%)` }} />
-          <h3 className="text-sm tracking-widest uppercase mb-6 font-primary" style={{ color: palette.blue }}>Our Purpose</h3>
-          <h2 className="text-3xl md:text-5xl font-light font-primary leading-tight max-w-4xl mx-auto text-white/90">We exist to turn complex innovations into undeniable <AnimatedItalic>market breakthroughs.</AnimatedItalic></h2>
+          <h3 className="text-sm tracking-widest uppercase mb-6 font-primary" style={{ color: palette.blue }}>{SITE_SETTINGS?.aboutPage?.purposeLabel || "Our Purpose"}</h3>
+          <h2 className="text-3xl md:text-5xl font-light font-primary leading-tight max-w-4xl mx-auto text-white/90">{renderWithItalics(SITE_SETTINGS?.aboutPage?.purposeText || "We exist to turn complex innovations into undeniable *market breakthroughs.*")}</h2>
         </FadeUp>
 
         {/* Section 4: Core Values */}
@@ -2985,10 +2997,10 @@ const AboutPage = ({ navigate }) => {
         {/* Section 5: The SciArt Philosophy */}
         <FadeUp className="border border-white/5 rounded-[32px] overflow-hidden grid md:grid-cols-2 mb-32 bg-[#050B2E] w-full">
           <div className="p-12 md:p-16 flex flex-col justify-center w-full">
-            <h3 className="text-sm tracking-widest uppercase mb-6 font-primary" style={{ color: palette.accent }}>Our Philosophy</h3>
-            <h2 className="text-4xl font-light mb-6 font-primary">The Fusion of Logic and Aesthetics.</h2>
+            <h3 className="text-sm tracking-widest uppercase mb-6 font-primary" style={{ color: palette.accent }}>{SITE_SETTINGS?.aboutPage?.philosophyLabel || "Our Philosophy"}</h3>
+            <h2 className="text-4xl font-light mb-6 font-primary">{SITE_SETTINGS?.aboutPage?.philosophyTitle || "The Fusion of Logic and Aesthetics."}</h2>
             <p className="text-lg text-white/60 font-light font-secondary leading-relaxed mb-8">
-              True innovation requires more than a beautiful facade. It demands rigorous strategic thinking coupled with compelling emotional resonance. Science gives us the framework, the data, and the logic. Art gives us the empathy, the visual impact, and the connection. Together, they create brands that are unbreakable.
+              {SITE_SETTINGS?.aboutPage?.philosophyText || "True innovation requires more than a beautiful facade. It demands rigorous strategic thinking coupled with compelling emotional resonance. Science gives us the framework, the data, and the logic. Art gives us the empathy, the visual impact, and the connection. Together, they create brands that are unbreakable."}
             </p>
           </div>
           <div className="relative min-h-[400px] flex items-center justify-center bg-[#010825] overflow-hidden w-full">
@@ -3008,15 +3020,15 @@ const AboutPage = ({ navigate }) => {
         {/* Section 6: Indian Heritage on a Global Stage */}
         <FadeUp className="text-center w-full mb-32">
           <Globe className="w-12 h-12 mx-auto mb-8 opacity-40" style={{ color: palette.blue }} />
-          <h2 className="text-3xl md:text-5xl font-light mb-8 font-primary leading-tight max-w-4xl mx-auto">Elevating Indian Innovation to the Global Stage.</h2>
+          <h2 className="text-3xl md:text-5xl font-light mb-8 font-primary leading-tight max-w-4xl mx-auto">{SITE_SETTINGS?.aboutPage?.globalTitle || "Elevating Indian Innovation to the Global Stage."}</h2>
           <p className="text-xl text-white/50 font-secondary font-light leading-relaxed max-w-3xl mx-auto">
-            We are rooted in the rich scientific and artistic heritage of India. Our ambition is to help local breakthrough innovators communicate with the precision and premium aesthetic required to compete and lead globally.
+            {SITE_SETTINGS?.aboutPage?.globalText || "We are rooted in the rich scientific and artistic heritage of India. Our ambition is to help local breakthrough innovators communicate with the precision and premium aesthetic required to compete and lead globally."}
           </p>
         </FadeUp>
 
         {/* Section 7: Final CTA */}
         <FadeUp className="text-center pt-16 border-t border-white/10 w-full">
-          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-lg">Co-create your brand scope</PremiumButton>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-lg">{SITE_SETTINGS?.aboutPage?.ctaButton || "Co-create your brand scope"}</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -3032,16 +3044,16 @@ const OurStoryPage = ({ navigate }) => {
 
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>Our Story</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">Where Science Meets Art.</h1>
+          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.storyPage?.pageLabel || "Our Story"}</h2>
+          <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">{SITE_SETTINGS?.storyPage?.heroTitle || "Where Science Meets Art."}</h1>
         </FadeUp>
 
         {/* Section 2: The Spark */}
         <StaggerGroup className="space-y-8 text-lg font-light text-white/70 font-secondary leading-relaxed mb-32 w-full">
-          <StaggerItem><p className="text-2xl text-white mb-10 leading-tight max-w-4xl">PurpleBlue House was founded to solve a critical bottleneck: breakthrough innovations were failing to reach their market potential due to fragmented communication.</p></StaggerItem>
-          <StaggerItem><p className="max-w-4xl">We observed that visionary teams often struggle to translate complex, cutting-edge technology into clear, scalable narratives. They engineer incredible products, but the strategic story gets lost in execution.</p></StaggerItem>
-          <StaggerItem><p className="max-w-4xl">Meanwhile, standard creative approaches focus heavily on surface-level aesthetics without grasping the underlying functional truths. This disconnect limits long-term growth and dilutes the breakthrough.</p></StaggerItem>
-          <StaggerItem><p className="max-w-4xl">We built a collaborative ecosystem where rigorous logic and strategic imagination drive every decision, ensuring tomorrow's breakthroughs communicate with clarity today.</p></StaggerItem>
+          <StaggerItem><p className="text-2xl text-white mb-10 leading-tight max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara1 || "PurpleBlue House was founded to solve a critical bottleneck: breakthrough innovations were failing to reach their market potential due to fragmented communication."}</p></StaggerItem>
+          <StaggerItem><p className="max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara2 || "We observed that visionary teams often struggle to translate complex, cutting-edge technology into clear, scalable narratives. They engineer incredible products, but the strategic story gets lost in execution."}</p></StaggerItem>
+          <StaggerItem><p className="max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara3 || "Meanwhile, standard creative approaches focus heavily on surface-level aesthetics without grasping the underlying functional truths. This disconnect limits long-term growth and dilutes the breakthrough."}</p></StaggerItem>
+          <StaggerItem><p className="max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara4 || "We built a collaborative ecosystem where rigorous logic and strategic imagination drive every decision, ensuring tomorrow's breakthroughs communicate with clarity today."}</p></StaggerItem>
         </StaggerGroup>
 
         {/* Section 3: The Meaning Behind the Name */}
@@ -3051,15 +3063,15 @@ const OurStoryPage = ({ navigate }) => {
             <div className="w-16 h-32 rounded-full" style={{ backgroundColor: palette.blue }} />
           </div>
           <div className="md:w-2/3">
-            <h3 className="text-3xl font-light mb-6 font-primary">Why Purple and Blue?</h3>
+            <h3 className="text-3xl font-light mb-6 font-primary">{SITE_SETTINGS?.storyPage?.nameSectionTitle || "Why Purple and Blue?"}</h3>
             <p className="font-secondary font-light text-white/70 leading-relaxed mb-4">
-              <strong className="text-white">Purple</strong> represents Art. It is the color of imagination, creativity, emotion, and the boundless creator spirit.
+              <strong className="text-white">Purple</strong> {SITE_SETTINGS?.storyPage?.purpleDesc || "represents Art. It is the color of imagination, creativity, emotion, and the boundless creator spirit."}
             </p>
             <p className="font-secondary font-light text-white/70 leading-relaxed mb-4">
-              <strong className="text-white">Blue</strong> represents Science. It is the color of depth, logic, technology, truth, and structural foundation.
+              <strong className="text-white">Blue</strong> {SITE_SETTINGS?.storyPage?.blueDesc || "represents Science. It is the color of depth, logic, technology, truth, and structural foundation."}
             </p>
             <p className="font-secondary font-light text-white/70 leading-relaxed">
-              The <strong className="text-white">House</strong> is where they live together. A collaborative ecosystem built for the future.
+              The <strong className="text-white">House</strong> {SITE_SETTINGS?.storyPage?.houseDesc || "is where they live together. A collaborative ecosystem built for the future."}
             </p>
           </div>
         </FadeUp>
@@ -3087,15 +3099,15 @@ const OurStoryPage = ({ navigate }) => {
 
         {/* Section 5: The Future */}
         <FadeUp className="text-center mb-24 w-full">
-          <h3 className="text-3xl font-light mb-8 font-primary">Looking Ahead</h3>
+          <h3 className="text-3xl font-light mb-8 font-primary">{SITE_SETTINGS?.storyPage?.lookingAheadTitle || "Looking Ahead"}</h3>
           <p className="text-lg text-white/60 font-secondary font-light leading-relaxed max-w-3xl mx-auto">
-            Our story is just beginning. We will continue to champion creators, disrupt traditional agency models, and build visual expressions that bridge the past and the future.
+            {SITE_SETTINGS?.storyPage?.lookingAheadText || "Our story is just beginning. We will continue to champion creators, disrupt traditional agency models, and build visual expressions that bridge the past and the future."}
           </p>
         </FadeUp>
 
         {/* Section 6: CTA */}
         <FadeUp className="text-center pt-16 border-t border-white/10 w-full">
-          <PremiumButton onClick={() => navigate('contact')} className="px-12 py-5 text-lg">Be part of our story</PremiumButton>
+          <PremiumButton onClick={() => navigate('contact')} className="px-12 py-5 text-lg">{SITE_SETTINGS?.storyPage?.ctaButton || "Be part of our story"}</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -3112,12 +3124,12 @@ const TeamPage = ({ navigate }) => {
 
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>The Team</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">The minds behind the magic.</h1>
+          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.teamPage?.pageLabel || "The Team"}</h2>
+          <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">{renderWithItalics(SITE_SETTINGS?.teamPage?.heroTitle || "The minds behind the magic.")}</h1>
         </FadeUp>
 
         {/* Section 2: Leadership */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">Leadership</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">{SITE_SETTINGS?.teamPage?.leadershipTitle || "Leadership"}</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 mb-32 w-full">
           {TEAM_MEMBERS.filter(m => m.id && m.id.startsWith('leader')).map((leader, i) => (
             <StaggerItem key={i}>
@@ -3136,7 +3148,7 @@ const TeamPage = ({ navigate }) => {
         </StaggerGroup>
 
         {/* Section 3: The Innovators (Grid) */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">The Core House</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">{SITE_SETTINGS?.teamPage?.coreTeamTitle || "The Core House"}</h3></FadeUp>
         <StaggerGroup className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-32 w-full">
           {TEAM_MEMBERS.filter(m => m.id && m.id.startsWith('creator')).map((member, idx) => (
             <StaggerItem key={idx}>
@@ -3155,22 +3167,22 @@ const TeamPage = ({ navigate }) => {
 
         {/* Section 4: Our Culture */}
         <FadeUp className="border border-white/10 rounded-[32px] p-12 md:p-16 mb-32 w-full" style={{ background: `linear-gradient(135deg, ${palette.panel}, ${palette.bg})` }}>
-          <h3 className="text-3xl font-light mb-10 font-primary text-center">Our Culture</h3>
+          <h3 className="text-3xl font-light mb-10 font-primary text-center">{SITE_SETTINGS?.teamPage?.cultureTitle || "Our Culture"}</h3>
           <StaggerGroup className="grid md:grid-cols-3 gap-8 w-full">
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Globe className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-lg font-medium text-white mb-3 font-primary">No Silos</h4>
-              <p className="text-sm text-white/50 font-secondary leading-relaxed">Strategy, design, and execution sit at the same table. We believe in cross-pollination of ideas.</p>
+              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.culture1Title || "No Silos"}</h4>
+              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.culture1Text || "Strategy, design, and execution sit at the same table. We believe in cross-pollination of ideas."}</p>
             </StaggerItem>
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Zap className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-lg font-medium text-white mb-3 font-primary">Creator-First</h4>
-              <p className="text-sm text-white/50 font-secondary leading-relaxed">We empower our team to take ownership, innovate fearlessly, and challenge the status quo.</p>
+              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.culture2Title || "Creator-First"}</h4>
+              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.culture2Text || "We empower our team to take ownership, innovate fearlessly, and challenge the status quo."}</p>
             </StaggerItem>
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><BookOpen className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-lg font-medium text-white mb-3 font-primary">Continuous Learning</h4>
-              <p className="text-sm text-white/50 font-secondary leading-relaxed">In a world driven by rapid innovation, we are perpetual students of science, art, and human behavior.</p>
+              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.culture3Title || "Continuous Learning"}</h4>
+              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.culture3Text || "In a world driven by rapid innovation, we are perpetual students of science, art, and human behavior."}</p>
             </StaggerItem>
           </StaggerGroup>
         </FadeUp>
@@ -3181,8 +3193,8 @@ const TeamPage = ({ navigate }) => {
           {/* Little glowing dot from the design */}
           <div className="w-3 h-3 rounded-full bg-[#FDE68A] mb-8 shadow-[0_0_20px_#FDE68A]" />
 
-          <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary text-white">Want to join the House?</h3>
-          <p className="text-lg text-white/50 font-secondary mb-10 max-w-2xl mx-auto">We are always looking for visionary strategists and artists.</p>
+          <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary text-white">{SITE_SETTINGS?.teamPage?.ctaTitle || "Want to join the House?"}</h3>
+          <p className="text-lg text-white/50 font-secondary mb-10 max-w-2xl mx-auto">{SITE_SETTINGS?.teamPage?.ctaText || "We are always looking for visionary strategists and artists."}</p>
 
           {/* Updated button to trigger the modal */}
           <button
@@ -3210,32 +3222,32 @@ const MethodPage = ({ navigate }) => {
 
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>The PBH Method</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-24 tracking-tight font-primary max-w-4xl">The blueprint for <AnimatedItalic className="text-white/50">breakthrough brands.</AnimatedItalic></h1>
+          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.methodPage?.pageLabel || "The PBH Method"}</h2>
+          <h1 className="text-5xl md:text-7xl font-light mb-24 tracking-tight font-primary max-w-4xl">{renderWithItalics(SITE_SETTINGS?.methodPage?.heroTitle || "The blueprint for *breakthrough brands.*")}</h1>
         </FadeUp>
 
         {/* Section 2: Traditional vs PBH */}
         <FadeUp className="grid md:grid-cols-2 gap-8 w-full mb-32">
           <div className="border border-white/5 rounded-[24px] p-10 relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
-            <h3 className="text-white/40 text-sm tracking-widest uppercase mb-8 font-primary">The Traditional Model</h3>
+            <h3 className="text-white/40 text-sm tracking-widest uppercase mb-8 font-primary">{SITE_SETTINGS?.methodPage?.traditionalTitle || "The Traditional Model"}</h3>
             <ul className="space-y-6 font-secondary">
-              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Execution disconnected from core business objectives.</span></li>
-              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Short-term aesthetic fixes over long-term systems.</span></li>
-              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>Disjointed touchpoints that dilute brand potential.</span></li>
+              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditional1 || "Execution disconnected from core business objectives."}</span></li>
+              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditional2 || "Short-term aesthetic fixes over long-term systems."}</span></li>
+              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditional3 || "Disjointed touchpoints that dilute brand potential."}</span></li>
             </ul>
           </div>
           <div className="border rounded-[24px] p-10 relative overflow-hidden w-full" style={{ background: `linear-gradient(to bottom right, ${hexToRgba(palette.primary, 0.1)}, transparent)`, borderColor: hexToRgba(palette.primary, 0.2) }}>
-            <h3 className="text-sm tracking-widest uppercase mb-8 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>The PBH Method</h3>
+            <h3 className="text-sm tracking-widest uppercase mb-8 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.methodPage?.pbhMethodTitle || "The PBH Method"}</h3>
             <ul className="space-y-6 relative z-10 font-secondary">
-              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Mapping the root business gap before designing anything.</span></li>
-              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Modular scoping based on exact strategic requirements.</span></li>
-              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>Building connected systems where strategy dictates execution.</span></li>
+              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod1 || "Mapping the root business gap before designing anything."}</span></li>
+              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod2 || "Modular scoping based on exact strategic requirements."}</span></li>
+              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod3 || "Building connected systems where strategy dictates execution."}</span></li>
             </ul>
           </div>
         </FadeUp>
 
         {/* Section 3: The 4 Steps */}
-        <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">Our 4-Step Framework</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">{SITE_SETTINGS?.methodPage?.frameworkTitle || "Our 4-Step Framework"}</h3></FadeUp>
         <StaggerGroup className="space-y-24 mb-32 w-full">
           {FRAMEWORK.map((s, i) => (
             <StaggerItem key={i}>
@@ -3259,14 +3271,14 @@ const MethodPage = ({ navigate }) => {
 
         {/* Section 4: The SciArt Application */}
         <FadeUp className="border border-white/10 rounded-[24px] p-12 mb-32 text-center w-full" style={{ backgroundColor: palette.panel }}>
-          <h3 className="text-2xl font-light mb-6 font-primary">Applied SciArt</h3>
+          <h3 className="text-2xl font-light mb-6 font-primary">{SITE_SETTINGS?.methodPage?.applicationTitle || "Applied SciArt"}</h3>
           <p className="text-white/60 font-secondary font-light max-w-3xl mx-auto leading-relaxed">
-            Throughout every step of this method, we apply the SciArt filter. Does the strategy hold up to logical scrutiny (Science)? Does the execution evoke the right human emotion (Art)? If an output fails either test, it does not leave the House.
+            {SITE_SETTINGS?.methodPage?.applicationText || "Throughout every step of this method, we apply the SciArt filter. Does the strategy hold up to logical scrutiny (Science)? Does the execution evoke the right human emotion (Art)? If an output fails either test, it does not leave the House."}
           </p>
         </FadeUp>
 
         {/* Section 5: Timeline Overview */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary text-center">Typical Engagement Timeline</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary text-center">{SITE_SETTINGS?.methodPage?.timelineTitle || "Typical Engagement Timeline"}</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-4 gap-4 mb-32 w-full">
           {[
             { phase: "Weeks 1-2", focus: "Discovery & Alignment", color: palette.primary },
@@ -3285,7 +3297,7 @@ const MethodPage = ({ navigate }) => {
 
         {/* Section 6: Final CTA */}
         <FadeUp className="pt-16 border-t border-white/10 text-center w-full">
-          <h2 className="text-4xl font-light mb-8 font-primary">Experience the method yourself.</h2>
+          <h2 className="text-4xl font-light mb-8 font-primary">{SITE_SETTINGS?.methodPage?.ctaTitle || "Experience the method yourself."}</h2>
           <PremiumButton onClick={() => navigate('assessment')}>Build My Brand Scope</PremiumButton>
         </FadeUp>
       </div>
@@ -3347,18 +3359,18 @@ const ServicesPage = ({ navigate }) => {
 
         {/* FAQ for Services */}
         <div className="w-full border-t border-white/10 pt-16 mb-24">
-          <FadeUp><h3 className="text-3xl font-light mb-8 font-primary text-center">Service FAQs</h3></FadeUp>
+          <FadeUp><h3 className="text-3xl font-light mb-8 font-primary text-center">{SITE_SETTINGS?.serviceFaqs?.title || "Service FAQs"}</h3></FadeUp>
           <StaggerGroup className="space-y-4 font-secondary max-w-4xl mx-auto">
             <StaggerItem>
               <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01]">
-                <h4 className="font-medium text-white mb-2">Can we choose just one deliverable?</h4>
-                <p className="text-sm text-white/50">We strongly recommend going through our assessment first. If a single deliverable solves the root problem, yes. If not, we will recommend a connected system.</p>
+                <h4 className="font-medium text-white mb-2">{SITE_SETTINGS?.serviceFaqs?.faq1Question || "Can we choose just one deliverable?"}</h4>
+                <p className="text-sm text-white/50">{SITE_SETTINGS?.serviceFaqs?.faq1Answer || "We strongly recommend going through our assessment first. If a single deliverable solves the root problem, yes. If not, we will recommend a connected system."}</p>
               </div>
             </StaggerItem>
             <StaggerItem>
               <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01]">
-                <h4 className="font-medium text-white mb-2">How do we know which route is right for us?</h4>
-                <p className="text-sm text-white/50">You don't need to guess. Use our "Build My Brand Scope" tool, and our strategic engine will diagnose your gaps and assign the perfect route automatically.</p>
+                <h4 className="font-medium text-white mb-2">{SITE_SETTINGS?.serviceFaqs?.faq2Question || "How do we know which route is right for us?"}</h4>
+                <p className="text-sm text-white/50">{SITE_SETTINGS?.serviceFaqs?.faq2Answer || 'You don\'t need to guess. Use our "Build My Brand Scope" tool, and our strategic engine will diagnose your gaps and assign the perfect route automatically.'}</p>
               </div>
             </StaggerItem>
           </StaggerGroup>
@@ -3963,7 +3975,7 @@ const Footer = ({ navigate }) => {
               <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className="h-8 w-auto object-contain shrink-0" />
               {SITE_SETTINGS?.title || "PurpleBlue House"}
             </div>
-            <p className="text-white/40 font-light text-sm leading-relaxed mb-6 font-secondary max-w-sm">{SITE_SETTINGS?.description || "A premium brand, storytelling, and communication studio that understands your brand problem before you even speak to them."}</p>
+            <p className="text-white/40 font-light text-sm leading-relaxed mb-6 font-secondary max-w-sm">{SITE_SETTINGS?.footerTagline || SITE_SETTINGS?.description || "A premium brand, storytelling, and communication studio that understands your brand problem before you even speak to them."}</p>
             <div className="flex gap-4 mb-6">
               {SITE_SETTINGS?.contactEmail && (
                 <a href={`mailto:${SITE_SETTINGS.contactEmail}`} className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 cursor-pointer transition-all"><Mail className="w-3 h-3" /></a>
@@ -4003,7 +4015,7 @@ const Footer = ({ navigate }) => {
           </div>
         </div>
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-[10px] sm:text-xs font-medium text-white/30 uppercase tracking-widest gap-4 font-secondary w-full">
-          <p>© {new Date().getFullYear()} PurpleBlue House. All rights reserved.</p>
+          <p>{SITE_SETTINGS?.footerCopyright || `© ${new Date().getFullYear()} PurpleBlue House. All rights reserved.`}</p>
           <div className="flex gap-6"><span className="cursor-pointer hover:text-white">Privacy Policy</span><span className="cursor-pointer hover:text-white">Terms</span></div>
         </div>
       </div>

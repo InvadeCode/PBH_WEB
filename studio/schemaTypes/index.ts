@@ -1,3 +1,15 @@
+import caseStudy from './caseStudy'
+import deliverable from './deliverable'
+import journalArticle from './journalArticle'
+import quizQuestion from './quizQuestion'
+import teamMember from './teamMember'
+import timelineEvent from './timelineEvent'
+import routeInfo from './routeInfo'
+import frameworkStep from './frameworkStep'
+import siteSettings from './siteSettings'
+import problemData from './problemData'
+import coreValue from './coreValue'
+import faq from './faq'
 import lead from './lead'
 
-export const schemaTypes = [lead]
+export const schemaTypes = [caseStudy, deliverable, journalArticle, quizQuestion, teamMember, timelineEvent, routeInfo, frameworkStep, siteSettings, problemData, coreValue, faq, lead]

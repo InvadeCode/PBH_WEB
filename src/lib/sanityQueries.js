@@ -38,7 +38,8 @@ export const GET_SITE_SETTINGS = `*[_type == "siteSettings"][0] {
   contactEmail, contactPhone, contactAddress,
   homeExploreButton, servicesExploreButton, assessmentButton, allProjectsButton,
   workPageHeader, workPageSubtext, methodPageHeader, methodPageSubtext, teamPageHeader, teamPageSubtext,
-  coreValuesHeader, ourJourneyHeader, frameworkHeader, timelineHeader
+  coreValuesHeader, ourJourneyHeader, frameworkHeader, timelineHeader,
+  aboutPage, storyPage, teamPage, methodPage, serviceFaqs, footerTagline, footerCopyright
 }`;
 
 export const GET_TEAM_MEMBERS = `*[_type == "teamMember"] | order(order asc) { id, name, role, bio }`;
