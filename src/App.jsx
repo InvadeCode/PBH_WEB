@@ -1682,9 +1682,9 @@ const StrategicEngine = ({ navigate }) => {
   };
 
   const LiveScopePreview = () => (
-    <div className="border border-white/10 rounded-[24px] p-8 flex flex-col h-full shadow-2xl relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
-      <div className="absolute top-0 right-0 w-[300px] h-[300px] opacity-[0.03] blur-[100px] pointer-events-none" style={{ backgroundColor: palette.primary }} />
-      <h3 className="text-xs font-medium text-white/40 uppercase tracking-widest mb-8 border-b border-white/5 pb-4 font-primary">Live Blueprint</h3>
+    <div className="border border-white/10 rounded-[24px] p-8 flex flex-col h-full shadow-2xl relative overflow-hidden w-full print-blueprint-container" style={{ backgroundColor: palette.panel }}>
+      <div className="absolute top-0 right-0 w-[300px] h-[300px] opacity-[0.03] blur-[100px] pointer-events-none print:hidden" style={{ backgroundColor: palette.primary }} />
+      <h3 className="text-xs font-medium text-white/40 uppercase tracking-widest mb-8 border-b border-white/5 pb-4 font-primary print:border-none print:text-white/70 print:text-sm">Live Blueprint</h3>
       <div className="space-y-6 flex-grow overflow-y-auto pr-2 custom-scrollbar">
         <div className={`transition-opacity duration-500 opacity-100`}>
           <div className="text-[10px] text-white/30 uppercase tracking-wider mb-1 font-primary">Brand Stage</div>
@@ -1701,7 +1701,7 @@ const StrategicEngine = ({ navigate }) => {
           {selectedDeliverables.length > 0 ? (
             <ul className="space-y-2">
               {DELIVERABLES_MASTER.filter(d => selectedDeliverables.includes(d.id)).map(d => (
-                <li key={d.id} className="text-xs font-light text-white flex items-start gap-2 font-secondary"><Check className="w-3 h-3 shrink-0 mt-[2px]" style={{ color: palette.accent }} /> {d.name}</li>
+                <li key={d.id} className="text-xs font-light text-white flex items-start gap-2 font-secondary break-inside-avoid"><Check className="w-3 h-3 shrink-0 mt-[2px]" style={{ color: palette.accent }} /> {d.name}</li>
               ))}
             </ul>
           ) : <div className="text-xs font-light text-white/30 italic font-secondary">Awaiting selection...</div>}
@@ -2047,12 +2047,12 @@ const StrategicEngine = ({ navigate }) => {
       )}
 
       {step > 0 && step < (N_QUIZ + 6) && (
-        <div className="fixed top-[72px] md:top-[88px] left-0 w-full h-[2px] bg-white/10 z-20">
+        <div className="fixed top-[72px] md:top-[88px] left-0 w-full h-[2px] bg-white/10 z-20 print:hidden">
           <motion.div className="h-full" style={{ backgroundColor: palette.primary }} initial={{ width: 0 }} animate={{ width: `${(step / (N_QUIZ + 5)) * 100}%` }} transition={{ duration: 0.5 }} />
         </div>
       )}
-      <div className="w-full px-[3%] flex flex-col md:flex-row justify-between relative gap-8">
-        <div className="flex-1 flex items-center justify-start pt-12 pb-32 md:pb-12 min-h-[80vh] w-full">
+      <div className="w-full px-[3%] flex flex-col md:flex-row justify-between relative gap-8 print:flex-col print:gap-12">
+        <div className="flex-1 flex items-center justify-start pt-12 pb-32 md:pb-12 min-h-[80vh] w-full print:min-h-0 print:pt-0 print:pb-0">
           <AnimatePresence mode="wait">
             <motion.div key={step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.4 }} className="w-full h-full flex flex-col justify-center">
               {stepsArray[step]}
@@ -2060,7 +2060,7 @@ const StrategicEngine = ({ navigate }) => {
           </AnimatePresence>
         </div>
         {step > 0 && step < (N_QUIZ + 6) && (
-          <div className="hidden md:block w-[350px] lg:w-[450px] shrink-0 sticky top-32 h-[calc(100vh-160px)] pb-8 z-10">
+          <div className="hidden md:block w-[350px] lg:w-[450px] shrink-0 sticky top-32 h-[calc(100vh-160px)] pb-8 z-10 print:block print:w-full print:max-w-full print:static print:h-auto">
             <LiveScopePreview />
           </div>
         )}

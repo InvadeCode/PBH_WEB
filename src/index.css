@@ -1,3 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media print {
+  /* 1. Force Browsers to Render Background Colors & Images */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* 2. Hide Unnecessary UI Elements on Paper */
+  button, 
+  nav, 
+  header, 
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  /* 3. Keep Base Dark Mode Intact (Prevents White-on-White text issues) */
+  body {
+    background-color: #0b0c10 !important; /* Fallback dark background */
+    color: #ffffff !important;
+  }
+
+  /* 4. Prevent Layout Breaks Inside Cards */
+  .break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  /* 5. Allow container heights to expand fully for print instead of scrolling */
+  .overflow-y-auto {
+    overflow-y: visible !important;
+    max-height: none !important;
+  }
+  
+  /* 6. Remove heavy box styling from Live Blueprint for a clean document flow */
+  .print-blueprint-container {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
