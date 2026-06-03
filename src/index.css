@@ -21,7 +21,7 @@
 
   /* 3. Keep Base Dark Mode Intact (Prevents White-on-White text issues) */
   body {
-    background-color: #0b0c10 !important; /* Fallback dark background */
+    background-color: #010836 !important; /* Matches palette.bgDeep exactly */
     color: #ffffff !important;
   }
 
@@ -44,5 +44,10 @@
     box-shadow: none !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+  
+  /* 7. Strip inline backgrounds on print to let body color bleed infinitely */
+  .print-transparent-bg {
+    background-color: transparent !important;
   }
 }
