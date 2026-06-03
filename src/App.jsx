@@ -1923,9 +1923,9 @@ const StrategicEngine = ({ navigate }) => {
     </div>,
 
     // N+6: The Scope Snapshot Report
-    <div key="snap" className="flex flex-col justify-center h-full w-full py-12">
-      <FadeUp className="relative p-[1px] rounded-[24px] bg-gradient-to-b from-white/20 to-white/5 w-full">
-        <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)]" style={{ backgroundColor: palette.bgDeep }}>
+    <div key="snap" className="flex flex-col justify-center h-full w-full py-12 print:py-0 print:block">
+      <FadeUp className="relative p-[1px] rounded-[24px] bg-gradient-to-b from-white/20 to-white/5 w-full print:p-0 print:bg-none print:rounded-none">
+        <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)] print:p-0 print:shadow-none print:rounded-none print:overflow-visible print-blueprint-container" style={{ backgroundColor: palette.bgDeep }}>
           <div className="flex flex-col md:flex-row justify-between items-start border-b border-white/10 pb-8 mb-10 relative z-10 gap-6 w-full">
             <div>
               <div className="text-xs uppercase tracking-widest mb-3 font-medium flex items-center gap-2 font-primary" style={{ color: palette.primary }}><FileText className="w-4 h-4" /> Official Scope Snapshot</div>
@@ -1938,7 +1938,7 @@ const StrategicEngine = ({ navigate }) => {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-16 relative z-10 w-full">
+          <div className="grid md:grid-cols-2 gap-16 relative z-10 w-full print:grid-cols-1 print:gap-8">
             <div className="space-y-10 w-full">
               <div className="bg-white/[0.02] border border-white/5 rounded-[16px] p-8 mb-8 relative overflow-hidden w-full">
                 <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-8 font-primary">Brand Alignment Profile</h4>
@@ -1967,7 +1967,7 @@ const StrategicEngine = ({ navigate }) => {
               <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Selected Deliverables Blueprint</h4>
               <ul className="space-y-4 w-full">
                 {DELIVERABLES_MASTER.filter(d => selectedDeliverables.includes(d.id)).map(d => (
-                  <li key={d.id} className="flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full">
+                  <li key={d.id} className="flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full print:break-inside-avoid">
                     <div className="p-1.5 rounded-md shrink-0 mt-0.5" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4" style={{ color: palette.blue }} /></div>
                     <div className="w-full">
                       <div className="text-sm font-medium text-white mb-1 font-secondary flex items-center justify-between">
@@ -1995,7 +1995,7 @@ const StrategicEngine = ({ navigate }) => {
   ];
 
   return (
-    <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative overflow-hidden w-full" style={{ backgroundColor: palette.bgDeep }}>
+    <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative overflow-hidden w-full print:overflow-visible print:pt-0" style={{ backgroundColor: palette.bgDeep }}>
       {dependencyModal && (
         <div className="fixed inset-0 z-[200000] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm text-left">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#0C185C] border border-white/10 p-8 rounded-[24px] max-w-lg w-full shadow-2xl">
