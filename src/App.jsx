@@ -1696,12 +1696,6 @@ const StrategicEngine = ({ navigate }) => {
               Please find your detailed Scope Snapshot attached as a PDF. This document serves as a factual, actionable blueprint for your brand's growth trajectory.
             </p>
             
-            <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; border-left: 4px solid #6366f1;">
-              <p style="margin: 0; color: #334155; font-size: 14px; font-weight: 500;">Next Steps:</p>
-              <p style="margin: 8px 0 0 0; color: #64748b; font-size: 14px; line-height: 1.5;">
-                Our strategy team will review your snapshot and reach out shortly to discuss potential implementation routes.
-              </p>
-            </div>
           </div>
           
           <!-- Footer -->
