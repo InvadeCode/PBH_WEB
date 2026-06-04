@@ -1682,8 +1682,8 @@ const StrategicEngine = ({ navigate }) => {
         <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
           <!-- Header -->
           <div style="background-color: #010836; padding: 40px 30px; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 24px; font-weight: 600;">Your Scope Snapshot</h1>
-            <p style="color: #94a3b8; margin: 10px 0 0 0; font-size: 14px;">PurpleBlue House Strategy Blueprint</p>
+            <h1 style="color: white; margin: 0; font-size: 24px; font-weight: 600;">Your Strategic Scope Snapshot</h1>
+            <p style="color: #94a3b8; margin: 10px 0 0 0; font-size: 14px;">Customized Blueprint for ${leadForm.company}</p>
           </div>
           
           <!-- Content -->
