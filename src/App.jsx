@@ -1661,7 +1661,12 @@ const StrategicEngine = ({ navigate }) => {
         leadForm,
         answers,
         selectedDeliverables,
-        startingPoint
+        startingPoint,
+        clusters,
+        routes,
+        selectedRoutes,
+        priorities,
+        context
       })
     }).then(res => res.json()).catch(err => ({ success: false, error: err.message }));
 

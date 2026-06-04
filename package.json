@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@sanity/client": "^7.22.0",
+    "@supabase/supabase-js": "^2.107.0",
     "@vitejs/plugin-react": "^4.3.4",
     "clsx": "^2.1.1",
     "exceljs": "^4.4.0",
