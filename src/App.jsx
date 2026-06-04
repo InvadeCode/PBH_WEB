@@ -1008,7 +1008,7 @@ const StrategicEngine = ({ navigate }) => {
           <!-- Header -->
           <div style="background-color: #121228; padding: 30px; text-align: center;">
             <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 700;">New Scope Builder Lead</h1>
-            <p style="color: #a0a0c0; margin: 8px 0 0 0; font-size: 14px;">Purple Blue House Strategy Blueprint</p>
+            <p style="color: #a0a0c0; margin: 8px 0 0 0; font-size: 14px;">PurpleBlue House Strategy Blueprint</p>
           </div>
 
           <div style="padding: 30px;">
@@ -1382,7 +1382,7 @@ const StrategicEngine = ({ navigate }) => {
       doc.setPage(i);
       doc.setFontSize(8);
       doc.setTextColor(150, 150, 150);
-      doc.text(`Purple Blue House - Scope Builder Report`, margin, pageH - 25);
+      doc.text(`PurpleBlue House - Scope Builder Report`, margin, pageH - 25);
       doc.text(`Page ${i} of ${pageCount}`, pageW - margin, pageH - 25, { align: 'right' });
     }
 
@@ -1393,7 +1393,7 @@ const StrategicEngine = ({ navigate }) => {
     // Generate Comprehensive Excel Sheet Attachment
     try {
       const workbook = new ExcelJS.Workbook();
-      workbook.creator = 'Purple Blue House';
+      workbook.creator = 'PurpleBlue House';
       const sheet = workbook.addWorksheet('Scope of Work', { views: [{ showGridLines: false }] });
 
       // Column Widths
@@ -1418,7 +1418,7 @@ const StrategicEngine = ({ navigate }) => {
       headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
 
       // Subtitle
-      const subtitleRow = sheet.addRow(["", `Purple Blue House - Brand Strategy Deliverables for ${leadForm.company || 'Client'}`, "", ""]);
+      const subtitleRow = sheet.addRow(["", `PurpleBlue House - Brand Strategy Deliverables for ${leadForm.company || 'Client'}`, "", ""]);
       subtitleRow.font = { name: 'Arial', size: 11, italic: true, color: { argb: 'FFA5B4FC' } };
       subtitleRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
       subtitleRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
