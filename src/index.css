@@ -4,7 +4,9 @@
 
 @media print {
   /* 1. Force Browsers to Render Background Colors & Images */
-  * {
+  *,
+  *::before,
+  *::after {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
@@ -19,16 +21,18 @@
     display: none !important;
   }
 
-  /* 3. Keep Base Dark Mode Intact (Prevents White-on-White text issues) */
+  /* 3. Keep Base Dark Mode Intact — force on BOTH html and body for Windows */
+  html,
   body {
-    background-color: #010836 !important; /* Matches palette.bgDeep exactly */
+    background-color: #010836 !important;
     color: #ffffff !important;
   }
 
   /* 4. Prevent Layout Breaks Inside Cards */
-  .break-inside-avoid {
-    break-inside: avoid;
-    page-break-inside: avoid;
+  .break-inside-avoid,
+  .print\\:break-inside-avoid {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
   }
   
   /* 5. Allow container heights to expand fully for print instead of scrolling */
@@ -49,5 +53,10 @@
   /* 7. Strip inline backgrounds on print to let body color bleed infinitely */
   .print-transparent-bg {
     background-color: transparent !important;
+  }
+
+  /* 8. Force page margins and prevent clipping */
+  @page {
+    margin: 1cm;
   }
 }

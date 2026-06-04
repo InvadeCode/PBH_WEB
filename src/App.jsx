@@ -2000,7 +2000,7 @@ const StrategicEngine = ({ navigate }) => {
   ];
 
   return (
-    <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative overflow-hidden w-full print:overflow-visible print:pt-0 print:pb-12 print-transparent-bg" style={{ backgroundColor: palette.bgDeep }}>
+    <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative overflow-hidden w-full print:overflow-visible print:pt-0 print:pb-12" style={{ backgroundColor: palette.bgDeep }}>
       {dependencyModal && (
         <div className="fixed inset-0 z-[200000] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm text-left">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#0C185C] border border-white/10 p-8 rounded-[24px] max-w-lg w-full shadow-2xl">
