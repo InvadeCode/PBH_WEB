@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import * as xlsx from "xlsx";
+import ExcelJS from "exceljs";
 
 export default async function handler(req, res) {
   // Simple security check so only you can download this
@@ -52,7 +52,6 @@ export default async function handler(req, res) {
       if (lead.answers_raw && typeof lead.answers_raw === "object") {
         Object.values(lead.answers_raw).forEach((ans) => {
           if (ans.questionText && ans.label) {
-            // This creates a column for the Question and puts the Answer in it!
             row[`Q: ${ans.questionText}`] = ans.label;
           }
         });
@@ -61,17 +60,33 @@ export default async function handler(req, res) {
       return row;
     });
 
-    // 3. Create the Excel Workbook
-    const worksheet = xlsx.utils.json_to_sheet(formattedData);
-    const workbook = xlsx.utils.book_new();
-    xlsx.utils.book_append_sheet(workbook, worksheet, "All Leads");
+    // 3. Create the Excel Workbook using exceljs
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("All Leads");
 
-    // Adjust column widths slightly for better reading
-    const cols = Object.keys(formattedData[0] || {}).map(() => ({ wch: 30 }));
-    worksheet["!cols"] = cols;
+    // Extract all unique headers across all leads
+    const allHeaders = new Set();
+    formattedData.forEach(row => {
+      Object.keys(row).forEach(key => allHeaders.add(key));
+    });
+
+    const columns = Array.from(allHeaders).map(header => ({
+      header,
+      key: header,
+      width: 30
+    }));
+    
+    worksheet.columns = columns;
+
+    formattedData.forEach(row => {
+      worksheet.addRow(row);
+    });
+
+    // Make header row bold
+    worksheet.getRow(1).font = { bold: true };
 
     // 4. Generate buffer
-    const buffer = xlsx.write(workbook, { type: "buffer", bookType: "xlsx" });
+    const buffer = await workbook.xlsx.writeBuffer();
 
     // 5. Send as a direct file download
     res.setHeader(
@@ -82,7 +97,7 @@ export default async function handler(req, res) {
       "Content-Disposition",
       'attachment; filename="PBH_Master_Lead_Report.xlsx"'
     );
-    return res.status(200).send(buffer);
+    return res.status(200).send(Buffer.from(buffer));
 
   } catch (err) {
     console.error("Export error:", err);
