@@ -14,7 +14,7 @@ export default async function handler(req, res) {
   const { subject, htmlContent, attachments, to } = req.body;
   
   // Use the email provided in the form, otherwise fallback to the admin email
-  const recipientEmail = EMAIL_TO;
+  const recipientEmail = to || EMAIL_TO;
 
   try {
     const payload = {
