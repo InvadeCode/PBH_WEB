@@ -89,10 +89,10 @@ export default async function handler(req, res) {
         "Timeline": lead.timeline || "N/A",
         "Depth": lead.depth || "N/A",
         "Starting Point": lead.starting_point || "N/A",
-        "Identified Gaps": Array.isArray(lead.identified_gaps) ? lead.identified_gaps.join(", ") : "",
-        "Recommended Routes": Array.isArray(lead.recommended_routes) ? lead.recommended_routes.map(getRouteName).join(", ") : "",
-        "Selected Routes": Array.isArray(lead.selected_routes) ? lead.selected_routes.map(getRouteName).join(", ") : "",
-        "Selected Deliverables": Array.isArray(lead.selected_deliverables) ? lead.selected_deliverables.map(getDeliverableName).join(", ") : "",
+        "Identified Gaps": Array.isArray(lead.identified_gaps) ? lead.identified_gaps.map(g => `• ${g}`).join("\n") : "",
+        "Recommended Routes": Array.isArray(lead.recommended_routes) ? lead.recommended_routes.map(r => `• ${getRouteName(r)}`).join("\n") : "",
+        "Selected Routes": Array.isArray(lead.selected_routes) ? lead.selected_routes.map(r => `• ${getRouteName(r)}`).join("\n") : "",
+        "Selected Deliverables": Array.isArray(lead.selected_deliverables) ? lead.selected_deliverables.map(d => `• ${getDeliverableName(d)}`).join("\n") : "",
       };
 
       // Extract the ugly JSON and make it beautiful columns
@@ -120,7 +120,7 @@ export default async function handler(req, res) {
     const columns = Array.from(allHeaders).map(header => ({
       header,
       key: header,
-      width: 30
+      width: header === "Selected Deliverables" ? 50 : 35
     }));
     
     worksheet.columns = columns;
@@ -129,8 +129,15 @@ export default async function handler(req, res) {
       worksheet.addRow(row);
     });
 
-    // Make header row bold
+    // Make header row bold and style all cells
     worksheet.getRow(1).font = { bold: true };
+    
+    worksheet.eachRow((row, rowNumber) => {
+      row.eachCell((cell) => {
+        // Enable text wrapping and top alignment for all cells
+        cell.alignment = { vertical: 'top', wrapText: true };
+      });
+    });
 
     // 4. Generate buffer
     const buffer = await workbook.xlsx.writeBuffer();
