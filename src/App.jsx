@@ -3820,6 +3820,7 @@ const ContactPage = ({ navigate }) => {
     setIsSubmitting(true);
     setStatus(null);
 
+    // 1. Internal notification email
     const subject = `Direct Contact: ${formData.name}`;
     const htmlContent = `
       <div style="font-family: sans-serif; padding: 20px; max-width: 600px;">
@@ -3832,22 +3833,68 @@ const ContactPage = ({ navigate }) => {
       </div>
     `;
 
-    // Fire email + Supabase save in parallel so no data is lost
+    // 2. Client auto-responder email
+    const clientSubject = `We've received your message | PurpleBlue House`;
+    const clientHtmlContent = `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a;">
+        <!-- Header -->
+        <div style="text-align: center; padding: 40px 0 30px 0;">
+          <h1 style="color: #6865FA; font-weight: 300; letter-spacing: -0.5px; margin: 0; font-size: 24px;">PurpleBlue House</h1>
+        </div>
+
+        <!-- Body -->
+        <div style="background: #ffffff; padding: 40px; border-radius: 8px; border: 1px solid #eaeaea;">
+          <p style="font-size: 16px; margin-top: 0;">Hi ${formData.name},</p>
+          
+          <p style="font-size: 16px; line-height: 1.6; color: #4a4a4a;">
+            Thank you for reaching out to PurpleBlue House.
+          </p>
+          <p style="font-size: 16px; line-height: 1.6; color: #4a4a4a;">
+            We have received your message. Our team is reviewing the details you shared, and we will get back to you shortly.
+          </p>
+          <p style="font-size: 16px; line-height: 1.6; color: #4a4a4a;">
+            For your reference, here is a copy of your message:
+          </p>
+          
+          <div style="margin: 35px 0; padding-top: 25px; border-top: 1px solid #f0f0f0;">
+            <div style="background: #fafafa; padding: 20px; border-radius: 6px; border-left: 3px solid #6865FA;">
+              <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #333; white-space: pre-wrap; font-style: italic;">"${formData.message}"</p>
+            </div>
+          </div>
+          
+          <p style="font-size: 16px; color: #4a4a4a; margin-bottom: 0;">
+            Warmly,<br/>
+            <strong style="color: #1a1a1a;">The PurpleBlue House Team</strong>
+          </p>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; padding: 30px 0; color: #999; font-size: 12px;">
+          <p style="margin: 0 0 10px 0;">© ${new Date().getFullYear()} PurpleBlue House. All rights reserved.</p>
+          <p style="margin: 0;">
+            <a href="https://purplebluehouse.com" style="color: #6865FA; text-decoration: none;">purplebluehouse.com</a>
+          </p>
+        </div>
+      </div>
+    `;
+
+    // Fire emails + Supabase save in parallel so no data is lost
     const saveInquiryPromise = fetch('/api/save-contact-inquiry', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: formData.name, email: formData.email, message: formData.message })
     }).then(r => r.json()).catch(err => ({ success: false, error: err.message }));
 
-    const [result, saveResult] = await Promise.all([
-      sendEmailViaResend(subject, htmlContent),
+    const [result, clientResult, saveResult] = await Promise.all([
+      sendEmailViaResend(subject, htmlContent), // Internal notification
+      sendEmailViaResend(clientSubject, clientHtmlContent, [], formData.email), // To the client
       saveInquiryPromise
     ]);
 
     setIsSubmitting(false);
 
     if (!saveResult.success) {
-      console.warn("Failed to save contact inquiry to Supabase:", saveResult.error);
+      console.warn("Failed to save inquiry to Supabase:", saveResult.error);
     }
 
     if (result.success) {
