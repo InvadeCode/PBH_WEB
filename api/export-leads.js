@@ -48,6 +48,30 @@ const getDeliverableName = (id) => {
   return match ? match.name : id;
 };
 
+// --- Shared styling helper ---
+const styleWorksheet = (worksheet) => {
+  // Bold white-on-dark header row
+  worksheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+  worksheet.getRow(1).fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FF1A1A2E' }
+  };
+  worksheet.getRow(1).alignment = { vertical: 'middle', wrapText: true };
+
+  // Style data rows
+  worksheet.eachRow((row, rowNumber) => {
+    row.eachCell((cell) => {
+      cell.alignment = { vertical: 'top', wrapText: true };
+      if (rowNumber > 1) {
+        cell.border = {
+          bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } }
+        };
+      }
+    });
+  });
+};
+
 export default async function handler(req, res) {
   // Simple security check so only you can download this
   const { key } = req.query;
@@ -65,84 +89,114 @@ export default async function handler(req, res) {
   const supabase = createClient(supabaseUrl, supabaseKey);
 
   try {
-    // 1. Fetch ALL leads from Supabase
-    const { data: leads, error } = await supabase
-      .from("leads")
-      .select("*")
-      .order("created_at", { ascending: false });
+    // Fetch from BOTH tables in parallel
+    const [leadsResult, inquiriesResult] = await Promise.all([
+      supabase.from("leads").select("*").order("created_at", { ascending: false }),
+      supabase.from("contact_inquiries").select("*").order("created_at", { ascending: false })
+    ]);
 
-    if (error) throw error;
+    if (leadsResult.error) throw leadsResult.error;
+    if (inquiriesResult.error) throw inquiriesResult.error;
 
-    if (!leads || leads.length === 0) {
-      return res.status(404).json({ message: "No leads found." });
+    const leads = leadsResult.data || [];
+    const inquiries = inquiriesResult.data || [];
+
+    if (leads.length === 0 && inquiries.length === 0) {
+      return res.status(404).json({ message: "No data found in either table." });
     }
 
-    // 2. Format the data perfectly for Excel
-    const formattedData = leads.map((lead) => {
-      // Start with the standard columns
-      const row = {
-        "Date Submitted": new Date(lead.created_at).toLocaleString(),
-        Name: lead.name,
-        Email: lead.email,
-        Company: lead.company,
-        "Brand Stage": lead.brand_stage || "N/A",
-        "Timeline": lead.timeline || "N/A",
-        "Depth": lead.depth || "N/A",
-        "Starting Point": lead.starting_point || "N/A",
-        "Identified Gaps": Array.isArray(lead.identified_gaps) ? lead.identified_gaps.map(g => `• ${g}`).join("\n") : "",
-        "Recommended Routes": Array.isArray(lead.recommended_routes) ? lead.recommended_routes.map(r => `• ${getRouteName(r)}`).join("\n") : "",
-        "Selected Routes": Array.isArray(lead.selected_routes) ? lead.selected_routes.map(r => `• ${getRouteName(r)}`).join("\n") : "",
-        "Selected Deliverables": Array.isArray(lead.selected_deliverables) ? lead.selected_deliverables.map(d => `• ${getDeliverableName(d)}`).join("\n") : "",
-      };
-
-      // Extract the ugly JSON and make it beautiful columns
-      if (lead.answers_raw && typeof lead.answers_raw === "object") {
-        Object.values(lead.answers_raw).forEach((ans) => {
-          if (ans.questionText && ans.label) {
-            row[`Q: ${ans.questionText}`] = ans.label;
-          }
-        });
-      }
-
-      return row;
-    });
-
-    // 3. Create the Excel Workbook using exceljs
+    // Create the Excel Workbook
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet("All Leads");
+    workbook.creator = 'PurpleBlue House';
+    workbook.created = new Date();
 
-    // Extract all unique headers across all leads
-    const allHeaders = new Set();
-    formattedData.forEach(row => {
-      Object.keys(row).forEach(key => allHeaders.add(key));
+    // ==========================================
+    // SHEET 1: Brand Scope Leads (from 'leads' table — untouched)
+    // ==========================================
+    const scopeSheet = workbook.addWorksheet("Brand Scope Leads", {
+      properties: { tabColor: { argb: 'FF6865FA' } }
     });
 
-    const columns = Array.from(allHeaders).map(header => ({
-      header,
-      key: header,
-      width: header === "Selected Deliverables" ? 50 : 35
-    }));
-    
-    worksheet.columns = columns;
+    if (leads.length > 0) {
+      const scopeFormatted = leads.map((lead) => {
+        const row = {
+          "Date Submitted": new Date(lead.created_at).toLocaleString(),
+          Name: lead.name,
+          Email: lead.email,
+          Company: lead.company,
+          "Brand Stage": lead.brand_stage || "N/A",
+          "Timeline": lead.timeline || "N/A",
+          "Depth": lead.depth || "N/A",
+          "Starting Point": lead.starting_point || "N/A",
+          "Identified Gaps": Array.isArray(lead.identified_gaps) ? lead.identified_gaps.map(g => `• ${g}`).join("\n") : "",
+          "Recommended Routes": Array.isArray(lead.recommended_routes) ? lead.recommended_routes.map(r => `• ${getRouteName(r)}`).join("\n") : "",
+          "Selected Routes": Array.isArray(lead.selected_routes) ? lead.selected_routes.map(r => `• ${getRouteName(r)}`).join("\n") : "",
+          "Selected Deliverables": Array.isArray(lead.selected_deliverables) ? lead.selected_deliverables.map(d => `• ${getDeliverableName(d)}`).join("\n") : "",
+        };
 
-    formattedData.forEach(row => {
-      worksheet.addRow(row);
-    });
+        // Extract quiz answers into readable columns
+        if (lead.answers_raw && typeof lead.answers_raw === "object") {
+          Object.values(lead.answers_raw).forEach((ans) => {
+            if (ans.questionText && ans.label) {
+              row[`Q: ${ans.questionText}`] = ans.label;
+            }
+          });
+        }
 
-    // Make header row bold and style all cells
-    worksheet.getRow(1).font = { bold: true };
-    
-    worksheet.eachRow((row, rowNumber) => {
-      row.eachCell((cell) => {
-        // Enable text wrapping and top alignment for all cells
-        cell.alignment = { vertical: 'top', wrapText: true };
+        return row;
       });
+
+      // Build columns from all unique keys
+      const scopeHeaders = new Set();
+      scopeFormatted.forEach(row => Object.keys(row).forEach(key => scopeHeaders.add(key)));
+
+      scopeSheet.columns = Array.from(scopeHeaders).map(header => ({
+        header,
+        key: header,
+        width: header === "Selected Deliverables" ? 50 : 35
+      }));
+
+      scopeFormatted.forEach(row => scopeSheet.addRow(row));
+    } else {
+      scopeSheet.columns = [{ header: "Info", key: "info", width: 50 }];
+      scopeSheet.addRow({ info: "No Brand Scope leads captured yet." });
+    }
+
+    styleWorksheet(scopeSheet);
+
+    // ==========================================
+    // SHEET 2: Direct Inquiries (from 'inquiries' table)
+    // ==========================================
+    const inquiriesSheet = workbook.addWorksheet("Contact Us Inquiries", {
+      properties: { tabColor: { argb: 'FF10B981' } }
     });
 
-    // 4. Generate buffer
+    if (inquiries.length > 0) {
+      inquiriesSheet.columns = [
+        { header: "Date Received", key: "date", width: 25 },
+        { header: "Name", key: "name", width: 25 },
+        { header: "Email", key: "email", width: 35 },
+        { header: "Message", key: "message", width: 80 },
+      ];
+
+      inquiries.forEach(inq => {
+        inquiriesSheet.addRow({
+          date: new Date(inq.created_at).toLocaleString(),
+          name: inq.name,
+          email: inq.email,
+          message: inq.message || "",
+        });
+      });
+    } else {
+      inquiriesSheet.columns = [{ header: "Info", key: "info", width: 50 }];
+      inquiriesSheet.addRow({ info: "No contact inquiries received yet." });
+    }
+
+    styleWorksheet(inquiriesSheet);
+
+    // Generate buffer and send as download
     const buffer = await workbook.xlsx.writeBuffer();
 
-    // 5. Send as a direct file download
     res.setHeader(
       "Content-Type",
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"

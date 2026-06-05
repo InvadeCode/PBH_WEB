@@ -969,15 +969,15 @@ const StrategicEngine = ({ navigate }) => {
     // Group deliverables by Route and LineItem for both Email and PDF
     const groupedDeliverables = {};
     const groupedIds = new Set();
-    
+
     selectedDeliverables.forEach(d => {
       const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
       if (!deliv) return;
-      
+
       const lineItemId = deliv.lineItem;
       let routeId = null;
       let lineItemName = '';
-      
+
       for (const [rId, route] of Object.entries(ROUTES_INFO)) {
         const li = route.lineItems.find(x => x.id === lineItemId);
         if (li) {
@@ -986,7 +986,7 @@ const StrategicEngine = ({ navigate }) => {
           break;
         }
       }
-      
+
       if (routeId) {
         if (!groupedDeliverables[routeId]) {
           groupedDeliverables[routeId] = { title: ROUTES_INFO[routeId].title, lineItems: {} };
@@ -1049,13 +1049,13 @@ const StrategicEngine = ({ navigate }) => {
             <div style="margin-bottom: 30px;">
               ${selectedDeliverables.length === 0 ? '<p style="color: #6b7280; font-style: italic;">No deliverables selected.</p>' : ''}
               ${Object.keys(groupedDeliverables).map(routeId => {
-                const route = groupedDeliverables[routeId];
-                return `
+      const route = groupedDeliverables[routeId];
+      return `
                   <div style="margin-bottom: 20px;">
                     <h3 style="color: #1e1e38; font-size: 14px; text-transform: uppercase; margin: 0 0 10px 0;">${route.title}</h3>
                     ${Object.keys(route.lineItems).map(liId => {
-                      const li = route.lineItems[liId];
-                      return `
+        const li = route.lineItems[liId];
+        return `
                         <div style="margin-bottom: 12px; padding-left: 10px; border-left: 2px solid #eef2f6;">
                           <h4 style="color: #64748b; font-size: 13px; font-weight: 600; margin: 0 0 6px 0;">${li.name}</h4>
                           <ul style="margin: 0; padding-left: 20px; color: #374151; font-size: 13px;">
@@ -1063,18 +1063,18 @@ const StrategicEngine = ({ navigate }) => {
                           </ul>
                         </div>
                       `;
-                    }).join('')}
+      }).join('')}
                   </div>
                 `;
-              }).join('')}
+    }).join('')}
               ${ungroupedIds.length > 0 ? `
                   <div style="margin-bottom: 20px;">
                     <h3 style="color: #1e1e38; font-size: 14px; text-transform: uppercase; margin: 0 0 10px 0;">Other Deliverables</h3>
                     <ul style="margin: 0; padding-left: 20px; color: #374151; font-size: 13px;">
                       ${ungroupedIds.map(d => {
-                        const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
-                        return `<li style="margin-bottom: 4px;">${deliv ? deliv.name : d}</li>`;
-                      }).join('')}
+      const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
+      return `<li style="margin-bottom: 4px;">${deliv ? deliv.name : d}</li>`;
+    }).join('')}
                     </ul>
                   </div>
               ` : ''}
@@ -1084,15 +1084,15 @@ const StrategicEngine = ({ navigate }) => {
             <h2 style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid #eef2f6; padding-bottom: 10px;">Diagnostic Responses</h2>
             <div>
               ${QUIZ_QUESTIONS.map((q, i) => {
-                  const ans = answers[q.id];
-                  if (!ans) return '';
-                  return `
+      const ans = answers[q.id];
+      if (!ans) return '';
+      return `
                     <div style="margin-bottom: 16px; background: #f8fafc; padding: 16px; border-radius: 8px; border-left: 3px solid #6366f1;">
                       <p style="margin: 0 0 8px 0; color: #0f172a; font-weight: 600; font-size: 14px;">${q.title}</p>
                       <p style="margin: 0; color: #475569; font-size: 13px;">${ans.label} ${ans.desc ? `<br/><span style="color: #94a3b8; font-size: 12px;">Notes: ${ans.desc}</span>` : ''}</p>
                     </div>
                   `;
-              }).join('')}
+    }).join('')}
             </div>
 
           </div>
@@ -1144,12 +1144,12 @@ const StrategicEngine = ({ navigate }) => {
     // Beautiful Modern Header
     doc.setFillColor(18, 18, 40); // Dark Purple/Blue PBH color
     doc.rect(0, 0, pageW, 110, 'F');
-    
+
     doc.setFontSize(28);
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
     doc.text('Brand Scope Report', margin, 55);
-    
+
     doc.setFontSize(11);
     doc.setTextColor(150, 150, 200);
     doc.setFont('helvetica', 'normal');
@@ -1179,42 +1179,42 @@ const StrategicEngine = ({ navigate }) => {
         }
 
         checkPage(blockHeight + 15);
-        
+
         // Draw Background Block
         doc.setFillColor(252, 252, 254);
         doc.setDrawColor(225, 225, 235);
         doc.roundedRect(margin, y, usableW, blockHeight, 6, 6, 'FD');
-        
+
         let currentY = y + 20;
-        
+
         // Question Title
         doc.setFontSize(11);
         doc.setTextColor(20, 20, 40);
         doc.setFont('helvetica', 'bold');
         doc.text(titleLines, margin + 15, currentY);
         currentY += titleLines.length * 14 + 5;
-        
+
         // Answer
         doc.setFontSize(10);
         doc.setTextColor(80, 80, 100);
         doc.setFont('helvetica', 'bold');
         doc.text(ansLines, margin + 35, currentY);
-        
+
         // Accent Arrow (Changed from ↳ to • to fix font rendering issue)
         doc.setTextColor(99, 102, 241); // Indigo
         doc.text("•", margin + 18, currentY);
-        
+
         currentY += ansLines.length * 12 + 2;
 
         // Notes
         if (ans.desc) {
-            currentY += 5;
-            doc.setFontSize(9);
-            doc.setTextColor(130, 130, 140);
-            doc.setFont('helvetica', 'normal');
-            doc.text(notesLines, margin + 35, currentY);
+          currentY += 5;
+          doc.setFontSize(9);
+          doc.setTextColor(130, 130, 140);
+          doc.setFont('helvetica', 'normal');
+          doc.text(notesLines, margin + 35, currentY);
         }
-        
+
         y += blockHeight + 12;
       }
     });
@@ -1236,10 +1236,10 @@ const StrategicEngine = ({ navigate }) => {
 
     // Selected Deliverables
     addSectionHeader('Selected Deliverables');
-    
+
     console.log('[PDF DEBUG] selectedDeliverables:', selectedDeliverables);
     console.log('[PDF DEBUG] Total selected:', selectedDeliverables.length);
-    
+
     // Grouping is now done above for the email as well
     console.log('[PDF DEBUG] groupedDeliverables:', JSON.stringify(groupedDeliverables, null, 2));
     console.log('[PDF DEBUG] ungroupedIds:', ungroupedIds);
@@ -1249,7 +1249,7 @@ const StrategicEngine = ({ navigate }) => {
     // 2. Render the grouped deliverables
     Object.keys(groupedDeliverables).forEach(routeId => {
       const routeData = groupedDeliverables[routeId];
-      
+
       // Draw Route Title (e.g. SCIART SAGA)
       checkPage(40);
       y += 10;
@@ -1258,10 +1258,10 @@ const StrategicEngine = ({ navigate }) => {
       doc.setFont('helvetica', 'bold');
       doc.text(routeData.title.toUpperCase(), margin, y);
       y += 20;
-      
+
       Object.keys(routeData.lineItems).forEach(liId => {
         const liData = routeData.lineItems[liId];
-        
+
         // Draw Line Item Title (e.g. Innovation Frameworks)
         checkPage(35);
         doc.setFontSize(11);
@@ -1269,11 +1269,11 @@ const StrategicEngine = ({ navigate }) => {
         doc.setFont('helvetica', 'bold');
         doc.text(liData.name, margin + 5, y);
         y += 15;
-        
+
         // Determine route colors - strictly shades of purple
         let fillColor = [248, 245, 255]; // Lightest purple (STC)
         let strokeColor = [220, 215, 240];
-        
+
         if (routeId === 'BB') {
           fillColor = [240, 235, 255]; // Slightly deeper light purple
           strokeColor = [210, 200, 240];
@@ -1286,17 +1286,17 @@ const StrategicEngine = ({ navigate }) => {
         const items = liData.items;
         for (let i = 0; i < items.length; i += 2) {
           checkPage(45);
-          
+
           // Draw Left Card
           const d1 = items[i];
           doc.setFillColor(...fillColor);
           doc.setDrawColor(...strokeColor);
           doc.roundedRect(margin, y, colWidth, 34, 4, 4, 'FD');
-          
+
           doc.setTextColor(99, 102, 241); // Indigo
           doc.setFontSize(14);
-          doc.text("•", margin + 12, y + 22); 
-          
+          doc.text("•", margin + 12, y + 22);
+
           doc.setTextColor(40, 40, 50);
           doc.setFontSize(10);
           doc.setFont('helvetica', 'bold');
@@ -1307,23 +1307,23 @@ const StrategicEngine = ({ navigate }) => {
           if (i + 1 < items.length) {
             const d2 = items[i + 1];
             const rightX = margin + colWidth + 15;
-            
+
             doc.setFillColor(...fillColor);
             doc.setDrawColor(...strokeColor);
             doc.roundedRect(rightX, y, colWidth, 34, 4, 4, 'FD');
-            
+
             doc.setTextColor(99, 102, 241);
             doc.setFontSize(14);
             doc.text("•", rightX + 12, y + 22);
-            
+
             doc.setTextColor(40, 40, 50);
             doc.setFontSize(10);
             doc.setFont('helvetica', 'bold');
             const lines2 = doc.splitTextToSize(d2.name, colWidth - 35);
             doc.text(lines2[0] + (lines2.length > 1 ? '...' : ''), rightX + 28, y + 21);
           }
-          
-          y += 44; 
+
+          y += 44;
         }
         y += 10; // Space after a line item
       });
@@ -1340,12 +1340,12 @@ const StrategicEngine = ({ navigate }) => {
       doc.setFont('helvetica', 'bold');
       doc.text('OTHER DELIVERABLES', margin, y);
       y += 20;
-      
+
       for (let i = 0; i < ungrouped.length; i += 2) {
         checkPage(45);
         const d1 = DELIVERABLES_MASTER.find(x => x.id === ungrouped[i]);
         const name1 = d1 ? d1.name : ungrouped[i];
-        
+
         doc.setFillColor(248, 245, 255);
         doc.setDrawColor(220, 215, 240);
         doc.roundedRect(margin, y, colWidth, 34, 4, 4, 'FD');
@@ -1356,7 +1356,7 @@ const StrategicEngine = ({ navigate }) => {
         doc.setFontSize(10);
         doc.setFont('helvetica', 'bold');
         doc.text(name1, margin + 28, y + 21);
-        
+
         if (i + 1 < ungrouped.length) {
           const d2 = DELIVERABLES_MASTER.find(x => x.id === ungrouped[i + 1]);
           const name2 = d2 ? d2.name : ungrouped[i + 1];
@@ -1457,7 +1457,7 @@ const StrategicEngine = ({ navigate }) => {
       const clientHeader = sheet.addRow(["", "CLIENT DETAILS", "", ""]);
       clientHeader.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } };
       sheet.mergeCells(`B${clientHeader.number}:D${clientHeader.number}`);
-      
+
       addField("Name", leadForm.name);
       addField("Company", leadForm.company);
       addField("Email", leadForm.email);
@@ -1556,7 +1556,7 @@ const StrategicEngine = ({ navigate }) => {
           const li = route.lineItems[liId];
           const startRow = sheet.rowCount + 1;
           const isEvenCategory = categoryIdx % 2 === 0;
-          
+
           li.items.forEach((d, idx) => {
             const liName = idx === 0 ? li.name : "";
             const row = sheet.addRow(["", serialNo, liName, d.name]);
@@ -1577,14 +1577,14 @@ const StrategicEngine = ({ navigate }) => {
             });
             // Number column alignment
             row.getCell(2).alignment = { horizontal: 'center', vertical: 'middle' };
-            
+
             // Deliverable column alignment
             row.getCell(4).alignment = { vertical: 'middle', wrapText: true };
 
             serialNo++;
             rowIdx++;
           });
-          
+
           const endRow = sheet.rowCount;
           if (endRow > startRow) {
             sheet.mergeCells(`C${startRow}:C${endRow}`);
@@ -1593,9 +1593,9 @@ const StrategicEngine = ({ navigate }) => {
           groupCell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
           // Keep the background consistent for the merged cell
           if (isEvenCategory) {
-             groupCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F3FF' } };
+            groupCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F3FF' } };
           } else {
-             groupCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
+            groupCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } };
           }
           categoryIdx++;
         });
@@ -1645,10 +1645,10 @@ const StrategicEngine = ({ navigate }) => {
       let binary = '';
       const bytes = new Uint8Array(buffer);
       for (let i = 0; i < bytes.byteLength; i++) {
-          binary += String.fromCharCode(bytes[i]);
+        binary += String.fromCharCode(bytes[i]);
       }
       const excelBase64 = window.btoa(binary);
-      
+
       attachments.push({ filename: `PBH_ScopeOfWork_${safeCompanyName}.xlsx`, content: excelBase64 });
     } catch (err) {
       console.error("Failed to generate Excel attachment:", err);
@@ -1671,7 +1671,7 @@ const StrategicEngine = ({ navigate }) => {
     }).then(res => res.json()).catch(err => ({ success: false, error: err.message }));
 
     const emailPromise = sendEmailViaResend(subject, htmlContent, attachments);
-    
+
     // Send a copy to the respondent as well
     // Send a highly professional, dedicated copy to the respondent
     const clientSubject = `Your Scope Snapshot | PurpleBlue House`;
@@ -1712,7 +1712,7 @@ const StrategicEngine = ({ navigate }) => {
 
     const [saveLeadResult, result, clientResult] = await Promise.all([saveLeadPromise, emailPromise, clientEmailPromise]);
     setIsSubmitting(false);
-    
+
     if (result && result.success) {
       if (!saveLeadResult.success) {
         console.warn("Failed to save lead to Sanity:", saveLeadResult.error);
@@ -2303,8 +2303,8 @@ const Header = ({ navigate, current }) => {
       }}
       onMouseLeave={handleMouseLeave}
       className={`fixed top-0 left-0 right-0 z-[10000] isolate w-full transition-all duration-300 border-b ${scrolled || activeMenu
-          ? 'py-3 shadow-[0_24px_90px_rgba(0,0,0,0.85)] border-white/10'
-          : 'py-6 border-transparent bg-transparent'
+        ? 'py-3 shadow-[0_24px_90px_rgba(0,0,0,0.85)] border-white/10'
+        : 'py-6 border-transparent bg-transparent'
         }`}
       style={{
         backgroundColor: scrolled || activeMenu ? `${palette.bgDeep}FA` : 'transparent',
@@ -3832,9 +3832,23 @@ const ContactPage = ({ navigate }) => {
       </div>
     `;
 
-    const result = await sendEmailViaResend(subject, htmlContent);
+    // Fire email + Supabase save in parallel so no data is lost
+    const saveInquiryPromise = fetch('/api/save-contact-inquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: formData.name, email: formData.email, message: formData.message })
+    }).then(r => r.json()).catch(err => ({ success: false, error: err.message }));
+
+    const [result, saveResult] = await Promise.all([
+      sendEmailViaResend(subject, htmlContent),
+      saveInquiryPromise
+    ]);
 
     setIsSubmitting(false);
+
+    if (!saveResult.success) {
+      console.warn("Failed to save contact inquiry to Supabase:", saveResult.error);
+    }
 
     if (result.success) {
       setStatus('success');
