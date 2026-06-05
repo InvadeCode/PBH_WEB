@@ -3820,16 +3820,48 @@ const ContactPage = ({ navigate }) => {
     setIsSubmitting(true);
     setStatus(null);
 
-    // 1. Internal notification email
-    const subject = `Direct Contact: ${formData.name}`;
+    const subject = `New Client Inquiry: ${formData.name}`;
     const htmlContent = `
-      <div style="font-family: sans-serif; padding: 20px; max-width: 600px;">
-        <h2 style="color: #6865FA;">New Direct Message</h2>
-        <p><strong>Name:</strong> ${formData.name}</p>
-        <p><strong>Email:</strong> ${formData.email}</p>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;"/>
-        <h3 style="color: #333;">Message:</h3>
-        <p style="white-space: pre-wrap; color: #555;">${formData.message}</p>
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; color: #1a1a1a; background-color: #f9fafb; padding: 40px 20px;">
+        
+        <div style="background: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+          
+          <!-- Header -->
+          <div style="background-color: #0A103D; padding: 25px 30px;">
+            <h2 style="color: #ffffff; margin: 0; font-size: 20px; font-weight: 500; letter-spacing: 0.5px;">New Client Inquiry</h2>
+          </div>
+
+          <!-- Body -->
+          <div style="padding: 30px;">
+            
+            <!-- Contact Info -->
+            <div style="margin-bottom: 30px;">
+              <p style="margin: 0 0 10px 0; font-size: 14px;">
+                <span style="color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; display: inline-block; width: 60px;">Name:</span> 
+                <strong style="color: #111827; font-size: 16px;">${formData.name}</strong>
+              </p>
+              <p style="margin: 0; font-size: 14px;">
+                <span style="color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; display: inline-block; width: 60px;">Email:</span> 
+                <a href="mailto:${formData.email}" style="color: #6865FA; text-decoration: none; font-size: 16px;">${formData.email}</a>
+              </p>
+            </div>
+
+            <!-- Message Box -->
+            <div>
+              <p style="color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; font-size: 13px; margin: 0 0 10px 0;">Message</p>
+              <div style="background-color: #f8fafc; border-left: 3px solid #6865FA; padding: 20px; border-radius: 0 6px 6px 0;">
+                <p style="margin: 0; font-size: 15px; line-height: 1.6; color: #334155; white-space: pre-wrap;">${formData.message}</p>
+              </div>
+            </div>
+
+          </div>
+          
+          <!-- Footer -->
+          <div style="background-color: #f3f4f6; padding: 15px 30px; text-align: center; border-top: 1px solid #e5e7eb;">
+            <p style="margin: 0; font-size: 13px; color: #6b7280;">Reply directly to this email to respond to ${formData.name}.</p>
+          </div>
+
+        </div>
       </div>
     `;
 
