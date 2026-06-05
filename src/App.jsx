@@ -3863,7 +3863,6 @@ const ContactPage = ({ navigate }) => {
           </div>
           
           <p style="font-size: 16px; color: #4a4a4a; margin-bottom: 0;">
-            Warmly,<br/>
             <strong style="color: #1a1a1a;">The PurpleBlue House Team</strong>
           </p>
         </div>
