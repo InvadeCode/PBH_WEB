@@ -2725,7 +2725,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
           <button onClick={() => navigate('work')} className="text-white/60 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Selected Work</button>
           <FadeUp>
             <div className="flex gap-3 mb-6 flex-wrap font-secondary">
-              {project.tags.map(t => <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-xs text-white uppercase tracking-widest backdrop-blur-md">{t}</span>)}
+              {(project.tags || []).map(t => <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-xs text-white uppercase tracking-widest backdrop-blur-md">{t}</span>)}
             </div>
             <h1 className="text-5xl md:text-8xl font-light tracking-tight font-primary text-white mb-6 leading-[1.1]">{project.client}</h1>
             <p className="text-xl md:text-2xl text-white/70 font-light font-secondary max-w-3xl leading-relaxed">{project.challenge}</p>
@@ -2762,7 +2762,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
             <FadeUp>
               <h3 className="text-3xl font-light mb-8 font-primary text-white border-b border-white/10 pb-6">Core Deliverables</h3>
               <ul className="space-y-4 font-secondary">
-                {project.roles.map(r => (
+                {(project.roles || []).map(r => (
                   <li key={r} className="flex items-center gap-3 text-white/70 text-lg font-light"><CheckCircle2 className="w-5 h-5" style={{ color: hexColor }} /> {r}</li>
                 ))}
               </ul>
@@ -3561,7 +3561,7 @@ const WorkPage = ({ navigate }) => {
               <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary">{caseStudies[0].client}</h3>
               <p className="text-white/50 font-light mb-10 text-lg leading-relaxed font-secondary max-w-lg">{caseStudies[0].challenge}</p>
               <div className="flex gap-4 font-secondary mb-12 flex-wrap">
-                {caseStudies[0].tags.map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-white/70 uppercase tracking-widest">{t}</span>)}
+                {(caseStudies[0].tags || []).map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-white/70 uppercase tracking-widest">{t}</span>)}
               </div>
               <div className="mt-auto flex items-center gap-2 text-white/70 group-hover:text-white transition-colors font-medium font-secondary">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
             </div>
@@ -3591,7 +3591,7 @@ const WorkPage = ({ navigate }) => {
                       <h3 className="text-2xl font-light transition-colors font-primary group-hover:opacity-80" style={{ color: 'white' }}>{cs.client}</h3>
                     </div>
                     <div className="flex justify-between items-end font-secondary">
-                      <div className="flex gap-2 flex-wrap">{cs.tags.map(t => <span key={t} className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-white/50 uppercase">{t}</span>)}</div>
+                      <div className="flex gap-2 flex-wrap">{(cs.tags || []).map(t => <span key={t} className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-white/50 uppercase">{t}</span>)}</div>
                       <ArrowUpRight className="w-5 h-5 text-white/30 group-hover:text-white transition-colors" />
                     </div>
                   </div>
