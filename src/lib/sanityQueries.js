@@ -1,5 +1,5 @@
 export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(order asc) {
-  id,
+  "id": coalesce(id, _id),
   client,
   sector,
   challenge,
