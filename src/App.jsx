@@ -3850,7 +3850,7 @@ const ContactPage = ({ navigate }) => {
             Thank you for reaching out to PurpleBlue House.
           </p>
           <p style="font-size: 16px; line-height: 1.6; color: #4a4a4a;">
-            We have received your message. Our team is reviewing the details you shared, and we will get back to you shortly.
+            Our team is reviewing the details you shared, and we will get back to you shortly.
           </p>
           <p style="font-size: 16px; line-height: 1.6; color: #4a4a4a;">
             For your reference, here is a copy of your message:
