@@ -4440,32 +4440,7 @@ export default function App() {
     }
     metaDescription.content = description;
 
-    // SEO: Inject FAQ JSON-LD Schema on Contact Page
-    let existingFaqSchema = document.querySelector('script[id="faq-schema"]');
-    if (existingFaqSchema) {
-      existingFaqSchema.remove();
-    }
-    if (routeState.page === 'contact' && finalFaqs && finalFaqs.length > 0) {
-      const faqSchema = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": finalFaqs.map(faq => ({
-          "@type": "Question",
-          "name": faq.question,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": faq.answer
-          }
-        }))
-      };
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.id = 'faq-schema';
-      script.text = JSON.stringify(faqSchema);
-      document.head.appendChild(script);
-    }
-
-  }, [routeState.page, routeState.data, finalFaqs]);
+  }, [routeState.page, routeState.data]);
 
   return (
     <GlobalContext.Provider value={globalData}>
