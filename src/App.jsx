@@ -2783,6 +2783,26 @@ const WorkDetailPage = ({ navigate, projectId }) => {
         </div>
       </section>
 
+      {/* Visual Block 0 (Continuous Image Marquee) */}
+      {project?.fullStory?.images && project.fullStory.images.length > 0 && (
+        <section className="w-full mb-32 overflow-hidden py-10 border-y border-white/5 bg-[#020617]/50">
+          <div className="w-full flex items-center">
+            <motion.div 
+              className="flex gap-6 px-3 shrink-0"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ ease: "linear", duration: 50, repeat: Infinity }}
+            >
+              {[...Array.from({ length: Math.max(1, Math.ceil(8 / project.fullStory.images.length)) }).flatMap(() => project.fullStory.images), ...Array.from({ length: Math.max(1, Math.ceil(8 / project.fullStory.images.length)) }).flatMap(() => project.fullStory.images)].map((img, idx) => (
+                <div key={idx} className="w-[280px] md:w-[450px] shrink-0 aspect-[16/10] rounded-[24px] overflow-hidden border border-white/10 shadow-2xl relative group bg-[#0A0A10]">
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 duration-500" />
+                   <img src={img} alt={`${project.client} visual`} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       {/* Visual Block 1 (Mock Aesthetic Shot) */}
       <FadeUp className="w-full px-[3%] mb-32">
         <div className="w-full aspect-[21/9] rounded-[32px] overflow-hidden relative border border-white/10 shadow-[0_50px_100px_rgba(0,0,0,0.5)] bg-[#05050A] flex items-center justify-center">
