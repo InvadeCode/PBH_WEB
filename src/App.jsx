@@ -2896,13 +2896,13 @@ const WorkDetailPage = ({ navigate, projectId }) => {
               {project.fullStory.strategy && (
                 <div>
                   <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Strategy</h4>
-                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.strategy}</p>
+                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed whitespace-pre-wrap">{project.fullStory.strategy}</p>
                 </div>
               )}
               {project.fullStory.execution && (
                 <div>
                   <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Execution</h4>
-                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.execution}</p>
+                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed whitespace-pre-wrap">{project.fullStory.execution}</p>
                 </div>
               )}
             </div>
