@@ -2892,7 +2892,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       {project.fullStory && (
         <section className="py-24 px-[3%] w-full bg-[#05050A] text-left border-t border-white/5">
           <FadeUp className="max-w-7xl mx-auto w-full">
-            <div className="grid md:grid-cols-2 gap-16 mb-24">
+            <div className={`grid gap-16 mb-24 ${project.fullStory.strategy && project.fullStory.execution ? 'md:grid-cols-2' : 'max-w-4xl mx-auto'}`}>
               {project.fullStory.strategy && (
                 <div>
                   <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Strategy</h4>
