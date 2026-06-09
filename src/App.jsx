@@ -2772,7 +2772,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
                     <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">
                       {project.challengeHeading || "The Challenge"}
                     </h4>
-                    <p className="whitespace-pre-wrap">{project.overview}</p>
+                    <p>{project.overview}</p>
                   </StaggerItem>
                 )}
                 {project.solution && (
@@ -2780,7 +2780,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
                     <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">
                       {project.solutionHeading || "The PBH Solution"}
                     </h4>
-                    <p className="text-2xl text-white font-medium leading-snug whitespace-pre-wrap">{project.solution}</p>
+                    <p className="text-2xl text-white font-medium leading-snug">{project.solution}</p>
                   </StaggerItem>
                 )}
               </StaggerGroup>
@@ -2853,13 +2853,13 @@ const WorkDetailPage = ({ navigate, projectId }) => {
               {project.fullStory.strategy && (
                 <div>
                   <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Strategy</h4>
-                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed whitespace-pre-wrap">{project.fullStory.strategy}</p>
+                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.strategy}</p>
                 </div>
               )}
               {project.fullStory.execution && (
                 <div>
                   <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Execution</h4>
-                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed whitespace-pre-wrap">{project.fullStory.execution}</p>
+                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.execution}</p>
                 </div>
               )}
             </div>
