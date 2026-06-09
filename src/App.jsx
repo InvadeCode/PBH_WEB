@@ -2765,7 +2765,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
                 </FadeUp>
               </div>
             )}
-            <div className={`md:col-span-${project.roles?.length > 0 ? '8' : '12'}`}>
+            <div className={project.roles?.length > 0 ? 'md:col-span-8' : 'md:col-span-12'}>
               <StaggerGroup className="space-y-16 font-secondary text-white/70 font-light text-xl leading-relaxed">
                 {project.overview && (
                   <StaggerItem>
