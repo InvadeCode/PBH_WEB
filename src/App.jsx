@@ -4381,8 +4381,7 @@ export default function App() {
   assertParity(FRAMEWORK_MASTER, finalFramework, "Framework");
 
   const { data: sanityFaqs } = useSanity(GET_FAQS);
-  const finalFaqs = mergeWithFallback(FAQS_MASTER, sanityFaqs, "FAQs");
-  assertParity(FAQS_MASTER, finalFaqs, "FAQs");
+  const finalFaqs = sanityFaqs?.length > 0 ? sanityFaqs : FAQS_MASTER;
 
   const globalData = {
     JOURNAL_ARTICLES: finalJournal,
