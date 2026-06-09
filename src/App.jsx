@@ -3219,7 +3219,7 @@ const TeamPage = ({ navigate }) => {
         </FadeUp>
 
         {/* Section 2: Leadership */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">{SITE_SETTINGS?.teamPage?.leadershipTitle || "Leadership"}</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">{SITE_SETTINGS?.teamPage?.leadershipLabel || "Leadership"}</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 mb-32 w-full">
           {TEAM_MEMBERS.filter(m => m.id && m.id.startsWith('leader')).map((leader, i) => (
             <StaggerItem key={i}>
@@ -3238,7 +3238,7 @@ const TeamPage = ({ navigate }) => {
         </StaggerGroup>
 
         {/* Section 3: The Innovators (Grid) */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">{SITE_SETTINGS?.teamPage?.coreTeamTitle || "The Core House"}</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">{SITE_SETTINGS?.teamPage?.coreHouseLabel || "The Core House"}</h3></FadeUp>
         <StaggerGroup className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-32 w-full">
           {TEAM_MEMBERS.filter(m => m.id && m.id.startsWith('creator')).map((member, idx) => (
             <StaggerItem key={idx}>
@@ -3261,18 +3261,18 @@ const TeamPage = ({ navigate }) => {
           <StaggerGroup className="grid md:grid-cols-3 gap-8 w-full">
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Globe className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.culture1Title || "No Silos"}</h4>
-              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.culture1Text || "Strategy, design, and execution sit at the same table. We believe in cross-pollination of ideas."}</p>
+              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[0]?.title || "No Silos"}</h4>
+              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[0]?.description || "Strategy, design, and execution sit at the same table. We believe in cross-pollination of ideas."}</p>
             </StaggerItem>
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Zap className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.culture2Title || "Creator-First"}</h4>
-              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.culture2Text || "We empower our team to take ownership, innovate fearlessly, and challenge the status quo."}</p>
+              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[1]?.title || "Creator-First"}</h4>
+              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[1]?.description || "We empower our team to take ownership, innovate fearlessly, and challenge the status quo."}</p>
             </StaggerItem>
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><BookOpen className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.culture3Title || "Continuous Learning"}</h4>
-              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.culture3Text || "In a world driven by rapid innovation, we are perpetual students of science, art, and human behavior."}</p>
+              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[2]?.title || "Continuous Learning"}</h4>
+              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[2]?.description || "In a world driven by rapid innovation, we are perpetual students of science, art, and human behavior."}</p>
             </StaggerItem>
           </StaggerGroup>
         </FadeUp>
@@ -3283,15 +3283,14 @@ const TeamPage = ({ navigate }) => {
           {/* Little glowing dot from the design */}
           <div className="w-3 h-3 rounded-full bg-[#FDE68A] mb-8 shadow-[0_0_20px_#FDE68A]" />
 
-          <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary text-white">{SITE_SETTINGS?.teamPage?.ctaTitle || "Want to join the House?"}</h3>
-          <p className="text-lg text-white/50 font-secondary mb-10 max-w-2xl mx-auto">{SITE_SETTINGS?.teamPage?.ctaText || "We are always looking for visionary strategists and artists."}</p>
+          <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary text-white">{SITE_SETTINGS?.teamPage?.joinTitle || "Want to join the House?"}</h3>
+          <p className="text-lg text-white/50 font-secondary mb-10 max-w-2xl mx-auto">{SITE_SETTINGS?.teamPage?.joinSubtext || "We are always looking for visionary strategists and artists."}</p>
 
-          {/* Updated button to trigger the modal */}
           <button
             onClick={() => setShowCareers(true)}
             className="px-8 py-3 rounded-[12px] border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] transition-all text-white text-sm font-medium font-secondary"
           >
-            Send Your Profile
+            {SITE_SETTINGS?.teamPage?.joinButton || "View Open Roles"}
           </button>
         </FadeUp>
         <AnimatePresence>
@@ -3321,23 +3320,23 @@ const MethodPage = ({ navigate }) => {
           <div className="border border-white/5 rounded-[24px] p-10 relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
             <h3 className="text-white/40 text-sm tracking-widest uppercase mb-8 font-primary">{SITE_SETTINGS?.methodPage?.traditionalTitle || "The Traditional Model"}</h3>
             <ul className="space-y-6 font-secondary">
-              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditional1 || "Execution disconnected from core business objectives."}</span></li>
-              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditional2 || "Short-term aesthetic fixes over long-term systems."}</span></li>
-              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditional3 || "Disjointed touchpoints that dilute brand potential."}</span></li>
+              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[0] || "Execution disconnected from core business objectives."}</span></li>
+              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[1] || "Short-term aesthetic fixes over long-term systems."}</span></li>
+              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[2] || "Disjointed touchpoints that dilute brand potential."}</span></li>
             </ul>
           </div>
           <div className="border rounded-[24px] p-10 relative overflow-hidden w-full" style={{ background: `linear-gradient(to bottom right, ${hexToRgba(palette.primary, 0.1)}, transparent)`, borderColor: hexToRgba(palette.primary, 0.2) }}>
             <h3 className="text-sm tracking-widest uppercase mb-8 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.methodPage?.pbhMethodTitle || "The PBH Method"}</h3>
             <ul className="space-y-6 relative z-10 font-secondary">
-              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod1 || "Mapping the root business gap before designing anything."}</span></li>
-              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod2 || "Modular scoping based on exact strategic requirements."}</span></li>
-              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod3 || "Building connected systems where strategy dictates execution."}</span></li>
+              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[0] || "Mapping the root business gap before designing anything."}</span></li>
+              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[1] || "Modular scoping based on exact strategic requirements."}</span></li>
+              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[2] || "Building connected systems where strategy dictates execution."}</span></li>
             </ul>
           </div>
         </FadeUp>
 
         {/* Section 3: The 4 Steps */}
-        <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">{SITE_SETTINGS?.methodPage?.frameworkTitle || "Our 4-Step Framework"}</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">{SITE_SETTINGS?.frameworkHeader || "Our 4-Step Framework"}</h3></FadeUp>
         <StaggerGroup className="space-y-24 mb-32 w-full">
           {FRAMEWORK.map((s, i) => (
             <StaggerItem key={i}>
@@ -3361,14 +3360,14 @@ const MethodPage = ({ navigate }) => {
 
         {/* Section 4: The SciArt Application */}
         <FadeUp className="border border-white/10 rounded-[24px] p-12 mb-32 text-center w-full" style={{ backgroundColor: palette.panel }}>
-          <h3 className="text-2xl font-light mb-6 font-primary">{SITE_SETTINGS?.methodPage?.applicationTitle || "Applied SciArt"}</h3>
-          <p className="text-white/60 font-secondary font-light max-w-3xl mx-auto leading-relaxed">
-            {SITE_SETTINGS?.methodPage?.applicationText || "Throughout every step of this method, we apply the SciArt filter. Does the strategy hold up to logical scrutiny (Science)? Does the execution evoke the right human emotion (Art)? If an output fails either test, it does not leave the House."}
+          <h3 className="text-2xl font-light mb-6 font-primary">{SITE_SETTINGS?.methodPage?.appliedSciArtTitle || "Applied SciArt"}</h3>
+          <p className="text-lg text-white/60 leading-relaxed font-secondary">
+            {SITE_SETTINGS?.methodPage?.appliedSciArtText || "Throughout every step of this method, we apply the SciArt filter. Does the strategy hold up to logical scrutiny (Science)? Does the execution evoke the right human emotion (Art)? If an output fails either test, it does not leave the House."}
           </p>
         </FadeUp>
 
         {/* Section 5: Timeline Overview */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary text-center">{SITE_SETTINGS?.methodPage?.timelineTitle || "Typical Engagement Timeline"}</h3></FadeUp>
+        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary text-center">{SITE_SETTINGS?.timelineHeader || "Typical Engagement Timeline"}</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-4 gap-4 mb-32 w-full">
           {[
             { phase: "Weeks 1-2", focus: "Discovery & Alignment", color: palette.primary },
@@ -3387,7 +3386,7 @@ const MethodPage = ({ navigate }) => {
 
         {/* Section 6: Final CTA */}
         <FadeUp className="pt-16 border-t border-white/10 text-center w-full">
-          <h2 className="text-4xl font-light mb-8 font-primary">{SITE_SETTINGS?.methodPage?.ctaTitle || "Experience the method yourself."}</h2>
+          <h2 className="text-4xl font-light mb-8 font-primary">{SITE_SETTINGS?.methodPage?.finalCTA || "Experience the method yourself."}</h2>
           <PremiumButton onClick={() => navigate('assessment')}>Build My Brand Scope</PremiumButton>
         </FadeUp>
       </div>
@@ -3452,15 +3451,17 @@ const ServicesPage = ({ navigate }) => {
           <FadeUp><h3 className="text-3xl font-light mb-8 font-primary text-center">{SITE_SETTINGS?.serviceFaqs?.title || "Service FAQs"}</h3></FadeUp>
           <StaggerGroup className="space-y-4 font-secondary max-w-4xl mx-auto">
             <StaggerItem>
-              <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01]">
-                <h4 className="font-medium text-white mb-2">{SITE_SETTINGS?.serviceFaqs?.faq1Question || "Can we choose just one deliverable?"}</h4>
-                <p className="text-sm text-white/50">{SITE_SETTINGS?.serviceFaqs?.faq1Answer || "We strongly recommend going through our assessment first. If a single deliverable solves the root problem, yes. If not, we will recommend a connected system."}</p>
+              <div className="p-8 rounded-[24px] border border-white/5 relative group overflow-hidden" style={{ backgroundColor: palette.panel }}>
+                <h4 className="font-medium text-white mb-2">{SITE_SETTINGS?.serviceFaqs?.[0]?.question || "Can we choose just one deliverable?"}</h4>
+                <p className="text-sm text-white/50">{SITE_SETTINGS?.serviceFaqs?.[0]?.answer || "We strongly recommend going through our assessment first. If a single deliverable solves the root problem, yes. If not, we will recommend a connected system."}</p>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             </StaggerItem>
             <StaggerItem>
-              <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01]">
-                <h4 className="font-medium text-white mb-2">{SITE_SETTINGS?.serviceFaqs?.faq2Question || "How do we know which route is right for us?"}</h4>
-                <p className="text-sm text-white/50">{SITE_SETTINGS?.serviceFaqs?.faq2Answer || 'You don\'t need to guess. Use our "Build My Brand Scope" tool, and our strategic engine will diagnose your gaps and assign the perfect route automatically.'}</p>
+              <div className="p-8 rounded-[24px] border border-white/5 relative group overflow-hidden" style={{ backgroundColor: palette.panel }}>
+                <h4 className="font-medium text-white mb-2">{SITE_SETTINGS?.serviceFaqs?.[1]?.question || "How do we know which route is right for us?"}</h4>
+                <p className="text-sm text-white/50">{SITE_SETTINGS?.serviceFaqs?.[1]?.answer || 'You don\'t need to guess. Use our "Build My Brand Scope" tool, and our strategic engine will diagnose your gaps and assign the perfect route automatically.'}</p>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             </StaggerItem>
           </StaggerGroup>
