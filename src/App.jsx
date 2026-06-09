@@ -4139,7 +4139,7 @@ const LatestCredentialsPage = ({ navigate }) => {
         <StaggerGroup className="space-y-12">
           {CASE_STUDIES.map((study, i) => (
             <StaggerItem key={study.id}>
-              <div onClick={() => navigate('work-detail/' + study.id)} className="group cursor-pointer border border-white/10 rounded-[24px] overflow-hidden flex flex-col md:flex-row bg-[#0A0A10] hover:border-white/20 transition-colors">
+              <div onClick={() => navigate('work/' + study.id)} className="group cursor-pointer border border-white/10 rounded-[24px] overflow-hidden flex flex-col md:flex-row bg-[#0A0A10] hover:border-white/20 transition-colors">
                 <div className="md:w-1/3 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-center">
                   <div className="text-[10px] tracking-widest uppercase mb-4 font-primary" style={{ color: palette[study.category] || palette.primary }}>{study.category}</div>
                   <h3 className="text-2xl font-light mb-4 text-white group-hover:text-white/80 transition-colors font-primary">{study.client}</h3>
