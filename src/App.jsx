@@ -2726,7 +2726,7 @@ const HomePage = ({ navigate }) => {
 };
 
 const WorkDetailPage = ({ navigate, projectId }) => {
-  const { CASE_STUDIES } = useContext(GlobalContext);
+  const { CASE_STUDIES, FAQS } = useContext(GlobalContext);
   const caseStudies = CASE_STUDIES;
   const projectIndex = caseStudies.findIndex(p => p.id === projectId);
   const project = caseStudies[projectIndex] || caseStudies[0];
@@ -2981,6 +2981,23 @@ const WorkDetailPage = ({ navigate, projectId }) => {
               </div>
             ))}
           </div>
+        </FadeUp>
+      </section>
+
+      {/* Section: FAQ */}
+      <section className="py-24 px-[3%] w-full border-t border-white/5 bg-[#010825] text-left">
+        <FadeUp className="max-w-4xl mx-auto w-full">
+          <h3 className="text-3xl font-light mb-8 font-primary text-center">Frequently Asked Questions</h3>
+          <StaggerGroup className="space-y-4 font-secondary w-full">
+            {FAQS.map((faq, i) => (
+              <StaggerItem key={i}>
+                <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01] w-full text-left">
+                  <h4 className="font-medium text-white mb-2">{faq.question}</h4>
+                  <p className="text-sm text-white/50">{faq.answer}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerGroup>
         </FadeUp>
       </section>
 
@@ -3754,7 +3771,7 @@ const JournalPage = ({ navigate }) => {
 };
 
 const ArticlePage = ({ navigate, articleId }) => {
-  const { JOURNAL_ARTICLES } = useContext(GlobalContext);
+  const { JOURNAL_ARTICLES, FAQS } = useContext(GlobalContext);
   const article = JOURNAL_ARTICLES.find(a => a.id === articleId) || JOURNAL_ARTICLES[0];
   const artColor = palette[article.type] || palette.primary;
 
