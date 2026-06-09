@@ -2480,47 +2480,11 @@ const HomePage = ({ navigate }) => {
         </motion.div>
 
         <div className="flex-1 flex flex-col justify-center w-full relative z-10 text-left">
-          {(() => {
-            const text = SITE_SETTINGS?.homeHeroTitle || "Breakthroughs happen when strategy and execution move as one.";
-            
-            if (text.toLowerCase().includes("move as one.")) {
-              const splitPrefix = "Breakthroughs happen";
-              const hasSplitPrefix = text.toLowerCase().startsWith(splitPrefix.toLowerCase());
-              
-              const line1 = hasSplitPrefix ? text.substring(0, splitPrefix.length) : "";
-              const remainder = hasSplitPrefix ? text.substring(splitPrefix.length).trim() : text;
-              
-              const targetIndex = remainder.toLowerCase().indexOf("move as one.");
-              const beforeTarget = remainder.substring(0, targetIndex);
-              const exactTarget = remainder.substring(targetIndex, targetIndex + 12);
-              const afterTarget = remainder.substring(targetIndex + 12);
-              
-              return (
-                <>
-                  {line1 && (
-                    <RevealText delay={0.1}>
-                      <h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-1 font-primary">
-                        {line1}
-                      </h1>
-                    </RevealText>
-                  )}
-                  <RevealText delay={0.2}>
-                    <h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 flex items-baseline flex-wrap font-primary">
-                      {beforeTarget} <AnimatedItalic className="text-white/60 ml-4">{exactTarget}</AnimatedItalic>{afterTarget}
-                    </h1>
-                  </RevealText>
-                </>
-              );
-            }
-            
-            return (
-              <RevealText delay={0.1}>
-                <h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 font-primary whitespace-pre-wrap">
-                  {text}
-                </h1>
-              </RevealText>
-            );
-          })()}
+          <RevealText delay={0.1}>
+            <h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 font-primary whitespace-pre-wrap">
+              {renderWithItalics(SITE_SETTINGS?.homeHeroTitle || "Breakthroughs happen when strategy and execution *move as one.*", "text-white/60 mx-2")}
+            </h1>
+          </RevealText>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">{SITE_SETTINGS?.homeHeroSubtitle || "PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs."}</motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.7 }} className="mt-12 flex flex-col sm:flex-row gap-6">
             <PremiumButton onClick={() => navigate('assessment')} className="min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(${rgbPrimary}, 0.2)` }}>{SITE_SETTINGS.assessmentButton || 'Build My Brand Scope'} <Sparkles className="w-4 h-4 ml-2" /></PremiumButton>
@@ -2542,16 +2506,16 @@ const HomePage = ({ navigate }) => {
       <section className="py-32 px-[3%] w-full border-b border-white/5 text-left" style={{ backgroundColor: palette.bgDeep }}>
         <div className="max-w-4xl mb-24">
           <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6 font-primary">Breakthrough innovation <br /><AnimatedItalic className="text-white/50">demands a new model.</AnimatedItalic></h2></RevealText>
-          <FadeUp><p className="text-xl text-white/50 font-light leading-relaxed font-secondary">Traditional execution models struggle to translate complex ideas into scalable systems. We build a strategic foundation first, ensuring every asset accelerates your 5-year vision and market impact.</p></FadeUp>
+          <FadeUp><p className="text-xl text-white/50 font-light leading-relaxed font-secondary">{SITE_SETTINGS?.homeSection3Subtitle || "Traditional execution models struggle to translate complex ideas into scalable systems. We build a strategic foundation first, ensuring every asset accelerates your 5-year vision and market impact."}</p></FadeUp>
         </div>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full">
           <StaggerItem>
             <div className="border border-white/5 rounded-[24px] p-10 md:p-14 h-full w-full" style={{ backgroundColor: palette.panel }}>
               <h3 className="text-white/40 text-sm tracking-widest uppercase mb-10 font-primary">The Old Way</h3>
               <ul className="space-y-8 font-secondary">
-                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Execution disconnected from core business objectives.</span></li>
-                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Short-term aesthetic fixes over long-term strategic systems.</span></li>
-                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>Disjointed touchpoints that dilute the brand's potential.</span></li>
+                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[0] || "Execution disconnected from core business objectives."}</span></li>
+                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[1] || "Short-term aesthetic fixes over long-term strategic systems."}</span></li>
+                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[2] || "Disjointed touchpoints that dilute the brand's potential."}</span></li>
               </ul>
             </div>
           </StaggerItem>
@@ -2560,9 +2524,9 @@ const HomePage = ({ navigate }) => {
               <div className="absolute bottom-0 right-0 w-64 h-64 opacity-[0.1] blur-[80px] pointer-events-none" style={{ backgroundColor: palette.primary }} />
               <h3 className="text-sm tracking-widest uppercase mb-10 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>The PBH Way</h3>
               <ul className="space-y-8 relative z-10 font-secondary">
-                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Mapping the root business gap before designing anything.</span></li>
-                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Modular scoping based on exact strategic requirements.</span></li>
-                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>Building connected systems where strategy dictates execution.</span></li>
+                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[0] || "Mapping the root business gap before designing anything."}</span></li>
+                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[1] || "Modular scoping based on exact strategic requirements."}</span></li>
+                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[2] || "Building connected systems where strategy dictates execution."}</span></li>
               </ul>
             </div>
           </StaggerItem>
@@ -2573,9 +2537,9 @@ const HomePage = ({ navigate }) => {
       <section className="py-32 px-[3%] relative w-full border-b border-white/5 text-left" style={{ backgroundColor: palette.bg }}>
         <div className="grid md:grid-cols-2 gap-16 items-center w-full">
           <FadeUp>
-            <h3 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>Our Philosophy</h3>
-            <h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary mb-6 leading-tight">Engineering breakthroughs <br />with the <AnimatedItalic className="text-white/80">SciArt</AnimatedItalic> framework.</h2>
-            <p className="text-lg text-white/60 font-light leading-relaxed font-secondary">We bridge the divide between rigorous strategic logic and intense imagination. Science gives us the framework, the data, and the scalable systems. Art gives us the empathy, the visual impact, and the connection. Together, they create brands engineered for the future.</p>
+            <h3 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.aboutPage?.philosophyLabel || "Our Philosophy"}</h3>
+            <h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary mb-6 leading-tight">{SITE_SETTINGS?.aboutPage?.philosophyTitle || "Engineering breakthroughs with the SciArt framework."}</h2>
+            <p className="text-lg text-white/60 font-light leading-relaxed font-secondary">{SITE_SETTINGS?.aboutPage?.philosophyText || "We bridge the divide between rigorous strategic logic and intense imagination. Science gives us the framework, the data, and the scalable systems. Art gives us the empathy, the visual impact, and the connection. Together, they create brands engineered for the future."}</p>
           </FadeUp>
           <FadeUp delay={0.2} className="relative h-[300px] md:h-[400px] flex items-center justify-center rounded-[32px] border border-white/10 overflow-hidden shadow-2xl w-full" style={{ backgroundColor: palette.bgDeep }}>
             <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
@@ -2594,7 +2558,7 @@ const HomePage = ({ navigate }) => {
       </section>
 
       <section className="py-32 px-[3%] relative w-full text-left" style={{ backgroundColor: palette.panel }}>
-        <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-20 font-primary">We connect strategy, <br /><AnimatedItalic>story, and execution.</AnimatedItalic></h2></RevealText>
+        <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-20 font-primary">{SITE_SETTINGS?.servicesHeader || "We connect strategy, story, and execution."}</h2></RevealText>
         <StaggerGroup className="grid md:grid-cols-3 gap-6 w-full">
           {Object.values(ROUTES_INFO).map((route, i) => {
             const rColor = palette[route.type] || palette.primary;
@@ -2642,8 +2606,8 @@ const HomePage = ({ navigate }) => {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] opacity-[0.05] blur-[100px] pointer-events-none rounded-full" style={{ backgroundColor: palette.blue }} />
         <FadeUp>
           <Globe className="w-12 h-12 mx-auto mb-8 opacity-40" style={{ color: palette.blue }} />
-          <h2 className="text-3xl md:text-5xl font-light mb-8 font-primary max-w-4xl mx-auto leading-tight">Elevating Indian Innovation to the <AnimatedItalic className="text-white/80">Global Stage.</AnimatedItalic></h2>
-          <p className="text-lg md:text-xl text-white/50 font-secondary max-w-2xl mx-auto leading-relaxed">Championing the rise of breakthrough ideas, fostering a future where creativity and ingenuity fuel human progress on a worldwide scale.</p>
+          <h2 className="text-3xl md:text-5xl font-light mb-8 font-primary max-w-4xl mx-auto leading-tight">{SITE_SETTINGS?.aboutPage?.globalTitle || "Elevating Indian Innovation to the Global Stage."}</h2>
+          <p className="text-lg md:text-xl text-white/50 font-secondary max-w-2xl mx-auto leading-relaxed">{SITE_SETTINGS?.aboutPage?.globalText || "Championing the rise of breakthrough ideas, fostering a future where creativity and ingenuity fuel human progress on a worldwide scale."}</p>
         </FadeUp>
       </section>
 
@@ -2784,138 +2748,103 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       </section>
 
       {/* Story & Context */}
-      <section className="py-32 px-[3%] w-full">
-        <div className="grid md:grid-cols-12 gap-16 w-full text-left">
-          <div className="md:col-span-4">
-            <FadeUp>
-              <h3 className="text-3xl font-light mb-8 font-primary text-white border-b border-white/10 pb-6">Core Deliverables</h3>
-              <ul className="space-y-4 font-secondary">
-                {(project.roles || []).map(r => (
-                  <li key={r} className="flex items-center gap-3 text-white/70 text-lg font-light"><CheckCircle2 className="w-5 h-5" style={{ color: hexColor }} /> {r}</li>
-                ))}
-              </ul>
-            </FadeUp>
-          </div>
-          <div className="md:col-span-8">
-            <StaggerGroup className="space-y-16 font-secondary text-white/70 font-light text-xl leading-relaxed">
-              <StaggerItem>
-                <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">The Challenge</h4>
-                <p>{project.overview}</p>
-              </StaggerItem>
-              <StaggerItem>
-                <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">The PBH Solution</h4>
-                <p className="text-2xl text-white font-medium leading-snug">{project.solution}</p>
-              </StaggerItem>
-            </StaggerGroup>
-          </div>
-        </div>
-      </section>
-
-      {/* Visual Block 0 (Continuous Image Marquee) */}
-      {project?.fullStory?.images && project.fullStory.images.length > 0 && (
-        <section className="w-full mb-32 overflow-hidden py-10 border-y border-white/5 bg-[#020617]/50">
-          <div className="w-full flex items-center">
-            <motion.div 
-              className="flex gap-6 px-3 shrink-0"
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{ ease: "linear", duration: 50, repeat: Infinity }}
-            >
-              {[...Array.from({ length: Math.max(1, Math.ceil(8 / project.fullStory.images.length)) }).flatMap(() => project.fullStory.images), ...Array.from({ length: Math.max(1, Math.ceil(8 / project.fullStory.images.length)) }).flatMap(() => project.fullStory.images)].map((img, idx) => (
-                <div key={idx} className="w-[280px] md:w-[450px] shrink-0 aspect-[16/10] rounded-[24px] overflow-hidden border border-white/10 shadow-2xl relative group bg-[#0A0A10]">
-                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 duration-500" />
-                   <img src={img} alt={`${project.client} visual`} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-                </div>
-              ))}
-            </motion.div>
+      {(project.roles?.length > 0 || project.overview || project.solution) && (
+        <section className="py-32 px-[3%] w-full">
+          <div className="grid md:grid-cols-12 gap-16 w-full text-left">
+            {project.roles?.length > 0 && (
+              <div className="md:col-span-4">
+                <FadeUp>
+                  <h3 className="text-3xl font-light mb-8 font-primary text-white border-b border-white/10 pb-6">
+                    {project.deliverablesHeading || "Core Deliverables"}
+                  </h3>
+                  <ul className="space-y-4 font-secondary">
+                    {project.roles.map(r => (
+                      <li key={r} className="flex items-center gap-3 text-white/70 text-lg font-light"><CheckCircle2 className="w-5 h-5" style={{ color: hexColor }} /> {r}</li>
+                    ))}
+                  </ul>
+                </FadeUp>
+              </div>
+            )}
+            <div className={`md:col-span-${project.roles?.length > 0 ? '8' : '12'}`}>
+              <StaggerGroup className="space-y-16 font-secondary text-white/70 font-light text-xl leading-relaxed">
+                {project.overview && (
+                  <StaggerItem>
+                    <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">
+                      {project.challengeHeading || "The Challenge"}
+                    </h4>
+                    <p className="whitespace-pre-wrap">{project.overview}</p>
+                  </StaggerItem>
+                )}
+                {project.solution && (
+                  <StaggerItem>
+                    <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">
+                      {project.solutionHeading || "The PBH Solution"}
+                    </h4>
+                    <p className="text-2xl text-white font-medium leading-snug whitespace-pre-wrap">{project.solution}</p>
+                  </StaggerItem>
+                )}
+              </StaggerGroup>
+            </div>
           </div>
         </section>
       )}
 
-      {/* Visual Block 1 (Mock Aesthetic Shot) */}
-      <FadeUp className="w-full px-[3%] mb-32">
-        <div className="w-full aspect-[21/9] rounded-[32px] overflow-hidden relative border border-white/10 shadow-[0_50px_100px_rgba(0,0,0,0.5)] bg-[#05050A] flex items-center justify-center">
-          <div className="absolute inset-0 opacity-40 mix-blend-screen" style={{ background: `radial-gradient(ellipse at center, ${hexColor}, transparent 70%)` }} />
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20" />
-          <motion.div animate={{ rotate: 360 }} transition={{ duration: 40, repeat: Infinity, ease: "linear" }} className="w-full max-w-2xl aspect-square border border-white/5 rounded-full absolute mix-blend-overlay" />
-          <motion.div animate={{ rotate: -360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} className="w-full max-w-4xl aspect-square border border-white/5 rounded-[100%] absolute mix-blend-overlay" />
-          <div className="relative z-10 text-center px-4">
-            <span className="font-serif italic text-6xl md:text-8xl lg:text-[10rem] text-white/90 drop-shadow-2xl">{project.client.split(' ')[0]}</span>
-          </div>
-        </div>
-      </FadeUp>
-
-      {/* Design System & Colors */}
-      <section className="py-32 px-[3%] w-full border-t border-white/5 bg-[#010626] text-left">
-        <FadeUp className="max-w-6xl mx-auto w-full">
-          <h3 className="text-3xl font-light mb-16 font-primary text-center">Design System</h3>
-
-          <div className="grid md:grid-cols-2 gap-16 mb-24 w-full items-center">
-            <div>
-              <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Typography</h4>
-              <div className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col gap-8">
-                <div className="border-b border-white/10 pb-6">
-                  <p className="text-sm text-white/40 mb-2 font-secondary">Primary Display (Serif)</p>
-                  <p className="text-5xl font-serif italic text-white">Ogg / Playfair</p>
-                  <p className="text-xl font-serif text-white/50 mt-4 break-words">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm</p>
+      {/* Image Gallery Layout */}
+      {project?.fullStory?.images && project.fullStory.images.length > 0 && (
+        <section className="w-full px-[3%] mb-32">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {project.fullStory.images.map((img, idx) => (
+              <FadeUp key={idx} delay={0.1} className={idx % 3 === 0 ? "md:col-span-2" : "md:col-span-1"}>
+                <div className="w-full h-full rounded-[32px] overflow-hidden border border-white/10 shadow-2xl bg-[#05050A]">
+                  <img src={img} alt={`${project.client} showcase ${idx + 1}`} className="w-full h-full object-cover" />
                 </div>
-                <div>
-                  <p className="text-sm text-white/40 mb-2 font-secondary">Secondary Body (Sans)</p>
-                  <p className="text-4xl font-primary font-light text-white">Space Grotesk</p>
-                  <p className="text-lg font-primary text-white/50 mt-4 break-words font-light">0123456789 !@#$%^&*()</p>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Color Palette</h4>
-              <div className="grid grid-cols-2 gap-4">
-                {(project.colors || [hexColor, '#FFFFFF', '#111111', '#555555']).map((col, i) => (
-                  <div key={i} className="rounded-[16px] overflow-hidden border border-white/10 bg-white/[0.02] flex flex-col h-40 shadow-inner group">
-                    <div className="flex-1 transition-transform group-hover:scale-105 origin-bottom" style={{ backgroundColor: col }} />
-                    <div className="p-4 font-mono text-xs text-white/70 bg-[#0A0A0A] flex justify-between">
-                      <span>{i === 0 ? 'Primary' : `Accent 0${i}`}</span>
-                      <span>{col}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+              </FadeUp>
+            ))}
           </div>
-        </FadeUp>
-      </section>
+        </section>
+      )}
 
-      {/* Visual Block 2 (UI / Packaging Mock) */}
-      <FadeUp className="w-full px-[3%] mb-32 pt-32 text-left">
-        <div className="grid md:grid-cols-2 gap-6 w-full">
-          <div className="aspect-square rounded-[32px] bg-white/[0.02] border border-white/5 flex flex-col p-12 overflow-hidden relative shadow-2xl items-center justify-center group">
-            <div className="absolute inset-0 opacity-20 transition-transform duration-1000 group-hover:scale-110" style={{ background: `radial-gradient(circle at bottom left, ${hexColor}, transparent 60%)` }} />
-            <div className="w-2/3 h-3/4 bg-[#05050A] rounded-[24px] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-10 flex flex-col p-6">
-              <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                <div className="flex gap-2"><div className="w-3 h-3 rounded-full bg-white/20" /><div className="w-3 h-3 rounded-full bg-white/20" /></div>
-                <div className="w-24 h-2 rounded-full bg-white/10" />
-              </div>
-              <div className="w-full h-32 rounded-[12px] mb-4" style={{ backgroundColor: `${hexColor}33` }} />
-              <div className="w-3/4 h-4 rounded-full bg-white/20 mb-3" />
-              <div className="w-1/2 h-4 rounded-full bg-white/10 mb-8" />
-              <div className="mt-auto w-full h-12 rounded-[8px] bg-white/5" />
-            </div>
-          </div>
+      {/* Design System & Colors (Conditional) */}
+      {project?.colors?.length > 0 && (
+        <section className="py-32 px-[3%] w-full border-t border-white/5 bg-[#010626] text-left">
+          <FadeUp className="max-w-6xl mx-auto w-full">
+            <h3 className="text-3xl font-light mb-16 font-primary text-center">Design System</h3>
 
-          <div className="aspect-square rounded-[32px] bg-white/[0.02] border border-white/5 flex flex-col p-12 overflow-hidden relative shadow-2xl items-center justify-center group">
-            <div className="absolute inset-0 opacity-20 transition-transform duration-1000 group-hover:scale-110" style={{ background: `radial-gradient(circle at top right, ${hexColor}, transparent 60%)` }} />
-            <div className="w-1/2 h-full bg-[#05050A] rounded-full border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative z-10 flex items-center justify-center p-8 text-center">
+            <div className="grid md:grid-cols-2 gap-16 mb-24 w-full items-center">
               <div>
-                <span className="font-serif italic text-4xl text-white/90 block mb-8">{project.client.split(' ')[0]}</span>
-                <div className="w-16 h-1 rounded-full bg-white/20 mx-auto mb-8" />
-                <div className="w-full aspect-square rounded-full border border-white/10 flex items-center justify-center" style={{ backgroundColor: `${hexColor}1A` }}>
-                  <div className="w-1/2 h-1/2 rounded-full bg-white/5" />
+                <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Typography</h4>
+                <div className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col gap-8">
+                  <div className="border-b border-white/10 pb-6">
+                    <p className="text-sm text-white/40 mb-2 font-secondary">Primary Display (Serif)</p>
+                    <p className="text-5xl font-serif italic text-white">Ogg / Playfair</p>
+                    <p className="text-xl font-serif text-white/50 mt-4 break-words">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-white/40 mb-2 font-secondary">Secondary Body (Sans)</p>
+                    <p className="text-4xl font-primary font-light text-white">Space Grotesk</p>
+                    <p className="text-lg font-primary text-white/50 mt-4 break-words font-light">0123456789 !@#$%^&*()</p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Color Palette</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  {(project.colors || []).map((col, i) => (
+                    <div key={i} className="rounded-[16px] overflow-hidden border border-white/10 bg-white/[0.02] flex flex-col h-40 shadow-inner group">
+                      <div className="flex-1 transition-transform group-hover:scale-105 origin-bottom" style={{ backgroundColor: col }} />
+                      <div className="p-4 font-mono text-xs text-white/70 bg-[#0A0A0A] flex justify-between">
+                        <span>{i === 0 ? 'Primary' : `Accent 0${i}`}</span>
+                        <span>{col}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </FadeUp>
-
+          </FadeUp>
+        </section>
+      )}
       {/* Full Story Block (Extended Content) */}
       {project.fullStory && (
         <section className="py-24 px-[3%] w-full bg-[#05050A] text-left border-t border-white/5">
@@ -2941,7 +2870,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
               </div>
             )}
 
-            {project.fullStory.stats && (
+            {project.fullStory.stats && project.fullStory.stats.length > 0 && (
               <div className="grid md:grid-cols-3 gap-8 mb-24">
                 {project.fullStory.stats.map(stat => (
                   <div key={stat._key || stat.label} className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col justify-center shadow-lg relative overflow-hidden group">
@@ -2952,44 +2881,36 @@ const WorkDetailPage = ({ navigate, projectId }) => {
                 ))}
               </div>
             )}
-
-            {project.fullStory.images && project.fullStory.images.length > 0 && (
-              <div className="grid md:grid-cols-3 gap-6">
-                {project.fullStory.images.map((img, i) => (
-                  <div key={i} className="aspect-square rounded-[24px] overflow-hidden border border-white/10">
-                    <img src={img} alt={`Detailed view ${i + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
-                  </div>
-                ))}
-              </div>
-            )}
           </FadeUp>
         </section>
       )}
 
       {/* Results / Impact */}
-      <section className="py-32 px-[3%] w-full border-t border-white/5 bg-[#010825] text-left">
-        <FadeUp className="max-w-6xl mx-auto w-full">
-          <h3 className="text-3xl font-light mb-16 font-primary text-center">Project Impact</h3>
-          <div className="grid md:grid-cols-3 gap-8">
-            {project.results.map((res, i) => (
-              <div key={i} className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col items-center text-center shadow-lg relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 transition-opacity group-hover:opacity-30 pointer-events-none" style={{ backgroundColor: hexColor }} />
-                <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center mb-8 bg-[#05050A] text-white relative z-10">
-                  {i === 0 ? <BarChart2 className="w-6 h-6" style={{ color: hexColor }} /> : i === 1 ? <Target className="w-6 h-6" style={{ color: hexColor }} /> : <Sparkles className="w-6 h-6" style={{ color: hexColor }} />}
+      {project.results?.length > 0 && (
+        <section className="py-32 px-[3%] w-full border-t border-white/5 bg-[#010825] text-left">
+          <FadeUp className="max-w-6xl mx-auto w-full">
+            <h3 className="text-3xl font-light mb-16 font-primary text-center">Project Impact</h3>
+            <div className="grid md:grid-cols-3 gap-8">
+              {project.results.map((res, i) => (
+                <div key={i} className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col items-center text-center shadow-lg relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 transition-opacity group-hover:opacity-30 pointer-events-none" style={{ backgroundColor: hexColor }} />
+                  <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center mb-8 bg-[#05050A] text-white relative z-10">
+                    {i === 0 ? <BarChart2 className="w-6 h-6" style={{ color: hexColor }} /> : i === 1 ? <Target className="w-6 h-6" style={{ color: hexColor }} /> : <Sparkles className="w-6 h-6" style={{ color: hexColor }} />}
+                  </div>
+                  <p className="text-xl text-white/90 font-light font-secondary leading-relaxed relative z-10">{res}</p>
                 </div>
-                <p className="text-xl text-white/90 font-light font-secondary leading-relaxed relative z-10">{res}</p>
-              </div>
-            ))}
-          </div>
-        </FadeUp>
-      </section>
+              ))}
+            </div>
+          </FadeUp>
+        </section>
+      )}
 
       {/* Section: FAQ */}
       <section className="py-24 px-[3%] w-full border-t border-white/5 bg-[#010825] text-left">
         <FadeUp className="max-w-4xl mx-auto w-full">
           <h3 className="text-3xl font-light mb-8 font-primary text-center">Frequently Asked Questions</h3>
           <StaggerGroup className="space-y-4 font-secondary w-full">
-            {FAQS.map((faq, i) => (
+            {(project.pageFaqs && project.pageFaqs.length > 0 ? project.pageFaqs : FAQS).map((faq, i) => (
               <StaggerItem key={i}>
                 <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01] w-full text-left">
                   <h4 className="font-medium text-white mb-2">{faq.question}</h4>
@@ -3185,7 +3106,7 @@ const OurStoryPage = ({ navigate }) => {
 
         {/* Section 4: The Timeline */}
         <div className="mb-32 w-full">
-          <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">Our Journey</h3></FadeUp>
+          <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">{SITE_SETTINGS?.ourJourneyHeader || "Our Journey"}</h3></FadeUp>
           <StaggerGroup className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent w-full">
             {TIMELINE.map((milestone, idx) => (
               <StaggerItem key={idx} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active w-full">
@@ -3433,7 +3354,7 @@ const ServicesPage = ({ navigate }) => {
                       <p className="text-white/60 font-light leading-relaxed mb-8 lg:mb-10 font-secondary text-base md:text-lg max-w-md">{route.desc}</p>
 
                       <div className="mt-auto pt-4 border-t border-white/10 lg:border-none lg:pt-0">
-                        <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent text-white group font-secondary text-base">Explore Route Details <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform" /></PremiumButton>
+                        <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent text-white group font-secondary text-base">{SITE_SETTINGS?.servicesExploreButton || "Explore Route Details"} <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform" /></PremiumButton>
                       </div>
                     </div>
 
@@ -3635,7 +3556,7 @@ const WorkPage = ({ navigate }) => {
         </FadeUp>
 
         <FadeUp delay={0.2} className="flex gap-4 mb-12 border-b border-white/10 pb-6 overflow-x-auto font-secondary w-full custom-scrollbar">
-          <button className="px-4 py-2 rounded-full border border-white text-white text-sm shrink-0">All Projects</button>
+          <button className="px-4 py-2 rounded-full border border-white text-white text-sm shrink-0">{SITE_SETTINGS?.allProjectsButton || "All Projects"}</button>
           <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">Brand Boulevard</button>
           <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">SciArt Saga</button>
           <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">Storytelling Corner</button>
@@ -3648,8 +3569,14 @@ const WorkPage = ({ navigate }) => {
               <StaggerItem key={i}>
                 <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/5 rounded-[24px] overflow-hidden flex flex-col transition-all duration-700 cursor-pointer text-left h-[450px] w-full" style={{ backgroundColor: palette.panel }}>
                   <div className="h-[250px] relative overflow-hidden border-b border-white/5 bg-white/[0.02]">
-                    <div className={`absolute inset-0 opacity-20 mix-blend-screen group-hover:scale-110 transition-transform duration-1000 ease-out`} style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
-                    <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 group-hover:text-white/30 transition-colors duration-700 text-5xl">{cs.client.split(' ')[0]}</span></div>
+                    {cs.bannerImage ? (
+                      <img src={cs.bannerImage} alt={cs.client} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" />
+                    ) : (
+                      <>
+                        <div className={`absolute inset-0 opacity-20 mix-blend-screen group-hover:scale-110 transition-transform duration-1000 ease-out`} style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
+                        <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 group-hover:text-white/30 transition-colors duration-700 text-5xl">{cs.client.split(' ')[0]}</span></div>
+                      </>
+                    )}
                   </div>
                   <div className="p-8 flex flex-col justify-between flex-1" style={{ backgroundColor: palette.panel }}>
                     <div>
@@ -4100,7 +4027,7 @@ const ContactPage = ({ navigate }) => {
         <div className="w-full border-t border-white/10 pt-16">
           <FadeUp><h3 className="text-3xl font-light mb-8 font-primary text-center">Frequently Asked Questions</h3></FadeUp>
           <StaggerGroup className="space-y-4 font-secondary max-w-4xl mx-auto w-full">
-            {FAQS.map((faq, i) => (
+            {(article.pageFaqs && article.pageFaqs.length > 0 ? article.pageFaqs : FAQS).map((faq, i) => (
               <StaggerItem key={i}>
                 <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01] w-full">
                   <h4 className="font-medium text-white mb-2">{faq.question}</h4>
@@ -4449,18 +4376,22 @@ export default function App() {
         title = "Selected Work | PurpleBlue House";
         description = "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns.";
         break;
-      case 'work-detail':
-        const wTitle = finalCaseStudies.find(c => c.id === routeState.data)?.client || "Case Study";
-        title = `${wTitle} | PurpleBlue House Work`;
+      case 'work-detail': {
+        const cStudy = finalCaseStudies.find(c => c.id === routeState.data);
+        title = cStudy?.seoTitle || (cStudy?.client ? `${cStudy.client} | PurpleBlue House Work` : "Case Study | PurpleBlue House");
+        description = cStudy?.metaDescription || description;
         break;
+      }
       case 'journal':
         title = "The Journal | PurpleBlue House";
         description = "Essays, frameworks, and perspectives on building breakthrough brands that matter.";
         break;
-      case 'article-detail':
-        const aTitle = finalJournal.find(a => a.id === routeState.data)?.title || "Journal Article";
-        title = `${aTitle} | PurpleBlue House Journal`;
+      case 'article-detail': {
+        const article = finalJournal.find(a => a.id === routeState.data);
+        title = article?.seoTitle || (article?.title ? `${article.title} | PurpleBlue House Journal` : "Journal Article | PurpleBlue House");
+        description = article?.metaDescription || description;
         break;
+      }
       case 'contact':
         title = "Contact Us | PurpleBlue House";
         description = "Start with a conversation. Or start with clarity. Reach out to the PurpleBlue House team.";
@@ -4477,15 +4408,63 @@ export default function App() {
     }
 
     document.title = title;
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (!metaDescription) {
-      metaDescription = document.createElement('meta');
-      metaDescription.name = "description";
-      document.head.appendChild(metaDescription);
-    }
-    metaDescription.content = description;
 
-  }, [routeState.page, routeState.data]);
+    // Update Meta Description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.name = "description";
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = description;
+
+    // Inject JSON-LD Schema for SEO/AIO/GEO
+    let existingSchema = document.getElementById('pbh-schema-markup');
+    if (existingSchema) existingSchema.remove();
+
+    if (routeState.page === 'work-detail' || routeState.page === 'article-detail') {
+      const dataObj = routeState.page === 'work-detail'
+        ? finalCaseStudies.find(c => c.id === routeState.data)
+        : finalJournal.find(a => a.id === routeState.data);
+
+      if (dataObj) {
+        const faqs = dataObj.pageFaqs || []; // Fallback to empty if not set, preventing generic FAQ pollution
+        const schemaObj = {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": routeState.page === 'work-detail' ? "ItemPage" : "Article",
+              "headline": dataObj.seoTitle || dataObj.title || dataObj.client,
+              "description": dataObj.metaDescription || description,
+              "keywords": dataObj.focusKeyword || ""
+            }
+          ]
+        };
+
+        // If page-specific FAQs exist, inject FAQ schema
+        if (faqs.length > 0) {
+          schemaObj["@graph"].push({
+            "@type": "FAQPage",
+            "mainEntity": faqs.map(faq => ({
+              "@type": "Question",
+              "name": faq.question,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer
+              }
+            }))
+          });
+        }
+
+        const script = document.createElement('script');
+        script.id = 'pbh-schema-markup';
+        script.type = 'application/ld+json';
+        script.text = JSON.stringify(schemaObj);
+        document.head.appendChild(script);
+      }
+    }
+
+  }, [routeState.page, routeState.data, finalCaseStudies, finalJournal]);
 
   return (
     <GlobalContext.Provider value={globalData}>

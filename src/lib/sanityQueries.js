@@ -13,6 +13,10 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(order asc) {
   colors,
   order,
   "imageUrl": image.asset->url,
+  "bannerImage": bannerImage.asset->url,
+  challengeHeading,
+  solutionHeading,
+  deliverablesHeading,
   "fullStory": {
     "challenge": fullStory.challenge,
     "strategy": fullStory.strategy,
@@ -20,10 +24,14 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(order asc) {
     "stats": fullStory.stats,
     "heroImg": fullStory.heroImg.asset->url,
     "images": fullStory.images[].asset->url
-  }
+  },
+  seoTitle,
+  metaDescription,
+  focusKeyword,
+  "pageFaqs": pageFaqs[]->{id, question, answer, category}
 }`;
 
-export const GET_JOURNAL_ARTICLES = `*[_type == "journalArticle"] | order(date desc) { id, tag, title, time, type, excerpt, author, date }`;
+export const GET_JOURNAL_ARTICLES = `*[_type == "journalArticle"] | order(date desc) { id, tag, title, time, type, excerpt, author, date, seoTitle, metaDescription, focusKeyword, "pageFaqs": pageFaqs[]->{id, question, answer, category} }`;
 
 export const GET_PROBLEM_DATA = `*[_type == "problemData"] | order(order asc) { title, type, iconName }`;
 
@@ -36,7 +44,7 @@ export const GET_DELIVERABLES = `*[_type == "deliverable"] { id, lineItem, name,
 export const GET_SITE_SETTINGS = `*[_type == "siteSettings"][0] { 
   homeHeroTitle, homeHeroSubtitle, servicesHeader, servicesSubtext, journalHeader, journalSubtext, footerCTA, marqueeText,
   contactEmail, contactPhone, contactAddress,
-  homeExploreButton, servicesExploreButton, assessmentButton, allProjectsButton,
+  homeExploreButton, servicesExploreButton, assessmentButton, allProjectsButton, homeSection3Subtitle,
   workPageHeader, workPageSubtext, methodPageHeader, methodPageSubtext, teamPageHeader, teamPageSubtext,
   coreValuesHeader, ourJourneyHeader, frameworkHeader, timelineHeader,
   aboutPage, storyPage, teamPage, methodPage, serviceFaqs, footerTagline, footerCopyright

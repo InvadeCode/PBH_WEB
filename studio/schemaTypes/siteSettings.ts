@@ -22,7 +22,7 @@ export default defineType({
     defineField({ name: 'homeExploreButton', title: 'Explore Button', type: 'string', group: 'home' }),
     defineField({ name: 'marqueeText', title: 'Marquee Text', type: 'string', group: 'home' }),
     defineField({ name: 'assessmentButton', title: 'Assessment Button', type: 'string', group: 'home' }),
-
+    defineField({ name: 'homeSection3Subtitle', title: 'Section 3 Subtitle (Old vs New Way)', type: 'text', group: 'home' }),
     // ── ABOUT US PAGE ──
     defineField({
       name: 'aboutPage',
