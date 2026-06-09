@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const EMAIL_FROM = process.env.EMAIL_FROM || 'PBH Client <no-reply@emails.liaisonit.com>';
-  const EMAIL_TO = process.env.EMAIL_TO || 'updates@purplebluehouse.com';
+  const EMAIL_TO = process.env.EMAIL_TO || 'prerita@purplebluehouse.com';
 
   if (!RESEND_API_KEY) {
     return res.status(500).json({ success: false, error: 'Missing RESEND_API_KEY environment variable.' });

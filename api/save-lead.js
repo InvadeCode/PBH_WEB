@@ -33,6 +33,7 @@ export default async function handler(req, res) {
     const { data, error } = await supabase.from("leads").insert({
       name: leadForm?.name || "Unknown",
       email: leadForm?.email || "Unknown",
+      phone: leadForm?.phone || "",
       company: leadForm?.company || "Unknown",
       brand_stage: answers?.stage?.label || "",
       identified_gaps: clusters || [],

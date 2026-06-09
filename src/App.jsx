@@ -814,7 +814,17 @@ const AnimatedItalic = ({ children, className = "" }) => {
 // Helper: renders *text* as <AnimatedItalic> from CMS strings
 const renderWithItalics = (text, italicClassName = "") => {
   if (!text) return null;
-  const parts = text.split(/(\*[^*]+\*)/g);
+  
+  let processedText = text;
+  // Automatically italicize 'move as one' if it's missing asterisks from CMS
+  if (!processedText.includes('*move as one')) {
+    processedText = processedText.replace(/move as one\./gi, '*move as one.*');
+    if (!processedText.includes('*move as one')) {
+      processedText = processedText.replace(/move as one/gi, '*move as one*');
+    }
+  }
+
+  const parts = processedText.split(/(\*[^*]+\*)/g);
   return parts.map((part, i) => {
     if (part.startsWith('*') && part.endsWith('*')) {
       return <AnimatedItalic key={i} className={italicClassName}>{part.slice(1, -1)}</AnimatedItalic>;
@@ -892,10 +902,20 @@ const StrategicEngine = ({ navigate }) => {
   const [priorities, setPriorities] = useState({});
   const [warnings, setWarnings] = useState([]);
   const [context, setContext] = useState({ depth: '', timeline: '' });
-  const [leadForm, setLeadForm] = useState({ name: '', email: '', company: '' });
+  const [leadForm, setLeadForm] = useState({ name: '', email: '', phone: '', company: '' });
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [dependencyModal, setDependencyModal] = useState(null);
+
+  const formatInterdependence = (interdepString) => {
+    if (!interdepString || interdepString === 'None') return null;
+    if (interdepString.includes('-')) return "Complete Previous Phase";
+    let formatted = interdepString;
+    DELIVERABLES_MASTER.forEach(deliv => {
+      formatted = formatted.replace(new RegExp(deliv.id, 'g'), deliv.name);
+    });
+    return formatted;
+  };
 
   const N_QUIZ = QUIZ_QUESTIONS.length;
 
@@ -1868,8 +1888,11 @@ const StrategicEngine = ({ navigate }) => {
                     const delivs = DELIVERABLES_MASTER.filter(d => d.lineItem === li.id);
                     if (delivs.length === 0) return null;
                     return (
-                      <div key={li.id} className="bg-white/[0.01] border border-white/5 rounded-[12px] p-6 w-full">
-                        <h5 className="font-medium text-white/80 mb-4 font-primary">{li.name}</h5>
+                      <div key={li.id} className="bg-white/[0.01] border border-white/5 rounded-[12px] w-full overflow-hidden">
+                        <div className="bg-[#010D54] py-4 px-6 border-b border-white/10 mb-6">
+                          <h5 className="font-medium text-white text-lg font-primary">{li.name}</h5>
+                        </div>
+                        <div className="px-6 pb-6">
                         <div className="grid gap-3 w-full">
                           {delivs.map(d => {
                             const isSelected = selectedDeliverables.includes(d.id);
@@ -1880,7 +1903,9 @@ const StrategicEngine = ({ navigate }) => {
                                   <div className={`w-4 h-4 rounded-sm border mt-1 flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#2A97D9] border-[#2A97D9]' : 'border-white/30'}`}>{isSelected && <Check className="w-3 h-3 text-white" />}</div>
                                   <div className="flex-1 text-left">
                                     <div className={`font-medium text-sm mb-1 ${isSelected ? 'text-white' : 'text-white/70'}`}>{d.name} {isWarning && <span className="ml-2 text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded border border-yellow-500/30">Missing Prereqs</span>}</div>
-                                    <div className="text-xs text-white/40">ID: {d.id} {d.interdependence !== 'None' && `| Requires: ${d.interdependence}`}</div>
+                                    {d.interdependence !== 'None' && (
+                                      <div className="text-xs text-white/40 mt-1">Requires: {formatInterdependence(d.interdependence)}</div>
+                                    )}
                                   </div>
                                 </div>
                                 {isSelected && (
@@ -1897,6 +1922,7 @@ const StrategicEngine = ({ navigate }) => {
                             )
                           })}
                         </div>
+                      </div>
                       </div>
                     )
                   })}
@@ -1953,6 +1979,7 @@ const StrategicEngine = ({ navigate }) => {
         <form onSubmit={submitLead} className="space-y-4 w-full font-secondary max-w-3xl">
           <input required type="text" placeholder="Full Name" value={leadForm.name} onChange={e => setLeadForm({ ...leadForm, name: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <input required type="email" placeholder="Work Email" value={leadForm.email} onChange={e => setLeadForm({ ...leadForm, email: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
+          <input required type="tel" placeholder="Phone Number" value={leadForm.phone} onChange={e => setLeadForm({ ...leadForm, phone: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <input required type="text" placeholder="Company / Brand Name" value={leadForm.company} onChange={e => setLeadForm({ ...leadForm, company: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <div className="pt-6 flex gap-4 items-center">
             <PremiumButton type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-10">
@@ -2482,7 +2509,7 @@ const HomePage = ({ navigate }) => {
         <div className="flex-1 flex flex-col justify-center w-full relative z-10 text-left">
           <RevealText delay={0.1}>
             <h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 font-primary whitespace-pre-wrap">
-              {renderWithItalics(SITE_SETTINGS?.homeHeroTitle || "Breakthroughs happen when strategy and execution *move as one.*", "text-white/60 mx-2")}
+              {renderWithItalics(SITE_SETTINGS?.homeHeroTitle || "Breakthroughs happen when strategy and execution *move as one.*", "text-white/60 mx-2 whitespace-nowrap")}
             </h1>
           </RevealText>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">{SITE_SETTINGS?.homeHeroSubtitle || "PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs."}</motion.p>
@@ -4033,7 +4060,7 @@ const ContactPage = ({ navigate }) => {
         <div className="w-full border-t border-white/10 pt-16">
           <FadeUp><h3 className="text-3xl font-light mb-8 font-primary text-center">Frequently Asked Questions</h3></FadeUp>
           <StaggerGroup className="space-y-4 font-secondary max-w-4xl mx-auto w-full">
-            {(article.pageFaqs && article.pageFaqs.length > 0 ? article.pageFaqs : FAQS).map((faq, i) => (
+            {FAQS.map((faq, i) => (
               <StaggerItem key={i}>
                 <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01] w-full">
                   <h4 className="font-medium text-white mb-2">{faq.question}</h4>
@@ -4092,6 +4119,56 @@ const AdminDashboard = ({ navigate }) => {
             </table>
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const LatestCredentialsPage = ({ navigate }) => {
+  const { CASE_STUDIES } = useContext(GlobalContext);
+  
+  return (
+    <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
+      <div className="w-full max-w-5xl mx-auto text-left">
+        <FadeUp>
+          <div className="w-16 h-16 border border-white/10 rounded-[16px] flex items-center justify-center mb-8 bg-white/5"><Fingerprint className="w-8 h-8 text-white" /></div>
+          <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-6 font-primary leading-tight">Credentials & Selected Work.</h1>
+          <p className="text-xl text-white/50 font-light mb-16 leading-relaxed font-secondary max-w-2xl">A curated selection of breakthroughs. How we partner with visionary teams to build clear, scalable brand systems.</p>
+        </FadeUp>
+
+        <StaggerGroup className="space-y-12">
+          {CASE_STUDIES.map((study, i) => (
+            <StaggerItem key={study.id}>
+              <div onClick={() => navigate('work-detail/' + study.id)} className="group cursor-pointer border border-white/10 rounded-[24px] overflow-hidden flex flex-col md:flex-row bg-[#0A0A10] hover:border-white/20 transition-colors">
+                <div className="md:w-1/3 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-center">
+                  <div className="text-[10px] tracking-widest uppercase mb-4 font-primary" style={{ color: palette[study.category] || palette.primary }}>{study.category}</div>
+                  <h3 className="text-2xl font-light mb-4 text-white group-hover:text-white/80 transition-colors font-primary">{study.client}</h3>
+                  <p className="text-white/50 text-sm font-secondary font-light line-clamp-3">{study.preview}</p>
+                  <div className="mt-8 flex items-center gap-2 text-xs text-white/40 group-hover:text-white transition-colors font-secondary">View Case Study <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" /></div>
+                </div>
+                <div className="md:w-2/3 h-[250px] md:h-[350px] relative overflow-hidden bg-[#05050A]">
+                  {study.bannerImage ? (
+                    <img src={study.bannerImage} alt={study.client} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 ease-out" />
+                  ) : (
+                    <>
+                      <div className="absolute inset-0 opacity-20 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105" style={{ background: `radial-gradient(circle at center, ${palette[study.category] || palette.primary}, transparent)` }} />
+                      <div className="absolute inset-0 flex items-center justify-center"><Fingerprint className="w-24 h-24 text-white/5 transition-transform duration-700 group-hover:rotate-12" /></div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerGroup>
+
+        <FadeUp delay={0.2} className="mt-32 pt-16 border-t border-white/10 text-center flex flex-col items-center">
+          <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center mb-6 bg-white/5">
+            <Mail className="w-5 h-5 text-white/70" />
+          </div>
+          <h3 className="text-2xl font-light mb-4 font-primary text-white">Ready to start?</h3>
+          <p className="text-white/50 font-secondary text-lg mb-8">You can reach out <a href="mailto:prerita@purplebluehouse.com" className="text-white hover:underline transition-all">prerita@purplebluehouse.com</a></p>
+          <button onClick={() => navigate('assessment')} className="px-8 py-4 border border-white/20 rounded-full text-white/80 hover:bg-white hover:text-black transition-colors text-sm font-medium font-secondary">Build Your Brand Scope</button>
+        </FadeUp>
       </div>
     </div>
   );
@@ -4235,7 +4312,19 @@ const renderHeroHeading = (sanityText, defaultText, animatedRenderer, plainRende
 };
 
 export default function App() {
-  const [routeState, setRouteState] = useState({ page: 'home', data: null });
+  const [routeState, setRouteState] = useState(() => {
+    const path = window.location.pathname.replace(/^\/|\/$/g, '');
+    if (!path) return { page: 'home', data: null };
+    
+    if (path.startsWith('article/')) return { page: 'article-detail', data: path.split('/')[1] };
+    if (path.startsWith('work/') && path !== 'work') return { page: 'work-detail', data: path.split('/')[1] };
+    if (path.startsWith('service-detail/')) return { page: 'service-detail', data: path.split('/')[1] };
+    
+    const validPages = ['home', 'about', 'method', 'story', 'team', 'services', 'work', 'journal', 'contact', 'assessment', 'admin', 'latest'];
+    if (validPages.includes(path)) return { page: path, data: null };
+    
+    return { page: 'home', data: null };
+  });
   const [activeServiceModal, setActiveServiceModal] = useState(null);
 
   const { data: sanityJournal } = useSanity(GET_JOURNAL_ARTICLES);
@@ -4332,13 +4421,16 @@ export default function App() {
   };
 
   const navigate = (path, data = null) => {
+    let urlPath = path;
     if (path.startsWith('service-modal/')) {
       setActiveServiceModal(path.split('/')[1]);
+      return; // Do not push state for modals
     } else if (path.startsWith('service-detail/')) {
       setRouteState({ page: 'service-detail', data: path.split('/')[1] });
       setActiveServiceModal(null);
     } else if (path.startsWith('services/') && path !== 'services') {
       setActiveServiceModal(path.split('/')[1]);
+      return; // Do not push state for modals
     } else if (path.startsWith('article/')) {
       setRouteState({ page: 'article-detail', data: path.split('/')[1] });
       setActiveServiceModal(null);
@@ -4348,6 +4440,14 @@ export default function App() {
     } else {
       setRouteState({ page: path, data });
       setActiveServiceModal(null);
+      if (path === 'home') urlPath = '/';
+    }
+    
+    // Update the browser URL without refreshing so the links are shareable
+    if (urlPath !== '/') {
+      window.history.pushState({}, '', `/${urlPath}`);
+    } else {
+      window.history.pushState({}, '', '/');
     }
   };
 
@@ -4527,6 +4627,7 @@ export default function App() {
               {routeState.page === 'article-detail' && <ArticlePage key="article-detail" navigate={navigate} articleId={routeState.data} />}
               {routeState.page === 'contact' && <ContactPage key="contact" navigate={navigate} />}
               {routeState.page === 'assessment' && <StrategicEngine key="engine" navigate={navigate} />}
+              {routeState.page === 'latest' && <LatestCredentialsPage key="latest" navigate={navigate} />}
               {routeState.page === 'admin' && <AdminDashboard key="admin" navigate={navigate} />}
             </AnimatePresence>
           </main>
