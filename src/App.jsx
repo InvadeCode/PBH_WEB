@@ -2819,11 +2819,11 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       {/* Image Gallery Layout */}
       {project?.fullStory?.images && project.fullStory.images.length > 0 && (
         <section className="w-full px-[3%] mb-32">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 gap-12 max-w-6xl mx-auto">
             {project.fullStory.images.map((img, idx) => (
-              <FadeUp key={idx} delay={0.1} className={idx % 3 === 0 ? "md:col-span-2" : "md:col-span-1"}>
-                <div className="w-full h-full rounded-[32px] overflow-hidden border border-white/10 shadow-2xl bg-[#05050A]">
-                  <img src={img} alt={`${project.client} showcase ${idx + 1}`} className="w-full h-full object-cover" />
+              <FadeUp key={idx} delay={0.1} className="w-full">
+                <div className="w-full rounded-[32px] overflow-hidden border border-white/10 shadow-2xl bg-[#05050A]">
+                  <img src={img} alt={`${project.client} showcase ${idx + 1}`} className="w-full h-auto object-cover" />
                 </div>
               </FadeUp>
             ))}
@@ -4242,22 +4242,12 @@ const sortByRef = (array, referenceArray, key = 'id') => {
   });
 };
 
-// --- PARITY STABILIZATION UTILITIES ---
-const isValidContent = (val) => {
-  if (val === null || val === undefined) return false;
-  if (typeof val === 'string' && val.trim() === '') return false;
-  if (Array.isArray(val) && val.length === 0) return false;
-  return true;
-};
-
 const mergeWithFallback = (masterArray, sanityArray, sectionName) => {
   if (!masterArray) return [];
 
   // Unknown-Entry Detection
   if (process.env.NODE_ENV === 'development' && sanityArray) {
     sanityArray.forEach(sItem => {
-      // Assuming Sanity items have 'id' (from our query update) or we match by name/title as fallback.
-      // But since we just added 'id' to Sanity queries, if it's missing, it'll warn.
       const match = masterArray.find(mItem => mItem.id === sItem.id);
       if (!match) {
         console.warn(`[Parity Audit] Unknown or un-ID'd CMS item in ${sectionName}:`, sItem.id || sItem.name || sItem.title || sItem.question);
@@ -4266,10 +4256,9 @@ const mergeWithFallback = (masterArray, sanityArray, sectionName) => {
   }
 
   return masterArray.map(masterItem => {
-    // We try to match by id. If Sanity hasn't updated the schema to use IDs yet, this will fallback gracefully.
     let sanityItem = (sanityArray || []).find(item => item.id && item.id === masterItem.id);
 
-    // Fuzzy matching fallback just in case the Sanity schema hasn't been updated with 'id' fields yet.
+    // Fuzzy matching fallback
     if (!sanityItem && sanityArray) {
       if (masterItem.name) sanityItem = sanityArray.find(item => item.name === masterItem.name);
       else if (masterItem.title) sanityItem = sanityArray.find(item => item.title === masterItem.title);
@@ -4280,9 +4269,15 @@ const mergeWithFallback = (masterArray, sanityArray, sectionName) => {
 
     const merged = { ...masterItem };
     Object.keys(masterItem).forEach(key => {
-      // If Sanity has the key and it's valid, override the master.
-      if (isValidContent(sanityItem[key])) {
+      const isCoreField = ['id', 'route', 'type', 'order', 'name', 'title', 'question'].includes(key);
+      
+      if (sanityItem[key] !== undefined && sanityItem[key] !== null) {
+        // If Sanity provides the field, use it directly (even if it's an empty array/string)
         merged[key] = sanityItem[key];
+      } else if (!isCoreField) {
+        // If Sanity omits the content field, it means the user deleted it in the CMS.
+        // We must set it to null so the frontend hides the section, rather than falling back to dummy data.
+        merged[key] = null;
       }
     });
     return merged;
