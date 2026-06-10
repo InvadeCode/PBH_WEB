@@ -2659,7 +2659,7 @@ const HomePage = ({ navigate }) => {
                       <h3 className="text-2xl font-light transition-colors font-primary group-hover:opacity-80" style={{ color: 'white' }}>{cs.client}</h3>
                     </div>
                     <div className="flex justify-between items-end font-secondary">
-                      <div className="flex gap-2 flex-wrap">{cs.tags.map(t => <span key={t} className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-white/50 uppercase">{t}</span>)}</div>
+                      <div className="flex gap-2 flex-wrap">{(cs.tags || []).map(t => <span key={t} className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-white/50 uppercase">{t}</span>)}</div>
                       <ArrowUpRight className="w-5 h-5 text-white/30 group-hover:text-white transition-colors" />
                     </div>
                   </div>
@@ -4267,14 +4267,11 @@ const mergeWithFallback = (masterArray, sanityArray, sectionName) => {
 
     if (!sanityItem) return masterItem;
 
-    const merged = { ...masterItem };
+    const merged = { ...masterItem, ...sanityItem };
     Object.keys(masterItem).forEach(key => {
       const isCoreField = ['id', 'route', 'type', 'order', 'name', 'title', 'question'].includes(key);
       
-      if (sanityItem[key] !== undefined && sanityItem[key] !== null) {
-        // If Sanity provides the field, use it directly (even if it's an empty array/string)
-        merged[key] = sanityItem[key];
-      } else if (!isCoreField) {
+      if (sanityItem[key] === undefined && !isCoreField) {
         // If Sanity omits the content field, it means the user deleted it in the CMS.
         // We must set it to null so the frontend hides the section, rather than falling back to dummy data.
         merged[key] = null;
