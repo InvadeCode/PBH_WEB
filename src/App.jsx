@@ -4220,7 +4220,6 @@ const Footer = ({ navigate }) => {
             <div className="flex flex-col space-y-4 text-white/40 text-sm font-light">
               <button onClick={() => navigate('contact')} className="hover:text-white transition-colors text-left">Contact Us</button>
               <button onClick={() => navigate('assessment')} className="hover:text-white transition-colors text-left">Build Brand Scope</button>
-              <span className="cursor-pointer hover:text-white flex items-center gap-2 mt-4" onClick={() => navigate('admin')}><Lock className="w-3 h-3" /> Admin Area</span>
             </div>
           </div>
         </div>
