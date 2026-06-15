@@ -2716,6 +2716,123 @@ const HomePage = ({ navigate }) => {
   );
 };
 
+const BrandBoulevardMarquee = ({ images, client, bgHex }) => {
+  if (!images || images.length === 0) return null;
+
+  // Split images into two rows
+  const topRowImages = images.filter((_, i) => i % 2 === 0);
+  const bottomRowImages = images.filter((_, i) => i % 2 !== 0);
+
+  // Duplicate arrays to ensure the marquee fills wide screens seamlessly
+  let displayTop = [...topRowImages];
+  while (displayTop.length < 8 && topRowImages.length > 0) {
+    displayTop = [...displayTop, ...topRowImages];
+  }
+
+  let displayBottom = [...bottomRowImages];
+  // If there's only 1 image in the bottom row (or none), handle it safely
+  if (bottomRowImages.length === 0) {
+    displayBottom = [...displayTop]; // fallback to top row if only 1 image total
+  } else {
+    while (displayBottom.length < 8) {
+      displayBottom = [...displayBottom, ...bottomRowImages];
+    }
+  }
+
+  // Animation variants for smooth pausing on hover
+  const marqueeVariantsTop = {
+    animate: {
+      x: ["0%", "-50%"],
+      transition: {
+        x: {
+          repeat: Infinity,
+          repeatType: "loop",
+          duration: displayTop.length * 8, // Adjust speed based on content
+          ease: "linear",
+        },
+      },
+    },
+  };
+
+  const marqueeVariantsBottom = {
+    animate: {
+      x: ["-50%", "0%"],
+      transition: {
+        x: {
+          repeat: Infinity,
+          repeatType: "loop",
+          duration: displayBottom.length * 10, // Slightly slower for asynchronous feel
+          ease: "linear",
+        },
+      },
+    },
+  };
+
+  return (
+    <div className="w-full overflow-hidden relative py-16 flex flex-col gap-8 bg-[#010626]">
+      {/* Edge Fades for seamless looping */}
+      <div className="absolute inset-y-0 left-0 w-[5%] md:w-[15%] z-10 pointer-events-none" style={{ background: `linear-gradient(to right, ${palette.bgDeep}, transparent)` }} />
+      <div className="absolute inset-y-0 right-0 w-[5%] md:w-[15%] z-10 pointer-events-none" style={{ background: `linear-gradient(to left, ${palette.bgDeep}, transparent)` }} />
+      
+      {/* Top Row: Left to Right */}
+      <motion.div
+        className="flex w-max group/row"
+        variants={marqueeVariantsTop}
+        animate="animate"
+        whileHover={{ animationPlayState: "paused" }}
+        style={{ animationPlayState: "running" }}
+      >
+        <div className="flex gap-6 px-3">
+          {displayTop.map((img, idx) => (
+             <div key={`set1-top-${idx}`} className="h-[30vh] md:h-[40vh] lg:h-[45vh] shrink-0 rounded-[16px] overflow-hidden border border-white/5 relative group/card bg-white/5 transition-all duration-700 hover:scale-[1.02] hover:-translate-y-1">
+               <div className="h-full w-auto group-hover/row:opacity-50 group-hover/card:opacity-100 transition-opacity duration-500">
+                 <img src={img} alt={`${client} showcase`} className="h-full w-auto object-cover md:object-contain rounded-[16px]" />
+               </div>
+             </div>
+          ))}
+        </div>
+        <div className="flex gap-6 px-3">
+          {displayTop.map((img, idx) => (
+             <div key={`set2-top-${idx}`} className="h-[30vh] md:h-[40vh] lg:h-[45vh] shrink-0 rounded-[16px] overflow-hidden border border-white/5 relative group/card bg-white/5 transition-all duration-700 hover:scale-[1.02] hover:-translate-y-1">
+               <div className="h-full w-auto group-hover/row:opacity-50 group-hover/card:opacity-100 transition-opacity duration-500">
+                 <img src={img} alt={`${client} showcase`} className="h-full w-auto object-cover md:object-contain rounded-[16px]" />
+               </div>
+             </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Bottom Row: Right to Left */}
+      <motion.div
+        className="flex w-max group/row"
+        variants={marqueeVariantsBottom}
+        animate="animate"
+        whileHover={{ animationPlayState: "paused" }}
+        style={{ animationPlayState: "running" }}
+      >
+        <div className="flex gap-6 px-3">
+          {displayBottom.map((img, idx) => (
+             <div key={`set1-bottom-${idx}`} className="h-[30vh] md:h-[40vh] lg:h-[45vh] shrink-0 rounded-[16px] overflow-hidden border border-white/5 relative group/card bg-white/5 transition-all duration-700 hover:scale-[1.02] hover:-translate-y-1">
+               <div className="h-full w-auto group-hover/row:opacity-50 group-hover/card:opacity-100 transition-opacity duration-500">
+                 <img src={img} alt={`${client} showcase`} className="h-full w-auto object-cover md:object-contain rounded-[16px]" />
+               </div>
+             </div>
+          ))}
+        </div>
+        <div className="flex gap-6 px-3">
+          {displayBottom.map((img, idx) => (
+             <div key={`set2-bottom-${idx}`} className="h-[30vh] md:h-[40vh] lg:h-[45vh] shrink-0 rounded-[16px] overflow-hidden border border-white/5 relative group/card bg-white/5 transition-all duration-700 hover:scale-[1.02] hover:-translate-y-1">
+               <div className="h-full w-auto group-hover/row:opacity-50 group-hover/card:opacity-100 transition-opacity duration-500">
+                 <img src={img} alt={`${client} showcase`} className="h-full w-auto object-cover md:object-contain rounded-[16px]" />
+               </div>
+             </div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 const WorkDetailPage = ({ navigate, projectId }) => {
   const { CASE_STUDIES, FAQS } = useContext(GlobalContext);
   const caseStudies = CASE_STUDIES;
@@ -2818,17 +2935,25 @@ const WorkDetailPage = ({ navigate, projectId }) => {
 
       {/* Image Gallery Layout */}
       {project?.fullStory?.images && project.fullStory.images.length > 0 && (
-        <section className="w-full px-[3%] mb-32">
-          <div className="grid grid-cols-1 gap-12 max-w-6xl mx-auto">
-            {project.fullStory.images.map((img, idx) => (
-              <FadeUp key={idx} delay={0.1} className="w-full">
-                <div className="w-full rounded-[32px] overflow-hidden border border-white/10 shadow-2xl bg-[#05050A]">
-                  <img src={img} alt={`${project.client} showcase ${idx + 1}`} className="w-full h-auto object-cover" />
-                </div>
-              </FadeUp>
-            ))}
-          </div>
-        </section>
+        <>
+          {project.route === "Brand Boulevard" ? (
+            <section className="w-full overflow-hidden border-t border-white/5 relative z-20">
+               <BrandBoulevardMarquee images={project.fullStory.images} client={project.client} bgHex={palette.bgDeep} />
+            </section>
+          ) : (
+            <section className="w-full px-[3%] mb-32">
+              <div className="grid grid-cols-1 gap-12 max-w-6xl mx-auto">
+                {project.fullStory.images.map((img, idx) => (
+                  <FadeUp key={idx} delay={0.1} className="w-full">
+                    <div className="w-full rounded-[32px] overflow-hidden border border-white/10 shadow-2xl bg-[#05050A]">
+                      <img src={img} alt={`${project.client} showcase ${idx + 1}`} className="w-full h-auto object-cover" />
+                    </div>
+                  </FadeUp>
+                ))}
+              </div>
+            </section>
+          )}
+        </>
       )}
 
       {/* Design System & Colors (Conditional) */}
