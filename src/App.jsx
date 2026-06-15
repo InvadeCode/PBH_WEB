@@ -3636,12 +3636,12 @@ const WorkPage = ({ navigate }) => {
         <FadeUp delay={0.1} className="mb-24 w-full">
           <div onClick={() => navigate('work/' + caseStudies[0].id)} className="group relative border border-white/5 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
             <div className="md:w-1/2 relative overflow-hidden h-[300px] md:h-full bg-white/[0.02] w-full">
-              {caseStudies[0].bannerImage ? (
-                <img src={caseStudies[0].bannerImage} alt={caseStudies[0].client} className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105" />
+              {(caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl) ? (
+                <img src={caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl} alt={caseStudies[0].client} className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105" />
               ) : (
                 <>
                   <div className="absolute inset-0 opacity-30 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105" style={{ background: `linear-gradient(to bottom right, ${palette.primary}, transparent)` }} />
-                  <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 text-7xl md:text-9xl">{caseStudies[0].client.split(' ')[0]}</span></div>
+                  <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 text-7xl md:text-9xl">{caseStudies[0].client ? caseStudies[0].client.split(' ')[0] : 'Work'}</span></div>
                 </>
               )}
             </div>
@@ -3671,12 +3671,12 @@ const WorkPage = ({ navigate }) => {
               <StaggerItem key={i}>
                 <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/5 rounded-[24px] overflow-hidden flex flex-col transition-all duration-700 cursor-pointer text-left h-[450px] w-full" style={{ backgroundColor: palette.panel }}>
                   <div className="h-[250px] relative overflow-hidden border-b border-white/5 bg-white/[0.02]">
-                    {cs.bannerImage ? (
-                      <img src={cs.bannerImage} alt={cs.client} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" />
+                    {(cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl) ? (
+                      <img src={cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl} alt={cs.client} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" />
                     ) : (
                       <>
                         <div className={`absolute inset-0 opacity-20 mix-blend-screen group-hover:scale-110 transition-transform duration-1000 ease-out`} style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
-                        <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 group-hover:text-white/30 transition-colors duration-700 text-5xl">{cs.client.split(' ')[0]}</span></div>
+                        <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 group-hover:text-white/30 transition-colors duration-700 text-5xl">{cs.client ? cs.client.split(' ')[0] : 'Work'}</span></div>
                       </>
                     )}
                   </div>
@@ -4216,8 +4216,8 @@ const LatestCredentialsPage = ({ navigate }) => {
                   <div className="mt-8 flex items-center gap-2 text-xs text-white/40 group-hover:text-white transition-colors font-secondary">View Case Study <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" /></div>
                 </div>
                 <div className="md:w-2/3 h-[250px] md:h-[350px] relative overflow-hidden bg-[#05050A]">
-                  {study.bannerImage ? (
-                    <img src={study.bannerImage} alt={study.client} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 ease-out" />
+                  {(study.bannerImage || study.fullStory?.heroImg || study.imageUrl) ? (
+                    <img src={study.bannerImage || study.fullStory?.heroImg || study.imageUrl} alt={study.client} className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 ease-out" />
                   ) : (
                     <>
                       <div className="absolute inset-0 opacity-20 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105" style={{ background: `radial-gradient(circle at center, ${palette[study.category] || palette.primary}, transparent)` }} />
@@ -4444,7 +4444,7 @@ export default function App() {
   const finalQuiz = sanityQuiz?.length > 0 ? sortByRef(sanityQuiz, QUIZ_QUESTIONS) : QUIZ_QUESTIONS;
 
   const { data: sanityCaseStudies } = useSanity(CASE_STUDIES_QUERY);
-  const finalCaseStudies = sanityCaseStudies?.length > 0 ? sortByRef(sanityCaseStudies, CASE_STUDIES) : CASE_STUDIES;
+  const finalCaseStudies = sanityCaseStudies?.length > 0 ? sanityCaseStudies : CASE_STUDIES;
 
   const { data: sanityTeamMembers } = useSanity(GET_TEAM_MEMBERS);
   const finalTeamMembers = mergeWithFallback(TEAM_MEMBERS_MASTER, sanityTeamMembers, "Team");
