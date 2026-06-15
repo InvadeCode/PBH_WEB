@@ -2796,9 +2796,19 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       {/* Hero Section */}
       <section className="relative w-full h-[70vh] md:h-[90vh] flex flex-col justify-end p-[3%] overflow-hidden">
         <motion.div initial={{ scale: 1.1 }} animate={{ scale: 1 }} transition={{ duration: 1.5, ease: "easeOut" }} className="absolute inset-0 z-0 bg-[#010836]">
-          <div className="absolute inset-0 opacity-40 mix-blend-screen" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/60 to-transparent" />
-          <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none"><span className="font-serif italic text-9xl md:text-[15rem] whitespace-nowrap overflow-hidden">{project.client ? project.client.split(' ')[0] : 'Work'}</span></div>
+          {(project.bannerImage || project.fullStory?.heroImg || project.imageUrl) ? (
+            <>
+              <img src={project.bannerImage || project.fullStory?.heroImg || project.imageUrl} alt={`${project.client} hero`} className="w-full h-full object-cover opacity-100" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#010836] via-[#010836]/40 to-transparent" />
+            </>
+          ) : (
+            <>
+              <div className="absolute inset-0 opacity-40 mix-blend-screen" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/60 to-transparent" />
+              <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none"><span className="font-serif italic text-9xl md:text-[15rem] whitespace-nowrap overflow-hidden">{project.client ? project.client.split(' ')[0] : 'Work'}</span></div>
+            </>
+          )}
         </motion.div>
 
         <div className="relative z-10 w-full pb-12 text-left">
@@ -2959,12 +2969,6 @@ const WorkDetailPage = ({ navigate, projectId }) => {
                 </div>
               )}
             </div>
-
-            {project.fullStory.heroImg && (
-              <div className="w-full aspect-[21/9] rounded-[32px] overflow-hidden mb-24 border border-white/10 shadow-2xl">
-                <img src={project.fullStory.heroImg} alt="Hero representation" className="w-full h-full object-cover" />
-              </div>
-            )}
 
             {project.fullStory.stats && project.fullStory.stats.length > 0 && (
               <div className="grid md:grid-cols-3 gap-8 mb-24">
