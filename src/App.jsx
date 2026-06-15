@@ -2797,11 +2797,17 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       <section className="relative w-full h-[70vh] md:h-[90vh] flex flex-col justify-end p-[3%] overflow-hidden">
         <motion.div initial={{ scale: 1.1 }} animate={{ scale: 1 }} transition={{ duration: 1.5, ease: "easeOut" }} className="absolute inset-0 z-0 bg-[#010836]">
           {(project.bannerImage || project.fullStory?.heroImg || project.imageUrl) ? (
-            <img src={project.bannerImage || project.fullStory?.heroImg || project.imageUrl} alt={`${project.client} hero`} className="w-full h-full object-cover opacity-60 mix-blend-luminosity" />
-          ) : null}
-          <div className="absolute inset-0 opacity-60 mix-blend-color" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/60 to-transparent" />
-          <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none"><span className="font-serif italic text-9xl md:text-[15rem] whitespace-nowrap overflow-hidden">{project.client ? project.client.split(' ')[0] : 'Work'}</span></div>
+            <>
+              <img src={project.bannerImage || project.fullStory?.heroImg || project.imageUrl} alt={`${project.client} hero`} className="w-full h-full object-cover opacity-80" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/80 to-[#010836]/20" />
+            </>
+          ) : (
+            <>
+              <div className="absolute inset-0 opacity-40 mix-blend-screen" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/60 to-transparent" />
+              <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none"><span className="font-serif italic text-9xl md:text-[15rem] whitespace-nowrap overflow-hidden">{project.client ? project.client.split(' ')[0] : 'Work'}</span></div>
+            </>
+          )}
         </motion.div>
 
         <div className="relative z-10 w-full pb-12 text-left">
