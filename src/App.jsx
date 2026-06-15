@@ -2963,11 +2963,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
               )}
             </div>
 
-            {project.fullStory.heroImg && (
-              <div className="w-full aspect-[21/9] rounded-[32px] overflow-hidden mb-24 border border-white/10 shadow-2xl">
-                <img src={project.fullStory.heroImg} alt="Hero representation" className="w-full h-full object-cover" />
-              </div>
-            )}
+
 
             {project.fullStory.stats && project.fullStory.stats.length > 0 && (
               <div className="grid md:grid-cols-3 gap-8 mb-24">
