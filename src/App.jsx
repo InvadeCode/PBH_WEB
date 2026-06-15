@@ -2798,9 +2798,8 @@ const WorkDetailPage = ({ navigate, projectId }) => {
         <motion.div initial={{ scale: 1.1 }} animate={{ scale: 1 }} transition={{ duration: 1.5, ease: "easeOut" }} className="absolute inset-0 z-0 bg-[#010836]">
           {(project.bannerImage || project.fullStory?.heroImg || project.imageUrl) ? (
             <>
-              <img src={project.bannerImage || project.fullStory?.heroImg || project.imageUrl} alt={`${project.client} hero`} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-transparent to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#010836]/80 via-transparent to-transparent" />
+              <img src={project.bannerImage || project.fullStory?.heroImg || project.imageUrl} alt={`${project.client} hero`} className="absolute inset-0 w-full h-full object-cover opacity-100" />
+              <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-[#010836] to-transparent pointer-events-none" />
             </>
           ) : (
             <>
