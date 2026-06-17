@@ -2989,101 +2989,86 @@ const Header = ({ navigate, current }) => {
 };
 
 const SelectedCollaboratorsSection = () => {
-  const galleryLogos = [
-    { 
-      name: "Snow Leopard Trust", src: "/clients/logos/snow_leopard_trust/SLT-Logo-2016-300ppi-Transparent-BlackText-01.png", 
-      className: "md:col-start-1 md:row-start-1 mt-12 md:mt-32",
-      baseFilter: "grayscale(100%) brightness(0) invert(1)",
-      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.3))"
-    },
-    { 
-      name: "Hero Lectro", src: "/clients/logos/hero_lectro/xx_lectro.png", 
-      className: "md:col-start-4 md:row-start-1 mt-24 md:mt-16",
-      baseFilter: "grayscale(100%) brightness(0) invert(1)",
-      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.15))"
-    },
-    { 
-      name: "IIT Delhi", src: "/clients/logos/iit/iitd_raw_images_01.png", 
-      className: "md:col-start-2 md:row-start-2 mt-32 md:mt-48",
-      baseFilter: "grayscale(100%) brightness(0) invert(1)",
-      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.3))"
-    },
-    { 
-      name: "Leverage Edu", src: "/clients/logos/leverage_edu/8_leverage.png", 
-      className: "md:col-start-5 md:row-start-2 mt-16 md:mt-24",
-      baseFilter: "grayscale(100%) brightness(0) invert(1)",
-      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.2))"
-    },
-    { 
-      name: "Navankur", src: "/clients/logos/navankur/5_navankur.png", 
-      className: "md:col-start-1 md:row-start-3 mt-40 md:mt-64",
-      baseFilter: "grayscale(100%) brightness(0) invert(1)",
-      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.1))"
-    },
-    { 
-      name: "Back To Roots", src: "/clients/logos/back_to_roots/back_to_roots_logo.png", 
-      className: "md:col-start-3 md:row-start-3 mt-20 md:mt-32",
-      baseFilter: "grayscale(100%) brightness(200%)", 
-      hoverFilter: "grayscale(0%) brightness(100%)"
-    },
-    { 
-      name: "Arise Ventures", src: "/clients/logos/arise_ventures/Asset 3@4x.png", 
-      className: "md:col-start-5 md:row-start-4 mt-10 md:mt-40",
-      baseFilter: "grayscale(100%) brightness(0) invert(1)",
-      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.3))"
-    },
-    { 
-      name: "Earthy Souls", src: "/clients/logos/earthy_souls/6_earthy.png", 
-      className: "md:col-start-2 md:row-start-4 mt-32 md:mt-12",
-      baseFilter: "grayscale(100%) brightness(0) invert(1)",
-      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.15))"
-    },
+  const topRowLogos = [
+    { name: "Hero Lectro", src: "/clients/logos/hero_lectro/xx_lectro.png" },
+    { name: "IIT Delhi", src: "/clients/logos/iit/iitd_raw_images_01.png" },
+    { name: "Navankur", src: "/clients/logos/navankur/5_navankur.png" },
+    { name: "Arise Ventures", src: "/clients/logos/arise_ventures/Asset 3@4x.png" },
+    { name: "Firefox", src: "/clients/logos/firefox/1_firefox.png" },
+    { name: "Earthy Souls", src: "/clients/logos/earthy_souls/6_earthy.png" },
+    { name: "EBT", src: "/clients/logos/ebt/7_ebt.png" },
   ];
 
+  const bottomRowLogos = [
+    { name: "Snow Leopard Trust", src: "/clients/logos/snow_leopard_trust/SLT-Logo-2016-300ppi-Transparent-BlackText-01.png" },
+    { name: "Leverage Edu", src: "/clients/logos/leverage_edu/8_leverage.png" },
+    { name: "Back To Roots", src: "/clients/logos/back_to_roots/back_to_roots_logo.png" },
+    { name: "Observer Research Foundation", src: "/clients/logos/orf/white logo.png" },
+    { name: "Param Innovation", src: "/clients/logos/param/9_param.png" },
+    { name: "Veauli", src: "/clients/logos/veauli_techniks/10_veauli.png" },
+    { name: "IGF", src: "/clients/logos/igf/3_igf.png" },
+  ];
+
+  const renderLogo = (logo, idx) => (
+    <div key={`${logo.name}-${idx}`} className="flex items-center justify-center shrink-0 mx-16 md:mx-20 group">
+      <img
+        src={logo.src}
+        alt={logo.name}
+        className="h-12 md:h-24 max-w-[200px] md:max-w-[280px] w-auto object-contain transition-all duration-500 ease-in-out opacity-35 hover:opacity-100 hover-scale-103"
+        style={{ filter: "grayscale(100%) brightness(0) invert(1)" }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.filter = "grayscale(0%) brightness(100%)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.filter = "grayscale(100%) brightness(0) invert(1)";
+        }}
+      />
+    </div>
+  );
+
   return (
-    <section className="py-48 w-full relative overflow-hidden border-t border-b border-white/5" style={{ backgroundColor: palette.bgDeep }}>
-      {/* Editorial Heading - Large Space Grotesk tracking */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
-        <h2 className="text-[12vw] font-secondary tracking-[0.25em] font-light text-white/[0.02] text-center leading-[1.1] select-none ml-[0.125em]">
-          SELECTED<br />COLLABORATORS
-        </h2>
+    <section className="py-32 w-full relative overflow-hidden border-t border-b border-white/5" style={{ backgroundColor: palette.bgDeep }}>
+      <div className="w-full max-w-[90rem] mx-auto px-[5%] mb-24 md:mb-32">
+        <h3 className="text-xs md:text-sm uppercase tracking-[0.3em] font-primary text-white/50 font-medium">
+          Selected Collaborations
+        </h3>
       </div>
 
-      <div className="relative z-10 w-full max-w-[90rem] mx-auto px-[5%] min-h-[80vh] flex items-center justify-center">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-x-12 md:gap-x-24 gap-y-32 w-full">
-          {galleryLogos.map((logo, index) => (
-            <div key={index} className={`flex items-center justify-center ${logo.className}`}>
-              {/* Idle Floating Physics */}
-              <motion.div
-                animate={{ y: [0, -2, 0] }}
-                transition={{ duration: 6 + (index % 3), repeat: Infinity, ease: "easeInOut" }}
-                className="relative"
-              >
-                {/* Illumination Pulse & Hover */}
-                <motion.img
-                  src={logo.src}
-                  alt={logo.name}
-                  className="max-h-10 md:max-h-16 max-w-[140px] md:max-w-[200px] w-auto object-contain cursor-pointer"
-                  initial={{ opacity: 0.2, filter: logo.baseFilter, scale: 1 }}
-                  animate={{ 
-                    opacity: [0.2, 0.2, 0.6, 0.2, 0.2], 
-                    filter: logo.baseFilter
-                  }}
-                  transition={{ 
-                    opacity: { duration: 12, repeat: Infinity, ease: "easeInOut", delay: index * 1.5, times: [0, 0.4, 0.5, 0.6, 1] } 
-                  }}
-                  whileHover={{ 
-                    opacity: 1, 
-                    filter: logo.hoverFilter, 
-                    scale: 1.03,
-                    transition: { duration: 0.8, ease: "easeOut" }
-                  }}
-                />
-              </motion.div>
-            </div>
-          ))}
+      <div className="relative w-full flex flex-col gap-24 md:gap-32 overflow-hidden z-10">
+        {/* Fading edges to simulate gallery drifting */}
+        <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to right, ${palette.bgDeep}, transparent)` }} />
+        <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to left, ${palette.bgDeep}, transparent)` }} />
+
+        {/* Top Row (Right to Left) */}
+        <div className="flex w-max animate-marquee-rtl hover:[animation-play-state:paused]">
+          {[...topRowLogos, ...topRowLogos, ...topRowLogos].map(renderLogo)}
+        </div>
+
+        {/* Bottom Row (Left to Right) - Offset by -15vw initial transform in wrapper */}
+        <div className="flex w-max animate-marquee-ltr hover:[animation-play-state:paused] -ml-[15vw]">
+          {[...bottomRowLogos, ...bottomRowLogos, ...bottomRowLogos].map(renderLogo)}
         </div>
       </div>
+
+      <style>{`
+        @keyframes marquee-rtl {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.333333%); }
+        }
+        @keyframes marquee-ltr {
+          0% { transform: translateX(-33.333333%); }
+          100% { transform: translateX(0); }
+        }
+        .animate-marquee-rtl {
+          animation: marquee-rtl 80s linear infinite;
+        }
+        .animate-marquee-ltr {
+          animation: marquee-ltr 80s linear infinite;
+        }
+        .hover-scale-103:hover {
+          transform: scale(1.03);
+        }
+      `}</style>
     </section>
   );
 };
