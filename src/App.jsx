@@ -4266,7 +4266,19 @@ const ServiceModal = ({ navigate, routeId, onClose }) => {
 
 const WorkPage = ({ navigate }) => {
   const { SITE_SETTINGS, CASE_STUDIES } = useContext(GlobalContext);
-  const caseStudies = CASE_STUDIES;
+  const caseStudies = [
+    {
+      id: "leverage-edu-mock",
+      client: "Leverage Edu",
+      sector: "EdTech",
+      type: "Storytelling Corner",
+      tags: ["Brand Identity", "Visual Narrative", "Cinematic Web"],
+      challenge: "When an established educational platform requires a completely refined narrative, the approach must center on clarity, authority, and deeply empathetic storytelling.",
+      imageUrl: "/clients/logos/leverage_edu/8_leverage.png",
+      bannerImage: "/clients/logos/leverage_edu/8_leverage.png"
+    },
+    ...CASE_STUDIES
+  ];
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
