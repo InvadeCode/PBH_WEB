@@ -3014,14 +3014,7 @@ const SelectedCollaboratorsSection = () => {
       <img
         src={logo.src}
         alt={logo.name}
-        className="h-12 md:h-24 max-w-[200px] md:max-w-[280px] w-auto object-contain transition-all duration-500 ease-in-out opacity-35 hover:opacity-100 hover-scale-103"
-        style={{ filter: "grayscale(100%) brightness(0) invert(1)" }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.filter = "grayscale(0%) brightness(100%)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.filter = "grayscale(100%) brightness(0) invert(1)";
-        }}
+        className="h-16 md:h-20 w-auto max-w-[200px] md:max-w-[250px] object-contain transition-all duration-500 ease-in-out opacity-60 hover:opacity-100 hover-scale-103"
       />
     </div>
   );
