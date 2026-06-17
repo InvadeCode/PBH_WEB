@@ -3010,12 +3010,14 @@ const SelectedCollaboratorsSection = () => {
   ];
 
   const renderLogo = (logo, idx) => (
-    <div key={`${logo.name}-${idx}`} className="flex items-center justify-center shrink-0 mx-16 md:mx-20 group">
-      <img
-        src={logo.src}
-        alt={logo.name}
-        className="h-16 md:h-20 w-auto max-w-[200px] md:max-w-[250px] object-contain transition-all duration-500 ease-in-out opacity-60 hover:opacity-100 hover-scale-103"
-      />
+    <div key={`${logo.name}-${idx}`} className="flex items-center justify-center shrink-0 mx-10 md:mx-16 group">
+      <div className="h-28 md:h-40 px-12 md:px-16 rounded-2xl md:rounded-[2rem] bg-white/95 flex items-center justify-center transition-all duration-500 ease-in-out opacity-85 hover:opacity-100 hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] cursor-pointer">
+        <img
+          src={logo.src}
+          alt={logo.name}
+          className="h-16 md:h-24 max-w-[220px] md:max-w-[300px] w-auto object-contain mix-blend-multiply"
+        />
+      </div>
     </div>
   );
 
