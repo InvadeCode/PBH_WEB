@@ -3384,6 +3384,22 @@ const BrandBoulevardMarquee = ({ images, client, bgHex }) => {
 
 const WorkDetailPage = ({ navigate, projectId }) => {
   const { CASE_STUDIES, FAQS } = useContext(GlobalContext);
+
+  // Intercept Leverage Edu mock before Sanity lookup
+  if (projectId === 'leverage-edu-mock') {
+    const mockProject = {
+      id: "leverage-edu-mock",
+      client: "Leverage Edu",
+      sector: "EdTech",
+      type: "Storytelling Corner",
+      tags: ["Brand Identity", "Visual Narrative", "Cinematic Web"],
+      challenge: "When an established educational platform requires a completely refined narrative, the approach must center on clarity, authority, and deeply empathetic storytelling.",
+      imageUrl: "/clients/logos/leverage_edu/8_leverage.png",
+      bannerImage: "/clients/logos/leverage_edu/8_leverage.png"
+    };
+    return <LeverageEduExperience project={mockProject} onBack={() => navigate('work')} />;
+  }
+
   const caseStudies = CASE_STUDIES;
   const projectIndex = caseStudies.findIndex(p => p.id === projectId);
   const project = caseStudies[projectIndex] || caseStudies[0];
