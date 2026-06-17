@@ -456,6 +456,30 @@ const CASE_STUDIES = [
     results: ['$50M+ in pre-orders secured', 'Featured in top global sustainability summits', 'Brand adopted as industry standard case study'],
     colors: ['#93D435', '#012015', '#2A97D9', '#E8F5E9']
   },
+  {
+    id: 'back-to-roots', client: 'Back To Roots', sector: 'Wellness', challenge: 'Building an Ayurvedic wellness brand that speaks to a modern audience without losing its roots.', route: 'Brand Boulevard', tags: ['Wellness', 'Identity', 'Packaging'], type: 'accent',
+    overview: 'Back To Roots needed a brand system that honored its Ayurvedic heritage while feeling completely contemporary — warm, precise, and deeply human.',
+    solution: 'A craft-forward identity rooted in earthy warmth, editorial restraint, and system-led packaging that travels across retail and digital touchpoints.',
+    roles: ['Brand Identity', 'Packaging Design', 'Visual System', 'Collaterals'],
+    results: ['Unified packaging language across 30+ SKUs', 'Retail-ready identity system', 'Digital and offline presence aligned'],
+    colors: ['#C4793A', '#1A0F0A', '#F5E6C8', '#2C1A10']
+  },
+  {
+    id: 'param-innovation', client: 'Param Innovation', sector: 'Deep Tech', challenge: 'Making quantum computing intelligence accessible and credible to enterprise decision-makers.', route: 'Sci-Art Saga', tags: ['Deep Tech', 'B2B', 'SciArt'], type: 'blue',
+    overview: 'Param Innovation operates at the frontier of quantum computing. The challenge was translating extreme technical depth into a brand that commands authority without sacrificing human clarity.',
+    solution: 'A laboratory-precision visual language — clinical, confident, and kinetic — built for decks, web, and investor communication.',
+    roles: ['Brand Strategy', 'Visual Identity', 'Investor Deck', 'Web Direction'],
+    results: ['Investor-ready brand presence', 'Identity adopted across all B2B touchpoints', 'Science-forward narrative framework'],
+    colors: ['#00E5FF', '#030C1A', '#1A3A4A', '#F4F4F5']
+  },
+  {
+    id: 'snow-leopard-trust', client: 'Snow Leopard Trust', sector: 'Conservation', challenge: 'Creating a global conservation narrative that mobilises action across governments, institutions, and the public.', route: 'Sci-Art Saga', tags: ['Conservation', 'Storytelling', 'Global'], type: 'purple',
+    overview: 'Snow Leopard Trust needed a story infrastructure that could travel — across South Asia, Central Asia, Europe, and the UK — and move governments, NGOs, and cultural voices to act.',
+    solution: 'A SciArt narrative system that bridges institutional authority with human emotion, activating conservation through cultural reach and scientific rigour.',
+    roles: ['Strategic Narrative', 'Experience Design', 'GTM Communication', 'Cultural Outreach'],
+    results: ['Engagement from governments of Kyrgyzstan and Bhutan', 'Cultural voices including Dia Mirza and Jubin Nautiyal', 'Narrative reached across 12+ countries'],
+    colors: ['#7C3AED', '#0A0514', '#C4B5FD', '#F4F4F5']
+  },
 ];
 
 const JOURNAL_ARTICLES = [
@@ -3010,38 +3034,41 @@ const SelectedCollaboratorsSection = () => {
     { name: "IGF", src: "/clients/logos/igf/3_igf.png" },
   ];
 
-  const renderLogo = (logo, idx) => (
-    <div key={`${logo.name}-${idx}`} className="flex items-center justify-center shrink-0 mx-10 md:mx-16 group">
-      <div className="h-28 md:h-40 px-12 md:px-16 rounded-2xl md:rounded-[2rem] bg-white/95 flex items-center justify-center transition-all duration-500 ease-in-out opacity-85 hover:opacity-100 hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] cursor-pointer">
+  const renderLogo = (logo, idx) => {
+    // Some logos are purely white text. We must invert them so they show on the white background.
+    const isWhiteLogo = logo.src.includes('white');
+
+    return (
+      <div key={`${logo.name}-${idx}`} className="flex items-center justify-center shrink-0 mx-16 md:mx-24 group cursor-pointer">
         <img
           src={logo.src}
           alt={logo.name}
-          className="h-16 md:h-24 max-w-[220px] md:max-w-[300px] w-auto object-contain mix-blend-multiply"
+          className={`h-12 md:h-20 max-w-[180px] md:max-w-[260px] w-auto object-contain mix-blend-multiply transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-30 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 ${isWhiteLogo ? 'invert' : ''}`}
         />
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
-    <section className="py-32 w-full relative overflow-hidden border-t border-b border-white/5" style={{ backgroundColor: palette.bgDeep }}>
+    <section className="py-32 md:py-40 w-full relative overflow-hidden bg-white text-black">
       <div className="w-full max-w-[90rem] mx-auto px-[5%] mb-24 md:mb-32">
-        <h3 className="text-xs md:text-sm uppercase tracking-[0.3em] font-primary text-white/50 font-medium">
+        <h3 className="text-xs md:text-sm uppercase tracking-[0.3em] font-primary text-black/40 font-medium">
           Selected Collaborations
         </h3>
       </div>
 
       <div className="relative w-full flex flex-col gap-24 md:gap-32 overflow-hidden z-10">
         {/* Fading edges to simulate gallery drifting */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to right, ${palette.bgDeep}, transparent)` }} />
-        <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to left, ${palette.bgDeep}, transparent)` }} />
+        <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to right, white, transparent)` }} />
+        <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to left, white, transparent)` }} />
 
         {/* Top Row (Right to Left) */}
-        <div className="flex w-max animate-marquee-rtl hover:[animation-play-state:paused]">
+        <div className="flex w-max items-center animate-marquee-rtl hover:[animation-play-state:paused]">
           {[...topRowLogos, ...topRowLogos, ...topRowLogos].map(renderLogo)}
         </div>
 
         {/* Bottom Row (Left to Right) - Offset by -15vw initial transform in wrapper */}
-        <div className="flex w-max animate-marquee-ltr hover:[animation-play-state:paused] -ml-[15vw]">
+        <div className="flex w-max items-center animate-marquee-ltr hover:[animation-play-state:paused] -ml-[15vw]">
           {[...bottomRowLogos, ...bottomRowLogos, ...bottomRowLogos].map(renderLogo)}
         </div>
       </div>
@@ -3060,9 +3087,6 @@ const SelectedCollaboratorsSection = () => {
         }
         .animate-marquee-ltr {
           animation: marquee-ltr 80s linear infinite;
-        }
-        .hover-scale-103:hover {
-          transform: scale(1.03);
         }
       `}</style>
     </section>
