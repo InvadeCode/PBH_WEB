@@ -1,4 +1,4 @@
-export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(order asc) {
+export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(orderRank) {
   "id": coalesce(id, _id),
   client,
   sector,
@@ -35,7 +35,7 @@ export const GET_JOURNAL_ARTICLES = `*[_type == "journalArticle"] | order(date d
 
 export const GET_PROBLEM_DATA = `*[_type == "problemData"] | order(order asc) { title, type, iconName }`;
 
-export const GET_QUIZ_QUESTIONS = `*[_type == "quizQuestion"] { id, title, options }`;
+export const GET_QUIZ_QUESTIONS = `*[_type == "quizQuestion"] { id, title, options, multiSelect }`;
 
 export const GET_ROUTES_INFO = `*[_type == "routeInfo"] { id, title, desc, iconName, type, bestFor, lineItems }`;
 

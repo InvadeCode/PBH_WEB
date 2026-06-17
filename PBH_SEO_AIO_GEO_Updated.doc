@@ -1,0 +1,297 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<style>
+body { font-family: 'Calibri', sans-serif; font-size: 11pt; color: #1a1a1a; line-height: 1.6; margin: 60px; }
+h1 { font-size: 22pt; color: #2D1B69; margin-bottom: 4px; font-weight: 700; }
+h2 { font-size: 16pt; color: #2D1B69; border-bottom: 2px solid #2D1B69; padding-bottom: 6px; margin-top: 30px; }
+h3 { font-size: 13pt; color: #4A3A8A; margin-top: 20px; }
+h4 { font-size: 11pt; color: #1a1a1a; margin-top: 16px; font-weight: 700; }
+.subtitle { font-size: 13pt; color: #666; margin-bottom: 20px; }
+.version { font-size: 10pt; color: #999; margin-bottom: 30px; }
+.status-box { background: #F0EDFA; border-left: 4px solid #2D1B69; padding: 16px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
+.status-box h3 { color: #2D1B69; margin-top: 0; }
+.live-badge { background: #16A34A; color: white; padding: 3px 12px; border-radius: 12px; font-size: 9pt; font-weight: 700; letter-spacing: 1px; }
+.cms-field { background: #FAFAFA; border: 1px solid #E5E5E5; padding: 12px 16px; margin: 8px 0; border-radius: 6px; }
+.cms-field strong { color: #2D1B69; }
+table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+th { background: #2D1B69; color: white; padding: 10px 14px; text-align: left; font-size: 10pt; }
+td { border: 1px solid #DDD; padding: 10px 14px; font-size: 10pt; }
+tr:nth-child(even) { background: #F9F9F9; }
+.section-num { display: inline-block; background: #2D1B69; color: white; width: 28px; height: 28px; text-align: center; line-height: 28px; border-radius: 50%; font-size: 10pt; font-weight: 700; margin-right: 8px; }
+.note { background: #FFF8E1; border-left: 4px solid #F59E0B; padding: 12px 16px; margin: 16px 0; font-size: 10pt; }
+.divider { border: none; border-top: 1px solid #E5E5E5; margin: 30px 0; }
+ul { margin: 8px 0; padding-left: 24px; }
+li { margin-bottom: 6px; }
+.page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div style="text-align: center; padding: 80px 0 40px 0;">
+<h1 style="font-size: 28pt; border: none; margin-bottom: 8px;">Purple Blue House</h1>
+<p style="font-size: 16pt; color: #4A3A8A; margin-bottom: 4px;">SEO + AIO + GEO Content Template</p>
+<p class="subtitle">Content Production Standard for Website Pages</p>
+<hr class="divider">
+<p class="version">Prepared by Purple Blue House &nbsp;|&nbsp; Branding &amp; Marketing Agency<br>
+Version 2.0 &nbsp;|&nbsp; June 2026</p>
+<p style="font-size: 10pt; color: #666;">This template governs how all web pages are written, structured and published.<br>
+It applies to blogs, case studies, service pages, product pages, location pages and industry pages.<br>
+Every person writing content for a PBH client must follow this template without exception.</p>
+</div>
+
+<!-- IMPLEMENTATION STATUS -->
+<div class="page-break"></div>
+
+<div class="status-box" style="background: #EDFCF2; border-left-color: #16A34A; margin-top: 0;">
+<h2 style="color: #16A34A; border: none; margin-top: 0; padding: 0;">Implementation Status &nbsp;<span class="live-badge">LIVE</span></h2>
+<p>This SEO / AIO / GEO framework has been <strong>successfully implemented across the entire PurpleBlue House website</strong>. The technical infrastructure is live and operational as of June 2026.</p>
+<p>Every page on the website now carries unique, optimised page titles and meta descriptions. The system is built to ensure that Google Search, AI-powered engines (ChatGPT, Perplexity, Google AI Overviews), and location-based search queries can all correctly discover, read and rank PBH content.</p>
+</div>
+
+<h3>Dynamic Content Engine — Case Studies &amp; Journal Articles</h3>
+<p>For <strong>Case Studies</strong> and <strong>Journal Articles (Blogs)</strong>, we have built a highly advanced, dynamic SEO engine that goes significantly beyond baseline meta tags. This system provides:</p>
+
+<div class="cms-field">
+<strong>1. CMS-Controlled SEO Fields</strong><br>
+The PBH content team now has direct control over the following fields via the <strong>Sanity CMS Dashboard</strong> for every single Case Study and Blog post:
+</div>
+
+<table>
+<tr><th>Field</th><th>Description</th><th>Validation</th></tr>
+<tr><td><strong>SEO Title</strong></td><td>The title that appears in Google search results and browser tabs</td><td>Max 60 characters (warning enforced)</td></tr>
+<tr><td><strong>Meta Description</strong></td><td>The summary snippet shown below the title in search results</td><td>Max 155 characters (warning enforced)</td></tr>
+<tr><td><strong>Primary Keyword</strong></td><td>The single exact search phrase this page must rank for</td><td>Free text</td></tr>
+<tr><td><strong>Page-Specific FAQs</strong></td><td>Select 5–8 unique FAQs relevant to this specific article</td><td>Reference selector (linked to FAQ library)</td></tr>
+</table>
+
+<div class="cms-field">
+<strong>2. Automated JSON-LD Structured Data (Schema Markup)</strong><br>
+The website code automatically reads the Sanity inputs above and injects proper <strong>JSON-LD structured data</strong> into every Case Study and Blog page. This includes:
+<ul>
+<li><strong>ItemPage</strong> schema — for Case Studies</li>
+<li><strong>Article</strong> schema — for Journal Articles</li>
+<li><strong>FAQPage</strong> schema — automatically generated when Page-Specific FAQs are added</li>
+</ul>
+This structured data enables Google Rich Snippets (FAQ dropdowns in search results) and ensures AI engines can accurately cite PBH content when users ask questions like <em>"best branding agency in India"</em>.
+</div>
+
+<div class="note">
+<strong>Action Required:</strong> The PBH content team must fill out the SEO Title, Meta Description, Primary Keyword and Page-Specific FAQs for every Case Study and Blog post <em>before publishing</em>. If these fields are left blank, the system will fall back to generic defaults, which reduces search performance.
+</div>
+
+<hr class="divider">
+
+<!-- ORIGINAL TEMPLATE CONTENT -->
+<h2>How to Use This Template</h2>
+<p>This document has two parts:</p>
+<ul>
+<li><strong>Part 1 — The Template:</strong> Each section is a numbered field to fill out before writing a page.</li>
+<li><strong>Part 2 — A Worked Example:</strong> A complete, filled-in example for a PBH client service page.</li>
+</ul>
+<p>Follow the order. Fill every field. Do not skip sections. The template exists because inconsistent content structure creates inconsistent search performance.</p>
+
+<table>
+<tr><th>Page Type</th><th>When to Use</th></tr>
+<tr><td>Blog</td><td>Thought leadership, how-to guides, industry explainers</td></tr>
+<tr><td>Case Study</td><td>Completed client projects with results</td></tr>
+<tr><td>Service Page</td><td>Core services offered by the client</td></tr>
+<tr><td>Product Page</td><td>Physical or digital products</td></tr>
+<tr><td>Location Page</td><td>City or region-specific service targeting</td></tr>
+<tr><td>Industry Page</td><td>Vertical-specific content (real estate, healthcare, etc.)</td></tr>
+</table>
+
+<div class="page-break"></div>
+<h2>PART 1 — The Content Template</h2>
+
+<h3><span class="section-num">01</span> Page Objective</h3>
+<p>What is this page supposed to achieve? Answer in 2–3 sentences. Be specific about the buyer action you want.</p>
+<table>
+<tr><td><strong>Page Type</strong></td><td>Select: Blog / Case Study / Service Page / Product Page / Location Page / Industry Page</td></tr>
+<tr><td><strong>Objective Statement</strong></td><td>Write what this page must do for the visitor and the business.<br><em>Example: This page should help municipal corporations and smart city teams understand how to choose the right fabrication partner for bus shelter infrastructure.</em></td></tr>
+</table>
+
+<h3><span class="section-num">02</span> Target Audience</h3>
+<p>List the exact audience types this page speaks to. Be as specific as possible — avoid generic labels like 'businesses' or 'clients'.</p>
+<table>
+<tr><td><strong>Primary Audience</strong></td><td>Who is the single most important reader for this page?</td></tr>
+<tr><td><strong>Secondary Audience(s)</strong></td><td>List 3–6 secondary reader types, one per line.</td></tr>
+</table>
+
+<h3><span class="section-num">03</span> Primary Keyword</h3>
+<p>One keyword only. This is the single term the page must rank for. It must appear in the H1, SEO title, meta description, first paragraph and URL.</p>
+<table>
+<tr><td><strong>Primary Keyword</strong></td><td>Write one phrase only.<br><em>Example: Brand identity agency in India</em></td></tr>
+</table>
+
+<h3><span class="section-num">04</span> Secondary Keywords</h3>
+<p>5–8 supporting keywords. These should appear naturally in the body content — in headings, paragraphs and FAQs. Do not stuff them.</p>
+<table>
+<tr><td><strong>Secondary Keywords</strong></td><td>List 5–8 phrases, one per line.<br><em>Example: Logo design agency India / Brand strategy firm / Visual identity designer / Brand naming agency</em></td></tr>
+</table>
+
+<h3><span class="section-num">05</span> SEO Title</h3>
+<p>Use the formula: <strong>Primary Keyword + Use Case or Buyer Intent + Geography or Context</strong></p>
+<table>
+<tr><td><strong>SEO Title</strong></td><td>Write your title here. Keep it under 60 characters.<br><em>Example: Brand Identity Agency in India for Startups and Growing Businesses</em></td></tr>
+</table>
+<div class="note"><strong>For Blogs &amp; Case Studies:</strong> This field is directly editable in the Sanity CMS dashboard. The website automatically uses it as the browser tab title and the JSON-LD headline.</div>
+
+<h3><span class="section-num">06</span> Meta Description</h3>
+<p>One sentence. No keyword stuffing. Must be useful to someone scanning search results. Keep it under 155 characters.</p>
+<table>
+<tr><td><strong>Meta Description</strong></td><td>Write your meta description here.<br><em>Example: Learn how Purple Blue House builds brand identities for startups, SMEs and enterprise clients across India.</em></td></tr>
+</table>
+<div class="note"><strong>For Blogs &amp; Case Studies:</strong> This field is directly editable in the Sanity CMS dashboard. The website automatically injects it as the page's &lt;meta description&gt; tag.</div>
+
+<h3><span class="section-num">07</span> URL Slug</h3>
+<p>Short, lowercase, hyphenated. Include the primary keyword. No dates in blog slugs unless the date is the point.</p>
+<table>
+<tr><td><strong>URL Slug</strong></td><td>/section/keyword-phrase<br><em>Example: /services/brand-identity-agency-india</em></td></tr>
+</table>
+
+<h3><span class="section-num">08</span> H1 Heading</h3>
+<p>One H1 per page. It must contain the primary keyword. It should be written for a human reader, not for a search engine.</p>
+<table>
+<tr><td><strong>H1 Heading</strong></td><td>Write your single H1 here.<br><em>Example: Brand Identity Agency in India for Businesses Ready to Stand Out</em></td></tr>
+</table>
+
+<h3><span class="section-num">09</span> Opening Answer Paragraph</h3>
+<p>This is the most important paragraph on the page. It must directly answer the main topic in 80–120 words. It is the paragraph that AIO and GEO systems read first. Write it before writing anything else.</p>
+<p><strong>Rules for the opening paragraph:</strong></p>
+<ul>
+<li>Answer the topic directly in the first sentence.</li>
+<li>Include the primary keyword naturally.</li>
+<li>Mention the company name once.</li>
+<li>Do not start with a question.</li>
+<li>Do not start with a generic line like 'In today's competitive world...'</li>
+</ul>
+
+<h3><span class="section-num">10</span> Suggested Page Structure</h3>
+<p>Use the H2 structure below for every page. Add H3 sub-sections under any H2 where depth is needed. The structure should feel like a reference document, not a brochure.</p>
+<p><strong>Standard H2 Structure:</strong></p>
+<ul>
+<li>H2: What Is [Topic/Product/Service]?</li>
+<li>H2: Where Is It Used?</li>
+<li>H2: Why This Matters</li>
+<li>H2: Key Components / Features</li>
+<li>H2: Material and Technical Considerations</li>
+<li>H2: Process Followed by [Client Name]</li>
+<li>H2: Comparison Table</li>
+<li>H2: What Buyers Should Check Before Finalising a Vendor</li>
+<li>H2: Why [Client Name]</li>
+<li>H2: FAQs</li>
+</ul>
+<p>Not every H2 will apply to every page. Use your judgment. If a section adds no useful information for the target reader, remove it.</p>
+
+<h3><span class="section-num">11</span> Mandatory FAQ Section</h3>
+<p>Every page must have a FAQ section. Minimum 5 FAQs. Ideal: 6–8 FAQs. Write real questions that buyers, contractors or consultants would actually ask — not questions designed only for keywords.</p>
+<table>
+<tr><th>FAQ #</th><th>Required Question Theme</th><th>Target Length</th></tr>
+<tr><td>FAQ 1</td><td>What is [main topic/product]?</td><td>40–70 words</td></tr>
+<tr><td>FAQ 2</td><td>Where is [product/service] commonly used?</td><td>40–70 words</td></tr>
+<tr><td>FAQ 3</td><td>Which material or approach is best?</td><td>40–70 words</td></tr>
+<tr><td>FAQ 4</td><td>How long does execution take?</td><td>30–50 words</td></tr>
+<tr><td>FAQ 5</td><td>What should buyers check before choosing a vendor?</td><td>40–60 words</td></tr>
+<tr><td>FAQ 6</td><td>Does [client] provide customisation?</td><td>30–50 words</td></tr>
+<tr><td>FAQ 7</td><td>Does [client] handle installation or full delivery?</td><td>30–50 words</td></tr>
+<tr><td>FAQ 8</td><td>Does [client] work across India or internationally?</td><td>30–50 words</td></tr>
+</table>
+<div class="note"><strong>For Blogs &amp; Case Studies:</strong> FAQs can be selected per-page directly from the Sanity CMS. When Page-Specific FAQs are added, the website automatically generates FAQPage JSON-LD schema, enabling Google Rich Snippet display.</div>
+
+<h3><span class="section-num">12</span> Internal Links</h3>
+<p>Every page must link to 3–6 related pages. Internal links help readers navigate and help search engines understand site structure.</p>
+<table>
+<tr><td><strong>Internal Links</strong></td><td>List 3–6 page names and their URLs.<br><em>Example: /services/logo-design | /services/brand-strategy | /case-studies | /contact</em></td></tr>
+</table>
+
+<h3><span class="section-num">13</span> Image Requirements</h3>
+<p>Each page should have 2–5 images where possible. Every image must have a descriptive file name and alt text.</p>
+<table>
+<tr><th>Element</th><th>Format</th><th>Example</th></tr>
+<tr><td>File name</td><td>lowercase-with-hyphens.jpg</td><td>brand-identity-design-purple-blue-house.jpg</td></tr>
+<tr><td>Alt text</td><td>Describe the image with keyword</td><td>Brand identity system designed by Purple Blue House for a Mumbai-based startup</td></tr>
+</table>
+
+<h3><span class="section-num">14</span> Schema Markup</h3>
+<p>Required structured data per page type:</p>
+<table>
+<tr><th>Page Type</th><th>Required Schemas</th></tr>
+<tr><td>Service Page</td><td>Service, FAQ, Breadcrumb, Organization</td></tr>
+<tr><td>Blog</td><td>Article, FAQ, Breadcrumb</td></tr>
+<tr><td>Case Study</td><td>ItemPage, FAQ, Breadcrumb</td></tr>
+</table>
+<div class="note"><strong>For Blogs &amp; Case Studies:</strong> Article, ItemPage and FAQPage schemas are <strong>automatically injected</strong> by the website code based on CMS inputs. No manual implementation required.</div>
+
+<h3><span class="section-num">15</span> Writing Rules</h3>
+<ul>
+<li>No filler words, no marketing fluff.</li>
+<li>Paragraphs: 3–4 sentences maximum.</li>
+<li>Every sentence must state a fact, explain a process or answer a question.</li>
+<li>Avoid: "In today's world…", "We are committed to…", "Best-in-class…"</li>
+<li>Write as if explaining to a knowledgeable buyer, not selling to them.</li>
+</ul>
+
+<h3><span class="section-num">16</span> Publishing Checklist</h3>
+<table>
+<tr><th>#</th><th>Check</th><th>Done?</th></tr>
+<tr><td>1</td><td>H1 contains primary keyword</td><td>☐</td></tr>
+<tr><td>2</td><td>SEO Title under 60 characters</td><td>☐</td></tr>
+<tr><td>3</td><td>Meta Description under 155 characters</td><td>☐</td></tr>
+<tr><td>4</td><td>Primary keyword in first 100 words</td><td>☐</td></tr>
+<tr><td>5</td><td>URL slug contains keyword</td><td>☐</td></tr>
+<tr><td>6</td><td>5–8 FAQs added</td><td>☐</td></tr>
+<tr><td>7</td><td>3–6 internal links included</td><td>☐</td></tr>
+<tr><td>8</td><td>All images have descriptive alt text</td><td>☐</td></tr>
+<tr><td>9</td><td>No filler language</td><td>☐</td></tr>
+<tr><td>10</td><td>Opening paragraph answers the topic directly</td><td>☐</td></tr>
+</table>
+
+<h3><span class="section-num">17</span> CTA Format</h3>
+<p>Every page must end with a clear call to action. Use this format:</p>
+<p><strong>Action verb + outcome + contact method.</strong></p>
+<p><em>Example: Building or redesigning your brand? Talk to Purple Blue House about brand strategy, identity design and execution. Contact us to discuss your project.</em></p>
+
+<div class="page-break"></div>
+
+<!-- QUICK REFERENCE -->
+<h2>Quick Reference: Content Standards</h2>
+
+<h3>What to Never Write</h3>
+<table>
+<tr><th>❌ Avoid</th><th>✅ Write Instead</th></tr>
+<tr><td>We are a leading agency</td><td>We work with startups and enterprise brands across India</td></tr>
+<tr><td>We provide quality solutions</td><td>Our process covers strategy, design and delivery</td></tr>
+<tr><td>We are committed to excellence</td><td>State what you actually do</td></tr>
+<tr><td>Best-in-class services</td><td>Describe the actual service</td></tr>
+<tr><td>We offer end-to-end solutions</td><td>List what the end-to-end scope actually includes</td></tr>
+<tr><td>We have a passionate team</td><td>Mention the team's experience or specific capabilities</td></tr>
+</table>
+
+<h3>Keyword Placement Rules</h3>
+<table>
+<tr><th>Location</th><th>Requirement</th></tr>
+<tr><td>H1 Heading</td><td>Primary keyword must appear</td></tr>
+<tr><td>SEO Title</td><td>Primary keyword must appear, preferably near the start</td></tr>
+<tr><td>Meta Description</td><td>Primary keyword must appear once</td></tr>
+<tr><td>Opening Paragraph</td><td>Primary keyword must appear in first 100 words</td></tr>
+<tr><td>URL Slug</td><td>Primary keyword must appear</td></tr>
+<tr><td>At least one H2</td><td>Primary keyword should appear naturally</td></tr>
+<tr><td>FAQs</td><td>Primary and secondary keywords should appear naturally</td></tr>
+<tr><td>Image Alt Text</td><td>Relevant keyword included where it fits naturally</td></tr>
+</table>
+
+<h3>Page Length Guidelines</h3>
+<table>
+<tr><th>Page Type</th><th>Minimum Word Count</th><th>Ideal Word Count</th></tr>
+<tr><td>Blog</td><td>800 words</td><td>1,200–2,000 words</td></tr>
+<tr><td>Case Study</td><td>600 words</td><td>900–1,500 words</td></tr>
+<tr><td>Service Page</td><td>700 words</td><td>1,000–1,800 words</td></tr>
+<tr><td>Product Page</td><td>400 words</td><td>600–1,200 words</td></tr>
+<tr><td>Location Page</td><td>600 words</td><td>800–1,400 words</td></tr>
+<tr><td>Industry Page</td><td>700 words</td><td>1,000–1,800 words</td></tr>
+</table>
+
+</body>
+</html>

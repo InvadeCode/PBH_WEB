@@ -1,4 +1,4 @@
-const ExcelJS = require('exceljs');
+dconst ExcelJS = require('exceljs');
 
 const API = 'https://5nzj8z3i.api.sanity.io/v2024-05-27/data/query/production';
 async function q(groq) {
@@ -63,8 +63,8 @@ function sheet(wb, name, cols, rows) {
     { h: 'Full Story - Strategy', k: 'fStrategy', w: 60 },
     { h: 'Full Story - Execution', k: 'fExecution', w: 60 },
   ], cs.map(d => ({
-    ...d, tags: (d.tags||[]).join(', '), roles: (d.roles||[]).join(', '),
-    results: (d.results||[]).join(' | '), colors: (d.colors||[]).join(', '),
+    ...d, tags: (d.tags || []).join(', '), roles: (d.roles || []).join(', '),
+    results: (d.results || []).join(' | '), colors: (d.colors || []).join(', '),
     fChallenge: d.fullStory?.challenge || '', fStrategy: d.fullStory?.strategy || '', fExecution: d.fullStory?.execution || ''
   })));
 
@@ -88,7 +88,7 @@ function sheet(wb, name, cols, rows) {
     { h: 'ID', k: 'id', w: 6 }, { h: 'Service Name', k: 'title', w: 22 }, { h: 'Description', k: 'desc', w: 55 },
     { h: 'Best For', k: 'bestFor', w: 70 }, { h: 'Icon', k: 'iconName', w: 14 },
     { h: 'Line Items', k: 'lineItems', w: 50 }
-  ], ri.map(d => ({ ...d, lineItems: (d.lineItems||[]).map(l => `${l.id}: ${l.name}`).join(' | ') })));
+  ], ri.map(d => ({ ...d, lineItems: (d.lineItems || []).map(l => `${l.id}: ${l.name}`).join(' | ') })));
 
   // ── 6. DELIVERABLES (full catalog) ──
   const del = await q('*[_type=="deliverable"] | order(id asc) { id, lineItem, name, interdependence }');
@@ -100,8 +100,8 @@ function sheet(wb, name, cols, rows) {
   const qq = await q('*[_type=="quizQuestion"] | order(id asc) { id, title, options }');
   const quizRows = [];
   qq.forEach(question => {
-    (question.options||[]).forEach((opt, i) => {
-      quizRows.push({ qId: question.id, question: i === 0 ? question.title : '', optionId: opt.id||opt._key, label: opt.label, cluster: opt.cluster||'', weight: opt.weight||'' });
+    (question.options || []).forEach((opt, i) => {
+      quizRows.push({ qId: question.id, question: i === 0 ? question.title : '', optionId: opt.id || opt._key, label: opt.label, cluster: opt.cluster || '', weight: opt.weight || '' });
     });
   });
   sheet(wb, 'Quiz Questions', [
@@ -127,7 +127,7 @@ function sheet(wb, name, cols, rows) {
   sheet(wb, 'Framework Steps', [
     { h: 'Step', k: 'stepNumber', w: 6 }, { h: 'Title', k: 'title', w: 25 }, { h: 'Description', k: 'description', w: 70 },
     { h: 'Outputs', k: 'outputs', w: 45 }
-  ], fw.map(d => ({ ...d, outputs: (d.outputs||[]).join(', ') })));
+  ], fw.map(d => ({ ...d, outputs: (d.outputs || []).join(', ') })));
 
   // ── 11. FAQs ──
   const fq = await q('*[_type=="faq"] | order(order asc) { question, answer, category, order }');

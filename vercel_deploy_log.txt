@@ -1,0 +1,54 @@
+Retrieving project…
+Deploying invadecode-ais-projects/pbh-web
+Uploading [--------------------] (0.0B/64B)
+Uploading [====================] (64.0B/64B)
+  Inspect     https://vercel.com/invadecode-ais-projects/pbh-web/GP5iKphyzZs7sX4h6zEoU7uGa7jg
+▲ Production  https://pbh-fj517ntjb-invadecode-ais-projects.vercel.app
+https://pbh-fj517ntjb-invadecode-ais-projects.vercel.appBuilding…
+Building…
+Running build in Washington, D.C., USA (East) – iad1
+Build machine configuration: 2 cores, 8 GB
+Retrieving list of deployment files...
+Downloading 195 deployment files...
+Restored build cache from previous deployment (39xUwRXp9g2Ss2Hw9BpY16fNNCdE)
+Running "vercel build"
+Vercel CLI 54.14.0
+Installing dependencies...
+up to date in 928ms
+36 packages are looking for funding
+run `npm fund` for details
+Running "npm run build"
+> pbh-web@1.0.0 build
+> vite build
+vite v5.4.21 building for production...
+transforming...
+✓ 2618 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                   0.40 kB │ gzip:   0.28 kB
+dist/assets/index-DnnGL6dp.css                   70.17 kB │ gzip:  11.66 kB
+dist/assets/stegaEncodeSourceMap-BeBDBv4k.js      7.85 kB │ gzip:   3.17 kB
+dist/assets/browser-CJ5EcVv7.js                  12.54 kB │ gzip:   4.96 kB
+dist/assets/purify.es-BSKMTLSQ.js                26.41 kB │ gzip:   9.94 kB
+dist/assets/index.es-Ci74RGk3.js                150.69 kB │ gzip:  51.55 kB
+dist/assets/html2canvas.esm-CBrSDip1.js         201.42 kB │ gzip:  48.03 kB
+dist/assets/index-Z-5RrqdZ.js                 2,051.07 kB │ gzip: 601.52 kB
+✓ built in 15.34s
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+Build Completed in /vercel/output [21s]
+Deploying outputs...
+Deployment completed
+Creating build cache...
+[2K[1A[2K[G▲ Production  https://pbh-fj517ntjb-invadecode-ais-projects.vercel.app
+Completing…
+▲ Aliased     https://pbh.invadecode.ai
+
+✓ Ready in 37s
+
+Common next commands:
+- `vercel inspect pbh-fj517ntjb-invadecode-ais-projects.vercel.app --logs`
+- `vercel redeploy pbh-fj517ntjb-invadecode-ais-projects.vercel.app`
+> Tip: Run `npx plugins add vercel/vercel-plugin` to enhance your agent experience

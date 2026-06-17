@@ -20,6 +20,7 @@ export default async function handler(req, res) {
   const {
     leadForm,
     answers,
+    formattedAnswers,
     selectedDeliverables,
     startingPoint,
     clusters,
@@ -35,16 +36,17 @@ export default async function handler(req, res) {
       email: leadForm?.email || "Unknown",
       phone: leadForm?.phone || "",
       company: leadForm?.company || "Unknown",
-      brand_stage: answers?.stage?.label || "",
       identified_gaps: clusters || [],
       recommended_routes: routes || [],
       selected_routes: selectedRoutes || [],
       selected_deliverables: selectedDeliverables || [],
       priorities: priorities || {},
       depth: context?.depth || "",
+      brand_stage: answers?.stage?.label || "",
       timeline: context?.timeline || "",
+      duration: context?.duration || "",
       starting_point: startingPoint || "",
-      answers_raw: answers || {},
+      answers_raw: formattedAnswers || answers || {},
     }).select();
 
     if (error) throw error;

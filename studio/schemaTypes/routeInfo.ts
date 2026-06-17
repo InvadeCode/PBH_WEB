@@ -29,7 +29,15 @@ export default defineType({
       name: 'lineItems',
       title: 'Line Items',
       type: 'array',
-      of: [{type: 'string'}],
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'id', type: 'string', title: 'ID' },
+            { name: 'name', type: 'string', title: 'Name' }
+          ]
+        }
+      ],
     }),
     defineField({
       name: 'title',

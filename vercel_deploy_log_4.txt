@@ -1,0 +1,21 @@
+Retrieving project…
+Deploying invadecode-ais-projects/pbh-web
+Uploading [--------------------] (0.0B/2.2MB)
+Uploading [=====---------------] (572.6KB/2.2MB)
+Uploading [==========----------] (1.1MB/2.2MB)
+Uploading [===============-----] (1.7MB/2.2MB)
+Uploading [====================] (2.2MB/2.2MB)
+  Inspect     https://vercel.com/invadecode-ais-projects/pbh-web/CZwutpWnGofhabhi8FdTnba5D38G
+▲ Production  https://pbh-lt0b1mwkw-invadecode-ais-projects.vercel.app
+https://pbh-lt0b1mwkw-invadecode-ais-projects.vercel.appBuilding…
+Building…
+[2K[1A[2K[G▲ Production  https://pbh-lt0b1mwkw-invadecode-ais-projects.vercel.app
+Completing…
+▲ Aliased     https://pbh.invadecode.ai
+
+✓ Ready in 35s
+
+Common next commands:
+- `vercel inspect pbh-lt0b1mwkw-invadecode-ais-projects.vercel.app --logs`
+- `vercel redeploy pbh-lt0b1mwkw-invadecode-ais-projects.vercel.app`
+> Tip: Run `npx plugins add vercel/vercel-plugin` to enhance your agent experience

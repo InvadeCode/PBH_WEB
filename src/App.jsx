@@ -3414,15 +3414,25 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [projectId]);
 
+  const clientName = (project.client || '').toLowerCase();
+
   if (project.client === 'Arise Ventures') {
     return <AriseVenturesExperience navigate={navigate} project={project} />;
   }
-  if (project.client === 'Back to Roots') {
+
+  const btrClients = [
+    'back to roots',
+    'albatross',
+    'ega wellness'
+  ];
+  if (btrClients.some(target => clientName.includes(target))) {
     return <BackToRootsExperience navigate={navigate} project={project} />;
   }
+
   if (project.client === 'Param Innovation') {
     return <ParamInnovationExperience navigate={navigate} project={project} />;
   }
+
   const targetClients = [
     'snow leopard',
     'fermentech',
@@ -3430,7 +3440,6 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     'navankur'
   ];
 
-  const clientName = (project.client || '').toLowerCase();
   if (targetClients.some(target => clientName.includes(target))) {
     return <SnowLeopardExperience navigate={navigate} project={project} />;
   }

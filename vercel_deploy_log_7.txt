@@ -1,0 +1,57 @@
+Retrieving project…
+Deploying invadecode-ais-projects/pbh-web
+Uploading [--------------------] (0.0B/2.2MB)
+Uploading [=====---------------] (563.5KB/2.2MB)
+Uploading [==========----------] (1.1MB/2.2MB)
+Uploading [===============-----] (1.7MB/2.2MB)
+Uploading [====================] (2.2MB/2.2MB)
+  Inspect     https://vercel.com/invadecode-ais-projects/pbh-web/BCRCbB3BVqbcqUhjRnJRRvuCtyWz
+▲ Production  https://pbh-6dt1x1ai1-invadecode-ais-projects.vercel.app
+https://pbh-6dt1x1ai1-invadecode-ais-projects.vercel.appBuilding…
+Building…
+Running build in Washington, D.C., USA (East) – iad1
+Build machine configuration: 2 cores, 8 GB
+Retrieving list of deployment files...
+Downloading 201 deployment files...
+Restored build cache from previous deployment (CqAnqJtP3Ak9nD12vRw5wbpWJZa1)
+Running "vercel build"
+Vercel CLI 54.14.0
+Installing dependencies...
+up to date in 702ms
+36 packages are looking for funding
+run `npm fund` for details
+Running "npm run build"
+> pbh-web@1.0.0 build
+> vite build
+vite v5.4.21 building for production...
+transforming...
+✓ 2618 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                   0.40 kB │ gzip:   0.28 kB
+dist/assets/index-ClUDo5Z5.css                   70.22 kB │ gzip:  11.56 kB
+dist/assets/stegaEncodeSourceMap-Bk_xRWJ4.js      7.85 kB │ gzip:   3.17 kB
+dist/assets/browser-CaIBOxSf.js                  12.54 kB │ gzip:   4.96 kB
+dist/assets/purify.es-BSKMTLSQ.js                26.41 kB │ gzip:   9.94 kB
+dist/assets/index.es-Cy9HAELY.js                150.69 kB │ gzip:  51.55 kB
+dist/assets/html2canvas.esm-CBrSDip1.js         201.42 kB │ gzip:  48.03 kB
+dist/assets/index-Dq5AMEnm.js                 2,040.91 kB │ gzip: 599.25 kB
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 13.07s
+Build Completed in /vercel/output [18s]
+Deploying outputs...
+Deployment completed
+Creating build cache...
+[2K[1A[2K[G▲ Production  https://pbh-6dt1x1ai1-invadecode-ais-projects.vercel.app
+Completing…
+▲ Aliased     https://pbh.invadecode.ai
+
+✓ Ready in 48s
+
+Common next commands:
+- `vercel inspect pbh-6dt1x1ai1-invadecode-ais-projects.vercel.app --logs`
+- `vercel redeploy pbh-6dt1x1ai1-invadecode-ais-projects.vercel.app`
+> Tip: Run `npx plugins add vercel/vercel-plugin` to enhance your agent experience
