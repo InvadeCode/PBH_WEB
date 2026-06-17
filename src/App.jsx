@@ -14,6 +14,10 @@ import {
   Quote, Printer, Download, MonitorPlay, MapPin, Phone, Clock, Plus, Loader2, AlertCircle,
   UploadCloud, Paperclip
 } from 'lucide-react';
+import BackToRootsExperience from './components/case-studies/BackToRootsExperience';
+import ParamInnovationExperience from './components/case-studies/ParamInnovationExperience';
+import SnowLeopardExperience from './components/case-studies/SnowLeopardExperience';
+import AriseVenturesExperience from './components/case-studies/AriseVenturesExperience';
 
 export const GlobalContext = createContext(null);
 
@@ -225,12 +229,12 @@ const hexToRgbStr = (hex) => {
 // --- STRATEGIC DATA DICTIONARY ---
 
 const QUIZ_QUESTIONS = [
-  { id: 'stage', title: 'Where is your brand right now?', options: [{ id: 's1', label: 'We are launching a new brand' }, { id: 's2', label: 'We are repositioning an existing brand' }, { id: 's3', label: 'We have grown, but our brand has not evolved' }, { id: 's4', label: 'We need better campaigns and communication' }, { id: 's5', label: 'We need a full strategic reset' }] },
-  { id: 'q1', title: 'What feels most inconsistent about your brand right now?', options: [{ id: 'o1', label: 'Different teams communicate differently', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o2', label: 'We have no central messaging guidelines', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o3', label: 'Our visuals feel outdated and generic', cluster: 'Generic Identity', weight: 2 }] },
-  { id: 'q2', title: 'How is your campaign and content engagement?', options: [{ id: 'o4', label: 'Low engagement and weak emotional pull', cluster: 'Weak Narrative', weight: 2 }, { id: 'o5', label: 'Good engagement, but execution feels messy', cluster: 'Lack of Systems', weight: 2 }] },
-  { id: 'q3', title: 'How does your team currently execute?', options: [{ id: 'o6', label: 'Teams are misaligned with no clear playbook', cluster: 'Lack of Systems', weight: 2 }, { id: 'o7', label: 'Our brand has grown but our execution hasn\'t evolved', cluster: 'Execution Gap', weight: 1 }] },
-  { id: 'q4', title: 'What best describes your visual identity?', options: [{ id: 'o8', label: 'Generic visuals with no distinctiveness', cluster: 'Generic Identity', weight: 2 }, { id: 'o9', label: 'Aesthetically pleasing but lacks deep storytelling', cluster: 'Weak Narrative', weight: 2 }] },
-  { id: 'q5', title: 'What is your biggest bottleneck for growth?', options: [{ id: 'o10', label: 'Lack of internal systems and repeatable templates', cluster: 'Lack of Systems', weight: 2 }, { id: 'o11', label: 'Execution is too slow and disconnected from strategy', cluster: 'Execution Gap', weight: 1 }, { id: 'o12', label: 'Messaging inconsistency across touchpoints', cluster: 'Messaging Inconsistency', weight: 2 }] }
+  { id: 'stage', title: 'Where is your brand right now?', multiSelect: false, options: [{ id: 's1', label: 'We are launching a new brand' }, { id: 's2', label: 'We are repositioning an existing brand' }, { id: 's3', label: 'We have grown, but our brand has not evolved' }, { id: 's4', label: 'We need better campaigns and communication' }, { id: 's5', label: 'We need a full strategic reset' }] },
+  { id: 'q1', title: 'What feels most inconsistent about your brand right now?', multiSelect: true, options: [{ id: 'o1', label: 'Different teams communicate differently', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o2', label: 'We have no central messaging guidelines', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o3', label: 'Our visuals feel outdated and generic', cluster: 'Generic Identity', weight: 2 }, { id: 'none1', label: 'None of the Above', cluster: 'None', weight: 0 }] },
+  { id: 'q2', title: 'How is your campaign and content engagement?', multiSelect: false, options: [{ id: 'o4', label: 'Low engagement and weak emotional pull', cluster: 'Weak Narrative', weight: 2 }, { id: 'o5', label: 'Good engagement, but execution feels messy', cluster: 'Lack of Systems', weight: 2 }, { id: 'none2', label: 'None of the Above', cluster: 'None', weight: 0 }] },
+  { id: 'q3', title: 'How does your team currently execute?', multiSelect: true, options: [{ id: 'o6', label: 'Teams are misaligned with no clear playbook', cluster: 'Lack of Systems', weight: 2 }, { id: 'o7', label: 'Our brand has grown but our execution hasn\'t evolved', cluster: 'Execution Gap', weight: 1 }, { id: 'none3', label: 'None of the Above', cluster: 'None', weight: 0 }] },
+  { id: 'q4', title: 'What best describes your visual identity?', multiSelect: true, options: [{ id: 'o8', label: 'Generic visuals with no distinctiveness', cluster: 'Generic Identity', weight: 2 }, { id: 'o9', label: 'Aesthetically pleasing but lacks deep storytelling', cluster: 'Weak Narrative', weight: 2 }, { id: 'none4', label: 'None of the Above', cluster: 'None', weight: 0 }] },
+  { id: 'q5', title: 'What is your biggest bottleneck for growth?', multiSelect: true, options: [{ id: 'o10', label: 'Lack of internal systems and repeatable templates', cluster: 'Lack of Systems', weight: 2 }, { id: 'o11', label: 'Execution is too slow and disconnected from strategy', cluster: 'Execution Gap', weight: 1 }, { id: 'o12', label: 'Messaging inconsistency across touchpoints', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'none5', label: 'None of the Above', cluster: 'None', weight: 0 }] }
 ];
 
 const clusterToRoute = {
@@ -276,9 +280,9 @@ const FAQS_MASTER = [
 ];
 
 const ROUTES_INFO = {
-  'BB': { id: 'BB', title: 'Brand Boulevard', desc: 'Identity, positioning, messaging, and comprehensive brand systems.', icon: <Fingerprint className="w-6 h-6" />, type: 'primary', bestFor: 'Companies seeking a complete structural overhaul, from foundational positioning to a scalable visual identity system.', lineItems: [{ id: 'BB1', name: 'Brand Workshop & Audit' }, { id: 'BB2', name: 'Brand Identity System' }, { id: 'BB3', name: 'Design Systems' }, { id: 'BB4', name: 'Giveaways & Collaterals' }] },
-  'SAS': { id: 'SAS', title: 'SciArt Saga', desc: 'Storytelling, innovation communication, and experience-led narratives.', icon: <Lightbulb className="w-6 h-6" />, type: 'blue', bestFor: 'Deep-tech or highly complex innovations needing to translate technical features into compelling, human-centric stories.', lineItems: [{ id: 'SS1', name: 'Innovation Frameworks' }, { id: 'SS2', name: 'Experience & IP Strategy' }, { id: 'SS3', name: 'Product Storytelling' }, { id: 'SS4', name: 'GTM Communication' }] },
-  'STC': { id: 'STC', title: 'Storytelling Corner', desc: 'Campaign ideas, creative direction, and execution-ready content.', icon: <Rocket className="w-6 h-6" />, type: 'purple', bestFor: 'Established brands looking for high-impact campaign execution, continuous content systems, and creative direction.', lineItems: [{ id: 'SC1', name: 'Creative Direction' }, { id: 'SC2', name: 'Social & Influencer' }, { id: 'SC3', name: 'Website Framework' }, { id: 'SC4', name: 'Event Branding' }] }
+  'BB': { id: 'BB', title: 'Brand Boulevard', desc: 'Identity, positioning, messaging, and comprehensive brand systems.', expandedDesc: `You know that moment when your website says one thing, your pitch says another, and your product feels like a third story altogether.\n\nAnd somewhere in between, you're still trying to explain what you really do.\n\nThat feeling doesn't go away by designing one more thing.\n\nBrand Boulevard is where we sit with that discomfort.\n\nWe ask what hasn't been asked.\nWe align what your brand actually stands for.\nAnd then we build systems that carry that clarity everywhere.\n\nFrom Brand Workshops & Audits to Identity Systems to Design Systems to Collaterals that don't feel like an afterthought.\n\nFor Firefox Bicycles, this didn't stay on paper. It became a toddler product universe, where the brand started shaping the product itself.\n\nBecause when things align, you don't have to keep explaining. People just get it.`, icon: <Fingerprint className="w-6 h-6" />, type: 'primary', bestFor: 'Companies seeking a complete structural overhaul, from foundational positioning to a scalable visual identity system.', lineItems: [{ id: 'BB1', name: 'Brand workshop and Audit', desc: 'In-depth collaborative sessions to uncover core business gaps.' }, { id: 'BB2', name: 'Brand identity system', desc: 'Comprehensive visual and verbal identity creation.' }, { id: 'BB3', name: 'Design system', desc: 'Scalable component libraries for consistent execution.' }, { id: 'BB4', name: 'Giveaways, and collaterals', desc: 'Physical touchpoints that reinforce brand presence.' }] },
+  'SAS': { id: 'SAS', title: 'Sci- Art Saga', desc: 'Storytelling, innovation communication, and experience-led narratives.', expandedDesc: `You know that kind of work people find fascinating but can't fully hold on to?\n\nThey understand it in the meeting. They nod. They ask the right questions.\n\nBut a few days later, the idea hasn't travelled.\n\nNot because the work isn't strong. Because it hasn't found its breakthrough expression yet.\n\nThat's where SciArt Saga comes in.\n\nWe bring logic and imagination together. Structure and story. Complex thinking and human feeling.\n\nWe take your work apart carefully through Innovation & Science Frameworks, then rebuild it into something people can understand, remember, and respond to.\n\nWe shape experiences and IP, build product stories that stay, and define Go-To-Market communication that carries the idea forward.\n\nFor Snow Leopard Trust, this meant making conservation feel closer, not distant.\n\nFor IIT Delhi's Centre of Excellence in Regulatory Affairs, it means translating electricity regulation into something people can navigate, not just read.\n\nBecause when something is truly understood, it doesn't need to be simplified.\n\nIt needs the right expression.`, icon: <Lightbulb className="w-6 h-6" />, type: 'blue', bestFor: 'Deep-tech or highly complex innovations needing to translate technical features into compelling, human-centric stories.', lineItems: [{ id: 'SS1', name: 'Innovation frameworks', desc: 'Structuring complex ideas into digestible core concepts.' }, { id: 'SS2', name: 'Experience and IP strategy', desc: 'Mapping user journeys and protecting core narratives.' }, { id: 'SS3', name: 'Product storytelling', desc: 'Translating technical features into compelling human stories.' }, { id: 'SS4', name: 'GTM communication', desc: 'Strategic messaging for successful market entry.' }] },
+  'STC': { id: 'STC', title: 'Storytelling corner', desc: 'Campaign ideas, creative direction, and execution-ready content.', expandedDesc: `You're showing up everywhere. But it doesn't feel like the same brand.\n\nYour social feels one way. Your website, another. Your events feel like they belong to a different world.\n\nAnd you can sense it. Even if you can't fully explain it.\n\nThat gap? That's where trust quietly drops.\n\nStorytelling Corner is where we bring it all together.\n\nWe define how your brand should feel - through Creative Direction\n- shape how it speaks through Social & Influencer Strategy\n- structure how it's experienced through Website Frameworks\n- and carry it into the real world through Event Branding\n\nFor Observer Research Foundation's Raisina Dialogue 2026, this meant creating a single, cohesive experience across a global stage.\n\nFor National Stock Exchange of India, our work focuses on building design and information systems across collaterals, so everything feels like it comes from one place.\n\nBecause people don't remember isolated moments. They remember how consistently you showed up.`, icon: <Rocket className="w-6 h-6" />, type: 'purple', bestFor: 'Established brands looking for high-impact campaign execution, continuous content systems, and creative direction.', lineItems: [{ id: 'SC1', name: 'Creative direction', desc: 'Guiding the overarching artistic vision for campaigns.' }, { id: 'SC2', name: 'Social and influencer website framework', desc: 'Dynamic content strategies and digital home structuring.' }, { id: 'SC4', name: 'Event branding', desc: 'Immersive environmental design for physical activations.' }] }
 };
 
 const DELIVERABLES_MASTER = [
@@ -361,13 +365,13 @@ const DELIVERABLES_MASTER = [
   { id: 'D077', lineItem: 'SC2', name: 'Post/Reel Directions', interdependence: 'D072' },
   { id: 'D078', lineItem: 'SC2', name: 'Engagement Hooks', interdependence: 'D072' },
   { id: 'D079', lineItem: 'SC2', name: 'Social Playbook', interdependence: 'D072-D078' },
-  { id: 'D080', lineItem: 'SC3', name: 'Information Architecture', interdependence: 'D058' },
-  { id: 'D081', lineItem: 'SC3', name: 'Page Flow', interdependence: 'D080' },
-  { id: 'D082', lineItem: 'SC3', name: 'User Journey Mapping', interdependence: 'D080' },
-  { id: 'D083', lineItem: 'SC3', name: 'Copy Direction', interdependence: 'D058' },
-  { id: 'D084', lineItem: 'SC3', name: 'Interaction Ideas', interdependence: 'D081' },
-  { id: 'D085', lineItem: 'SC3', name: 'CTA Strategy', interdependence: 'D058' },
-  { id: 'D086', lineItem: 'SC3', name: 'Developer Brief', interdependence: 'D080-D085' },
+  { id: 'D080', lineItem: 'SC2', name: 'Information Architecture', interdependence: 'D058' },
+  { id: 'D081', lineItem: 'SC2', name: 'Page Flow', interdependence: 'D080' },
+  { id: 'D082', lineItem: 'SC2', name: 'User Journey Mapping', interdependence: 'D080' },
+  { id: 'D083', lineItem: 'SC2', name: 'Copy Direction', interdependence: 'D058' },
+  { id: 'D084', lineItem: 'SC2', name: 'Interaction Ideas', interdependence: 'D081' },
+  { id: 'D085', lineItem: 'SC2', name: 'CTA Strategy', interdependence: 'D058' },
+  { id: 'D086', lineItem: 'SC2', name: 'Developer Brief', interdependence: 'D080-D085' },
   { id: 'D087', lineItem: 'SC4', name: 'Event Theme', interdependence: 'D058' },
   { id: 'D088', lineItem: 'SC4', name: 'Event Identity', interdependence: 'D087' },
   { id: 'D089', lineItem: 'SC4', name: 'Stage Design', interdependence: 'D088' },
@@ -895,16 +899,51 @@ const StrategicEngine = ({ navigate }) => {
   const { QUIZ_QUESTIONS, ROUTES_INFO, DELIVERABLES_MASTER } = useContext(GlobalContext);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
+  const [comments, setComments] = useState({});
   const [clusters, setClusters] = useState([]);
   const [routes, setRoutes] = useState([]);
   const [selectedRoutes, setSelectedRoutes] = useState([]);
   const [selectedDeliverables, setSelectedDeliverables] = useState([]);
   const [priorities, setPriorities] = useState({});
   const [warnings, setWarnings] = useState([]);
-  const [context, setContext] = useState({ depth: '', timeline: '' });
+  const [context, setContext] = useState({ depth: '', timeline: '', duration: 'Deep Dive- Branding (minimum 6 months)' });
   const [leadForm, setLeadForm] = useState({ name: '', email: '', phone: '', company: '' });
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // --- LocalStorage Persistence ---
+  useEffect(() => {
+    const savedState = localStorage.getItem('pbh_scope_builder_state');
+    if (savedState) {
+      try {
+        const parsed = JSON.parse(savedState);
+        if (parsed.step) setStep(parsed.step);
+        if (parsed.answers) setAnswers(parsed.answers);
+        if (parsed.comments) setComments(parsed.comments);
+        if (parsed.clusters) setClusters(parsed.clusters);
+        if (parsed.routes) setRoutes(parsed.routes);
+        if (parsed.selectedRoutes) setSelectedRoutes(parsed.selectedRoutes);
+        if (parsed.selectedDeliverables) setSelectedDeliverables(parsed.selectedDeliverables);
+        if (parsed.priorities) setPriorities(parsed.priorities);
+        if (parsed.context) setContext(parsed.context);
+        if (parsed.leadForm) setLeadForm(parsed.leadForm);
+      } catch (e) {
+        console.error("Failed to load saved progress", e);
+      }
+    }
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('pbh_scope_builder_state', JSON.stringify({
+        step, answers, comments, clusters, routes, selectedRoutes, 
+        selectedDeliverables, priorities, context, leadForm
+      }));
+    }
+  }, [step, answers, comments, clusters, routes, selectedRoutes, selectedDeliverables, priorities, context, leadForm, isLoaded]);
+  const [expandedRoute, setExpandedRoute] = useState(null);
   const [dependencyModal, setDependencyModal] = useState(null);
 
   const formatInterdependence = (interdepString) => {
@@ -919,18 +958,45 @@ const StrategicEngine = ({ navigate }) => {
 
   const N_QUIZ = QUIZ_QUESTIONS.length;
 
-  const handleQuizSelect = (questionId, option) => {
-    const newAnswers = { ...answers, [questionId]: option };
-    setAnswers(newAnswers);
-    setTimeout(() => { if (step < N_QUIZ) { setStep(step + 1); } else { processDiagnosis(newAnswers); } }, 400);
+  const handleQuizSelect = (questionId, option, isMultiSelect) => {
+    if (isMultiSelect) {
+      setAnswers(prev => {
+        const current = Array.isArray(prev[questionId]) ? prev[questionId] : [];
+        if (option.id.startsWith('none')) {
+          return { ...prev, [questionId]: [option] };
+        }
+        const withoutNone = current.filter(ans => !ans.id.startsWith('none'));
+        if (withoutNone.some(ans => ans.id === option.id)) {
+          return { ...prev, [questionId]: withoutNone.filter(ans => ans.id !== option.id) };
+        } else {
+          return { ...prev, [questionId]: [...withoutNone, option] };
+        }
+      });
+    } else {
+      setAnswers(prev => ({ ...prev, [questionId]: option }));
+      setTimeout(() => {
+        if (step < N_QUIZ - 1) {
+          setStep(s => s + 1);
+        } else {
+          processDiagnosis({ ...answers, [questionId]: option });
+        }
+      }, 500);
+    }
+  };
+
+  const handleMultiSelectContinue = () => {
+    if (step < N_QUIZ) { setStep(step + 1); } else { processDiagnosis(answers); }
   };
 
   const processDiagnosis = (finalAnswers) => {
     const clusterScores = {};
-    Object.values(finalAnswers).forEach(opt => {
-      if (opt.cluster) {
-        clusterScores[opt.cluster] = (clusterScores[opt.cluster] || 0) + (opt.weight || 1);
-      }
+    Object.values(finalAnswers).forEach(ans => {
+      const opts = Array.isArray(ans) ? ans : [ans];
+      opts.forEach(opt => {
+        if (opt && opt.cluster) {
+          clusterScores[opt.cluster] = (clusterScores[opt.cluster] || 0) + (opt.weight || 1);
+        }
+      });
     });
 
     let maxScore = 0;
@@ -983,7 +1049,7 @@ const StrategicEngine = ({ navigate }) => {
 
     const startingPoint = computeSuggestedStartingPoint(selectedDeliverables, priorities);
 
-    const leadData = { ...leadForm, stage: answers.stage?.label, clusters, routes, deliverables: selectedDeliverables, ...context, startingPoint, date: new Date().toISOString(), status: 'New', score: Math.floor(Math.random() * 40) + 60 };
+    const leadData = { ...leadForm, clusters, routes, deliverables: selectedDeliverables, ...context, startingPoint, date: new Date().toISOString(), status: 'New', score: Math.floor(Math.random() * 40) + 60 };
     GLOBAL_LEADS.push(leadData);
 
     // Group deliverables by Route and LineItem for both Email and PDF
@@ -1051,11 +1117,10 @@ const StrategicEngine = ({ navigate }) => {
             <h2 style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid #eef2f6; padding-bottom: 10px;">Context & Timeline</h2>
             <div style="margin-bottom: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
               <div style="background: #f8fafc; padding: 12px; border-radius: 6px;">
-                <p style="margin: 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Brand Stage</p>
-                <p style="margin: 4px 0 0 0; color: #0f172a; font-weight: 600;">${leadData.stage || 'N/A'}</p>
+
               </div>
               <div style="background: #f8fafc; padding: 12px; border-radius: 6px;">
-                <p style="margin: 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Timeline</p>
+                <p style="margin: 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Project Duration</p>
                 <p style="margin: 4px 0 0 0; color: #0f172a; font-weight: 600;">${leadData.timeline || 'N/A'}</p>
               </div>
               <div style="background: #f8fafc; padding: 12px; border-radius: 6px; grid-column: span 2;">
@@ -1105,11 +1170,13 @@ const StrategicEngine = ({ navigate }) => {
             <div>
               ${QUIZ_QUESTIONS.map((q, i) => {
       const ans = answers[q.id];
-      if (!ans) return '';
+      if (!ans || (Array.isArray(ans) && ans.length === 0)) return '';
+      const labels = Array.isArray(ans) ? ans.map(a => a.label).join(', ') : ans.label;
+      const notes = Array.isArray(ans) ? ans.map(a => a.desc).filter(Boolean).join(', ') : ans.desc;
       return `
                     <div style="margin-bottom: 16px; background: #f8fafc; padding: 16px; border-radius: 8px; border-left: 3px solid #6366f1;">
                       <p style="margin: 0 0 8px 0; color: #0f172a; font-weight: 600; font-size: 14px;">${q.title}</p>
-                      <p style="margin: 0; color: #475569; font-size: 13px;">${ans.label} ${ans.desc ? `<br/><span style="color: #94a3b8; font-size: 12px;">Notes: ${ans.desc}</span>` : ''}</p>
+                      <p style="margin: 0; color: #475569; font-size: 13px;">${labels} ${notes ? `<br/><span style="color: #94a3b8; font-size: 12px;">Notes: ${notes}</span>` : ''}</p>
                     </div>
                   `;
     }).join('')}
@@ -1242,7 +1309,7 @@ const StrategicEngine = ({ navigate }) => {
     // Strategy Blueprint
     addSectionHeader('Strategy Blueprint');
     const blueprintItems = [
-      { label: 'Brand Stage', val: leadData.stage },
+
       { label: 'Engagement Depth', val: leadData.depth },
       { label: 'Timeline', val: leadData.timeline },
       { label: 'Suggested Starting Point', val: startingPoint }
@@ -1489,9 +1556,9 @@ const StrategicEngine = ({ navigate }) => {
       contextHeader.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } };
       sheet.mergeCells(`B${contextHeader.number}:D${contextHeader.number}`);
 
-      addField("Brand Stage", leadData.stage || 'N/A');
+
       addField("Engagement Depth", leadData.depth || 'N/A');
-      addField("Timeline", leadData.timeline || 'N/A');
+      addField("Project Duration", leadData.timeline || 'N/A');
       addField("Suggested Starting Point", startingPoint);
 
       sheet.addRow([]);
@@ -1674,12 +1741,41 @@ const StrategicEngine = ({ navigate }) => {
       console.error("Failed to generate Excel attachment:", err);
     }
 
+    // Beautifully format the Quiz Answers for Supabase storage
+    const formattedAnswers = QUIZ_QUESTIONS.map(q => {
+      const ans = answers[q.id];
+      const comment = comments[q.id] || "";
+      
+      let type = q.multiSelect ? "Multiple Choice (MCQ)" : "Single Choice";
+      if (q.options && q.options.length === 2 && (q.options[0].label.toLowerCase() === 'yes' || q.options[0].label.toLowerCase() === 'no')) {
+        type = "Binary (Yes/No)";
+      }
+
+      let selectedLabels = [];
+      if (ans) {
+        if (Array.isArray(ans)) {
+          selectedLabels = ans.map(a => a.label);
+        } else {
+          selectedLabels = [ans.label];
+        }
+      }
+
+      return {
+        question_id: q.id,
+        question_text: q.title,
+        question_type: type,
+        selected_answers: selectedLabels,
+        user_comments: comment
+      };
+    });
+
     const saveLeadPromise = fetch('/api/save-lead', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         leadForm,
         answers,
+        formattedAnswers,
         selectedDeliverables,
         startingPoint,
         clusters,
@@ -1743,76 +1839,392 @@ const StrategicEngine = ({ navigate }) => {
     }
   };
 
-  const LiveScopePreview = () => (
-    <div className="border border-white/10 rounded-[24px] p-8 flex flex-col h-full shadow-2xl relative overflow-hidden w-full print-blueprint-container" style={{ backgroundColor: palette.panel }}>
-      <div className="absolute top-0 right-0 w-[300px] h-[300px] opacity-[0.03] blur-[100px] pointer-events-none print:hidden" style={{ backgroundColor: palette.primary }} />
-      <h3 className="text-xs font-medium text-white/40 uppercase tracking-widest mb-8 border-b border-white/5 pb-4 font-primary print:border-none print:text-white/70 print:text-sm">Live Blueprint</h3>
-      <div className="space-y-6 flex-grow overflow-y-auto pr-2 custom-scrollbar">
-        <div className={`transition-opacity duration-500 opacity-100`}>
-          <div className="text-[10px] text-white/30 uppercase tracking-wider mb-1 font-primary">Brand Stage</div>
-          <div className="text-sm font-light text-white font-secondary">{answers.stage ? answers.stage.label : 'Pending...'}</div>
-        </div>
-        <div className={`transition-opacity duration-500 opacity-100`}>
-          <div className="text-[10px] text-white/30 uppercase tracking-wider mb-2 font-primary">Identified Gaps</div>
-          <div className="flex flex-wrap gap-2">
-            {clusters.length > 0 ? clusters.map(c => <span key={c} className="px-2 py-1 text-[10px] uppercase tracking-widest rounded border font-secondary" style={{ backgroundColor: hexToRgba(palette.primary, 0.1), color: palette.primary, borderColor: hexToRgba(palette.primary, 0.2) }}>{c}</span>) : <span className="text-xs font-light text-white/30 italic font-secondary">Awaiting diagnosis...</span>}
+  const calculateCompleteness = () => {
+    let score = 50;
+    if (answers.stage) score += 20;
+    if (clusters.length > 0) score += 15;
+    if (selectedDeliverables.length > 0) score += 15;
+    return score;
+  };
+
+  const LiveScopePreview = () => {
+    const completeness = calculateCompleteness();
+    const circumference = 2 * Math.PI * 40;
+    const strokeDashoffset = circumference - (completeness / 100) * circumference;
+
+    return (
+    <div className="border border-white/20 rounded-[24px] flex flex-col h-full shadow-[0_40px_80px_rgba(0,0,0,0.6),_inset_0_0_40px_rgba(255,255,255,0.05)] relative overflow-hidden w-full print-blueprint-container backdrop-blur-3xl" style={{ backgroundColor: hexToRgba(palette.panel, 0.4), backgroundImage: `radial-gradient(circle at 50% 0%, ${hexToRgba(palette.primary, 0.2)} 0%, transparent 70%)` }}>
+      
+      {/* Tech Grid Background overlay */}
+      <div className="absolute inset-0 opacity-[0.06] pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
+
+      {/* Moving Light Reflections & Ambient Gradients using PBH palette */}
+      <motion.div 
+        animate={{ rotate: 360 }}
+        transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        className="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] opacity-20 pointer-events-none print:hidden"
+        style={{
+          background: `conic-gradient(from 0deg, transparent 0%, ${hexToRgba(palette.primary, 0.3)} 20%, ${hexToRgba(palette.blue, 0.2)} 40%, transparent 50%)`
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none" />
+
+      {/* Edge Glow Sweeper */}
+      <motion.div
+        animate={{ top: ['-10%', '110%'] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+        className="absolute left-0 w-[2px] h-[30%] opacity-80"
+        style={{ background: `linear-gradient(to bottom, transparent, ${palette.primary}, transparent)`, boxShadow: `0 0 20px ${palette.primary}` }}
+      />
+
+      <div className="relative z-10 p-8 flex flex-col h-full">
+        {/* HEADER */}
+        <div className="flex items-center justify-between border-b border-white/20 pb-5 mb-8">
+          <div className="flex items-center gap-4">
+            <div className="relative flex items-center justify-center w-4 h-4">
+              <motion.div 
+                animate={{ scale: [1, 2.5], opacity: [0.8, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                className="absolute inset-0 rounded-full"
+                style={{ backgroundColor: palette.accent }}
+              />
+              <div className="w-2.5 h-2.5 rounded-full z-10" style={{ backgroundColor: palette.accent, boxShadow: `0 0 15px ${palette.accent}` }} />
+            </div>
+            <h3 className="text-[14px] font-bold text-white uppercase tracking-[0.25em] font-primary drop-shadow-md">
+              Live Blueprint
+            </h3>
           </div>
+
         </div>
-        <div className={`transition-opacity duration-500 opacity-100`}>
-          <div className="text-[10px] text-white/30 uppercase tracking-wider mb-2 font-primary">Scope Blueprint</div>
-          {selectedDeliverables.length > 0 ? (
-            <ul className="space-y-2">
-              {DELIVERABLES_MASTER.filter(d => selectedDeliverables.includes(d.id)).map(d => (
-                <li key={d.id} className="text-xs font-light text-white flex items-start gap-2 font-secondary break-inside-avoid"><Check className="w-3 h-3 shrink-0 mt-[2px]" style={{ color: palette.accent }} /> {d.name}</li>
-              ))}
-            </ul>
-          ) : <div className="text-xs font-light text-white/30 italic font-secondary">Awaiting selection...</div>}
+        
+        <div className="relative flex-grow flex min-h-0">
+          {/* Connection Lines Spine */}
+          <div className="absolute left-[11px] top-4 bottom-10 w-[2px] bg-white/20 overflow-hidden rounded-full shadow-[0_0_5px_rgba(255,255,255,0.1)]">
+            <motion.div
+              animate={{ y: [-100, 800] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+              className="w-full h-[80px]"
+              style={{ background: `linear-gradient(to bottom, transparent, ${palette.primary}, #fff, transparent)`, boxShadow: `0 0 15px ${palette.primary}` }}
+            />
+          </div>
+
+          <div className="pl-10 space-y-10 w-full overflow-y-auto pr-2 custom-scrollbar pb-8 relative">
+            
+            {/* 1. CURRENT STATE */}
+            <div className="group relative">
+              <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} className="absolute -left-10 top-1 w-[6px] h-[6px] rounded-full bg-white border z-10" style={{ borderColor: palette.primary, boxShadow: `0 0 12px ${palette.primary}` }} />
+              <div className="text-[11px] font-bold uppercase tracking-[0.25em] mb-3 font-primary flex items-center gap-2 drop-shadow-md text-white">
+                <Terminal className="w-4 h-4" style={{ color: palette.primary }} />
+                System State
+              </div>
+              <div className="relative bg-white/[0.03] border border-white/10 rounded-[16px] overflow-hidden p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl transition-colors duration-500 hover:bg-white/[0.05]">
+                {/* Scanning line */}
+                <motion.div
+                  animate={{ y: ['0%', '200%', '0%'] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                  className="absolute left-0 right-0 h-[2px] z-0"
+                  style={{ top: '0%', background: `linear-gradient(to right, transparent, ${hexToRgba(palette.primary, 0.8)}, transparent)`, boxShadow: `0 0 15px ${palette.primary}` }}
+                />
+                
+                <AnimatePresence mode="popLayout">
+                  {answers.stage ? (
+                    <motion.div 
+                      key="stage-selected"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="relative z-10"
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="text-[10px] text-white/70 font-bold uppercase tracking-widest font-secondary">Active Profile</div>
+                        <div className="text-[9px] font-mono text-white/40 tracking-wider">ID: {answers.stage.id || 'SYS-001'}</div>
+                      </div>
+                      <div className="text-[14px] font-semibold text-white font-secondary tracking-wide leading-snug drop-shadow-sm">{answers.stage.label || 'Evaluating profile metrics...'}</div>
+                    </motion.div>
+                  ) : (
+                    <motion.div 
+                      key="stage-pending"
+                      initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                      className="flex items-center gap-3 relative z-10"
+                    >
+                      <Loader2 className="w-5 h-5 animate-spin" style={{ color: palette.primary }} />
+                      <div className="text-sm font-semibold text-white/70 tracking-widest uppercase font-secondary">Awaiting Initialization...</div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* 2. STRATEGIC GAPS */}
+            <div className="group relative">
+              <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} className="absolute -left-10 top-1 w-[6px] h-[6px] rounded-full bg-white border z-10" style={{ borderColor: palette.orange, boxShadow: `0 0 12px ${palette.orange}` }} />
+              <div className="text-[11px] font-bold uppercase tracking-[0.25em] mb-3 font-primary flex items-center gap-2 text-white drop-shadow-md">
+                <AlertCircle className="w-4 h-4" style={{ color: palette.orange }} />
+                Strategic Gaps
+              </div>
+              <div className="relative bg-white/[0.03] border border-white/10 rounded-[16px] p-6 overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl transition-colors duration-500 hover:bg-white/[0.05]" style={{ boxShadow: `0 10px 30px rgba(0,0,0,0.2), inset 0 0 30px ${hexToRgba(palette.orange, 0.05)}` }}>
+                {clusters.length > 0 && (
+                  <motion.div 
+                    className="absolute inset-0 border rounded-[16px]"
+                    style={{ borderColor: hexToRgba(palette.orange, 0.6) }}
+                    animate={{ opacity: [0.1, 0.8, 0.1] }}
+                    transition={{ duration: 2.5, repeat: Infinity }}
+                  />
+                )}
+                <div className="flex flex-wrap gap-3 relative z-10 min-h-[40px]">
+                  <AnimatePresence>
+                    {clusters.length > 0 ? clusters.map((c, i) => (
+                      <motion.div 
+                        key={c} 
+                        initial={{ opacity: 0, scale: 0.9, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ delay: i * 0.1, type: "spring", stiffness: 200 }}
+                        className="px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.15em] rounded-[10px] font-secondary flex items-center gap-2 group/chip cursor-default" 
+                        style={{ 
+                          backgroundColor: hexToRgba(palette.orange, 0.2), 
+                          color: '#FFF', 
+                          border: `1px solid ${hexToRgba(palette.orange, 0.6)}`,
+                          boxShadow: `0 0 20px ${hexToRgba(palette.orange, 0.3)}`,
+                          backdropFilter: 'blur(10px)'
+                        }}
+                      >
+                        <Zap className="w-4 h-4" style={{ color: '#FFD700' }} />
+                        {c}
+                      </motion.div>
+                    )) : (
+                      <motion.span 
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                        className="text-[12px] font-semibold text-white/50 tracking-widest uppercase font-secondary flex items-center gap-3"
+                      >
+                        <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: palette.orange }}/>
+                        Analyzing Vulnerabilities...
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. DELIVERABLES SCOPE */}
+            <div className="group relative">
+              <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity, delay: 1 }} className="absolute -left-10 top-1 w-[6px] h-[6px] rounded-full bg-white border border-white/80 shadow-[0_0_10px_rgba(255,255,255,0.5)] z-10" />
+              <div className="text-[11px] text-white font-bold uppercase tracking-[0.25em] mb-3 font-primary flex items-center gap-2 drop-shadow-md">
+                <Layers className="w-4 h-4" style={{ color: palette.blue }} />
+                Active Directives
+              </div>
+              <div className="bg-white/[0.03] border border-white/10 rounded-[16px] p-6 shadow-[0_10px_30px_rgba(0,0,0,0.2)] min-h-[140px] backdrop-blur-xl transition-colors duration-500 hover:bg-white/[0.05]">
+                {selectedDeliverables.length > 0 ? (
+                  <ul className="space-y-4">
+                    <AnimatePresence>
+                      {DELIVERABLES_MASTER.filter(d => selectedDeliverables.includes(d.id)).map((d, i) => (
+                        <motion.li 
+                          layout
+                          initial={{ opacity: 0, x: -20, backgroundColor: hexToRgba(palette.blue, 0.2) }}
+                          animate={{ opacity: 1, x: 0, backgroundColor: hexToRgba(palette.blue, 0.05) }}
+                          exit={{ opacity: 0, x: 20 }}
+                          transition={{ duration: 0.4, delay: i * 0.05 }}
+                          key={d.id} 
+                          className="flex items-start gap-4 rounded-[12px] -mx-2 px-3 py-3 border border-white/5 hover:bg-white/5 transition-colors"
+                        >
+                          <div className="mt-0.5 shrink-0 bg-white/10 rounded-full p-1 border border-white/20">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={palette.blue} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                              <motion.path 
+                                d="M20 6L9 17l-5-5" 
+                                initial={{ pathLength: 0 }}
+                                animate={{ pathLength: 1 }}
+                                transition={{ duration: 0.5, delay: i * 0.05 + 0.2 }}
+                              />
+                            </svg>
+                          </div>
+                          <div>
+                            <div className="text-[15px] font-bold text-white tracking-wide font-secondary drop-shadow-sm">{d.name}</div>
+                            <div className="text-[10px] font-bold uppercase tracking-[0.2em] mt-1.5 flex items-center gap-1.5" style={{ color: palette.blue }}>
+                              <div className="w-1 h-1 rounded-full" style={{ backgroundColor: palette.blue }} />
+                              Directive Verified
+                            </div>
+                          </div>
+                        </motion.li>
+                      ))}
+                    </AnimatePresence>
+                  </ul>
+                ) : (
+                  <div className="h-full flex flex-col items-center justify-center text-center py-10 opacity-70">
+                    <Target className="w-10 h-10 mb-5 text-white/30" />
+                    <div className="text-[12px] font-bold text-white/50 uppercase tracking-widest font-secondary flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-white/40 animate-pulse"/>
+                      Standby for Directives
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* 4. HEALTH SCORE */}
+            <div className="group relative">
+              <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity, delay: 1.5 }} className="absolute -left-10 top-10 w-[6px] h-[6px] rounded-full bg-white border z-10" style={{ borderColor: palette.green, boxShadow: `0 0 12px ${palette.green}` }} />
+              <div className="bg-gradient-to-br border border-white/20 rounded-[16px] p-8 shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex items-center justify-between backdrop-blur-xl border-t-white/30" style={{ background: `linear-gradient(to bottom right, ${hexToRgba(palette.panel, 0.9)}, transparent)` }}>
+                <div>
+                  <div className="text-[11px] font-bold uppercase tracking-[0.25em] mb-2 font-primary flex items-center gap-2 text-white">
+                    <Activity className="w-4 h-4" style={{ color: palette.green }} />
+                    System Health
+                  </div>
+                  <div className="text-[16px] font-bold text-white/90 tracking-widest font-secondary drop-shadow-md">STRATEGIC COMPLETENESS</div>
+                </div>
+                
+                <div className="relative w-28 h-28 flex items-center justify-center">
+                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                    <circle 
+                      cx="50" cy="50" r="40" 
+                      fill="transparent" 
+                      stroke="rgba(255,255,255,0.1)" 
+                      strokeWidth="8"
+                    />
+                    <motion.circle 
+                      cx="50" cy="50" r="40" 
+                      fill="transparent" 
+                      stroke={completeness === 100 ? palette.green : palette.blue} 
+                      strokeWidth="8"
+                      strokeDasharray={circumference}
+                      animate={{ strokeDashoffset }}
+                      transition={{ duration: 1.5, ease: "easeOut", type: "spring" }}
+                      strokeLinecap="round"
+                      style={{ filter: `drop-shadow(0 0 12px ${hexToRgba(completeness === 100 ? palette.green : palette.blue, 0.8)})` }}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center flex-col">
+                    <motion.span 
+                      key={completeness}
+                      initial={{ scale: 0.5, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="text-2xl font-bold text-white font-secondary drop-shadow-md"
+                    >
+                      {completeness}%
+                    </motion.span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
-  );
+    );
+  };
 
   const stepsArray = [
-    // 0: Welcome
+    // 0: Opening Question (Replacing Welcome Splash)
     <div key="s0" className="flex flex-col justify-center h-full text-left w-full mx-auto md:mx-0">
       <FadeUp>
-        <div className="w-16 h-16 border rounded-[16px] flex items-center justify-center mb-8" style={{ backgroundColor: hexToRgba(palette.primary, 0.8), borderColor: hexToRgba(palette.primary, 0.3) }}><Fingerprint className="w-8 h-8" style={{ color: palette.bgDeep }} /></div>
-        <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-6 leading-[1.1] font-primary max-w-4xl">Build your <AnimatedItalic>strategic</AnimatedItalic> brand scope.</h1>
-        <p className="text-lg md:text-xl text-white/50 font-light mb-12 leading-relaxed font-secondary max-w-3xl">This is not a generic form. It is a guided discovery system. We’ll map your gaps, define service priorities, and generate a customized roadmap before our first conversation.</p>
-        <div className="flex flex-col sm:flex-row items-center gap-6">
-          <PremiumButton onClick={() => setStep(1)} className="w-full sm:w-auto px-10 py-5">Begin Discovery</PremiumButton>
-          <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 py-2 font-secondary w-full sm:w-auto"><ArrowLeft className="w-4 h-4" /> Back to Home</button>
+        <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery (0/${N_QUIZ})</div>
+        <h2 className="text-3xl md:text-4xl font-light mb-4 font-primary">Let's start with the basics.</h2>
+        <p className="text-sm md:text-base text-white/50 mb-10 font-secondary max-w-2xl">Before we map your strategic gaps, please tell us who we are building this scope for.</p>
+        
+        <div className="space-y-6 max-w-xl">
+          <div>
+            <label className="block text-xs font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">Brand / Business Name</label>
+            <input 
+              type="text" 
+              value={leadForm.company}
+              onChange={(e) => setLeadForm({...leadForm, company: e.target.value})}
+              className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all"
+              placeholder="e.g. PurpleBlue House"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">Industry / Sector</label>
+            <input 
+              type="text" 
+              value={leadForm.industry || ''}
+              onChange={(e) => setLeadForm({...leadForm, industry: e.target.value})}
+              className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all"
+              placeholder="e.g. Technology, Fashion, Real Estate"
+            />
+          </div>
+          
+          <PremiumButton 
+            onClick={() => {
+              if (leadForm.company) setStep(1);
+            }} 
+            className={`w-full sm:w-auto px-10 py-4 mt-4 ${!leadForm.company ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            Start Scope Builder
+          </PremiumButton>
         </div>
       </FadeUp>
     </div>,
 
     // 1 to N: Quiz Questions
-    ...QUIZ_QUESTIONS.map((q, i) => (
+    ...QUIZ_QUESTIONS.map((q, i) => {
+      const isMultiSelect = q.multiSelect;
+      const currentAnswer = answers[q.id];
+      const hasAnswer = isMultiSelect ? (Array.isArray(currentAnswer) && currentAnswer.length > 0) : !!currentAnswer;
+
+      return (
       <div key={`q${i}`} className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
         <FadeUp>
-          <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery ({i + 1}/{N_QUIZ})</div>
-          <h2 className="text-3xl md:text-4xl font-light mb-10 font-primary">{q.title}</h2>
+          <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery ({i + 1}/${N_QUIZ})</div>
+          <h2 className="text-3xl md:text-4xl font-light mb-4 font-primary">{q.title}</h2>
+          {isMultiSelect && <p className="text-sm text-cyan-400 mb-8 font-secondary">Select all that apply.</p>}
+          {!isMultiSelect && <p className="text-sm text-white/40 mb-8 font-secondary">Select the most accurate statement.</p>}
+          
           <StaggerGroup className="space-y-3 w-full max-w-3xl">
             {q.options.map((opt, j) => {
-              const isSelected = answers[q.id]?.id === opt.id;
+              const isSelected = isMultiSelect 
+                ? (Array.isArray(currentAnswer) && currentAnswer.some(a => a.id === opt.id))
+                : (currentAnswer?.id === opt.id);
+              
               return (
                 <StaggerItem key={opt.id}>
                   <button
-                    onClick={() => handleQuizSelect(q.id, opt)}
+                    onClick={() => handleQuizSelect(q.id, opt, isMultiSelect)}
                     className="w-full text-left p-5 rounded-[12px] border transition-all duration-300 flex items-center gap-4 font-secondary hover:translate-x-1"
                     style={{ borderColor: isSelected ? palette.primary : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.primary, 0.1) : 'rgba(255,255,255,0.02)', color: isSelected ? 'white' : 'rgba(255,255,255,0.6)' }}
                   >
                     <span className="font-serif italic opacity-40 text-lg w-6 shrink-0">0{j + 1}</span>
-                    <span className="text-lg font-light">{opt.label}</span>
+                    <span className="text-lg font-light flex-1">{opt.label}</span>
+                    {isMultiSelect && isSelected && <Check className="w-5 h-5 shrink-0" style={{ color: palette.primary }} />}
                   </button>
                 </StaggerItem>
               )
             })}
           </StaggerGroup>
-          <div className="mt-8 flex"><button onClick={() => setStep(step === 1 ? 0 : step - 1)} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 font-secondary"><ArrowLeft className="w-4 h-4" /> Back</button></div>
+
+          <StaggerGroup className="mt-6 w-full max-w-3xl">
+            <StaggerItem>
+              <textarea
+                placeholder="Add any additional context or comments (optional)..."
+                value={comments[q.id] || ''}
+                onChange={(e) => setComments(prev => ({ ...prev, [q.id]: e.target.value }))}
+                className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] p-4 text-white/80 font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all text-sm resize-none"
+                rows={2}
+              />
+            </StaggerItem>
+          </StaggerGroup>
+
+          {isMultiSelect && (
+            <div className="mt-10 flex flex-wrap gap-4 items-center">
+              <PremiumButton 
+                onClick={handleMultiSelectContinue} 
+                className={`px-10 py-4 ${!hasAnswer ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                Continue <ArrowRight className="w-5 h-5 ml-2" />
+              </PremiumButton>
+              <button 
+                onClick={() => {
+                  const allValidOptions = q.options.filter(o => !o.id.startsWith('none'));
+                  setAnswers(prev => ({ ...prev, [q.id]: allValidOptions }));
+                }}
+                className="px-6 py-4 border border-white/20 rounded-[12px] text-white/60 hover:text-white hover:bg-white/5 transition-colors font-secondary text-sm font-medium"
+              >
+                Select All
+              </button>
+            </div>
+          )}
         </FadeUp>
       </div>
-    )),
+      );
+    }),
 
     // N+1: Diagnosis Result
     <div key="diag" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
@@ -1829,6 +2241,25 @@ const StrategicEngine = ({ navigate }) => {
                   <div className={`w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 shadow-sm`} style={{ backgroundColor: rColor, color: palette.bgDeep }}>{ROUTES_INFO[r].icon}</div>
                   <h4 className="text-xl font-medium mb-2 font-primary">{ROUTES_INFO[r].title}</h4>
                   <p className="text-sm text-white/40 font-light leading-relaxed font-secondary">{ROUTES_INFO[r].desc}</p>
+                  
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setExpandedRoute(expandedRoute === r ? null : r);
+                    }}
+                    className="text-xs uppercase tracking-wider font-medium text-cyan-400 hover:text-cyan-300 transition-colors mt-4 self-start"
+                  >
+                    {expandedRoute === r ? 'Read Less' : 'Read More'}
+                  </button>
+                  {expandedRoute === r && ROUTES_INFO[r].expandedDesc && (
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }} 
+                      animate={{ opacity: 1, height: 'auto' }} 
+                      className="mt-4 text-sm text-white/60 font-secondary font-light leading-relaxed"
+                    >
+                      {ROUTES_INFO[r].expandedDesc}
+                    </motion.div>
+                  )}
                 </div>
               </StaggerItem>
             )
@@ -1850,15 +2281,40 @@ const StrategicEngine = ({ navigate }) => {
         <StaggerGroup className="space-y-4 w-full mb-12 max-w-3xl">
           {Object.values(ROUTES_INFO).map(route => {
             const isSelected = selectedRoutes.includes(route.id);
+            const isExpanded = expandedRoute === route.id;
             return (
               <StaggerItem key={route.id}>
-                <button onClick={() => setSelectedRoutes(prev => isSelected ? prev.filter(r => r !== route.id) : [...prev, route.id])} className="w-full text-left p-6 rounded-[16px] border transition-all duration-300 flex items-center gap-6" style={{ borderColor: isSelected ? palette.blue : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.blue, 0.1) : 'rgba(255,255,255,0.02)' }}>
-                  <div className="w-6 h-6 rounded flex items-center justify-center border shrink-0" style={{ backgroundColor: isSelected ? palette.blue : 'transparent', borderColor: isSelected ? palette.blue : 'rgba(255,255,255,0.3)' }}>{isSelected && <Check className="w-4 h-4 text-white" />}</div>
-                  <div>
-                    <div className={`text-lg font-medium mb-1 font-primary ${isSelected ? 'text-white' : 'text-white/70'}`}>{route.title}</div>
-                    <div className="text-sm font-light text-white/40 font-secondary">{route.desc}</div>
+                <div className="w-full text-left p-6 rounded-[16px] border transition-all duration-300 flex flex-col gap-4" style={{ borderColor: isSelected ? palette.blue : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.blue, 0.1) : 'rgba(255,255,255,0.02)' }}>
+                  <div className="flex items-start gap-6 cursor-pointer" onClick={() => setSelectedRoutes(prev => isSelected ? prev.filter(r => r !== route.id) : [...prev, route.id])}>
+                    <div className="w-6 h-6 rounded flex items-center justify-center border shrink-0 mt-1" style={{ backgroundColor: isSelected ? palette.blue : 'transparent', borderColor: isSelected ? palette.blue : 'rgba(255,255,255,0.3)' }}>{isSelected && <Check className="w-4 h-4 text-white" />}</div>
+                    <div className="flex-1">
+                      <div className={`text-lg font-medium mb-1 font-primary ${isSelected ? 'text-white' : 'text-white/70'}`}>{route.title}</div>
+                      <div className="text-sm font-light text-white/40 font-secondary">{route.desc}</div>
+                    </div>
                   </div>
-                </button>
+                  <div className="pl-12 flex flex-col items-start">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setExpandedRoute(isExpanded ? null : route.id);
+                      }}
+                      className="text-xs uppercase tracking-wider font-medium text-white/50 hover:text-white transition-colors"
+                    >
+                      {isExpanded ? 'Read Less' : 'Read More'}
+                    </button>
+                    {isExpanded && route.expandedDesc && (
+                        <motion.div 
+                          initial={{ opacity: 0, height: 0 }} 
+                          animate={{ opacity: 1, height: 'auto' }} 
+                          className="mt-6 text-sm text-white/60 font-secondary font-light leading-relaxed flex flex-col gap-4"
+                        >
+                          {route.expandedDesc.split('\n').map((paragraph, idx) => (
+                            paragraph.trim() ? <p key={idx}>{paragraph}</p> : null
+                          ))}
+                        </motion.div>
+                    )}
+                  </div>
+                </div>
               </StaggerItem>
             )
           })}
@@ -1889,8 +2345,25 @@ const StrategicEngine = ({ navigate }) => {
                     if (delivs.length === 0) return null;
                     return (
                       <div key={li.id} className="bg-white/[0.01] border border-white/5 rounded-[12px] w-full overflow-hidden">
-                        <div className="bg-[#010D54] py-4 px-6 border-b border-white/10 mb-6">
-                          <h5 className="font-medium text-white text-lg font-primary">{li.name}</h5>
+                        <div className="bg-[#010D54] py-4 px-6 border-b border-white/10 mb-6 flex justify-between items-center gap-4">
+                          <div>
+                            <h5 className="font-medium text-white text-lg font-primary">{li.name}</h5>
+                            {li.desc && <p className="text-white/50 text-sm font-secondary mt-1 font-light">{li.desc}</p>}
+                          </div>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const allIds = delivs.map(d => d.id);
+                              setSelectedDeliverables(prev => {
+                                const newSet = new Set(prev);
+                                allIds.forEach(id => newSet.add(id));
+                                return Array.from(newSet);
+                              });
+                            }}
+                            className="text-[10px] uppercase tracking-widest text-white/50 hover:text-white transition-colors border border-white/20 px-3 py-1.5 rounded shrink-0"
+                          >
+                            Select All
+                          </button>
                         </div>
                         <div className="px-6 pb-6">
                         <div className="grid gap-3 w-full">
@@ -1954,12 +2427,20 @@ const StrategicEngine = ({ navigate }) => {
             </select>
           </div>
           <div className="w-full">
-            <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">When do you want to begin? (Timeline)</label>
+            <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">What is your expected project timeline?</label>
             <select value={context.timeline} onChange={e => setContext({ ...context, timeline: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
-              <option value="" style={{ backgroundColor: palette.bgDeep }}>Select timeline...</option>
-              <option value="Immediately" style={{ backgroundColor: palette.bgDeep }}>Immediately</option>
-              <option value="Within 2-4 weeks" style={{ backgroundColor: palette.bgDeep }}>Within 2–4 weeks</option>
-              <option value="This quarter" style={{ backgroundColor: palette.bgDeep }}>This quarter</option>
+              <option value="" style={{ backgroundColor: palette.bgDeep }}>Select project timeline...</option>
+              <option value="Short term" style={{ backgroundColor: palette.bgDeep }}>Short term</option>
+              <option value="Deep Dive" style={{ backgroundColor: palette.bgDeep }}>Deep Dive</option>
+              <option value="Long Term" style={{ backgroundColor: palette.bgDeep }}>Long Term</option>
+            </select>
+          </div>
+          <div className="w-full">
+            <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">What is your expected project duration?</label>
+            <select value={context.duration} onChange={e => setContext({ ...context, duration: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
+              <option value="Short term (minimum 3 months)" style={{ backgroundColor: palette.bgDeep }}>Short term (minimum 3 months)</option>
+              <option value="Deep Dive- Branding (minimum 6 months)" style={{ backgroundColor: palette.bgDeep }}>Deep Dive- Branding (minimum 6 months)</option>
+              <option value="Long Term Engagement (1 year- Monthly Retainer)" style={{ backgroundColor: palette.bgDeep }}>Long Term Engagement (1 year- Monthly Retainer)</option>
             </select>
           </div>
         </div>
@@ -1980,7 +2461,6 @@ const StrategicEngine = ({ navigate }) => {
           <input required type="text" placeholder="Full Name" value={leadForm.name} onChange={e => setLeadForm({ ...leadForm, name: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <input required type="email" placeholder="Work Email" value={leadForm.email} onChange={e => setLeadForm({ ...leadForm, email: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <input required type="tel" placeholder="Phone Number" value={leadForm.phone} onChange={e => setLeadForm({ ...leadForm, phone: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
-          <input required type="text" placeholder="Company / Brand Name" value={leadForm.company} onChange={e => setLeadForm({ ...leadForm, company: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <div className="pt-6 flex gap-4 items-center">
             <PremiumButton type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-10">
               {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing...</> : 'Generate Report & Send Brief'}
@@ -2024,9 +2504,10 @@ const StrategicEngine = ({ navigate }) => {
               <div className="w-full">
                 <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Execution Context</h4>
                 <div className="text-sm text-white/70 font-light space-y-3 bg-white/[0.02] p-6 rounded-[12px] border border-white/5 font-secondary w-full">
-                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Brand Stage</span> <span className="text-right">{answers.stage?.label}</span></p>
-                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Timeline</span> <span className="text-right">{context.timeline}</span></p>
+                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Brand Stage</span> <span className="text-right">{answers.stage?.label || 'Not Selected'}</span></p>
                   <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Engagement Depth</span> <span className="text-right">{context.depth}</span></p>
+                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Project Timeline</span> <span className="text-right">{context.timeline}</span></p>
+                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Project Duration</span> <span className="text-right">{context.duration}</span></p>
                   <p className="flex justify-between"><span className="text-white/40 text-left">Suggested Starting Point</span> <span className="text-right text-[#6865FA]">{computeSuggestedStartingPoint(selectedDeliverables, priorities)}</span></p>
                 </div>
               </div>
@@ -2064,7 +2545,7 @@ const StrategicEngine = ({ navigate }) => {
   ];
 
   return (
-    <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative overflow-hidden w-full print:overflow-visible print:pt-0 print:pb-12" style={{ backgroundColor: palette.bgDeep }}>
+    <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative w-full print:overflow-visible print:pt-0 print:pb-12" style={{ backgroundColor: palette.bgDeep }}>
       {dependencyModal && (
         <div className="fixed inset-0 z-[200000] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm text-left">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#0C185C] border border-white/10 p-8 rounded-[24px] max-w-lg w-full shadow-2xl">
@@ -2116,8 +2597,64 @@ const StrategicEngine = ({ navigate }) => {
       )}
 
       {step > 0 && step < (N_QUIZ + 6) && (
-        <div className="fixed top-[72px] md:top-[88px] left-0 w-full h-[2px] bg-white/10 z-20 print:hidden">
-          <motion.div className="h-full" style={{ backgroundColor: palette.primary }} initial={{ width: 0 }} animate={{ width: `${(step / (N_QUIZ + 5)) * 100}%` }} transition={{ duration: 0.5 }} />
+        <div className="fixed top-[72px] md:top-[88px] left-0 w-full z-30 print:hidden flex items-center bg-black/40 backdrop-blur-xl border-b border-white/10 px-4 md:px-8 py-4 shadow-lg shadow-black/20">
+          <button 
+            onClick={() => setStep(step - 1)} 
+            className="text-white/70 hover:text-white text-sm transition-colors flex items-center gap-2 font-secondary bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/10 shrink-0"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back
+          </button>
+          
+          <div className="flex-1 ml-6 md:ml-10 flex flex-col gap-2 relative max-w-4xl">
+            <div className="flex justify-between items-end px-1">
+              <span className="text-[10px] uppercase tracking-[0.2em] font-bold font-secondary text-white/90 drop-shadow-md">
+                {step <= N_QUIZ ? 'Phase 1 // Diagnosis' : step <= N_QUIZ + 2 ? 'Phase 2 // Scope Architecture' : step <= N_QUIZ + 4 ? 'Phase 3 // Details & Context' : 'Final Verification'}
+              </span>
+              <span className="text-[10px] font-bold text-white/50 font-secondary tracking-wider">
+                {Math.round((step / (N_QUIZ + 5)) * 100)}%
+              </span>
+            </div>
+            
+            <div className="relative w-full h-[6px] bg-[#0A103D] rounded-full overflow-visible border border-white/5 shadow-inner">
+               {/* Background Track Markers */}
+               <div className="absolute inset-0 flex justify-between items-center px-1 opacity-20">
+                 <div className="w-1 h-1 rounded-full bg-white" />
+                 <div className="w-1 h-1 rounded-full bg-white" />
+                 <div className="w-1 h-1 rounded-full bg-white" />
+                 <div className="w-1 h-1 rounded-full bg-white" />
+               </div>
+
+               {/* Filled track with sweeping light */}
+               <motion.div 
+                 className="absolute top-0 left-0 h-full rounded-full overflow-hidden" 
+                 style={{ 
+                   background: `linear-gradient(90deg, ${hexToRgba(palette.blue, 0.8)}, ${palette.primary})`,
+                   boxShadow: `0 0 15px ${hexToRgba(palette.primary, 0.5)}`
+                 }} 
+                 initial={{ width: 0 }} 
+                 animate={{ width: `${(step / (N_QUIZ + 5)) * 100}%` }} 
+                 transition={{ duration: 0.8, type: "spring", bounce: 0.2 }} 
+               >
+                 <motion.div
+                   className="absolute top-0 bottom-0 w-32 bg-gradient-to-r from-transparent via-white to-transparent opacity-60"
+                   animate={{ left: ['-100%', '200%'] }}
+                   transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                 />
+               </motion.div>
+               
+               {/* Leading edge beacon */}
+               <motion.div 
+                 className="absolute top-1/2 -translate-y-1/2 w-[14px] h-[14px] rounded-full bg-white z-10 flex items-center justify-center cursor-default"
+                 style={{ boxShadow: `0 0 20px ${palette.primary}, 0 0 10px white` }}
+                 initial={{ left: 0 }}
+                 animate={{ left: `calc(${(step / (N_QUIZ + 5)) * 100}% - 7px)` }}
+                 transition={{ duration: 0.8, type: "spring", bounce: 0.2 }}
+               >
+                 <div className="absolute inset-0 rounded-full animate-ping opacity-60" style={{ backgroundColor: palette.primary }} />
+                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: palette.primary }} />
+               </motion.div>
+            </div>
+          </div>
         </div>
       )}
       <div className="w-full px-[3%] flex flex-col md:flex-row justify-between relative gap-8 print:flex-col print:gap-12">
@@ -2129,7 +2666,7 @@ const StrategicEngine = ({ navigate }) => {
           </AnimatePresence>
         </div>
         {step > 0 && step < (N_QUIZ + 6) && (
-          <div className="hidden md:block w-[350px] lg:w-[450px] shrink-0 sticky top-32 h-[calc(100vh-160px)] pb-8 z-10 print:block print:w-full print:max-w-full print:static print:h-auto">
+          <div className="hidden md:block w-[350px] lg:w-[450px] shrink-0 sticky top-[160px] self-start h-[calc(100vh-200px)] pb-8 z-10 print:block print:w-full print:max-w-full print:static print:h-auto">
             <LiveScopePreview />
           </div>
         )}
@@ -2451,6 +2988,106 @@ const Header = ({ navigate, current }) => {
   );
 };
 
+const ClientMarqueeSection = () => {
+  const logos = [
+    { name: "Firefox", src: "/clients/logos/firefox/1_firefox.png" },
+    { name: "Hero Lectro", src: "/clients/logos/hero_lectro/xx_lectro.png" },
+    { name: "Snow Leopard Trust", src: "/clients/logos/snow_leopard_trust/SLT-Logo-2016-300ppi-Transparent-BlackText-01.png" },
+    { name: "Back To Roots", src: "/clients/logos/back_to_roots/back_to_roots_logo.png" },
+    { name: "Param Innovation", src: "/clients/logos/param/9_param.png" },
+    { name: "IIT Delhi", src: "/clients/logos/iit/iitd_raw_images_01.png" }
+  ];
+
+  const texts = [
+    "FIREFOX BICYCLES", "BELLAVITA", "HERO LECTRO", "SNOW LEOPARD TRUST", 
+    "IIT DELHI", "PARAM INNOVATION", "BACK TO ROOTS", "EGA WELLNESS", "OBSERVER RESEARCH FOUNDATION"
+  ];
+
+  // Interleave logos and text into a single elegant ribbon
+  const combinedItems = [
+    { type: 'logo', val: logos[0] }, { type: 'text', val: texts[0] },
+    { type: 'logo', val: logos[1] }, { type: 'text', val: texts[1] },
+    { type: 'logo', val: logos[2] }, { type: 'text', val: texts[3] },
+    { type: 'logo', val: logos[3] }, { type: 'text', val: texts[6] },
+    { type: 'logo', val: logos[4] }, { type: 'text', val: texts[5] },
+    { type: 'logo', val: logos[5] }, { type: 'text', val: texts[4] }
+  ];
+
+  const renderItem = (item, idx) => {
+    if (item.type === 'logo') {
+      return (
+        <div key={`item-${idx}`} className="flex items-center justify-center mx-6 md:mx-10 shrink-0 group/card">
+          <div className="h-24 md:h-32 px-10 md:px-14 rounded-[2rem] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.3)] border border-white/10 flex items-center justify-center transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(255,255,255,0.15)] cursor-pointer">
+            <img 
+              src={item.val.src} 
+              alt={item.val.name} 
+              className="h-14 md:h-20 max-w-[200px] md:max-w-[280px] w-auto object-contain mix-blend-multiply transition-all duration-500 group-hover/card:scale-110 group-hover/card:drop-shadow-lg" 
+            />
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div key={`item-${idx}`} className="flex items-center mx-6 md:mx-10 shrink-0">
+          <span 
+            className="text-4xl md:text-6xl font-black font-primary tracking-tighter uppercase transition-all duration-500 text-transparent opacity-60 hover:opacity-100 hover:scale-105 cursor-pointer" 
+            style={{ WebkitTextStroke: '2px rgba(255,255,255,0.3)', WebkitTextFillColor: 'rgba(255,255,255,0.05)' }} 
+            onMouseEnter={(e) => {
+              e.currentTarget.style.WebkitTextStroke = `2px ${palette.primary}`;
+              e.currentTarget.style.WebkitTextFillColor = 'rgba(255,255,255,0.15)';
+            }} 
+            onMouseLeave={(e) => {
+              e.currentTarget.style.WebkitTextStroke = '2px rgba(255,255,255,0.3)';
+              e.currentTarget.style.WebkitTextFillColor = 'rgba(255,255,255,0.05)';
+            }}
+          >
+            {item.val}
+          </span>
+          <div className="w-3 h-3 rounded-full ml-12 md:ml-20 opacity-30" style={{ backgroundColor: palette.primary }} />
+        </div>
+      );
+    }
+  };
+
+  return (
+    <section className="py-24 w-full relative overflow-hidden border-t border-b border-white/5" style={{ backgroundColor: palette.bgDeep }}>
+      {/* Background Glows */}
+      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] opacity-[0.03] blur-[120px] pointer-events-none rounded-full" style={{ backgroundColor: palette.primary }} />
+      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] opacity-[0.03] blur-[120px] pointer-events-none rounded-full" style={{ backgroundColor: palette.blue }} />
+
+      <FadeUp className="px-[3%] mb-16 flex flex-col items-center text-center relative z-10">
+        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-sm">
+          <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: palette.primary }} />
+          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] font-primary text-white/70">Powering Innovation</h3>
+        </div>
+        <h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary text-white">Our Partners <span className="font-serif italic text-white/50">&</span> Clients</h2>
+      </FadeUp>
+
+      <div className="relative w-full flex overflow-hidden group py-10 z-10">
+        {/* Fading edges for the marquee */}
+        <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to right, ${palette.bgDeep}, transparent)` }} />
+        <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to left, ${palette.bgDeep}, transparent)` }} />
+
+        {/* Single Interleaved Marquee Ribbon */}
+        <div className="flex animate-marquee-ribbon hover:[animation-play-state:paused] whitespace-nowrap items-center">
+          {[...combinedItems, ...combinedItems, ...combinedItems].map(renderItem)}
+        </div>
+      </div>
+      
+      <style>{`
+        @keyframes client-marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee-ribbon {
+          animation: client-marquee 50s linear infinite;
+          width: max-content;
+        }
+      `}</style>
+    </section>
+  );
+};
+
 const HomePage = ({ navigate }) => {
   const { SITE_SETTINGS, ROUTES_INFO, PROBLEM_DATA, CASE_STUDIES, JOURNAL_ARTICLES } = useContext(GlobalContext);
   const heroRef = useRef(null);
@@ -2613,20 +3250,7 @@ const HomePage = ({ navigate }) => {
         </div>
       </section>
 
-      <section className="py-32 px-[3%] w-full text-center flex flex-col items-center justify-center border-b border-white/5 relative overflow-hidden" style={{ backgroundColor: palette.panel }}>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-[0.03] blur-[100px] pointer-events-none rounded-full" style={{ backgroundColor: palette.primary }} />
-        <FadeUp className="opacity-40 mb-10 relative z-10" style={{ color: palette.primary }}><Quote className="w-16 h-16 mx-auto" /></FadeUp>
-        <FadeUp delay={0.1}>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-light leading-[1.4] max-w-5xl text-white/90 relative z-10 font-primary">
-            "PurpleBlue House completely rewired how we communicate. They didn't just give us a brand identity—they gave us an <AnimatedItalic>operating system for growth.</AnimatedItalic>"
-          </h2>
-        </FadeUp>
-        <FadeUp delay={0.2} className="mt-16 flex flex-col items-center relative z-10 font-secondary">
-          <div className="w-12 h-[1px] bg-white/20 mb-6" />
-          <span className="text-white tracking-wide font-medium">Chief Marketing Officer</span>
-          <span className="text-white/40 text-xs mt-2 uppercase tracking-widest">Global Tech Enterprise</span>
-        </FadeUp>
-      </section>
+      <ClientMarqueeSection />
 
       {/* Global Mission */}
       <section className="py-32 px-[3%] text-center border-b border-white/5 relative overflow-hidden w-full" style={{ backgroundColor: palette.bgDeep }}>
@@ -2789,6 +3413,27 @@ const WorkDetailPage = ({ navigate, projectId }) => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [projectId]);
+
+  if (project.client === 'Arise Ventures') {
+    return <AriseVenturesExperience navigate={navigate} project={project} />;
+  }
+  if (project.client === 'Back to Roots') {
+    return <BackToRootsExperience navigate={navigate} project={project} />;
+  }
+  if (project.client === 'Param Innovation') {
+    return <ParamInnovationExperience navigate={navigate} project={project} />;
+  }
+  const targetClients = [
+    'snow leopard',
+    'fermentech',
+    'american chemical',
+    'navankur'
+  ];
+
+  const clientName = (project.client || '').toLowerCase();
+  if (targetClients.some(target => clientName.includes(target))) {
+    return <SnowLeopardExperience navigate={navigate} project={project} />;
+  }
 
   return (
     <div className="min-h-screen text-[#F4F4F5] w-full" style={{ backgroundColor: palette.bgDeep }}>
@@ -4420,6 +5065,7 @@ export default function App() {
       const r = sanityRoutes.find(sr => sr.id === key);
       if (r) {
         sortedAcc[key] = {
+          ...ROUTES_INFO[key],
           ...r,
           icon: r.iconName === 'Fingerprint' ? <Fingerprint className="w-6 h-6" /> :
             r.iconName === 'Lightbulb' ? <Lightbulb className="w-6 h-6" /> : <Rocket className="w-6 h-6" />
@@ -4431,6 +5077,7 @@ export default function App() {
     sanityRoutes.forEach(r => {
       if (!sortedAcc[r.id]) {
         sortedAcc[r.id] = {
+          ...ROUTES_INFO[r.id],
           ...r,
           icon: r.iconName === 'Fingerprint' ? <Fingerprint className="w-6 h-6" /> :
             r.iconName === 'Lightbulb' ? <Lightbulb className="w-6 h-6" /> : <Rocket className="w-6 h-6" />
@@ -4444,7 +5091,15 @@ export default function App() {
   const finalDeliverables = sanityDeliverables?.length > 0 ? sortByRef(sanityDeliverables, DELIVERABLES_MASTER) : DELIVERABLES_MASTER;
 
   const { data: sanityQuiz } = useSanity(GET_QUIZ_QUESTIONS);
-  const finalQuiz = sanityQuiz?.length > 0 ? sortByRef(sanityQuiz, QUIZ_QUESTIONS) : QUIZ_QUESTIONS;
+  const finalQuiz = sanityQuiz?.length > 0 ? sortByRef(sanityQuiz, QUIZ_QUESTIONS).map((q, index) => {
+    const fallbackQ = QUIZ_QUESTIONS.find(fq => fq.id === q.id || fq.title === q.title) || QUIZ_QUESTIONS[index];
+    if (!fallbackQ) return q;
+    return {
+      ...q,
+      multiSelect: q.multiSelect ?? fallbackQ.multiSelect,
+      options: fallbackQ.options
+    };
+  }) : QUIZ_QUESTIONS;
 
   const { data: sanityCaseStudies } = useSanity(CASE_STUDIES_QUERY);
   const finalCaseStudies = sanityCaseStudies?.length > 0 ? sanityCaseStudies : CASE_STUDIES;
@@ -4637,10 +5292,12 @@ export default function App() {
 
   return (
     <GlobalContext.Provider value={globalData}>
-      <div className="min-h-screen text-[#F4F4F5] w-[100vw] selection:text-white overflow-x-hidden font-secondary" style={{ backgroundColor: palette.bgDeep, scrollBehavior: 'smooth', '--tw-selection-color': palette.primary + '4D' }}>
+      <div className="min-h-screen text-[#F4F4F5] w-full selection:text-white font-secondary" style={{ backgroundColor: palette.bgDeep, scrollBehavior: 'smooth', '--tw-selection-color': palette.primary + '4D' }}>
         <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Space+Grotesk:wght@300..700&display=swap');
         
+        body { overflow-x: hidden; }
+
         .font-primary { font-family: ${palette.fonts.primary} !important; }
         .font-secondary { font-family: ${palette.fonts.secondary} !important; }
         
