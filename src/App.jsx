@@ -18,6 +18,7 @@ import BackToRootsExperience from './components/case-studies/BackToRootsExperien
 import ParamInnovationExperience from './components/case-studies/ParamInnovationExperience';
 import SnowLeopardExperience from './components/case-studies/SnowLeopardExperience';
 import AriseVenturesExperience from './components/case-studies/AriseVenturesExperience';
+import { LeverageEduExperience } from './components/case-studies/LeverageEduExperience';
 
 export const GlobalContext = createContext(null);
 
@@ -3411,6 +3412,10 @@ const WorkDetailPage = ({ navigate, projectId }) => {
 
   if (project.client === 'Param Innovation') {
     return <ParamInnovationExperience navigate={navigate} project={project} />;
+  }
+
+  if (clientName.includes('leverage')) {
+    return <LeverageEduExperience project={project} onBack={() => navigate('/work')} />;
   }
 
   const targetClients = [
