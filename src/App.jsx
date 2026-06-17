@@ -2988,102 +2988,102 @@ const Header = ({ navigate, current }) => {
   );
 };
 
-const ClientMarqueeSection = () => {
-  const logos = [
-    { name: "Firefox", src: "/clients/logos/firefox/1_firefox.png" },
-    { name: "Hero Lectro", src: "/clients/logos/hero_lectro/xx_lectro.png" },
-    { name: "Snow Leopard Trust", src: "/clients/logos/snow_leopard_trust/SLT-Logo-2016-300ppi-Transparent-BlackText-01.png" },
-    { name: "Back To Roots", src: "/clients/logos/back_to_roots/back_to_roots_logo.png" },
-    { name: "Param Innovation", src: "/clients/logos/param/9_param.png" },
-    { name: "IIT Delhi", src: "/clients/logos/iit/iitd_raw_images_01.png" }
+const SelectedCollaboratorsSection = () => {
+  const galleryLogos = [
+    { 
+      name: "Snow Leopard Trust", src: "/clients/logos/snow_leopard_trust/SLT-Logo-2016-300ppi-Transparent-BlackText-01.png", 
+      className: "md:col-start-1 md:row-start-1 mt-12 md:mt-32",
+      baseFilter: "grayscale(100%) brightness(0) invert(1)",
+      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.3))"
+    },
+    { 
+      name: "Hero Lectro", src: "/clients/logos/hero_lectro/xx_lectro.png", 
+      className: "md:col-start-4 md:row-start-1 mt-24 md:mt-16",
+      baseFilter: "grayscale(100%) brightness(0) invert(1)",
+      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.15))"
+    },
+    { 
+      name: "IIT Delhi", src: "/clients/logos/iit/iitd_raw_images_01.png", 
+      className: "md:col-start-2 md:row-start-2 mt-32 md:mt-48",
+      baseFilter: "grayscale(100%) brightness(0) invert(1)",
+      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.3))"
+    },
+    { 
+      name: "Leverage Edu", src: "/clients/logos/leverage_edu/8_leverage.png", 
+      className: "md:col-start-5 md:row-start-2 mt-16 md:mt-24",
+      baseFilter: "grayscale(100%) brightness(0) invert(1)",
+      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.2))"
+    },
+    { 
+      name: "Navankur", src: "/clients/logos/navankur/5_navankur.png", 
+      className: "md:col-start-1 md:row-start-3 mt-40 md:mt-64",
+      baseFilter: "grayscale(100%) brightness(0) invert(1)",
+      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.1))"
+    },
+    { 
+      name: "Back To Roots", src: "/clients/logos/back_to_roots/back_to_roots_logo.png", 
+      className: "md:col-start-3 md:row-start-3 mt-20 md:mt-32",
+      baseFilter: "grayscale(100%) brightness(200%)", 
+      hoverFilter: "grayscale(0%) brightness(100%)"
+    },
+    { 
+      name: "Arise Ventures", src: "/clients/logos/arise_ventures/Asset 3@4x.png", 
+      className: "md:col-start-5 md:row-start-4 mt-10 md:mt-40",
+      baseFilter: "grayscale(100%) brightness(0) invert(1)",
+      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.3))"
+    },
+    { 
+      name: "Earthy Souls", src: "/clients/logos/earthy_souls/6_earthy.png", 
+      className: "md:col-start-2 md:row-start-4 mt-32 md:mt-12",
+      baseFilter: "grayscale(100%) brightness(0) invert(1)",
+      hoverFilter: "grayscale(0%) brightness(100%) drop-shadow(0 0 15px rgba(255,255,255,0.15))"
+    },
   ];
-
-  const texts = [
-    "FIREFOX BICYCLES", "BELLAVITA", "HERO LECTRO", "SNOW LEOPARD TRUST", 
-    "IIT DELHI", "PARAM INNOVATION", "BACK TO ROOTS", "EGA WELLNESS", "OBSERVER RESEARCH FOUNDATION"
-  ];
-
-  // Interleave logos and text into a single elegant ribbon
-  const combinedItems = [
-    { type: 'logo', val: logos[0] }, { type: 'text', val: texts[0] },
-    { type: 'logo', val: logos[1] }, { type: 'text', val: texts[1] },
-    { type: 'logo', val: logos[2] }, { type: 'text', val: texts[3] },
-    { type: 'logo', val: logos[3] }, { type: 'text', val: texts[6] },
-    { type: 'logo', val: logos[4] }, { type: 'text', val: texts[5] },
-    { type: 'logo', val: logos[5] }, { type: 'text', val: texts[4] }
-  ];
-
-  const renderItem = (item, idx) => {
-    if (item.type === 'logo') {
-      return (
-        <div key={`item-${idx}`} className="flex items-center justify-center mx-6 md:mx-10 shrink-0 group/card">
-          <div className="h-24 md:h-32 px-10 md:px-14 rounded-[2rem] bg-white shadow-[0_10px_30px_rgba(0,0,0,0.3)] border border-white/10 flex items-center justify-center transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(255,255,255,0.15)] cursor-pointer">
-            <img 
-              src={item.val.src} 
-              alt={item.val.name} 
-              className="h-14 md:h-20 max-w-[200px] md:max-w-[280px] w-auto object-contain mix-blend-multiply transition-all duration-500 group-hover/card:scale-110 group-hover/card:drop-shadow-lg" 
-            />
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div key={`item-${idx}`} className="flex items-center mx-6 md:mx-10 shrink-0">
-          <span 
-            className="text-4xl md:text-6xl font-black font-primary tracking-tighter uppercase transition-all duration-500 text-transparent opacity-60 hover:opacity-100 hover:scale-105 cursor-pointer" 
-            style={{ WebkitTextStroke: '2px rgba(255,255,255,0.3)', WebkitTextFillColor: 'rgba(255,255,255,0.05)' }} 
-            onMouseEnter={(e) => {
-              e.currentTarget.style.WebkitTextStroke = `2px ${palette.primary}`;
-              e.currentTarget.style.WebkitTextFillColor = 'rgba(255,255,255,0.15)';
-            }} 
-            onMouseLeave={(e) => {
-              e.currentTarget.style.WebkitTextStroke = '2px rgba(255,255,255,0.3)';
-              e.currentTarget.style.WebkitTextFillColor = 'rgba(255,255,255,0.05)';
-            }}
-          >
-            {item.val}
-          </span>
-          <div className="w-3 h-3 rounded-full ml-12 md:ml-20 opacity-30" style={{ backgroundColor: palette.primary }} />
-        </div>
-      );
-    }
-  };
 
   return (
-    <section className="py-24 w-full relative overflow-hidden border-t border-b border-white/5" style={{ backgroundColor: palette.bgDeep }}>
-      {/* Background Glows */}
-      <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] opacity-[0.03] blur-[120px] pointer-events-none rounded-full" style={{ backgroundColor: palette.primary }} />
-      <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] opacity-[0.03] blur-[120px] pointer-events-none rounded-full" style={{ backgroundColor: palette.blue }} />
+    <section className="py-48 w-full relative overflow-hidden border-t border-b border-white/5" style={{ backgroundColor: palette.bgDeep }}>
+      {/* Editorial Heading - Large Space Grotesk tracking */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
+        <h2 className="text-[12vw] font-secondary tracking-[0.25em] font-light text-white/[0.02] text-center leading-[1.1] select-none ml-[0.125em]">
+          SELECTED<br />COLLABORATORS
+        </h2>
+      </div>
 
-      <FadeUp className="px-[3%] mb-16 flex flex-col items-center text-center relative z-10">
-        <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-6 backdrop-blur-sm">
-          <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: palette.primary }} />
-          <h3 className="text-xs font-semibold uppercase tracking-[0.2em] font-primary text-white/70">Powering Innovation</h3>
-        </div>
-        <h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary text-white">Our Partners <span className="font-serif italic text-white/50">&</span> Clients</h2>
-      </FadeUp>
-
-      <div className="relative w-full flex overflow-hidden group py-10 z-10">
-        {/* Fading edges for the marquee */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to right, ${palette.bgDeep}, transparent)` }} />
-        <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to left, ${palette.bgDeep}, transparent)` }} />
-
-        {/* Single Interleaved Marquee Ribbon */}
-        <div className="flex animate-marquee-ribbon hover:[animation-play-state:paused] whitespace-nowrap items-center">
-          {[...combinedItems, ...combinedItems, ...combinedItems].map(renderItem)}
+      <div className="relative z-10 w-full max-w-[90rem] mx-auto px-[5%] min-h-[80vh] flex items-center justify-center">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-x-12 md:gap-x-24 gap-y-32 w-full">
+          {galleryLogos.map((logo, index) => (
+            <div key={index} className={`flex items-center justify-center ${logo.className}`}>
+              {/* Idle Floating Physics */}
+              <motion.div
+                animate={{ y: [0, -2, 0] }}
+                transition={{ duration: 6 + (index % 3), repeat: Infinity, ease: "easeInOut" }}
+                className="relative"
+              >
+                {/* Illumination Pulse & Hover */}
+                <motion.img
+                  src={logo.src}
+                  alt={logo.name}
+                  className="max-h-10 md:max-h-16 max-w-[140px] md:max-w-[200px] w-auto object-contain cursor-pointer"
+                  initial={{ opacity: 0.2, filter: logo.baseFilter, scale: 1 }}
+                  animate={{ 
+                    opacity: [0.2, 0.2, 0.6, 0.2, 0.2], 
+                    filter: logo.baseFilter
+                  }}
+                  transition={{ 
+                    opacity: { duration: 12, repeat: Infinity, ease: "easeInOut", delay: index * 1.5, times: [0, 0.4, 0.5, 0.6, 1] } 
+                  }}
+                  whileHover={{ 
+                    opacity: 1, 
+                    filter: logo.hoverFilter, 
+                    scale: 1.03,
+                    transition: { duration: 0.8, ease: "easeOut" }
+                  }}
+                />
+              </motion.div>
+            </div>
+          ))}
         </div>
       </div>
-      
-      <style>{`
-        @keyframes client-marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee-ribbon {
-          animation: client-marquee 50s linear infinite;
-          width: max-content;
-        }
-      `}</style>
     </section>
   );
 };
@@ -3250,7 +3250,7 @@ const HomePage = ({ navigate }) => {
         </div>
       </section>
 
-      <ClientMarqueeSection />
+      <SelectedCollaboratorsSection />
 
       {/* Global Mission */}
       <section className="py-32 px-[3%] text-center border-b border-white/5 relative overflow-hidden w-full" style={{ backgroundColor: palette.bgDeep }}>
