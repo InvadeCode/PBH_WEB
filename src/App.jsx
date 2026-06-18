@@ -3481,31 +3481,61 @@ const WorkDetailPage = ({ navigate, projectId }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] w-full" style={{ backgroundColor: palette.bgDeep }}>
 
-      {/* Hero Section */}
-      <section className="relative w-full h-[70vh] md:h-[90vh] flex flex-col justify-end p-[3%] overflow-hidden">
-        <motion.div initial={{ scale: 1.1 }} animate={{ scale: 1 }} transition={{ duration: 1.5, ease: "easeOut" }} className="absolute inset-0 z-0 bg-[#010836]">
-          {(project.bannerImage || project.fullStory?.heroImg || project.imageUrl) ? (
-            <>
-              <img src={project.bannerImage || project.fullStory?.heroImg || project.imageUrl} alt={`${project.client} hero`} className="absolute inset-0 w-full h-full object-cover opacity-100" />
-              <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-[#010836] to-transparent pointer-events-none" />
-            </>
-          ) : (
-            <>
-              <div className="absolute inset-0 opacity-40 mix-blend-screen" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/60 to-transparent" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none"><span className="font-serif italic text-9xl md:text-[15rem] whitespace-nowrap overflow-hidden">{project.client ? project.client.split(' ')[0] : 'Work'}</span></div>
-            </>
-          )}
-        </motion.div>
+      {/* Hero Section - Cinematic Boxed Layout */}
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-32 md:pb-40 pt-10 px-4 md:px-8">
+        
+        {/* Floating Box Hero Banner */}
+        <div className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto h-[50vh] md:h-[65vh] rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
+          <motion.div
+            initial={{ opacity: 0, clipPath: 'inset(10% 10% 10% 10% round 30px)', filter: 'blur(20px)' }}
+            animate={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 0px)', filter: 'blur(0px)' }}
+            transition={{ duration: 2.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full h-full relative overflow-hidden"
+          >
+            {(project.bannerImage || project.fullStory?.heroImg || project.imageUrl) ? (
+              <motion.img 
+                src={project.bannerImage || project.fullStory?.heroImg || project.imageUrl} 
+                alt={`${project.client} hero`} 
+                className="absolute inset-0 w-full h-full object-cover opacity-100" 
+                initial={{ scale: 1.15 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 3, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              />
+            ) : (
+              <div className="w-full h-full bg-[#0C185C] relative flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 opacity-40 mix-blend-screen" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
+                <span className="font-serif italic text-9xl md:text-[15rem] whitespace-nowrap overflow-hidden opacity-10 text-white pointer-events-none">
+                  {project.client ? project.client.split(' ')[0] : 'Work'}
+                </span>
+              </div>
+            )}
+          </motion.div>
+        </div>
 
-        <div className="relative z-10 w-full pb-12 text-left">
-          <button onClick={() => navigate('work')} className="text-white/60 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Selected Work</button>
+        {/* Text Below the Banner Box */}
+        <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16 w-full max-w-5xl">
+          <button onClick={() => navigate('work')} className="absolute -top-16 left-0 text-white/60 hover:text-white text-sm transition-colors flex items-center gap-2 group font-secondary">
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
+          </button>
+          
+          <FadeUp className="mb-6 flex flex-wrap justify-center gap-4 font-secondary">
+            {(project.tags || []).map(t => (
+              <span key={t} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg" style={{ fontFamily: '"Carla", sans-serif' }}>
+                {t}
+              </span>
+            ))}
+          </FadeUp>
+
           <FadeUp>
-            <div className="flex gap-3 mb-6 flex-wrap font-secondary">
-              {(project.tags || []).map(t => <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-xs text-white uppercase tracking-widest backdrop-blur-md">{t}</span>)}
-            </div>
-            <h1 className="text-5xl md:text-8xl font-light tracking-tight font-primary text-white mb-6 leading-[1.1]">{project.client}</h1>
-            <p className="text-xl md:text-2xl text-white/70 font-light font-secondary max-w-3xl leading-relaxed">{project.challenge}</p>
+            <motion.h1 
+              className="font-carla text-4xl md:text-6xl lg:text-[6rem] leading-[0.9] text-white font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] mb-6" 
+              style={{ fontFamily: '"Carla", sans-serif' }}
+            >
+              {project.client}
+            </motion.h1>
+            <p className="text-xl md:text-2xl text-white/70 font-light font-secondary max-w-3xl leading-relaxed mx-auto">
+              {project.challenge}
+            </p>
           </FadeUp>
         </div>
       </section>
