@@ -292,7 +292,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         </div>
 
         {/* Floating Text Below the Banner */}
-        <div className="relative z-20 flex flex-col items-center text-center px-4 mt-8 md:mt-12">
+        <div className="relative z-20 flex flex-col items-center text-center px-4 -mt-20 md:-mt-32">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {['Branding', 'Visual Identity', 'Collateral'].map((tag, i) => (
               <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg" style={{ fontFamily: '"Carla", sans-serif' }}>
