@@ -276,7 +276,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </div>
 
       {/* ── 1. CINEMATIC HERO (Unconstructed & Blended) ── */}
-      <section className="relative w-full h-[85vh] md:h-[95vh] flex flex-col items-center justify-end z-10 pb-24 md:pb-32 overflow-hidden">
+      <section className="relative w-full h-[65vh] md:h-[75vh] flex flex-col items-center justify-end z-10 pb-16 md:pb-20 overflow-hidden">
         
         {/* Full Screen Background Reveal */}
         <div className="absolute inset-0 w-full h-full">
@@ -286,7 +286,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
              <div className="w-full h-full bg-[#0C185C]" />
            )}
            {/* Deep fade gradient to blend seamlessly into the next section */}
-           <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#010836] via-[#010836]/60 to-transparent z-10 pointer-events-none" />
+           <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-[#010836] via-[#010836]/70 to-transparent z-10 pointer-events-none" />
         </div>
 
         {/* Text Over the Banner */}
