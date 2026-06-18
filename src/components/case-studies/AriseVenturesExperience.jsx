@@ -152,19 +152,33 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
 
 /* --- 7. Dramatic Scrollytelling Sections --- */
 const AboutGraphic = () => (
-  <motion.div 
-    animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
-    transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-    className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#6865FA]/20 opacity-40 shadow-[0_0_150px_rgba(104,101,250,0.15)] mix-blend-screen pointer-events-none"
-  />
+  <>
+    <motion.div 
+      animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
+      transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
+    />
+    <motion.div 
+      animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
+      transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#FFCD00]/20 opacity-50 shadow-[0_0_80px_rgba(255,205,0,0.1)] mix-blend-screen pointer-events-none"
+    />
+  </>
 );
 
 const ProblemGraphic = () => (
-  <motion.div 
-    animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.3, 0.1] }} 
-    transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-    className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-full bg-[#FFCD00] mix-blend-overlay blur-[120px] pointer-events-none"
-  />
+  <>
+    <motion.div 
+      animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.4, 0.1] }} 
+      transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-full bg-[#FFCD00] mix-blend-screen blur-[120px] pointer-events-none"
+    />
+    <motion.div 
+      animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }} 
+      transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-full bg-[#6865FA] mix-blend-screen blur-[140px] pointer-events-none"
+    />
+  </>
 );
 
 const DramaticSection = ({ title, content, motionGraphic }) => {
@@ -189,9 +203,18 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         </motion.div>
         
         <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="absolute z-10 flex flex-col items-center justify-center w-full px-6 text-center">
-          <h2 className="text-5xl md:text-7xl lg:text-[7rem] font-medium tracking-tight text-white drop-shadow-2xl" style={{ fontFamily: '"Carla", sans-serif' }}>
+          <motion.h2 
+            animate={{ backgroundPosition: ['200% center', '-200% center'] }}
+            transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+            className="text-5xl md:text-7xl lg:text-[7rem] font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
+            style={{ 
+              fontFamily: '"Carla", sans-serif',
+              backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #FFCD00 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
+              backgroundSize: '300% auto',
+            }}
+          >
             {title}
-          </h2>
+          </motion.h2>
         </motion.div>
         
         <motion.div style={{ opacity: contentOpacity, y: contentY }} className="absolute z-20 w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center">
