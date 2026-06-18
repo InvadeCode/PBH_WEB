@@ -63,31 +63,15 @@ const CreativeHeroReveal = ({ src, alt, delay = 0 }) => {
   );
 };
 
-/* --- 4. 3D Interactive Card --- */
-const InteractiveCard = ({ children, className }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useTransform(y, [-300, 300], [8, -8]);
-  const rotateY = useTransform(x, [-300, 300], [-8, 8]);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    x.set(e.clientX - (rect.left + rect.width / 2));
-    y.set(e.clientY - (rect.top + rect.height / 2));
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0); y.set(0);
-  };
-
+/* --- 4. Hover Float Card --- */
+const HoverFloatCard = ({ children, className }) => {
   return (
-    <motion.div 
-      onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
-      style={{ perspective: 1500 }} className={className}
+    <motion.div
+      whileHover={{ y: -15, scale: 1.01 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className={className}
     >
-      <motion.div style={{ rotateX, rotateY }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className="w-full h-full relative z-10">
-        {children}
-      </motion.div>
+      {children}
     </motion.div>
   );
 };
@@ -324,7 +308,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
 
       {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION ── */}
       <section className="py-24 md:py-32 px-6 md:px-12 max-w-[1300px] mx-auto relative z-10 border-t border-white/5 mt-20">
-        <InteractiveCard className="w-full">
+        <HoverFloatCard className="w-full">
           <div className="relative group w-full">
             {/* Ambient Background Aura */}
             <div className="absolute inset-0 bg-gradient-to-tr from-[#6865FA]/10 via-transparent to-[#FFCD00]/10 rounded-[3rem] blur-xl group-hover:blur-2xl transition-all duration-1000" />
@@ -342,7 +326,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
                   </div>
                   
                   <h3 className="font-carla text-4xl md:text-6xl text-white mb-8 font-medium tracking-tight drop-shadow-md" style={{ fontFamily: '"Carla", sans-serif' }}>
-                    Visualizing Momentum
+                    Creative Solution
                   </h3>
                   
                   <div className="space-y-6 text-white/90 font-normal text-base md:text-lg leading-relaxed" style={{ fontFamily: '"Carla", sans-serif' }}>
@@ -372,7 +356,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </div>
             </div>
           </div>
-        </InteractiveCard>
+        </HoverFloatCard>
       </section>
 
       {/* ── 5. STATEMENT ── */}
