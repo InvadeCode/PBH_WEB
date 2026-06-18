@@ -50,8 +50,8 @@ const CreativeHeroReveal = ({ src, alt, delay = 0 }) => {
       transition={{ duration: 2.5, delay, ease: [0.16, 1, 0.3, 1] }}
       className="w-full h-full relative overflow-hidden"
       style={{
-        WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 30%, transparent 70%, transparent 100%)',
-        maskImage: 'linear-gradient(to bottom, black 0%, black 30%, transparent 70%, transparent 100%)'
+        WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 95%)',
+        maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 95%)'
       }}
     >
       <motion.img 
