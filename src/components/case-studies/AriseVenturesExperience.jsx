@@ -49,16 +49,20 @@ const CreativeHeroReveal = ({ src, alt, delay = 0 }) => {
       animate={{ clipPath: 'circle(150% at 50% 50%)', rotateX: 0, scale: 1 }}
       transition={{ duration: 2.2, delay, ease: [0.16, 1, 0.3, 1] }}
       style={{ transformPerspective: 1200 }}
-      className="w-full h-full relative overflow-hidden"
+      className="w-full h-full relative overflow-hidden bg-[#010836]"
     >
       <motion.img 
         src={src} 
         alt={alt}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover opacity-90"
         initial={{ filter: 'blur(20px) brightness(0.5)', scale: 1.2 }}
         animate={{ filter: 'blur(0px) brightness(1)', scale: 1 }}
         transition={{ duration: 2.5, delay, ease: [0.16, 1, 0.3, 1] }}
       />
+      {/* Intense Cinematic Vignette */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#010836_120%)] opacity-80 mix-blend-multiply pointer-events-none" />
+      {/* Subtle Inner Glow */}
+      <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[2.5rem] pointer-events-none" />
     </motion.div>
   );
 };
@@ -79,12 +83,12 @@ const HoverFloatCard = ({ children, className }) => {
 /* --- 5. The Epic Solution Visualizer --- */
 const SolutionVisualizer = () => {
   return (
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden opacity-60">
       {/* Expanding Ripple Base */}
       {[1, 2, 3, 4, 5].map((i) => (
         <motion.div
           key={`ripple-${i}`}
-          className="absolute border border-[#6865FA]/30 rounded-full"
+          className="absolute border border-[#6865FA]/15 rounded-full"
           initial={{ width: 0, height: 0, opacity: 1 }}
           animate={{ width: '150vw', height: '150vw', opacity: 0 }}
           transition={{ duration: 8, repeat: Infinity, delay: i * 1.5, ease: 'easeOut' }}
@@ -92,40 +96,40 @@ const SolutionVisualizer = () => {
       ))}
 
       {/* 3D Orbiting Constellation - MASSIVE */}
-      <div className="absolute right-[-20%] lg:right-[10%] w-[120vw] h-[120vw] lg:w-[60vw] lg:h-[60vw]" style={{ perspective: 2000 }}>
+      <div className="absolute right-[-20%] lg:right-0 w-[120vw] h-[120vw] lg:w-[60vw] lg:h-[60vw]" style={{ perspective: 2000 }}>
         <motion.div
           animate={{ rotateY: 360, rotateX: 20 }}
-          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-0 border-[2px] border-[#D4CEFC]/20 rounded-full"
+          transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-0 border border-[#D4CEFC]/10 rounded-full"
           style={{ transformStyle: 'preserve-3d' }}
         >
           {/* Nodes */}
-          <div className="absolute top-0 left-1/2 w-6 h-6 bg-white rounded-full shadow-[0_0_40px_white] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(100px)' }} />
-          <div className="absolute bottom-0 left-1/2 w-4 h-4 bg-[#FFCD00] rounded-full shadow-[0_0_30px_#FFCD00] -translate-x-1/2 translate-y-1/2" style={{ transform: 'translateZ(-100px)' }} />
-          <div className="absolute top-1/2 left-0 w-8 h-8 bg-[#6865FA] rounded-full shadow-[0_0_50px_#6865FA] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(50px)' }} />
+          <div className="absolute top-0 left-1/2 w-4 h-4 bg-white/70 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.5)] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(100px)' }} />
+          <div className="absolute bottom-0 left-1/2 w-3 h-3 bg-[#FFCD00]/70 rounded-full shadow-[0_0_20px_rgba(255,205,0,0.5)] -translate-x-1/2 translate-y-1/2" style={{ transform: 'translateZ(-100px)' }} />
+          <div className="absolute top-1/2 left-0 w-6 h-6 bg-[#6865FA]/70 rounded-full shadow-[0_0_30px_rgba(104,101,250,0.5)] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(50px)' }} />
         </motion.div>
 
         <motion.div
           animate={{ rotateX: 360, rotateZ: -30 }}
-          transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-12 lg:inset-20 border-[2px] border-[#6865FA]/30 rounded-full"
+          transition={{ duration: 50, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-12 lg:inset-20 border border-[#6865FA]/15 rounded-full"
           style={{ transformStyle: 'preserve-3d' }}
         >
           {/* Nodes */}
-          <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-[#FFCD00] rounded-full shadow-[0_0_30px_#FFCD00]" />
-          <div className="absolute bottom-1/4 right-1/4 w-5 h-5 bg-white rounded-full shadow-[0_0_40px_white]" />
+          <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-[#FFCD00]/70 rounded-full shadow-[0_0_20px_rgba(255,205,0,0.5)]" />
+          <div className="absolute bottom-1/4 right-1/4 w-4 h-4 bg-white/70 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.5)]" />
         </motion.div>
       </div>
 
       {/* Supernova Central Core */}
       <motion.div 
         animate={{ 
-          scale: [1, 1.5, 1], 
-          filter: ['blur(40px)', 'blur(80px)', 'blur(40px)'],
+          scale: [1, 1.2, 1], 
+          filter: ['blur(60px)', 'blur(90px)', 'blur(60px)'],
           rotate: [0, 180, 360]
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute right-[-10%] lg:right-[20%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-[conic-gradient(from_90deg_at_50%_50%,#6865FA,#FFCD00,#6865FA)] rounded-full mix-blend-screen opacity-40"
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute right-[-10%] lg:right-[10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-[conic-gradient(from_90deg_at_50%_50%,#6865FA,#FFCD00,#6865FA)] rounded-full mix-blend-screen opacity-15"
       />
     </div>
   );
@@ -272,9 +276,18 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         
         <div className="flex flex-col items-center text-center mb-10">
           <ElegantFade delay={0.2}>
-            <h1 className="font-carla text-6xl md:text-8xl lg:text-[8rem] leading-[0.9] text-white font-medium tracking-tight drop-shadow-2xl" style={{ fontFamily: '"Carla", sans-serif' }}>
+            <motion.h1 
+              animate={{ backgroundPosition: ['200% center', '-200% center'] }}
+              transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+              className="font-carla text-6xl md:text-8xl lg:text-[9rem] leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_0_30px_rgba(104,101,250,0.4)]" 
+              style={{ 
+                fontFamily: '"Carla", sans-serif',
+                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #D4CEFC 45%, #6865FA 50%, #D4CEFC 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundSize: '300% auto',
+              }}
+            >
               Arise Ventures
-            </h1>
+            </motion.h1>
           </ElegantFade>
           
           <ElegantFade delay={0.4} className="mt-8 flex flex-wrap justify-center gap-3">
@@ -318,7 +331,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         {/* Content Floating in the Void */}
         <div className="relative z-10 px-6 md:px-12 max-w-[1400px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
           
-          <motion.div className="lg:col-span-6 xl:col-span-5 relative" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2 }} viewport={{ once: true }}>
+          <motion.div className="lg:col-span-8 xl:col-span-8 relative" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2 }} viewport={{ once: true }}>
             <div className="inline-flex items-center gap-3 mb-8 px-5 py-2 rounded-full border border-[#FFCD00]/30 bg-[#FFCD00]/10 text-[#FFCD00] text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-[#FFCD00] animate-pulse shadow-[0_0_10px_#FFCD00]" />
               The Solution
@@ -327,7 +340,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
             <motion.h3 
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-              className="text-5xl md:text-7xl lg:text-[6rem] font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)] leading-[0.9] mb-10" 
+              className="text-5xl md:text-7xl lg:text-[7rem] font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)] leading-[0.9] mb-12" 
               style={{ 
                 fontFamily: '"Carla", sans-serif',
                 backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #FFCD00 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
@@ -337,7 +350,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               Creative<br/>Solution
             </motion.h3>
             
-            <div className="space-y-8 text-white/90 font-normal text-lg md:text-xl leading-relaxed p-8 md:p-10 rounded-[2.5rem] bg-[#0C185C]/30 backdrop-blur-3xl border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] relative overflow-hidden" style={{ fontFamily: '"Carla", sans-serif' }}>
+            <div className="space-y-8 text-white/90 font-normal text-lg md:text-xl xl:text-2xl leading-relaxed p-8 md:p-12 xl:p-16 rounded-[2.5rem] bg-[#0C185C]/30 backdrop-blur-3xl border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] relative overflow-hidden" style={{ fontFamily: '"Carla", sans-serif' }}>
               {/* Subtle glass reflection inside the text box */}
               <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
               
@@ -351,15 +364,15 @@ const AriseVenturesExperience = ({ navigate, project }) => {
                 transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
                 className="relative z-10 bg-gradient-to-r from-[#6865FA]/40 to-transparent bg-no-repeat pt-6 pb-6 pl-6 mt-10 border-l-4 border-[#FFCD00] rounded-r-xl shadow-lg"
               >
-                <p className="font-medium text-white text-xl md:text-2xl leading-snug">
+                <p className="font-medium text-white text-xl md:text-2xl xl:text-3xl leading-snug">
                   More than a redesign, this was the creation of a visual world that moves with Arise's mission. A world where every detail speaks one truth: bold is just the beginning.
                 </p>
               </motion.div>
             </div>
           </motion.div>
           
-          {/* Empty column allowing the massive visualizer to dominate the right side of the screen */}
-          <div className="lg:col-span-6 xl:col-span-7 h-[300px] lg:h-auto pointer-events-none" />
+          {/* Empty column for balance */}
+          <div className="lg:col-span-4 xl:col-span-4 h-[100px] lg:h-auto pointer-events-none" />
         </div>
       </section>
 
