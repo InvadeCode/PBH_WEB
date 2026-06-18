@@ -45,20 +45,20 @@ const ElegantFade = ({ children, delay = 0, className = "" }) => (
 const CreativeHeroReveal = ({ src, alt, delay = 0 }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, clipPath: 'inset(10% 10% 10% 10% round 30px)', filter: 'blur(20px)' }}
+      animate={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 0px)', filter: 'blur(0px)' }}
       transition={{ duration: 2.5, delay, ease: [0.16, 1, 0.3, 1] }}
       className="w-full h-full relative overflow-hidden"
       style={{
-        WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
-        maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)'
+        WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 95%)',
+        maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 95%)'
       }}
     >
       <motion.img 
         src={src} 
         alt={alt}
         className="w-full h-full object-cover"
-        initial={{ scale: 1.1 }}
+        initial={{ scale: 1.15 }}
         animate={{ scale: 1 }}
         transition={{ duration: 3, delay, ease: [0.16, 1, 0.3, 1] }}
       />
@@ -85,14 +85,14 @@ const SolutionVisualizer = () => {
     <div className="relative w-full h-full min-h-[400px] flex items-center justify-center pointer-events-none">
       {/* Organic Pulsing Blobs (Mesmerizing Fluid Motion) */}
       <motion.div 
-        animate={{ scale: [1, 1.3, 1], rotate: [0, 90, 180, 360] }}
+        animate={{ scale: [1, 1.3, 1], rotate: [0, 90, 180, 360], borderRadius: ["40% 60% 70% 30%", "60% 40% 30% 70%", "40% 60% 70% 30%"] }}
         transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute w-72 h-72 rounded-full bg-gradient-to-tr from-[#6865FA] via-[#D4CEFC] to-transparent blur-[50px] opacity-30 mix-blend-screen"
+        className="absolute w-72 h-72 bg-gradient-to-tr from-[#6865FA] via-[#D4CEFC] to-transparent blur-[50px] opacity-30 mix-blend-screen"
       />
       <motion.div 
-        animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0] }}
+        animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0], borderRadius: ["60% 40% 30% 70%", "40% 60% 70% 30%", "60% 40% 30% 70%"] }}
         transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute w-80 h-80 rounded-full bg-gradient-to-bl from-[#6865FA] via-[#010836] to-[#D4CEFC] blur-[60px] opacity-40 mix-blend-screen"
+        className="absolute w-80 h-80 bg-gradient-to-bl from-[#6865FA] via-[#010836] to-[#D4CEFC] blur-[60px] opacity-40 mix-blend-screen"
       />
 
       {/* Expanding Ripple Base */}
@@ -186,12 +186,12 @@ const AboutGraphic = () => (
     <motion.div 
       animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
       transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-full border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
+      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
     />
     <motion.div 
       animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
       transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-full border border-[#FFCD00]/20 opacity-50 shadow-[0_0_80px_rgba(255,205,0,0.1)] mix-blend-screen pointer-events-none"
+      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#D4CEFC]/20 opacity-50 shadow-[0_0_80px_rgba(212,206,252,0.1)] mix-blend-screen pointer-events-none"
     />
   </>
 );
@@ -201,12 +201,12 @@ const ProblemGraphic = () => (
     <motion.div 
       animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.4, 0.1] }} 
       transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-full bg-[#FFCD00] mix-blend-screen blur-[120px] pointer-events-none"
+      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] bg-[#D4CEFC] mix-blend-screen blur-[120px] pointer-events-none"
     />
     <motion.div 
       animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }} 
       transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-full bg-[#6865FA] mix-blend-screen blur-[140px] pointer-events-none"
+      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] bg-[#6865FA] mix-blend-screen blur-[140px] pointer-events-none"
     />
   </>
 );
@@ -239,7 +239,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
             className="text-5xl md:text-7xl lg:text-[7rem] font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
             style={{ 
               fontFamily: '"Carla", sans-serif',
-              backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #FFCD00 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
+              backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
               backgroundSize: '300% auto',
             }}
           >
@@ -341,7 +341,13 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
           
           {/* Left Side: Text (Seamlessly integrated, no boxes) */}
-          <motion.div className="lg:col-span-7 relative z-10" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 1 }} viewport={{ once: true }}>
+          <motion.div 
+            className="lg:col-span-7 relative z-10" 
+            initial={{ opacity: 0, y: 40, filter: 'blur(15px)' }} 
+            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} 
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} 
+            viewport={{ once: true, margin: "-10%" }}
+          >
             <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-[#D4CEFC] animate-pulse shadow-[0_0_10px_#D4CEFC]" />
               The Solution
@@ -372,9 +378,15 @@ const AriseVenturesExperience = ({ navigate, project }) => {
           </motion.div>
 
           {/* Right Side: Visualizer (Organic & Floating) */}
-          <div className="lg:col-span-5 h-[400px] lg:h-full relative flex items-center justify-center pointer-events-none">
+          <motion.div 
+            className="lg:col-span-5 h-[400px] lg:h-full relative flex items-center justify-center pointer-events-none"
+            initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
+            whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            transition={{ duration: 1.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true, margin: "-10%" }}
+          >
               <SolutionVisualizer />
-          </div>
+          </motion.div>
 
         </div>
       </section>
