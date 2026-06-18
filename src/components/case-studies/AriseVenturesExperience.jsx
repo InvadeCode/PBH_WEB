@@ -221,8 +221,8 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
   const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
 
   return (
-    <section ref={ref} className="h-[200vh] relative w-full">
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+    <section ref={ref} className="h-[200vh] relative w-full" style={{ backgroundColor: '#010836' }}>
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#010836' }}>
         
         <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
           {motionGraphic}
@@ -252,8 +252,10 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
           </p>
         </motion.div>
 
-        {/* Bottom gradient fade to eliminate color partition */}
-        <div className="absolute bottom-0 left-0 right-0 h-[25%] bg-gradient-to-t from-[#010836] to-transparent pointer-events-none z-30" />
+        {/* Top gradient – blends IN from previous section */}
+        <div className="absolute top-0 left-0 right-0 h-[30%] bg-gradient-to-b from-[#010836] to-transparent pointer-events-none z-30" />
+        {/* Bottom gradient – blends OUT into next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-[#010836] to-transparent pointer-events-none z-30" />
       </div>
     </section>
   );
