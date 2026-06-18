@@ -80,56 +80,53 @@ const HoverFloatCard = ({ children, className }) => {
   );
 };
 
-/* --- 5. The Epic Solution Visualizer --- */
+/* --- 5. Sophisticated Solution Visualizer --- */
 const SolutionVisualizer = () => {
   return (
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden opacity-60">
+    <div className="relative w-full h-full min-h-[350px] flex items-center justify-center">
       {/* Expanding Ripple Base */}
-      {[1, 2, 3, 4, 5].map((i) => (
+      {[1, 2, 3].map((i) => (
         <motion.div
           key={`ripple-${i}`}
-          className="absolute border border-[#6865FA]/15 rounded-full"
+          className="absolute border border-[#D4CEFC]/20 rounded-full"
           initial={{ width: 0, height: 0, opacity: 1 }}
-          animate={{ width: '150vw', height: '150vw', opacity: 0 }}
-          transition={{ duration: 8, repeat: Infinity, delay: i * 1.5, ease: 'easeOut' }}
+          animate={{ width: 450, height: 450, opacity: 0 }}
+          transition={{ duration: 5, repeat: Infinity, delay: i * 1.6, ease: 'easeOut' }}
         />
       ))}
 
-      {/* 3D Orbiting Constellation - MASSIVE */}
-      <div className="absolute right-[-20%] lg:right-0 w-[120vw] h-[120vw] lg:w-[60vw] lg:h-[60vw]" style={{ perspective: 2000 }}>
+      {/* 3D Orbiting Constellation */}
+      <div className="relative w-64 h-64" style={{ perspective: 1200 }}>
         <motion.div
-          animate={{ rotateY: 360, rotateX: 20 }}
-          transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-0 border border-[#D4CEFC]/10 rounded-full"
+          animate={{ rotateY: 360, rotateX: 15 }}
+          transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-0 border border-[#D4CEFC]/30 rounded-full"
           style={{ transformStyle: 'preserve-3d' }}
         >
           {/* Nodes */}
-          <div className="absolute top-0 left-1/2 w-4 h-4 bg-white/70 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.5)] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(100px)' }} />
-          <div className="absolute bottom-0 left-1/2 w-3 h-3 bg-[#FFCD00]/70 rounded-full shadow-[0_0_20px_rgba(255,205,0,0.5)] -translate-x-1/2 translate-y-1/2" style={{ transform: 'translateZ(-100px)' }} />
-          <div className="absolute top-1/2 left-0 w-6 h-6 bg-[#6865FA]/70 rounded-full shadow-[0_0_30px_rgba(104,101,250,0.5)] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(50px)' }} />
+          <div className="absolute top-0 left-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_15px_white] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(24px)' }} />
+          <div className="absolute bottom-0 left-1/2 w-2.5 h-2.5 bg-[#D4CEFC] rounded-full shadow-[0_0_15px_#D4CEFC] -translate-x-1/2 translate-y-1/2" style={{ transform: 'translateZ(-24px)' }} />
+          <div className="absolute top-1/2 left-0 w-3.5 h-3.5 bg-[#6865FA] rounded-full shadow-[0_0_20px_#6865FA] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(10px)' }} />
+          <div className="absolute top-1/2 right-0 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_white] translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(-10px)' }} />
         </motion.div>
 
         <motion.div
-          animate={{ rotateX: 360, rotateZ: -30 }}
-          transition={{ duration: 50, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-12 lg:inset-20 border border-[#6865FA]/15 rounded-full"
+          animate={{ rotateX: 360, rotateZ: 30 }}
+          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-5 border border-[#6865FA]/40 rounded-full"
           style={{ transformStyle: 'preserve-3d' }}
         >
           {/* Nodes */}
-          <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-[#FFCD00]/70 rounded-full shadow-[0_0_20px_rgba(255,205,0,0.5)]" />
-          <div className="absolute bottom-1/4 right-1/4 w-4 h-4 bg-white/70 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.5)]" />
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#D4CEFC] rounded-full shadow-[0_0_10px_#D4CEFC]" />
+          <div className="absolute bottom-1/4 right-1/4 w-2.5 h-2.5 bg-white rounded-full shadow-[0_0_15px_white]" />
         </motion.div>
       </div>
 
-      {/* Supernova Central Core */}
+      {/* Sophisticated Central Core */}
       <motion.div 
-        animate={{ 
-          scale: [1, 1.2, 1], 
-          filter: ['blur(60px)', 'blur(90px)', 'blur(60px)'],
-          rotate: [0, 180, 360]
-        }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute right-[-10%] lg:right-[10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-[conic-gradient(from_90deg_at_50%_50%,#6865FA,#FFCD00,#6865FA)] rounded-full mix-blend-screen opacity-15"
+        animate={{ scale: [1, 1.2, 1], filter: ['blur(20px)', 'blur(35px)', 'blur(20px)'] }}
+        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute w-28 h-28 bg-gradient-to-tr from-[#6865FA] to-[#D4CEFC] rounded-full mix-blend-screen opacity-50"
       />
     </div>
   );
@@ -322,58 +319,60 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         motionGraphic={<ProblemGraphic />}
       />
 
-      {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (Unboxed & Epic) ── */}
-      <section className="relative w-full min-h-screen flex items-center overflow-hidden py-32 mt-20 border-t border-white/5 bg-gradient-to-b from-transparent via-[#010836] to-transparent">
-        
-        {/* Massive Screen-Spanning Motion Graphic */}
-        <SolutionVisualizer />
+      {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (Boxed & Sophisticated) ── */}
+      <section className="py-24 md:py-32 px-6 md:px-12 max-w-[1300px] mx-auto relative z-10 border-t border-white/5 mt-20">
+        <HoverFloatCard className="w-full">
+          <div className="relative group w-full">
+            {/* Ambient Background Aura */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#6865FA]/10 via-transparent to-[#D4CEFC]/10 rounded-[3rem] blur-xl group-hover:blur-2xl transition-all duration-1000" />
+            
+            {/* The Box */}
+            <div className="relative w-full bg-gradient-to-r from-[#0C185C]/90 via-[#0C185C]/90 to-[#1A164A]/90 backdrop-blur-3xl p-8 md:p-12 lg:p-16 rounded-[2.5rem] border border-white/10 shadow-[0_40px_80px_rgba(0,0,0,0.6)] overflow-hidden">
+              
+              {/* Smooth Background Transition inside the box */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#6865FA]/5 to-[#6865FA]/20 opacity-50 pointer-events-none" />
 
-        {/* Content Floating in the Void */}
-        <div className="relative z-10 px-6 md:px-12 max-w-[1400px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-center">
-          
-          <motion.div className="lg:col-span-8 xl:col-span-8 relative" initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1.2 }} viewport={{ once: true }}>
-            <div className="inline-flex items-center gap-3 mb-8 px-5 py-2 rounded-full border border-[#FFCD00]/30 bg-[#FFCD00]/10 text-[#FFCD00] text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-[#FFCD00] animate-pulse shadow-[0_0_10px_#FFCD00]" />
-              The Solution
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
+                
+                {/* Left Side: Text (The Hero) */}
+                <motion.div className="lg:col-span-8 relative z-10 pr-0 lg:pr-8" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 1 }} viewport={{ once: true }}>
+                  <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full border border-[#D4CEFC]/30 bg-[#D4CEFC]/10 text-[#D4CEFC] text-xs font-bold tracking-[0.2em] uppercase">
+                    <span className="w-2 h-2 rounded-full bg-[#D4CEFC] animate-pulse" />
+                    The Solution
+                  </div>
+                  
+                  <h3 className="font-carla text-4xl md:text-6xl text-white mb-8 font-medium tracking-tight drop-shadow-md" style={{ fontFamily: '"Carla", sans-serif' }}>
+                    Creative Solution
+                  </h3>
+                  
+                  <div className="space-y-6 text-white/90 font-normal text-base md:text-lg leading-relaxed" style={{ fontFamily: '"Carla", sans-serif' }}>
+                    <p>For Arise Ventures, the rebrand began with a single idea—what does it mean to "back the bold"? At PurpleBlue House, we translated that into a living visual identity rooted in movement, momentum, and moonshots. At its heart was a new logomark: a ripple, symbolizing bold capital fueling bold founders and scalable innovation.</p>
+                    <p>Grounded in deep stakeholder interviews, our approach uncovered the mindset driving Arise. This informed a design system of gradients and constellation-inspired elements, reflecting scale, guidance, and interconnectedness. The visual language is future-ready and fearless—bold enough to command attention, yet polished for boardrooms and global stages.</p>
+                    
+                    {/* Highlighted text block */}
+                    <motion.div 
+                      initial={{ backgroundSize: '0% 100%' }}
+                      whileInView={{ backgroundSize: '100% 100%' }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
+                      className="bg-gradient-to-r from-[#6865FA]/30 to-transparent bg-no-repeat pt-5 pb-5 pl-6 mt-8 border-l-4 border-[#D4CEFC] rounded-r-xl"
+                    >
+                      <p className="font-medium text-white text-lg md:text-xl leading-snug">
+                        More than a redesign, this was the creation of a visual world that moves with Arise's mission. A world where every detail speaks one truth: bold is just the beginning.
+                      </p>
+                    </motion.div>
+                  </div>
+                </motion.div>
+
+                {/* Right Side: Visualizer (Supportive) */}
+                <div className="lg:col-span-4 h-[350px] lg:h-full relative flex items-center justify-center">
+                   <SolutionVisualizer />
+                </div>
+
+              </div>
             </div>
-            
-            <motion.h3 
-              animate={{ backgroundPosition: ['200% center', '-200% center'] }}
-              transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-              className="text-5xl md:text-7xl lg:text-[7rem] font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)] leading-[0.9] mb-12" 
-              style={{ 
-                fontFamily: '"Carla", sans-serif',
-                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #FFCD00 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
-                backgroundSize: '300% auto',
-              }}
-            >
-              Creative<br/>Solution
-            </motion.h3>
-            
-            <div className="space-y-8 text-white/90 font-normal text-lg md:text-xl xl:text-2xl leading-relaxed p-8 md:p-12 xl:p-16 rounded-[2.5rem] bg-[#0C185C]/30 backdrop-blur-3xl border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] relative overflow-hidden" style={{ fontFamily: '"Carla", sans-serif' }}>
-              {/* Subtle glass reflection inside the text box */}
-              <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
-              
-              <p className="relative z-10">For Arise Ventures, the rebrand began with a single idea—what does it mean to "back the bold"? At PurpleBlue House, we translated that into a living visual identity rooted in movement, momentum, and moonshots. At its heart was a new logomark: a ripple, symbolizing bold capital fueling bold founders and scalable innovation.</p>
-              <p className="relative z-10">Grounded in deep stakeholder interviews, our approach uncovered the mindset driving Arise. This informed a design system of gradients and constellation-inspired elements, reflecting scale, guidance, and interconnectedness. The visual language is future-ready and fearless—bold enough to command attention, yet polished for boardrooms and global stages.</p>
-              
-              <motion.div 
-                initial={{ backgroundSize: '0% 100%' }}
-                whileInView={{ backgroundSize: '100% 100%' }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
-                className="relative z-10 bg-gradient-to-r from-[#6865FA]/40 to-transparent bg-no-repeat pt-6 pb-6 pl-6 mt-10 border-l-4 border-[#FFCD00] rounded-r-xl shadow-lg"
-              >
-                <p className="font-medium text-white text-xl md:text-2xl xl:text-3xl leading-snug">
-                  More than a redesign, this was the creation of a visual world that moves with Arise's mission. A world where every detail speaks one truth: bold is just the beginning.
-                </p>
-              </motion.div>
-            </div>
-          </motion.div>
-          
-          {/* Empty column for balance */}
-          <div className="lg:col-span-4 xl:col-span-4 h-[100px] lg:h-auto pointer-events-none" />
-        </div>
+          </div>
+        </HoverFloatCard>
       </section>
 
       {/* ── 5. STATEMENT ── */}
