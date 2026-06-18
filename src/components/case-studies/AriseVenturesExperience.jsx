@@ -336,62 +336,68 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       )}
 
       {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (Seamlessly Blended) ── */}
-      <section className="py-24 md:py-32 px-6 md:px-12 max-w-[1400px] mx-auto relative z-10 mt-10">
+      <section className="relative w-full z-10" style={{ backgroundColor: '#010836' }}>
         
-        {/* Ambient Background Aura behind the whole section (blended) */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#6865FA_0%,transparent_60%)] opacity-[0.15] blur-[80px] pointer-events-none" />
+        {/* Top gradient – blends IN from previous DramaticSection */}
+        <div className="absolute top-0 left-0 right-0 h-[120px] bg-gradient-to-b from-[#010836] to-transparent pointer-events-none z-20" />
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+        <div className="py-24 md:py-32 px-6 md:px-12 max-w-[1400px] mx-auto relative">
+        
+          {/* Ambient Background Aura behind the whole section (blended) */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#6865FA_0%,transparent_60%)] opacity-[0.15] blur-[80px] pointer-events-none" />
+        
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
           
-          {/* Left Side: Text (Seamlessly integrated, no boxes) */}
-          <motion.div 
-            className="lg:col-span-7 relative z-10" 
-            initial={{ opacity: 0, y: 40, filter: 'blur(15px)' }} 
-            whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} 
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} 
-            viewport={{ once: true, margin: "-10%" }}
-          >
-            <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-[#D4CEFC] animate-pulse shadow-[0_0_10px_#D4CEFC]" />
-              The Solution
-            </div>
+            {/* Left Side: Text (Seamlessly integrated, no boxes) */}
+            <motion.div 
+              className="lg:col-span-7 relative z-10" 
+              initial={{ opacity: 0, y: 40, filter: 'blur(15px)' }} 
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} 
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} 
+              viewport={{ once: true, margin: "-10%" }}
+            >
+              <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-md">
+                <span className="w-2 h-2 rounded-full bg-[#D4CEFC] animate-pulse shadow-[0_0_10px_#D4CEFC]" />
+                The Solution
+              </div>
             
-            <h3 className="font-carla text-5xl md:text-7xl text-white mb-10 font-medium tracking-tight drop-shadow-lg" style={{ fontFamily: '"Carla", sans-serif' }}>
-              Creative Solution
-            </h3>
+              <h3 className="font-carla text-5xl md:text-7xl text-white mb-10 font-medium tracking-tight drop-shadow-lg" style={{ fontFamily: '"Carla", sans-serif' }}>
+                Creative Solution
+              </h3>
             
-            {/* Readable Text with NO box */}
-            <div className="space-y-8 text-white/95 font-normal text-lg md:text-xl leading-relaxed" style={{ fontFamily: '"Carla", sans-serif' }}>
-              <p>{project?.solution || 'A comprehensive brand strategy and visual identity system designed to elevate and unify the brand presence across all touchpoints.'}</p>
+              {/* Readable Text with NO box */}
+              <div className="space-y-8 text-white/95 font-normal text-lg md:text-xl leading-relaxed" style={{ fontFamily: '"Carla", sans-serif' }}>
+                <p>{project?.solution || 'A comprehensive brand strategy and visual identity system designed to elevate and unify the brand presence across all touchpoints.'}</p>
               
-              {/* Highlighted text block */}
-              {(project?.fullStory?.execution || project?.solutionHeading) && (
-                <motion.div 
-                  initial={{ backgroundSize: '0% 100%' }}
-                  whileInView={{ backgroundSize: '100% 100%' }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
-                  className="bg-gradient-to-r from-[#6865FA]/20 to-transparent bg-no-repeat pt-6 pb-6 pl-8 mt-10 border-l-4 border-[#D4CEFC] rounded-r-xl"
-                >
-                  <p className="font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
-                    {project?.fullStory?.execution || project?.solutionHeading}
-                  </p>
-                </motion.div>
-              )}
-            </div>
-          </motion.div>
+                {/* Highlighted text block */}
+                {(project?.fullStory?.execution || project?.solutionHeading) && (
+                  <motion.div 
+                    initial={{ backgroundSize: '0% 100%' }}
+                    whileInView={{ backgroundSize: '100% 100%' }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
+                    className="bg-gradient-to-r from-[#6865FA]/20 to-transparent bg-no-repeat pt-6 pb-6 pl-8 mt-10 border-l-4 border-[#D4CEFC] rounded-r-xl"
+                  >
+                    <p className="font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
+                      {project?.fullStory?.execution || project?.solutionHeading}
+                    </p>
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
 
-          {/* Right Side: Visualizer (Organic & Floating) */}
-          <motion.div 
-            className="lg:col-span-5 h-[400px] lg:h-full relative flex items-center justify-center pointer-events-none"
-            initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
-            whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            viewport={{ once: true, margin: "-10%" }}
-          >
-              <SolutionVisualizer />
-          </motion.div>
+            {/* Right Side: Visualizer (Organic & Floating) */}
+            <motion.div 
+              className="lg:col-span-5 h-[400px] lg:h-full relative flex items-center justify-center pointer-events-none"
+              initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
+              whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 1.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true, margin: "-10%" }}
+            >
+                <SolutionVisualizer />
+            </motion.div>
 
+          </div>
         </div>
       </section>
 
