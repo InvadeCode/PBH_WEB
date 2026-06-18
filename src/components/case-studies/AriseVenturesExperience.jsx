@@ -235,10 +235,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, []);
 
   const heroImg = project?.fullStory?.heroImg || '';
-  const img1 = project?.fullStory?.images?.[0] || '';
-  const img2 = project?.fullStory?.images?.[1] || '';
-  const img3 = project?.fullStory?.images?.[2] || '';
-  const images = [img1, img2, img3].filter(Boolean);
+  const cmsImages = project?.fullStory?.images || [];
 
   return (
     <div className="w-full min-h-screen font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
@@ -350,29 +347,36 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         </ElegantFade>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[300px] md:auto-rows-[400px]">
-          <div className="md:col-span-8 row-span-1 md:row-span-2 rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative">
-             {images[0] ? (
-               <ParallaxImage src={images[0]} alt="Highlight 01" delay={0.1} yOffset={70} />
-             ) : (
-               <div className="w-full h-full bg-[#0C185C]/50 flex items-center justify-center text-white/30 tracking-widest font-light">HIGHLIGHT 01</div>
-             )}
-          </div>
+          {cmsImages.length > 0 ? (
+            cmsImages.map((imgUrl, index) => {
+              // Mathematical Grid Pattern: Loops every 5 images to create an infinite, perfect masonry layout
+              const patternIndex = index % 5;
+              let spanClass = "md:col-span-12";
+              if (patternIndex === 0) spanClass = "md:col-span-8 md:row-span-2"; // 1 massive block
+              if (patternIndex === 1) spanClass = "md:col-span-4 md:row-span-1"; // 2 side blocks
+              if (patternIndex === 2) spanClass = "md:col-span-4 md:row-span-1"; 
+              if (patternIndex === 3) spanClass = "md:col-span-6 md:row-span-1"; // 2 half-width blocks below
+              if (patternIndex === 4) spanClass = "md:col-span-6 md:row-span-1";
 
-          <div className="md:col-span-4 row-span-1 rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative">
-             {images[1] ? (
-               <ParallaxImage src={images[1]} alt="Highlight 02" delay={0.3} yOffset={40} />
-             ) : (
-               <div className="w-full h-full bg-[#0C185C]/30 flex items-center justify-center text-white/30 tracking-widest font-light">HIGHLIGHT 02</div>
-             )}
-          </div>
-
-          <div className="md:col-span-4 row-span-1 rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-gradient-to-br from-[#0C185C] to-[#010836]">
-             {images[2] ? (
-               <ParallaxImage src={images[2]} alt="Highlight 03" delay={0.5} yOffset={-50} />
-             ) : (
-               <div className="w-full h-full flex items-center justify-center text-white/30 tracking-widest font-light">HIGHLIGHT 03</div>
-             )}
-          </div>
+              // Alternating Parallax offset directions to keep motion feeling organic
+              const yOffsets = [70, 40, -50, 60, -30];
+              
+              return (
+                <div key={index} className={`${spanClass} rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-gradient-to-br from-[#0C185C] to-[#010836]`}>
+                  <ParallaxImage 
+                    src={imgUrl} 
+                    alt={`Highlight 0${index + 1}`} 
+                    delay={0.1 * (patternIndex + 1)} 
+                    yOffset={yOffsets[patternIndex]} 
+                  />
+                </div>
+              );
+            })
+          ) : (
+            <div className="md:col-span-12 rounded-[2rem] min-h-[400px] bg-[#0C185C]/30 flex items-center justify-center text-white/30 tracking-widest font-light ring-1 ring-white/10">
+              AWAITING CMS MEDIA
+            </div>
+          )}
         </div>
       </section>
 
