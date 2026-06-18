@@ -281,7 +281,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </div>
 
       {/* ── 1. CINEMATIC HERO (Boxed) ── */}
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-40 md:pb-48 pt-10 px-4 md:px-8">
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-40 md:pb-48 pt-10 px-4 md:px-8" style={{ backgroundColor: '#010836' }}>
         
         {/* Floating Box Hero Banner */}
         <div className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto h-[50vh] md:h-[65vh] rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
@@ -403,69 +403,73 @@ const AriseVenturesExperience = ({ navigate, project }) => {
 
       {/* ── 5. STATEMENT ── */}
       {(project?.results?.length > 0) && (
-        <section className="py-24 px-6 md:px-12 max-w-[1000px] mx-auto text-center relative z-10">
-          <ElegantFade>
-            <h2 className="font-carla text-2xl md:text-3xl lg:text-4xl leading-[1.4] text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
-              "{project.results[0]}"
-            </h2>
-          </ElegantFade>
+        <section className="py-24 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
+          <div className="max-w-[1000px] mx-auto">
+            <ElegantFade>
+              <h2 className="font-carla text-2xl md:text-3xl lg:text-4xl leading-[1.4] text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
+                "{project.results[0]}"
+              </h2>
+            </ElegantFade>
+          </div>
         </section>
       )}
 
       {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
-      <section className="pb-32 px-6 md:px-12 max-w-[1400px] mx-auto relative z-10">
-        <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
-          <h2 className="font-carla text-3xl md:text-5xl text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
-            Ecosystem Highlights
-          </h2>
-        </ElegantFade>
+      <section className="relative w-full z-10" style={{ backgroundColor: '#010836' }}>
+        <div className="pb-32 px-6 md:px-12 max-w-[1400px] mx-auto relative">
+          <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
+            <h2 className="font-carla text-3xl md:text-5xl text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
+              Ecosystem Highlights
+            </h2>
+          </ElegantFade>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[300px] md:auto-rows-[400px]">
-          {cmsImages.length > 0 ? (
-            cmsImages.map((imgUrl, index) => {
-              // Mathematical Grid Pattern: Loops every 5 images to create an infinite, perfect masonry layout
-              const patternIndex = index % 5;
-              let spanClass = "md:col-span-12";
-              if (patternIndex === 0) spanClass = "md:col-span-8 md:row-span-2"; // 1 massive block
-              if (patternIndex === 1) spanClass = "md:col-span-4 md:row-span-1"; // 2 side blocks
-              if (patternIndex === 2) spanClass = "md:col-span-4 md:row-span-1"; 
-              if (patternIndex === 3) spanClass = "md:col-span-6 md:row-span-1"; // 2 half-width blocks below
-              if (patternIndex === 4) spanClass = "md:col-span-6 md:row-span-1";
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[300px] md:auto-rows-[400px]">
+            {cmsImages.length > 0 ? (
+              cmsImages.map((imgUrl, index) => {
+                const patternIndex = index % 5;
+                let spanClass = "md:col-span-12";
+                if (patternIndex === 0) spanClass = "md:col-span-8 md:row-span-2";
+                if (patternIndex === 1) spanClass = "md:col-span-4 md:row-span-1";
+                if (patternIndex === 2) spanClass = "md:col-span-4 md:row-span-1"; 
+                if (patternIndex === 3) spanClass = "md:col-span-6 md:row-span-1";
+                if (patternIndex === 4) spanClass = "md:col-span-6 md:row-span-1";
 
-              // Alternating Parallax offset directions to keep motion feeling organic
-              const yOffsets = [70, 40, -50, 60, -30];
-              
-              return (
-                <div key={index} className={`${spanClass} rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-gradient-to-br from-[#0C185C] to-[#010836]`}>
-                  <ParallaxImage 
-                    src={imgUrl} 
-                    alt={`Highlight 0${index + 1}`} 
-                    delay={0.1 * (patternIndex + 1)} 
-                    yOffset={yOffsets[patternIndex]} 
-                  />
-                </div>
-              );
-            })
-          ) : (
-            <div className="md:col-span-12 rounded-[2rem] min-h-[400px] bg-[#0C185C]/30 flex items-center justify-center text-white/30 tracking-widest font-light ring-1 ring-white/10">
-              AWAITING CMS MEDIA
-            </div>
-          )}
+                const yOffsets = [70, 40, -50, 60, -30];
+                
+                return (
+                  <div key={index} className={`${spanClass} rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-gradient-to-br from-[#0C185C] to-[#010836]`}>
+                    <ParallaxImage 
+                      src={imgUrl} 
+                      alt={`Highlight 0${index + 1}`} 
+                      delay={0.1 * (patternIndex + 1)} 
+                      yOffset={yOffsets[patternIndex]} 
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <div className="md:col-span-12 rounded-[2rem] min-h-[400px] bg-[#0C185C]/30 flex items-center justify-center text-white/30 tracking-widest font-light ring-1 ring-white/10">
+                AWAITING CMS MEDIA
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
       {/* ── 7. FOOTER ── */}
-      <section className="pt-12 pb-32 px-6 md:px-12 max-w-[1200px] mx-auto text-center relative z-10">
-        <ElegantFade>
-          <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#D4CEFC] mb-6 font-medium">Back to Portfolio</p>
-          <motion.h2 
-            onClick={() => navigate('work')} 
-            className="font-carla text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity inline-block"
-            style={{ fontFamily: '"Carla", sans-serif' }}
-          >
-            All Work
-          </motion.h2>
-        </ElegantFade>
+      <section className="pt-12 pb-32 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
+        <div className="max-w-[1200px] mx-auto">
+          <ElegantFade>
+            <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#D4CEFC] mb-6 font-medium">Back to Portfolio</p>
+            <motion.h2 
+              onClick={() => navigate('work')} 
+              className="font-carla text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity inline-block"
+              style={{ fontFamily: '"Carla", sans-serif' }}
+            >
+              All Work
+            </motion.h2>
+          </ElegantFade>
+        </div>
       </section>
       
     </div>
