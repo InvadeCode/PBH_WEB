@@ -41,25 +41,24 @@ const ElegantFade = ({ children, delay = 0, className = "" }) => (
   </motion.div>
 );
 
-/* --- 3. Chic Image Mask Wipes --- */
-const ImageReveal = ({ src, alt, delay = 0 }) => {
+/* --- 3. Creative Hero Entrance --- */
+const CreativeHeroReveal = ({ src, alt, delay = 0 }) => {
   return (
     <motion.div
-      initial={{ clipPath: 'inset(100% 0 0 0)' }}
-      whileInView={{ clipPath: 'inset(0% 0 0 0)' }}
-      viewport={{ once: true, margin: "-10%" }}
-      transition={{ duration: 1.4, delay, ease: [0.25, 1, 0.5, 1] }}
-      className="w-full h-full relative group overflow-hidden"
+      initial={{ clipPath: 'circle(0% at 50% 50%)', rotateX: 10, scale: 0.95 }}
+      animate={{ clipPath: 'circle(150% at 50% 50%)', rotateX: 0, scale: 1 }}
+      transition={{ duration: 2.2, delay, ease: [0.16, 1, 0.3, 1] }}
+      style={{ transformPerspective: 1200 }}
+      className="w-full h-full relative overflow-hidden"
     >
       <motion.img 
         src={src} 
         alt={alt}
-        className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105"
-        initial={{ scale: 1.15, filter: 'blur(10px)' }}
-        whileInView={{ scale: 1, filter: 'blur(0px)' }}
-        transition={{ duration: 1.6, delay, ease: [0.25, 1, 0.5, 1] }}
+        className="w-full h-full object-cover"
+        initial={{ filter: 'blur(20px) brightness(0.5)', scale: 1.2 }}
+        animate={{ filter: 'blur(0px) brightness(1)', scale: 1 }}
+        transition={{ duration: 2.5, delay, ease: [0.16, 1, 0.3, 1] }}
       />
-      <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-1000" />
     </motion.div>
   );
 };
@@ -138,11 +137,14 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
         className="w-full h-[140%] object-cover absolute top-[-20%] left-0 transition-transform duration-[2s] group-hover:scale-110 opacity-80 group-hover:opacity-100"
       />
       
-      <div className="absolute inset-x-0 bottom-0 p-8 translate-y-full group-hover:translate-y-0 transition-transform duration-[1s] ease-[cubic-bezier(0.25,1,0.5,1)] bg-gradient-to-t from-[#010836] via-[#010836]/90 to-transparent">
-        <h4 style={{ fontFamily: '"Carla", sans-serif' }} className="text-white text-3xl font-medium tracking-tight">
-           Explore Visuals
-        </h4>
-        <div className="w-8 h-[2px] bg-[#FFCD00] mt-4 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 delay-[200ms]" />
+      {/* Creative Glassmorphism Overlay on Hover */}
+      <div className="absolute inset-0 bg-[#0C185C]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay" />
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]">
+        <div className="w-16 h-16 rounded-full backdrop-blur-xl bg-white/10 border border-white/20 flex items-center justify-center transform scale-50 group-hover:scale-100 transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+           <svg className="w-6 h-6 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4v16m8-8H4" />
+           </svg>
+        </div>
       </div>
     </motion.div>
   );
@@ -248,7 +250,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
 
         <div className="relative w-full h-[60vh] md:h-[75vh] rounded-[2.5rem] overflow-hidden shadow-[0_30px_60px_rgba(0,0,0,0.6)] ring-1 ring-white/10">
            {heroImg ? (
-             <ImageReveal src={heroImg} alt="Arise Ventures Banner" delay={0.6} />
+             <CreativeHeroReveal src={heroImg} alt="Arise Ventures Banner" delay={0.2} />
            ) : (
              <div className="w-full h-full bg-[#0C185C] flex items-center justify-center text-[#6865FA] text-xl font-light tracking-widest">HERO BANNER</div>
            )}
@@ -310,7 +312,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 5. STATEMENT ── */}
       <section className="py-24 px-6 md:px-12 max-w-[1000px] mx-auto text-center relative z-10 border-t border-white/5">
         <ElegantFade>
-          <h2 className="font-carla text-3xl md:text-5xl lg:text-6xl leading-[1.3] text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
+          <h2 className="font-carla text-2xl md:text-3xl lg:text-4xl leading-[1.4] text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
             "Rebranded bold capital with a ripple of fearless design and strategic clarity. From constellation cues to a confident logomark, Arise now radiates momentum across every medium."
           </h2>
         </ElegantFade>
