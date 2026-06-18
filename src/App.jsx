@@ -9,7 +9,7 @@ import {
   ArrowLeft, ArrowDown, Menu, X, Globe, MoveRight,
   Lightbulb, BookOpen, Fingerprint, Dna, Rocket,
   Mail, MessageSquare, Terminal, Layers, Compass, PenTool,
-  ChevronUp, ChevronDown, Check, Briefcase, FileText, User, Users, Activity,
+  ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Check, Briefcase, FileText, User, Users, Activity,
   Shield, Lock, Scale, Target, BarChart2, Command, ArrowUpRight, CheckSquare,
   Quote, Printer, Download, MonitorPlay, MapPin, Phone, Clock, Plus, Loader2, AlertCircle,
   UploadCloud, Paperclip
@@ -943,16 +943,21 @@ const StrategicEngine = ({ navigate }) => {
     if (savedState) {
       try {
         const parsed = JSON.parse(savedState);
-        if (parsed.step) setStep(parsed.step);
-        if (parsed.answers) setAnswers(parsed.answers);
-        if (parsed.comments) setComments(parsed.comments);
-        if (parsed.clusters) setClusters(parsed.clusters);
-        if (parsed.routes) setRoutes(parsed.routes);
-        if (parsed.selectedRoutes) setSelectedRoutes(parsed.selectedRoutes);
-        if (parsed.selectedDeliverables) setSelectedDeliverables(parsed.selectedDeliverables);
-        if (parsed.priorities) setPriorities(parsed.priorities);
-        if (parsed.context) setContext(parsed.context);
-        if (parsed.leadForm) setLeadForm(parsed.leadForm);
+        // Clear saved state if the user already reached the final submission/results screen
+        if (parsed.step && parsed.step >= QUIZ_QUESTIONS.length + 1) {
+          localStorage.removeItem('pbh_scope_builder_state');
+        } else {
+          if (parsed.step) setStep(parsed.step);
+          if (parsed.answers) setAnswers(parsed.answers);
+          if (parsed.comments) setComments(parsed.comments);
+          if (parsed.clusters) setClusters(parsed.clusters);
+          if (parsed.routes) setRoutes(parsed.routes);
+          if (parsed.selectedRoutes) setSelectedRoutes(parsed.selectedRoutes);
+          if (parsed.selectedDeliverables) setSelectedDeliverables(parsed.selectedDeliverables);
+          if (parsed.priorities) setPriorities(parsed.priorities);
+          if (parsed.context) setContext(parsed.context);
+          if (parsed.leadForm) setLeadForm(parsed.leadForm);
+        }
       } catch (e) {
         console.error("Failed to load saved progress", e);
       }
@@ -2826,6 +2831,82 @@ const Header = ({ navigate, current }) => {
     </div>
   );
 
+  const WorkMegaMenuCarousel = ({ items, onNavigate }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    return (
+      <div className="relative w-full h-[280px] flex items-center justify-center perspective-[1000px] overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.02]">
+        {items.map((cs, i) => {
+          const offset = i - currentIndex;
+          const absOffset = Math.abs(offset);
+          const isActive = offset === 0;
+          
+          const img = cs.fullStory?.heroImg || cs.bannerImage || null;
+          const hexColor = cs.colors?.[0] || palette[cs.type] || palette.primary;
+          
+          return (
+            <motion.div
+              key={cs.id}
+              className={`absolute top-1/2 left-1/2 rounded-2xl overflow-hidden shadow-2xl cursor-pointer group ${isActive ? 'shadow-black/60 border border-white/10' : 'shadow-black/20'}`}
+              initial={false}
+              animate={{
+                x: `calc(-50% + ${offset * 120}px)`,
+                y: '-50%',
+                scale: isActive ? 1 : Math.max(0.7, 1 - absOffset * 0.15),
+                rotateY: offset * -15,
+                zIndex: 30 - absOffset,
+                opacity: absOffset > 2 ? 0 : (isActive ? 1 : 0.4)
+              }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              style={{ width: '220px', height: '240px', transformOrigin: 'center center' }}
+              onClick={(e) => {
+                 if (!isActive) {
+                   e.stopPropagation();
+                   setCurrentIndex(i);
+                 } else {
+                   onNavigate(cs.id);
+                 }
+              }}
+            >
+              {img ? (
+                <img src={img} className="w-full h-full object-cover" alt={cs.client} />
+              ) : (
+                <div className="w-full h-full" style={{ background: `linear-gradient(to bottom right, ${hexColor}, #010836)` }} />
+              )}
+              
+              <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/40 to-transparent flex flex-col justify-end p-5">
+                 <span className="text-[10px] tracking-widest uppercase mb-1 block font-medium font-primary" style={{ color: hexColor }}>{cs.sector}</span>
+                 <h4 className="text-white font-medium text-base font-secondary leading-tight">{cs.client}</h4>
+              </div>
+              
+              {isActive && (
+                 <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                   <ArrowUpRight size={14} />
+                 </div>
+              )}
+            </motion.div>
+          );
+        })}
+        
+        {/* Controls */}
+        <div className="absolute bottom-4 right-4 flex gap-2 z-50">
+          <button 
+            onClick={(e) => { e.stopPropagation(); setCurrentIndex(prev => Math.max(0, prev - 1)); }}
+            className={`w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-colors ${currentIndex === 0 ? 'text-white/30 cursor-not-allowed' : 'text-white hover:bg-white/20'}`}
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button 
+            onClick={(e) => { e.stopPropagation(); setCurrentIndex(prev => Math.min(items.length - 1, prev + 1)); }}
+            className={`w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-colors ${currentIndex === items.length - 1 ? 'text-white/30 cursor-not-allowed' : 'text-white hover:bg-white/20'}`}
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   const WorkMegaMenu = () => (
     <div className="flex gap-12 text-left w-full">
       <div className="w-1/3 pr-12 border-r border-white/5 flex flex-col items-start">
@@ -2834,25 +2915,11 @@ const Header = ({ navigate, current }) => {
         <p className="text-white/50 text-sm leading-relaxed mb-8 font-secondary">Case studies and full visual archive proving our thinking across strategy, identity, and campaigns.</p>
         <button onClick={() => { navigate('work'); setActiveMenu(null); }} className="text-sm text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">View Full Archive <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></button>
       </div>
-      <div className="w-2/3 grid grid-cols-2 gap-6">
-        {CASE_STUDIES.slice(0, 2).map((cs, i) => {
-          const hexColor = palette[cs.type] || palette.primary;
-          return (
-            <MenuHoverCard key={i} color={hexColor} onClick={() => { navigate('work/' + cs.id); setActiveMenu(null); }}>
-              <div className="flex gap-6 items-center w-full">
-                <div className="w-24 h-24 rounded-[12px] bg-white/5 relative overflow-hidden shrink-0 border border-white/10">
-                  <motion.div variants={{ initial: { scale: 1, opacity: 0.2 }, hover: { scale: 1.2, opacity: 0.4 } }} transition={{ duration: 0.7, ease: "easeOut" }} className="absolute inset-0" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
-                  <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/40 text-2xl">{cs.client.split(' ')[0]}</span></div>
-                </div>
-                <div className="w-full">
-                  <motion.span variants={{ initial: { x: 0 }, hover: { x: 4 } }} transition={{ duration: 0.3 }} className="text-[10px] tracking-widest uppercase mb-2 block font-medium font-primary" style={{ color: hexColor }}>{cs.sector}</motion.span>
-                  <h4 className="text-white font-medium mb-1 text-lg font-secondary">{cs.client}</h4>
-                  <p className="text-xs text-white/40 line-clamp-2 leading-relaxed font-light font-secondary">{cs.challenge}</p>
-                </div>
-              </div>
-            </MenuHoverCard>
-          );
-        })}
+      <div className="w-2/3">
+        <WorkMegaMenuCarousel 
+          items={CASE_STUDIES.slice(0, 5)} 
+          onNavigate={(id) => { navigate('work/' + id); setActiveMenu(null); }} 
+        />
       </div>
     </div>
   );
@@ -3014,79 +3081,83 @@ const Header = ({ navigate, current }) => {
 };
 
 const SelectedCollaboratorsSection = () => {
-  const topRowLogos = [
-    { name: "Hero Lectro", src: "/clients/logos/hero_lectro/xx_lectro.png" },
-    { name: "IIT Delhi", src: "/clients/logos/iit/iitd_raw_images_01.png" },
-    { name: "Navankur", src: "/clients/logos/navankur/5_navankur.png" },
-    { name: "Arise Ventures", src: "/clients/logos/arise_ventures/Asset 3@4x.png" },
-    { name: "Firefox", src: "/clients/logos/firefox/1_firefox.png" },
-    { name: "Earthy Souls", src: "/clients/logos/earthy_souls/6_earthy.png" },
-    { name: "EBT", src: "/clients/logos/ebt/7_ebt.png" },
+  const logos = [
+    { name: "Hero Lectro",               src: "/clients/logos/hero_lectro/xx_lectro.png" },
+    { name: "Firefox",                   src: "/clients/logos/firefox/1_firefox.png" },
+    { name: "IIT Delhi",                 src: "/clients/logos/iit/iitd_raw_images_01.png", centerCrop: true },
+    { name: "Arise Ventures",            src: "/clients/logos/arise_ventures/Asset 3@4x.png" },
+    { name: "Leverage Edu",              src: "/clients/logos/leverage_edu/8_leverage.png" },
+    { name: "Navankur",                  src: "/clients/logos/navankur/5_navankur.png" },
+    { name: "Earthy Souls",              src: "/clients/logos/earthy_souls/6_earthy.png" },
+    { name: "EBT",                       src: "/clients/logos/ebt/7_ebt.png" },
+    { name: "Snow Leopard Trust",        src: "/clients/logos/snow_leopard_trust/SLT-Logo-2016-300ppi-Transparent-BlackText-01.png", invert: true },
+    { name: "Back To Roots",             src: "/clients/logos/back_to_roots/back_to_roots_logo.png" },
+    { name: "Observer Research Found.",  src: "/clients/logos/orf/ORF_Logo_CMYK-2.png" },
+    { name: "Param Innovation",          src: "/clients/logos/param/9_param.png" },
+    { name: "Veauli",                    src: "/clients/logos/veauli_techniks/10_veauli.png" },
+    { name: "IGF",                       src: "/clients/logos/igf/3_igf.png" },
   ];
 
-  const bottomRowLogos = [
-    { name: "Snow Leopard Trust", src: "/clients/logos/snow_leopard_trust/SLT-Logo-2016-300ppi-Transparent-BlackText-01.png" },
-    { name: "Leverage Edu", src: "/clients/logos/leverage_edu/8_leverage.png" },
-    { name: "Back To Roots", src: "/clients/logos/back_to_roots/back_to_roots_logo.png" },
-    { name: "Observer Research Foundation", src: "/clients/logos/orf/white logo.png" },
-    { name: "Param Innovation", src: "/clients/logos/param/9_param.png" },
-    { name: "Veauli", src: "/clients/logos/veauli_techniks/10_veauli.png" },
-    { name: "IGF", src: "/clients/logos/igf/3_igf.png" },
-  ];
-
-  const renderLogo = (logo, idx) => {
-    // Some logos are purely white text. We must invert them so they show on the white background.
-    const isWhiteLogo = logo.src.includes('white');
-
-    return (
-      <div key={`${logo.name}-${idx}`} className="flex items-center justify-center shrink-0 mx-16 md:mx-24 group cursor-pointer">
-        <img
-          src={logo.src}
-          alt={logo.name}
-          className={`h-12 md:h-20 max-w-[180px] md:max-w-[260px] w-auto object-contain mix-blend-multiply transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-30 grayscale group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 ${isWhiteLogo ? 'invert' : ''}`}
-        />
+  const renderLogo = (logo, idx) => (
+    <div key={`${logo.name}-${idx}`} className="flex items-center justify-center shrink-0 mx-4 md:mx-5 group cursor-pointer">
+      <div className="flex items-center justify-center px-8 md:px-10 py-5 md:py-6 rounded-2xl border border-white/[0.07] bg-white/[0.03] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-white/[0.18] group-hover:bg-white/[0.07] group-hover:-translate-y-1.5 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+        {logo.centerCrop ? (
+          <img
+            src={logo.src}
+            alt={logo.name}
+            style={{ objectFit: 'cover', objectPosition: 'center center', ...(logo.invert ? { filter: 'brightness(0) invert(1)' } : {}) }}
+            className="h-28 md:h-40 w-[260px] md:w-[360px] transition-all duration-500 opacity-80 group-hover:opacity-100"
+          />
+        ) : (
+          <img
+            src={logo.src}
+            alt={logo.name}
+            style={logo.invert ? { filter: 'brightness(0) invert(1)' } : {}}
+            className="h-28 md:h-40 max-w-[260px] md:max-w-[360px] w-auto object-contain transition-all duration-500 opacity-80 group-hover:opacity-100"
+          />
+        )}
       </div>
-    );
-  };
+    </div>
+  );
 
   return (
-    <section className="py-32 md:py-40 w-full relative overflow-hidden bg-white text-black">
-      <div className="w-full max-w-[90rem] mx-auto px-[5%] mb-24 md:mb-32">
-        <h3 className="text-xs md:text-sm uppercase tracking-[0.3em] font-primary text-black/40 font-medium">
+    <section className="py-28 md:py-40 w-full relative overflow-hidden" style={{ background: palette.bgDeep }}>
+      {/* Top rule */}
+      <div className="w-full h-px mb-20 md:mb-28" style={{ background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent)' }} />
+
+      <div className="w-full max-w-[90rem] mx-auto px-[5%] mb-16 md:mb-24 flex items-center gap-6">
+        <h3 className="text-xs md:text-sm uppercase tracking-[0.35em] font-primary text-white/25 font-medium shrink-0">
           Selected Collaborations
         </h3>
+        <div className="flex-1 h-px" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08), transparent)' }} />
       </div>
 
-      <div className="relative w-full flex flex-col gap-24 md:gap-32 overflow-hidden z-10">
-        {/* Fading edges to simulate gallery drifting */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to right, white, transparent)` }} />
-        <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 z-20 pointer-events-none" style={{ background: `linear-gradient(to left, white, transparent)` }} />
+      <div className="relative w-full overflow-hidden z-10">
+        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-56 z-20 pointer-events-none" style={{ background: `linear-gradient(to right, ${palette.bgDeep}, transparent)` }} />
+        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-56 z-20 pointer-events-none" style={{ background: `linear-gradient(to left, ${palette.bgDeep}, transparent)` }} />
 
-        {/* Top Row (Right to Left) */}
-        <div className="flex w-max items-center animate-marquee-rtl hover:[animation-play-state:paused]">
-          {[...topRowLogos, ...topRowLogos, ...topRowLogos].map(renderLogo)}
-        </div>
-
-        {/* Bottom Row (Left to Right) - Offset by -15vw initial transform in wrapper */}
-        <div className="flex w-max items-center animate-marquee-ltr hover:[animation-play-state:paused] -ml-[15vw]">
-          {[...bottomRowLogos, ...bottomRowLogos, ...bottomRowLogos].map(renderLogo)}
+        <div className="flex w-max items-center animate-collab-marquee hover:[animation-play-state:paused]">
+          {[...logos, ...logos, ...logos].map(renderLogo)}
         </div>
       </div>
+
+      {/* Bottom rule */}
+      <div className="w-full h-px mt-20 md:mt-28" style={{ background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent)' }} />
 
       <style>{`
-        @keyframes marquee-rtl {
-          0% { transform: translateX(0); }
+        @keyframes collab-marquee {
+          0%   { transform: translateX(0); }
           100% { transform: translateX(-33.333333%); }
         }
-        @keyframes marquee-ltr {
-          0% { transform: translateX(-33.333333%); }
-          100% { transform: translateX(0); }
+        .animate-collab-marquee {
+          animation: collab-marquee 55s linear infinite;
         }
-        .animate-marquee-rtl {
-          animation: marquee-rtl 80s linear infinite;
+        .logo-item img, .logo-item div {
+          filter: drop-shadow(0 0 0px transparent);
+          transition: filter 0.5s ease;
         }
-        .animate-marquee-ltr {
-          animation: marquee-ltr 80s linear infinite;
+        .logo-item:hover img, .logo-item:hover div {
+          filter: drop-shadow(0 0 18px rgba(255,255,255,0.15));
         }
       `}</style>
     </section>
