@@ -232,9 +232,9 @@ const hexToRgbStr = (hex) => {
 const QUIZ_QUESTIONS = [
   { id: 'stage', title: 'Where is your brand right now?', multiSelect: false, options: [{ id: 's1', label: 'We are launching a new brand' }, { id: 's2', label: 'We are repositioning an existing brand' }, { id: 's3', label: 'We have grown, but our brand has not evolved' }, { id: 's4', label: 'We need better campaigns and communication' }, { id: 's5', label: 'We need a full strategic reset' }] },
   { id: 'q1', title: 'What feels most inconsistent about your brand right now?', multiSelect: true, options: [{ id: 'o1', label: 'Different teams communicate differently', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o2', label: 'We have no central messaging guidelines', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o3', label: 'Our visuals feel outdated and generic', cluster: 'Generic Identity', weight: 2 }, { id: 'none1', label: 'None of the Above', cluster: 'None', weight: 0 }] },
-  { id: 'q2', title: 'How is your campaign and content engagement?', multiSelect: false, options: [{ id: 'o4', label: 'Low engagement and weak emotional pull', cluster: 'Weak Narrative', weight: 2 }, { id: 'o5', label: 'Good engagement, but execution feels messy', cluster: 'Lack of Systems', weight: 2 }, { id: 'none2', label: 'None of the Above', cluster: 'None', weight: 0 }] },
-  { id: 'q3', title: 'How does your team currently execute?', multiSelect: true, options: [{ id: 'o6', label: 'Teams are misaligned with no clear playbook', cluster: 'Lack of Systems', weight: 2 }, { id: 'o7', label: 'Our brand has grown but our execution hasn\'t evolved', cluster: 'Execution Gap', weight: 1 }, { id: 'none3', label: 'None of the Above', cluster: 'None', weight: 0 }] },
-  { id: 'q4', title: 'What best describes your visual identity?', multiSelect: true, options: [{ id: 'o8', label: 'Generic visuals with no distinctiveness', cluster: 'Generic Identity', weight: 2 }, { id: 'o9', label: 'Aesthetically pleasing but lacks deep storytelling', cluster: 'Weak Narrative', weight: 2 }, { id: 'none4', label: 'None of the Above', cluster: 'None', weight: 0 }] },
+  { id: 'q2', title: 'How is your campaign and content engagement?', multiSelect: true, options: [{ id: 'o4', label: 'Low engagement and weak emotional pull', cluster: 'Weak Narrative', weight: 2 }, { id: 'o5', label: 'Good engagement, but execution feels messy', cluster: 'Lack of Systems', weight: 2 }, { id: 'none2', label: 'None of the Above', cluster: 'None', weight: 0 }] },
+  { id: 'q3', title: 'How does your team currently execute?', multiSelect: false, options: [{ id: 'o6', label: 'Teams are misaligned with no clear playbook', cluster: 'Lack of Systems', weight: 2 }, { id: 'o7', label: 'Our brand has grown but our execution hasn\'t evolved', cluster: 'Execution Gap', weight: 1 }, { id: 'none3', label: 'None of the Above', cluster: 'None', weight: 0 }] },
+  { id: 'q4', title: 'What best describes your visual identity?', multiSelect: false, options: [{ id: 'o8', label: 'Generic visuals with no distinctiveness', cluster: 'Generic Identity', weight: 2 }, { id: 'o9', label: 'Aesthetically pleasing but lacks deep storytelling', cluster: 'Weak Narrative', weight: 2 }, { id: 'none4', label: 'None of the Above', cluster: 'None', weight: 0 }] },
   { id: 'q5', title: 'What is your biggest bottleneck for growth?', multiSelect: true, options: [{ id: 'o10', label: 'Lack of internal systems and repeatable templates', cluster: 'Lack of Systems', weight: 2 }, { id: 'o11', label: 'Execution is too slow and disconnected from strategy', cluster: 'Execution Gap', weight: 1 }, { id: 'o12', label: 'Messaging inconsistency across touchpoints', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'none5', label: 'None of the Above', cluster: 'None', weight: 0 }] }
 ];
 
@@ -974,6 +974,7 @@ const StrategicEngine = ({ navigate }) => {
     }
   }, [step, answers, comments, clusters, routes, selectedRoutes, selectedDeliverables, priorities, context, leadForm, isLoaded]);
   const [expandedRoute, setExpandedRoute] = useState(null);
+  const [readMorePopup, setReadMorePopup] = useState(null);
   const [dependencyModal, setDependencyModal] = useState(null);
 
   const formatInterdependence = (interdepString) => {
@@ -1863,7 +1864,7 @@ const StrategicEngine = ({ navigate }) => {
       if (!saveLeadResult.success) {
         console.warn("Failed to save lead to Sanity:", saveLeadResult.error);
       }
-      setStep(N_QUIZ + 6);
+      setStep(N_QUIZ + 5);
     } else {
       alert("Failed to send the email report. Error: " + (result?.error || "Unknown Error from Resend API"));
     }
@@ -1907,7 +1908,7 @@ const StrategicEngine = ({ navigate }) => {
         style={{ background: `linear-gradient(to bottom, transparent, ${palette.primary}, transparent)`, boxShadow: `0 0 20px ${palette.primary}` }}
       />
 
-      <div className="relative z-10 p-8 flex flex-col h-full">
+      <div className="relative z-10 p-8 pt-12 md:pt-8 flex flex-col h-full">
         {/* HEADER */}
         <div className="flex items-center justify-between border-b border-white/20 pb-5 mb-8">
           <div className="flex items-center gap-4">
@@ -2275,83 +2276,20 @@ const StrategicEngine = ({ navigate }) => {
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
-                      setExpandedRoute(expandedRoute === r ? null : r);
+                      setReadMorePopup(ROUTES_INFO[r]);
                     }}
                     className="text-xs uppercase tracking-wider font-medium text-cyan-400 hover:text-cyan-300 transition-colors mt-4 self-start"
                   >
-                    {expandedRoute === r ? 'Read Less' : 'Read More'}
+                    Read More
                   </button>
-                  {expandedRoute === r && ROUTES_INFO[r].expandedDesc && (
-                    <motion.div 
-                      initial={{ opacity: 0, height: 0 }} 
-                      animate={{ opacity: 1, height: 'auto' }} 
-                      className="mt-4 text-sm text-white/60 font-secondary font-light leading-relaxed"
-                    >
-                      {ROUTES_INFO[r].expandedDesc}
-                    </motion.div>
-                  )}
                 </div>
               </StaggerItem>
             )
           })}
         </StaggerGroup>
         <div className="flex gap-6 items-center">
-          <PremiumButton onClick={() => setStep(N_QUIZ + 2)}>Customize Scope</PremiumButton>
+          <PremiumButton onClick={() => setStep(N_QUIZ + 2)}>Select Deliverables</PremiumButton>
           <button onClick={() => setStep(N_QUIZ)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
-        </div>
-      </FadeUp>
-    </div>,
-
-    // N+2: Route Selection
-    <div key="routeSel" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
-      <FadeUp>
-        <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 2 / Architecture</div>
-        <h2 className="text-3xl md:text-4xl font-light mb-6 font-primary">Select your service routes.</h2>
-        <p className="text-white/50 font-light mb-10 font-secondary max-w-3xl">We pre-selected routes based on your diagnosis. Add or remove routes to define your scope foundation.</p>
-        <StaggerGroup className="space-y-4 w-full mb-12 max-w-3xl">
-          {Object.values(ROUTES_INFO).map(route => {
-            const isSelected = selectedRoutes.includes(route.id);
-            const isExpanded = expandedRoute === route.id;
-            return (
-              <StaggerItem key={route.id}>
-                <div className="w-full text-left p-6 rounded-[16px] border transition-all duration-300 flex flex-col gap-4" style={{ borderColor: isSelected ? palette.blue : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.blue, 0.1) : 'rgba(255,255,255,0.02)' }}>
-                  <div className="flex items-start gap-6 cursor-pointer" onClick={() => setSelectedRoutes(prev => isSelected ? prev.filter(r => r !== route.id) : [...prev, route.id])}>
-                    <div className="w-6 h-6 rounded flex items-center justify-center border shrink-0 mt-1" style={{ backgroundColor: isSelected ? palette.blue : 'transparent', borderColor: isSelected ? palette.blue : 'rgba(255,255,255,0.3)' }}>{isSelected && <Check className="w-4 h-4 text-white" />}</div>
-                    <div className="flex-1">
-                      <div className={`text-lg font-medium mb-1 font-primary ${isSelected ? 'text-white' : 'text-white/70'}`}>{route.title}</div>
-                      <div className="text-sm font-light text-white/40 font-secondary">{route.desc}</div>
-                    </div>
-                  </div>
-                  <div className="pl-12 flex flex-col items-start">
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setExpandedRoute(isExpanded ? null : route.id);
-                      }}
-                      className="text-xs uppercase tracking-wider font-medium text-white/50 hover:text-white transition-colors"
-                    >
-                      {isExpanded ? 'Read Less' : 'Read More'}
-                    </button>
-                    {isExpanded && route.expandedDesc && (
-                        <motion.div 
-                          initial={{ opacity: 0, height: 0 }} 
-                          animate={{ opacity: 1, height: 'auto' }} 
-                          className="mt-6 text-sm text-white/60 font-secondary font-light leading-relaxed flex flex-col gap-4"
-                        >
-                          {route.expandedDesc.split('\n').map((paragraph, idx) => (
-                            paragraph.trim() ? <p key={idx}>{paragraph}</p> : null
-                          ))}
-                        </motion.div>
-                    )}
-                  </div>
-                </div>
-              </StaggerItem>
-            )
-          })}
-        </StaggerGroup>
-        <div className="flex gap-6 items-center">
-          <PremiumButton disabled={selectedRoutes.length === 0} onClick={() => setStep(N_QUIZ + 3)}>Select Deliverables</PremiumButton>
-          <button onClick={() => setStep(N_QUIZ + 1)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
     </div>,
@@ -2435,8 +2373,8 @@ const StrategicEngine = ({ navigate }) => {
           })}
         </StaggerGroup>
         <div className="pt-8 border-t border-white/10 mt-auto flex gap-6 items-center">
-          <PremiumButton disabled={selectedDeliverables.length === 0} onClick={() => setStep(N_QUIZ + 4)}>Next: Project Context</PremiumButton>
-          <button onClick={() => setStep(N_QUIZ + 2)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
+          <PremiumButton disabled={selectedDeliverables.length === 0} onClick={() => setStep(N_QUIZ + 3)}>Next: Project Context</PremiumButton>
+          <button onClick={() => setStep(N_QUIZ + 1)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
     </div>,
@@ -2448,25 +2386,7 @@ const StrategicEngine = ({ navigate }) => {
         <h2 className="text-3xl md:text-4xl font-light mb-10 font-primary">Project Context.</h2>
         <div className="space-y-6 w-full mb-12 max-w-3xl">
           <div className="w-full">
-            <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">What level of support are you looking for? (Depth)</label>
-            <select value={context.depth} onChange={e => setContext({ ...context, depth: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
-              <option value="" style={{ backgroundColor: palette.bgDeep }}>Select depth...</option>
-              <option value="Light-touch consulting" style={{ backgroundColor: palette.bgDeep }}>Light-touch consulting</option>
-              <option value="Strategic direction + selected assets" style={{ backgroundColor: palette.bgDeep }}>Strategic direction + selected assets</option>
-              <option value="End-to-end brand transformation" style={{ backgroundColor: palette.bgDeep }}>End-to-end brand transformation</option>
-            </select>
-          </div>
-          <div className="w-full">
-            <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">What is your expected project timeline?</label>
-            <select value={context.timeline} onChange={e => setContext({ ...context, timeline: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
-              <option value="" style={{ backgroundColor: palette.bgDeep }}>Select project timeline...</option>
-              <option value="Short term" style={{ backgroundColor: palette.bgDeep }}>Short term</option>
-              <option value="Deep Dive" style={{ backgroundColor: palette.bgDeep }}>Deep Dive</option>
-              <option value="Long Term" style={{ backgroundColor: palette.bgDeep }}>Long Term</option>
-            </select>
-          </div>
-          <div className="w-full">
-            <label className="block text-sm font-medium text-white/60 mb-3 font-secondary">What is your expected project duration?</label>
+            <label className="block text-2xl md:text-3xl font-medium text-white mb-6 font-primary" style={{ fontFamily: '"Carla", serif' }}>what is your expected commencement date?</label>
             <select value={context.duration} onChange={e => setContext({ ...context, duration: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
               <option value="Short term (minimum 3 months)" style={{ backgroundColor: palette.bgDeep }}>Short term (minimum 3 months)</option>
               <option value="Deep Dive- Branding (minimum 6 months)" style={{ backgroundColor: palette.bgDeep }}>Deep Dive- Branding (minimum 6 months)</option>
@@ -2475,8 +2395,8 @@ const StrategicEngine = ({ navigate }) => {
           </div>
         </div>
         <div className="flex gap-6 items-center">
-          <PremiumButton disabled={!context.depth || !context.timeline} onClick={() => setStep(N_QUIZ + 5)}>Finalize Blueprint</PremiumButton>
-          <button onClick={() => setStep(N_QUIZ + 3)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
+          <PremiumButton disabled={!context.duration} onClick={() => setStep(N_QUIZ + 4)}>Finalize Blueprint</PremiumButton>
+          <button onClick={() => setStep(N_QUIZ + 2)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
     </div>,
@@ -2495,7 +2415,7 @@ const StrategicEngine = ({ navigate }) => {
             <PremiumButton type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-10">
               {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing...</> : 'Generate Report & Send Brief'}
             </PremiumButton>
-            <button type="button" onClick={() => setStep(N_QUIZ + 4)} disabled={isSubmitting} className="text-white/40 hover:text-white text-sm transition-colors disabled:opacity-50">Back</button>
+            <button type="button" onClick={() => setStep(N_QUIZ + 3)} disabled={isSubmitting} className="text-white/40 hover:text-white text-sm transition-colors disabled:opacity-50">Back</button>
           </div>
         </form>
       </FadeUp>
@@ -2535,9 +2455,7 @@ const StrategicEngine = ({ navigate }) => {
                 <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Execution Context</h4>
                 <div className="text-sm text-white/70 font-light space-y-3 bg-white/[0.02] p-6 rounded-[12px] border border-white/5 font-secondary w-full">
                   <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Brand Stage</span> <span className="text-right">{answers.stage?.label || 'Not Selected'}</span></p>
-                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Engagement Depth</span> <span className="text-right">{context.depth}</span></p>
-                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Project Timeline</span> <span className="text-right">{context.timeline}</span></p>
-                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Project Duration</span> <span className="text-right">{context.duration}</span></p>
+                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Expected Commencement Date</span> <span className="text-right">{context.duration}</span></p>
                   <p className="flex justify-between"><span className="text-white/40 text-left">Suggested Starting Point</span> <span className="text-right text-[#6865FA]">{computeSuggestedStartingPoint(selectedDeliverables, priorities)}</span></p>
                 </div>
               </div>
@@ -2576,6 +2494,26 @@ const StrategicEngine = ({ navigate }) => {
 
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative w-full print:overflow-visible print:pt-0 print:pb-12" style={{ backgroundColor: palette.bgDeep }}>
+      {readMorePopup && (
+        <div className="fixed inset-0 z-[200000] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm text-left">
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#0C185C] border border-white/10 p-8 rounded-[24px] max-w-lg w-full shadow-2xl relative">
+            <button onClick={() => setReadMorePopup(null)} className="absolute top-4 right-4 text-white/50 hover:text-white transition-colors">
+              <X className="w-5 h-5" />
+            </button>
+            <div className={`w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 shadow-sm`} style={{ backgroundColor: palette[readMorePopup.type] || palette.primary, color: palette.bgDeep }}>{readMorePopup.icon}</div>
+            <h3 className="text-2xl font-light mb-4 text-white font-primary">{readMorePopup.title}</h3>
+            <div className="mt-6 text-sm text-white/60 font-secondary font-light leading-relaxed flex flex-col gap-4 max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
+              {(readMorePopup.expandedDesc || readMorePopup.desc).split('\n').map((paragraph, idx) => (
+                paragraph.trim() ? <p key={idx}>{paragraph}</p> : null
+              ))}
+            </div>
+            <div className="mt-8">
+              <PremiumButton onClick={() => setReadMorePopup(null)} className="w-full">Close</PremiumButton>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
       {dependencyModal && (
         <div className="fixed inset-0 z-[200000] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm text-left">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#0C185C] border border-white/10 p-8 rounded-[24px] max-w-lg w-full shadow-2xl">
@@ -2626,7 +2564,7 @@ const StrategicEngine = ({ navigate }) => {
         </div>
       )}
 
-      {step > 0 && step < (N_QUIZ + 6) && (
+      {step > 0 && step < (N_QUIZ + 5) && (
         <div className="fixed top-[72px] md:top-[88px] left-0 w-full z-30 print:hidden flex items-center bg-black/40 backdrop-blur-xl border-b border-white/10 px-4 md:px-8 py-4 shadow-lg shadow-black/20">
           <button 
             onClick={() => setStep(step - 1)} 
@@ -2638,10 +2576,10 @@ const StrategicEngine = ({ navigate }) => {
           <div className="flex-1 ml-6 md:ml-10 flex flex-col gap-2 relative max-w-4xl">
             <div className="flex justify-between items-end px-1">
               <span className="text-[10px] uppercase tracking-[0.2em] font-bold font-secondary text-white/90 drop-shadow-md">
-                {step <= N_QUIZ ? 'Phase 1 // Diagnosis' : step <= N_QUIZ + 2 ? 'Phase 2 // Scope Architecture' : step <= N_QUIZ + 4 ? 'Phase 3 // Details & Context' : 'Final Verification'}
+                {step <= N_QUIZ ? 'Phase 1 // Diagnosis' : step <= N_QUIZ + 1 ? 'Phase 2 // Scope Architecture' : step <= N_QUIZ + 3 ? 'Phase 3 // Details & Context' : 'Final Verification'}
               </span>
               <span className="text-[10px] font-bold text-white/50 font-secondary tracking-wider">
-                {Math.round((step / (N_QUIZ + 5)) * 100)}%
+                {Math.round((step / (N_QUIZ + 4)) * 100)}%
               </span>
             </div>
             
@@ -2695,13 +2633,13 @@ const StrategicEngine = ({ navigate }) => {
             </motion.div>
           </AnimatePresence>
         </div>
-        {step > 0 && step < (N_QUIZ + 6) && (
-          <div className="hidden md:block w-[350px] lg:w-[450px] shrink-0 sticky top-[160px] self-start h-[calc(100vh-200px)] pb-8 z-10 print:block print:w-full print:max-w-full print:static print:h-auto">
+        {step > 0 && step < (N_QUIZ + 5) && (
+          <div className="hidden md:block w-[350px] lg:w-[500px] xl:w-[600px] shrink-0 sticky top-[160px] self-start h-[calc(100vh-200px)] pb-8 z-10 print:block print:w-full print:max-w-full print:static print:h-auto">
             <LiveScopePreview />
           </div>
         )}
       </div>
-      {step > 0 && step < (N_QUIZ + 6) && (
+      {step > 0 && step < (N_QUIZ + 5) && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 w-full">
           <button onClick={() => setIsMobilePreviewOpen(!isMobilePreviewOpen)} className="w-full border-t border-white/10 p-4 flex items-center justify-between text-sm font-medium backdrop-blur-xl font-secondary" style={{ backgroundColor: palette.panel }}>
             <span className="flex items-center gap-2"><FileText className="w-4 h-4" style={{ color: palette.primary }} /> View Live Scope {selectedDeliverables.length > 0 && `(${selectedDeliverables.length})`}</span>
