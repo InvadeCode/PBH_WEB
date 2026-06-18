@@ -276,7 +276,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </div>
 
       {/* ── 1. CINEMATIC HERO (Boxed) ── */}
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-28 pt-10 px-4 md:px-8">
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-40 md:pb-48 pt-10 px-4 md:px-8">
         
         {/* Floating Box Hero Banner */}
         <div className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto h-[50vh] md:h-[65vh] rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
@@ -301,7 +301,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
             <motion.h1 
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-              className="font-carla text-5xl md:text-7xl lg:text-[8rem] leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" 
+              className="font-carla text-4xl md:text-6xl lg:text-[6rem] leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" 
               style={{ 
                 fontFamily: '"Carla", sans-serif',
                 backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #D4CEFC 45%, #6865FA 50%, #D4CEFC 55%, #FFFFFF 70%, #FFFFFF 100%)',
