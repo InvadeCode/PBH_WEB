@@ -281,7 +281,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         {/* Floating Box Hero Banner */}
         <div className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto h-[50vh] md:h-[65vh] rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
            {heroImg ? (
-             <CreativeHeroReveal src={heroImg} alt="Arise Ventures Banner" delay={0.2} />
+             <CreativeHeroReveal src={heroImg} alt={`${project?.client || 'Case Study'} Banner`} delay={0.2} />
            ) : (
              <div className="w-full h-full bg-[#0C185C]" />
            )}
@@ -290,7 +290,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         {/* Text Below the Banner Box */}
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
-            {['Branding', 'Visual Identity', 'Collateral'].map((tag, i) => (
+            {(project?.tags || project?.roles || ['Branding', 'Visual Identity', 'Collateral']).map((tag, i) => (
               <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg" style={{ fontFamily: '"Carla", sans-serif' }}>
                 {tag}
               </span>
@@ -308,7 +308,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
                 backgroundSize: '300% auto',
               }}
             >
-              Arise Ventures
+              {project?.client || 'Arise Ventures'}
             </motion.h1>
           </ElegantFade>
         </div>
@@ -317,16 +317,18 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
       <DramaticSection 
         title="About the Brand."
-        content="Arise Ventures is a global early-stage venture capital firm dedicated to investing in transformative tech startups across Consumer, Climate, and Enterprise sectors. Founded by Ankita Vashistha, Arise builds upon the legacy of Saha Fund and StrongHer Ventures, aiming to back visionary founders who are reshaping industries and driving positive global impact."
+        content={project?.overview || project?.challenge || 'A premium brand experience crafted by PurpleBlue House.'}
         motionGraphic={<AboutGraphic />}
       />
 
       {/* ── 3. DRAMATIC: PROBLEM STATEMENT ── */}
-      <DramaticSection 
-        title="The Problem."
-        content="Arise Ventures entered a critical growth phase where its brand needed to evolve to reflect its ambition and values. While the firm had a clear mission and strong leadership, its visual identity lacked the coherence required to unify its presence across platforms and stakeholders. What was needed was a thoughtful evolution—one that could weave Arise's unique voice into a cohesive, future-ready identity."
-        motionGraphic={<ProblemGraphic />}
-      />
+      {(project?.challenge || project?.overview) && (
+        <DramaticSection 
+          title="The Problem."
+          content={project?.challenge || project?.overview || ''}
+          motionGraphic={<ProblemGraphic />}
+        />
+      )}
 
       {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (Seamlessly Blended) ── */}
       <section className="py-24 md:py-32 px-6 md:px-12 max-w-[1400px] mx-auto relative z-10 mt-10">
@@ -355,21 +357,22 @@ const AriseVenturesExperience = ({ navigate, project }) => {
             
             {/* Readable Text with NO box */}
             <div className="space-y-8 text-white/95 font-normal text-lg md:text-xl leading-relaxed" style={{ fontFamily: '"Carla", sans-serif' }}>
-              <p>For Arise Ventures, the rebrand began with a single idea—what does it mean to "back the bold"? At PurpleBlue House, we translated that into a living visual identity rooted in movement, momentum, and moonshots. At its heart was a new logomark: a ripple, symbolizing bold capital fueling bold founders and scalable innovation.</p>
-              <p>Grounded in deep stakeholder interviews, our approach uncovered the mindset driving Arise. This informed a design system of gradients and constellation-inspired elements, reflecting scale, guidance, and interconnectedness. The visual language is future-ready and fearless—bold enough to command attention, yet polished for boardrooms and global stages.</p>
+              <p>{project?.solution || 'A comprehensive brand strategy and visual identity system designed to elevate and unify the brand presence across all touchpoints.'}</p>
               
               {/* Highlighted text block */}
-              <motion.div 
-                initial={{ backgroundSize: '0% 100%' }}
-                whileInView={{ backgroundSize: '100% 100%' }}
-                viewport={{ once: true }}
-                transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
-                className="bg-gradient-to-r from-[#6865FA]/20 to-transparent bg-no-repeat pt-6 pb-6 pl-8 mt-10 border-l-4 border-[#D4CEFC] rounded-r-xl"
-              >
-                <p className="font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
-                  More than a redesign, this was the creation of a visual world that moves with Arise's mission. A world where every detail speaks one truth: bold is just the beginning.
-                </p>
-              </motion.div>
+              {(project?.fullStory?.execution || project?.solutionHeading) && (
+                <motion.div 
+                  initial={{ backgroundSize: '0% 100%' }}
+                  whileInView={{ backgroundSize: '100% 100%' }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
+                  className="bg-gradient-to-r from-[#6865FA]/20 to-transparent bg-no-repeat pt-6 pb-6 pl-8 mt-10 border-l-4 border-[#D4CEFC] rounded-r-xl"
+                >
+                  <p className="font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
+                    {project?.fullStory?.execution || project?.solutionHeading}
+                  </p>
+                </motion.div>
+              )}
             </div>
           </motion.div>
 
@@ -388,13 +391,15 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 5. STATEMENT ── */}
-      <section className="py-24 px-6 md:px-12 max-w-[1000px] mx-auto text-center relative z-10">
-        <ElegantFade>
-          <h2 className="font-carla text-2xl md:text-3xl lg:text-4xl leading-[1.4] text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
-            "Rebranded bold capital with a ripple of fearless design and strategic clarity. From constellation cues to a confident logomark, Arise now radiates momentum across every medium."
-          </h2>
-        </ElegantFade>
-      </section>
+      {(project?.results?.length > 0) && (
+        <section className="py-24 px-6 md:px-12 max-w-[1000px] mx-auto text-center relative z-10">
+          <ElegantFade>
+            <h2 className="font-carla text-2xl md:text-3xl lg:text-4xl leading-[1.4] text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
+              "{project.results[0]}"
+            </h2>
+          </ElegantFade>
+        </section>
+      )}
 
       {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
       <section className="pb-32 px-6 md:px-12 max-w-[1400px] mx-auto relative z-10">
@@ -441,13 +446,13 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 7. FOOTER ── */}
       <section className="pt-12 pb-32 px-6 md:px-12 max-w-[1200px] mx-auto text-center relative z-10">
         <ElegantFade>
-          <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#D4CEFC] mb-6 font-medium">Next Experience</p>
+          <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#D4CEFC] mb-6 font-medium">Back to Portfolio</p>
           <motion.h2 
             onClick={() => navigate('work')} 
             className="font-carla text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity inline-block"
             style={{ fontFamily: '"Carla", sans-serif' }}
           >
-            Aura Skincare
+            All Work
           </motion.h2>
         </ElegantFade>
       </section>

@@ -3446,7 +3446,17 @@ const WorkDetailPage = ({ navigate, projectId }) => {
 
   const clientName = (project.client || '').toLowerCase();
 
-  if (project.client === 'Arise Ventures') {
+  const ariseClients = [
+    'arise ventures',
+    'piston des sports',
+    'hero lectro',
+    'param innovation',
+    'sunburst',
+    'earthy souls',
+    'veauli',
+    'novus fin',
+  ];
+  if (ariseClients.some(target => clientName.includes(target))) {
     return <AriseVenturesExperience navigate={navigate} project={project} />;
   }
 
@@ -3457,10 +3467,6 @@ const WorkDetailPage = ({ navigate, projectId }) => {
   ];
   if (btrClients.some(target => clientName.includes(target))) {
     return <BackToRootsExperience navigate={navigate} project={project} />;
-  }
-
-  if (project.client === 'Param Innovation') {
-    return <ParamInnovationExperience navigate={navigate} project={project} />;
   }
 
   if (clientName.includes('leverage')) {
@@ -3540,25 +3546,20 @@ const WorkDetailPage = ({ navigate, projectId }) => {
         </div>
       </section>
 
-      {/* Meta Data Grid */}
-      <section className="border-y border-white/10 w-full" style={{ backgroundColor: palette.panel }}>
-        <div className="grid grid-cols-2 md:grid-cols-4 w-full divide-x divide-y md:divide-y-0 divide-white/10 text-left font-secondary">
-          <div className="p-8 md:p-12">
-            <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Client</h4>
-            <p className="text-lg text-white font-light">{project.client}</p>
-          </div>
-          <div className="p-8 md:p-12">
-            <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Sector</h4>
-            <p className="text-lg text-white font-light">{project.sector}</p>
-          </div>
-          <div className="p-8 md:p-12">
-            <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Core Route</h4>
-            <p className="text-lg text-white font-light">{project.route}</p>
-          </div>
-          <div className="p-8 md:p-12">
-            <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-2 font-primary">Year</h4>
-            <p className="text-lg text-white font-light">2025</p>
-          </div>
+      {/* Meta Data — Seamless */}
+      <section className="w-full py-8 px-4 md:px-8">
+        <div className="flex flex-wrap justify-center gap-6 md:gap-12 max-w-5xl mx-auto font-secondary">
+          {[
+            ['Client', project.client],
+            ['Sector', project.sector],
+            ['Core Route', project.route],
+            ['Year', '2025'],
+          ].map(([label, value]) => (
+            <div key={label} className="text-center">
+              <h4 className="text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1 font-primary">{label}</h4>
+              <p className="text-sm md:text-base text-white/70 font-light">{value}</p>
+            </div>
+          ))}
         </div>
       </section>
 
