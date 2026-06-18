@@ -49,10 +49,6 @@ const CreativeHeroReveal = ({ src, alt, delay = 0 }) => {
       animate={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 0px)', filter: 'blur(0px)' }}
       transition={{ duration: 2.5, delay, ease: [0.16, 1, 0.3, 1] }}
       className="w-full h-full relative overflow-hidden"
-      style={{
-        WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 95%)',
-        maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 95%)'
-      }}
     >
       <motion.img 
         src={src} 
@@ -280,19 +276,21 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </div>
 
       {/* ── 1. CINEMATIC HERO (Unconstructed & Blended) ── */}
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-20">
+      <section className="relative w-full h-[85vh] md:h-[95vh] flex flex-col items-center justify-end z-10 pb-24 md:pb-32 overflow-hidden">
         
-        {/* Full Width Background Reveal with Bottom Fade via Mask Image */}
-        <div className="relative w-full h-[60vh] md:h-[75vh] overflow-hidden">
+        {/* Full Screen Background Reveal */}
+        <div className="absolute inset-0 w-full h-full">
            {heroImg ? (
              <CreativeHeroReveal src={heroImg} alt="Arise Ventures Banner" delay={0.2} />
            ) : (
              <div className="w-full h-full bg-[#0C185C]" />
            )}
+           {/* Deep fade gradient to blend seamlessly into the next section */}
+           <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#010836] via-[#010836]/60 to-transparent z-10 pointer-events-none" />
         </div>
 
-        {/* Floating Text Below the Banner */}
-        <div className="relative z-20 flex flex-col items-center text-center px-4 mt-8 md:mt-12">
+        {/* Text Over the Banner */}
+        <div className="relative z-20 flex flex-col items-center text-center px-4">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {['Branding', 'Visual Identity', 'Collateral'].map((tag, i) => (
               <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg" style={{ fontFamily: '"Carla", sans-serif' }}>
