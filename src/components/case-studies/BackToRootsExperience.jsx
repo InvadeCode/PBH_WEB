@@ -134,91 +134,186 @@ const Scene2bExecution = ({ project }) => {
   );
 };
 
-// --- SCENE 3: THE STORYLINE GALLERY ---
-const CreeperImage = ({ img, index }) => {
-  const ref = useRef(null);
-  
-  // Trigger animation seamlessly when image enters viewport
-  const isInView = useInView(ref, { margin: "-20%", once: true });
+// --- SCENE 3: THE STORYTELLING GALLERY ---
 
-  // Keep a subtle vertical parallax tied to scroll
+// A single gallery "moment" — each image gets a unique cinematic treatment
+const StoryMoment = ({ img, index, total }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { margin: "-15%", once: true });
+  
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
-  const yOffset = useTransform(scrollYProgress, [0, 1], [50, -50]);
+  const yParallax = useTransform(scrollYProgress, [0, 1], [80, -80]);
+  const imgScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.15, 1, 1.05]);
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.6, 0.2, 0.2, 0.6]);
 
-  const isLeft = index % 2 === 0;
+  // Every 3rd image is a full-bleed hero moment, others alternate asymmetric
+  const layoutPattern = index % 5;
+  const isHeroMoment = layoutPattern === 0;
+  const isLeftLean = layoutPattern === 1 || layoutPattern === 3;
+  const isRightLean = layoutPattern === 2 || layoutPattern === 4;
 
-  return (
-    <div ref={ref} className={`w-full flex ${isLeft ? 'justify-start' : 'justify-end'} mb-48`}>
-      <motion.div 
-        style={{ y: yOffset }}
-        className="w-[90%] md:w-[85%] max-w-5xl relative"
-      >
-        <motion.div 
-          initial={{ clipPath: "circle(0% at 50% 50%)", opacity: 0 }}
-          animate={isInView ? { clipPath: "circle(150% at 50% 50%)", opacity: 1 } : { clipPath: "circle(0% at 50% 50%)", opacity: 0 }}
-          transition={{ duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
-          className="relative z-10 shadow-[0_20px_50px_rgba(0,0,0,0.6)] rounded-2xl overflow-hidden bg-black/40"
+  const chapterNum = String(index + 1).padStart(2, '0');
+
+  if (isHeroMoment) {
+    // FULL-BLEED CINEMATIC HERO MOMENT
+    return (
+      <div ref={ref} className="w-full relative mb-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-full h-[70vh] md:h-[85vh] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.7)] border border-white/5"
         >
-          <motion.img 
-            initial={{ scale: 1.4 }}
-            animate={isInView ? { scale: 1 } : { scale: 1.4 }}
-            transition={{ duration: 2.2, ease: [0.22, 1, 0.36, 1] }}
-            src={img} 
-            className="w-full h-auto object-contain block origin-center" 
-            alt={`Gallery ${index}`} 
+          <motion.img
+            src={img}
+            alt={`Story moment ${chapterNum}`}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ scale: imgScale, y: yParallax }}
           />
+          {/* Dark vignette overlay */}
+          <motion.div 
+            className="absolute inset-0 bg-gradient-to-t from-[#1E120D] via-transparent to-[#1E120D]/40"
+            style={{ opacity: overlayOpacity }}
+          />
+          {/* Chapter marker */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 1.2, delay: 0.5 }}
+            className="absolute bottom-8 left-8 md:bottom-12 md:left-12 z-10"
+          >
+            <span className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#B35D30] font-bold"
+              style={{ fontFamily: '"Carla", serif' }}>
+              Chapter {chapterNum}
+            </span>
+            <div className="w-12 h-[2px] bg-[#B35D30]/60 mt-3" />
+          </motion.div>
+          {/* Progress indicator */}
+          <div className="absolute bottom-8 right-8 md:bottom-12 md:right-12 z-10 text-[#F5E6C8]/30 text-xs tracking-widest font-light">
+            {chapterNum} / {String(total).padStart(2, '0')}
+          </div>
         </motion.div>
-        
-        {/* Decorative golden path dot next to the center line */}
-        <motion.div 
-          initial={{ scale: 0, opacity: 0 }}
-          animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-          transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
-          className={`absolute top-1/2 -translate-y-1/2 ${isLeft ? '-right-6 md:-right-12' : '-left-6 md:-left-12'} w-3 h-3 rounded-full bg-[#B35D30] shadow-[0_0_20px_#B35D30] z-20`} 
-        />
-        
-        {/* Horizontal Storyline Connecting String to the Center */}
-        <motion.div 
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={isInView ? { scaleX: 1, opacity: 1 } : { scaleX: 0, opacity: 0 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-          style={{ originX: isLeft ? 1 : 0 }}
-          className={`absolute top-1/2 -translate-y-1/2 ${isLeft ? 'left-[100%]' : 'right-[100%]'} h-[2px] w-[50vw] pointer-events-none z-0 ${isLeft ? 'bg-gradient-to-r from-[#B35D30]/80 to-transparent' : 'bg-gradient-to-l from-[#B35D30]/80 to-transparent'} shadow-[0_0_10px_#B35D30]`} 
+      </div>
+    );
+  }
+
+  // ASYMMETRIC EDITORIAL LAYOUT — alternating left/right lean
+  return (
+    <div
+      ref={ref}
+      className={`w-full flex ${isLeftLean ? 'justify-start' : 'justify-end'} mb-8`}
+    >
+      <motion.div
+        initial={{ opacity: 0, x: isLeftLean ? -60 : 60, rotateY: isLeftLean ? 5 : -5 }}
+        animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
+        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+        className="w-[88%] md:w-[70%] relative group"
+        style={{ perspective: '1200px' }}
+      >
+        <div className="relative rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.6)] border border-white/5">
+          <motion.img
+            src={img}
+            alt={`Story moment ${chapterNum}`}
+            className="w-full h-auto object-contain block"
+            style={{ scale: imgScale }}
+          />
+          {/* Subtle hover glow */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1E120D]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        </div>
+
+        {/* Floating chapter tag */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className={`absolute -top-4 ${isLeftLean ? '-right-3 md:-right-6' : '-left-3 md:-left-6'} z-20`}
+        >
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1E120D] border border-[#B35D30]/40 flex items-center justify-center shadow-[0_0_30px_rgba(179,93,48,0.3)]">
+            <span className="text-[#B35D30] text-[10px] md:text-xs font-bold tracking-wider">{chapterNum}</span>
+          </div>
+        </motion.div>
+
+        {/* Connecting storyline thread */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={isInView ? { scaleX: 1 } : {}}
+          transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          style={{ transformOrigin: isLeftLean ? 'right' : 'left' }}
+          className={`absolute top-1/2 -translate-y-1/2 ${isLeftLean ? 'left-full ml-2' : 'right-full mr-2'} h-[1px] w-[30vw] pointer-events-none ${isLeftLean ? 'bg-gradient-to-r' : 'bg-gradient-to-l'} from-[#B35D30]/50 to-transparent`}
         />
       </motion.div>
     </div>
   );
 };
 
-const RootLine = () => {
+// Quote interstitial between gallery images
+const StoryInterstitial = ({ text, index }) => {
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start center", "end center"]
-  });
+  const isInView = useInView(ref, { margin: "-20%", once: true });
 
   return (
-    <div ref={ref} className="absolute left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 z-0 opacity-80 pointer-events-none">
-      <motion.div 
-        className="w-full bg-gradient-to-b from-[#B35D30]/0 via-[#B35D30] to-[#B35D30]/0 shadow-[0_0_15px_#B35D30]"
-        style={{ height: "100%", scaleY: scrollYProgress, transformOrigin: "top" }}
-      />
-    </div>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+      className="w-full flex items-center justify-center py-16 md:py-24 my-4"
+    >
+      <div className="max-w-2xl text-center px-8">
+        <div className="w-8 h-[1px] bg-[#B35D30]/40 mx-auto mb-6" />
+        <p className="text-[#F5E6C8]/50 text-sm md:text-base font-serif italic leading-relaxed tracking-wide">
+          {text}
+        </p>
+        <div className="w-8 h-[1px] bg-[#B35D30]/40 mx-auto mt-6" />
+      </div>
+    </motion.div>
   );
 };
 
 const Scene3CreeperGallery = ({ images }) => {
   if (!images || images.length === 0) return null;
+
+  const interstitials = [
+    "Where tradition meets transformation.",
+    "Every frame tells a deeper story.",
+    "The art of visual identity, reimagined.",
+    "Rooted in heritage, reaching for tomorrow.",
+    "Crafting narratives that endure.",
+  ];
+
   return (
-    <section className="py-24 px-[5%] max-w-7xl mx-auto relative overflow-hidden">
+    <section className="py-24 px-[3%] md:px-[5%] max-w-[1400px] mx-auto relative overflow-hidden" style={{ backgroundColor: '#1E120D' }}>
       
-      <RootLine />
-      
+      {/* Section header */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 1.2 }}
+        className="text-center mb-20 md:mb-28"
+      >
+        <span className="text-[10px] md:text-xs tracking-[0.4em] uppercase text-[#B35D30] font-bold block mb-4">The Visual Journey</span>
+        <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif text-[#F5E6C8] tracking-tight leading-[1.1]">
+          A Story in Frames
+        </h2>
+        <div className="w-16 h-[2px] bg-gradient-to-r from-transparent via-[#B35D30] to-transparent mx-auto mt-8" />
+      </motion.div>
+
+      {/* The storytelling gallery flow */}
       {images.map((img, i) => (
-        <CreeperImage key={i} img={img} index={i} />
+        <React.Fragment key={i}>
+          <StoryMoment img={img} index={i} total={images.length} />
+          {/* Insert interstitial quote between images (not after the last one) */}
+          {i < images.length - 1 && i % 2 === 0 && (
+            <StoryInterstitial 
+              text={interstitials[Math.floor(i / 2) % interstitials.length]} 
+              index={i} 
+            />
+          )}
+        </React.Fragment>
       ))}
     </section>
   );
