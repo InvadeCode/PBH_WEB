@@ -251,6 +251,9 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
             {content}
           </p>
         </motion.div>
+
+        {/* Bottom gradient fade to eliminate color partition */}
+        <div className="absolute bottom-0 left-0 right-0 h-[25%] bg-gradient-to-t from-[#010836] to-transparent pointer-events-none z-30" />
       </div>
     </section>
   );
