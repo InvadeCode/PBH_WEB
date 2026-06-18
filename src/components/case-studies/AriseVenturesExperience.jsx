@@ -49,6 +49,10 @@ const CreativeHeroReveal = ({ src, alt, delay = 0 }) => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 2.5, delay, ease: [0.16, 1, 0.3, 1] }}
       className="w-full h-full relative overflow-hidden"
+      style={{
+        WebkitMaskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)',
+        maskImage: 'linear-gradient(to bottom, black 50%, transparent 100%)'
+      }}
     >
       <motion.img 
         src={src} 
@@ -58,7 +62,6 @@ const CreativeHeroReveal = ({ src, alt, delay = 0 }) => {
         animate={{ scale: 1 }}
         transition={{ duration: 3, delay, ease: [0.16, 1, 0.3, 1] }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#010836]" />
     </motion.div>
   );
 };
@@ -82,14 +85,14 @@ const SolutionVisualizer = () => {
     <div className="relative w-full h-full min-h-[400px] flex items-center justify-center pointer-events-none">
       {/* Organic Pulsing Blobs (Mesmerizing Fluid Motion) */}
       <motion.div 
-        animate={{ scale: [1, 1.3, 1], rotate: [0, 90, 180, 360], borderRadius: ["40% 60% 70% 30%", "60% 40% 30% 70%", "40% 60% 70% 30%"] }}
+        animate={{ scale: [1, 1.3, 1], rotate: [0, 90, 180, 360] }}
         transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute w-72 h-72 bg-gradient-to-tr from-[#6865FA] via-[#D4CEFC] to-transparent blur-[50px] opacity-30 mix-blend-screen"
+        className="absolute w-72 h-72 rounded-full bg-gradient-to-tr from-[#6865FA] via-[#D4CEFC] to-transparent blur-[50px] opacity-30 mix-blend-screen"
       />
       <motion.div 
-        animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0], borderRadius: ["60% 40% 30% 70%", "40% 60% 70% 30%", "60% 40% 30% 70%"] }}
+        animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0] }}
         transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute w-80 h-80 bg-gradient-to-bl from-[#6865FA] via-[#010836] to-[#D4CEFC] blur-[60px] opacity-40 mix-blend-screen"
+        className="absolute w-80 h-80 rounded-full bg-gradient-to-bl from-[#6865FA] via-[#010836] to-[#D4CEFC] blur-[60px] opacity-40 mix-blend-screen"
       />
 
       {/* Expanding Ripple Base */}
@@ -183,12 +186,12 @@ const AboutGraphic = () => (
     <motion.div 
       animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
       transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
+      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-full border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
     />
     <motion.div 
       animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
       transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#FFCD00]/20 opacity-50 shadow-[0_0_80px_rgba(255,205,0,0.1)] mix-blend-screen pointer-events-none"
+      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-full border border-[#FFCD00]/20 opacity-50 shadow-[0_0_80px_rgba(255,205,0,0.1)] mix-blend-screen pointer-events-none"
     />
   </>
 );
@@ -222,7 +225,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
   const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
 
   return (
-    <section ref={ref} className="h-[200vh] relative w-full border-t border-white/5">
+    <section ref={ref} className="h-[200vh] relative w-full">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         
         <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
@@ -245,7 +248,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         </motion.div>
         
         <motion.div style={{ opacity: contentOpacity, y: contentY }} className="absolute z-20 w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center">
-          <h3 className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-[#D4CEFC] mb-8 font-bold border-b border-[#D4CEFC]/20 pb-4" style={{ fontFamily: '"Carla", sans-serif' }}>
+          <h3 className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-[#D4CEFC] mb-8 font-bold pb-4" style={{ fontFamily: '"Carla", sans-serif' }}>
              {title}
           </h3>
           <p className="text-white/80 font-normal text-lg md:text-xl lg:text-2xl leading-relaxed md:leading-[1.6]" style={{ fontFamily: '"Carla", sans-serif' }}>
@@ -279,15 +282,13 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 1. CINEMATIC HERO (Unconstructed & Blended) ── */}
       <section className="relative w-full flex flex-col items-center justify-start z-10 pb-20">
         
-        {/* Full Width Background Reveal with Bottom Fade */}
+        {/* Full Width Background Reveal with Bottom Fade via Mask Image */}
         <div className="relative w-full h-[60vh] md:h-[75vh] overflow-hidden">
            {heroImg ? (
              <CreativeHeroReveal src={heroImg} alt="Arise Ventures Banner" delay={0.2} />
            ) : (
              <div className="w-full h-full bg-[#0C185C]" />
            )}
-           {/* Smooth Fade at the bottom so it blends into the page */}
-           <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#010836] to-transparent z-10 pointer-events-none" />
         </div>
 
         {/* Floating Text Below the Banner */}
@@ -379,7 +380,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 5. STATEMENT ── */}
-      <section className="py-24 px-6 md:px-12 max-w-[1000px] mx-auto text-center relative z-10 border-t border-white/5">
+      <section className="py-24 px-6 md:px-12 max-w-[1000px] mx-auto text-center relative z-10">
         <ElegantFade>
           <h2 className="font-carla text-2xl md:text-3xl lg:text-4xl leading-[1.4] text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
             "Rebranded bold capital with a ripple of fearless design and strategic clarity. From constellation cues to a confident logomark, Arise now radiates momentum across every medium."
@@ -389,7 +390,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
 
       {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
       <section className="pb-32 px-6 md:px-12 max-w-[1400px] mx-auto relative z-10">
-        <ElegantFade className="mb-12 border-b border-white/10 pb-6 flex items-center justify-between">
+        <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
           <h2 className="font-carla text-3xl md:text-5xl text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
             Ecosystem Highlights
           </h2>
@@ -430,7 +431,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 7. FOOTER ── */}
-      <section className="pt-12 pb-32 px-6 md:px-12 max-w-[1200px] mx-auto text-center relative z-10 border-t border-white/10">
+      <section className="pt-12 pb-32 px-6 md:px-12 max-w-[1200px] mx-auto text-center relative z-10">
         <ElegantFade>
           <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#D4CEFC] mb-6 font-medium">Next Experience</p>
           <motion.h2 
