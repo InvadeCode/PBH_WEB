@@ -49,10 +49,6 @@ const CreativeHeroReveal = ({ src, alt, delay = 0 }) => {
       animate={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 0px)', filter: 'blur(0px)' }}
       transition={{ duration: 2.5, delay, ease: [0.16, 1, 0.3, 1] }}
       className="w-full h-full relative overflow-hidden"
-      style={{
-        WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 65%, transparent 100%)',
-        maskImage: 'linear-gradient(to bottom, black 0%, black 65%, transparent 100%)'
-      }}
     >
       <motion.img 
         src={src} 
@@ -279,11 +275,11 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         <span className="text-[10px] md:text-xs tracking-[0.2em] uppercase font-light text-white/40">Case Study 01</span>
       </div>
 
-      {/* ── 1. CINEMATIC HERO (Unconstructed & Blended) ── */}
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-20">
+      {/* ── 1. CINEMATIC HERO (Boxed) ── */}
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-20 pt-10 px-4 md:px-8">
         
-        {/* Full Width Background Reveal via Mask Image */}
-        <div className="relative w-full h-[40vh] md:h-[55vh] overflow-hidden">
+        {/* Floating Box Hero Banner */}
+        <div className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto h-[50vh] md:h-[65vh] rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
            {heroImg ? (
              <CreativeHeroReveal src={heroImg} alt="Arise Ventures Banner" delay={0.2} />
            ) : (
@@ -291,8 +287,8 @@ const AriseVenturesExperience = ({ navigate, project }) => {
            )}
         </div>
 
-        {/* Floating Text Below the Banner */}
-        <div className="relative z-20 flex flex-col items-center text-center px-4 -mt-12 md:-mt-20">
+        {/* Text Below the Banner Box */}
+        <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {['Branding', 'Visual Identity', 'Collateral'].map((tag, i) => (
               <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg" style={{ fontFamily: '"Carla", sans-serif' }}>
