@@ -3139,30 +3139,27 @@ const HomePage = ({ navigate }) => {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="min-h-screen text-[#F4F4F5] w-full relative" style={{ backgroundColor: palette.bgDeep }}>
       <section ref={heroRef} onMouseMove={handleMouseMove} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className="relative h-screen flex flex-col overflow-hidden w-full pt-28 pb-8 px-[3%]">
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0 pointer-events-none">
-          {/* Sophisticated Glass Panes (Light Purple & Primary Mix) */}
-          <div className="absolute inset-0 overflow-hidden perspective-1000">
-            {/* Elegant large glass pane */}
+          {/* Sophisticated Cinematic Mesh Gradient (Exact Proportions: 60% #6865fa, 30% #d4cefc, 30% #010d54, 10% #ffcd00) */}
+          <div className="absolute inset-0 overflow-hidden bg-[#010D54]">
+            {/* 60% Primary Purple (#6865fa) */}
             <motion.div 
-              animate={{ rotateX: [0, 5, 0], rotateY: [0, -5, 0], y: [0, -15, 0] }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute -top-[5%] -left-[5%] w-[60vw] h-[70vh] rounded-[32px] border" 
-              style={{ 
-                background: `linear-gradient(135deg, ${hexToRgba(palette.secondary, 0.03)} 0%, transparent 100%)`,
-                borderColor: hexToRgba(palette.secondary, 0.1),
-                backdropFilter: 'blur(4px)',
-                boxShadow: `0 30px 60px ${hexToRgba(palette.primary, 0.05)}, inset 0 1px 0 ${hexToRgba(palette.secondary, 0.2)}`
-              }} 
+              animate={{ rotate: [0, 5, 0], scale: [1, 1.05, 1], x: ['-5%', '5%', '-5%'], y: ['-5%', '5%', '-5%'] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-0 left-0 w-[80vw] h-[80vh] rounded-full blur-[140px] opacity-80 mix-blend-screen" 
+              style={{ backgroundColor: palette.primary }} 
             />
             
-            {/* Elegant medium glass pane */}
+            {/* 30% Light Purple (#d4cefc) */}
             <motion.div 
-              animate={{ rotateX: [0, -8, 0], rotateY: [0, 8, 0], y: [0, 25, 0] }} transition={{ duration: 25, repeat: Infinity, ease: "linear", delay: 2 }}
-              className="absolute top-[25%] right-[2%] w-[35vw] h-[45vh] rounded-[24px] border" 
-              style={{ 
-                background: `linear-gradient(135deg, ${hexToRgba(palette.secondary, 0.04)} 0%, transparent 100%)`,
-                borderColor: hexToRgba(palette.secondary, 0.15),
-                backdropFilter: 'blur(6px)',
-                boxShadow: `0 20px 40px ${hexToRgba(palette.primary, 0.05)}, inset 0 1px 0 ${hexToRgba(palette.secondary, 0.25)}`
-              }} 
+              animate={{ rotate: [0, -8, 0], scale: [1, 1.1, 1], x: ['5%', '-5%', '5%'], y: ['5%', '-5%', '5%'] }} transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+              className="absolute bottom-0 right-0 w-[50vw] h-[60vh] rounded-full blur-[120px] opacity-60 mix-blend-screen" 
+              style={{ backgroundColor: palette.secondary }} 
+            />
+            
+            {/* 10% Yellow (#ffcd00) */}
+            <motion.div 
+              animate={{ rotate: [0, 15, 0], scale: [1, 1.2, 1], x: ['0%', '10%', '0%'], y: ['0%', '-10%', '0%'] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+              className="absolute top-[30%] right-[20%] w-[30vw] h-[30vh] rounded-full blur-[100px] opacity-30 mix-blend-screen" 
+              style={{ backgroundColor: palette.accent }} 
             />
           </div>
 
