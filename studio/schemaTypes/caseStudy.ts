@@ -143,6 +143,7 @@ export default defineType({
           of: [
             {
               type: 'object',
+              name: 'storyChapter',
               fields: [
                 defineField({ name: 'title', title: 'Chapter Title', type: 'string' }),
                 defineField({ name: 'description', title: 'Chapter Description', type: 'text' }),
@@ -158,6 +159,7 @@ export default defineType({
           of: [
             {
               type: 'object',
+              name: 'statItem',
               fields: [
                 defineField({ name: 'label', title: 'Label', type: 'string' }),
                 defineField({ name: 'value', title: 'Value', type: 'string' }),
@@ -169,9 +171,9 @@ export default defineType({
     }),
     defineField({
       name: 'videoSection',
-      title: 'Standard Video Embed (Optional)',
+      title: '📽️ Add Simple Video (Square/Rectangle)',
       type: 'object',
-      description: 'Used for a standard video block embedded within the case study content.',
+      description: 'Use this to add a standard video anywhere in the case study.',
       fields: [
         defineField({
           name: 'videoUrl',
@@ -190,9 +192,9 @@ export default defineType({
     }),
     defineField({
       name: 'videoHero',
-      title: 'Cinematic Fullscreen Video Hero (For Premium Layouts)',
+      title: '🎬 Add Cinematic Fullscreen Video (Premium)',
       type: 'object',
-      description: 'Optional cinematic video hero used in premium layouts (e.g., Arise Ventures). Renders nothing unless "Enabled" is checked.',
+      description: 'Use this for massive screen-spanning videos like Arise Ventures.',
       options: { collapsible: true, collapsed: false },
       fields: [
         defineField({
