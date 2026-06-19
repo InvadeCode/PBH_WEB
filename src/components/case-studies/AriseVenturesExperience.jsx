@@ -271,20 +271,9 @@ const AriseVenturesExperience = ({ navigate, project }) => {
   const heroImg = project?.fullStory?.heroImg || '';
   const cmsImages = project?.fullStory?.images || [];
 
-  // TEMPORARY DEMO content for the Arise showcase. Once `videoHero` is filled in
-  // Sanity (enabled = true), the CMS data takes over automatically — and any other
-  // case study using <CaseStudyVideoHero /> behaves identically.
-  const ariseVideoHeroDemo = {
-    enabled: true,
-    backgroundColor: '#0C185C',
-    backgroundText: project?.client || 'Arise Ventures',
-    videoTitle: 'Arise Ventures — The Film',
-    videoSubtitle: 'Backing the bold. The identity system, in motion.',
-    thumbnailUrl: heroImg || 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80',
-    embedUrl: '',
-    uploadedVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-  };
-  const videoHeroData = project?.videoHero?.enabled ? project.videoHero : ariseVideoHeroDemo;
+  // When `videoHero` is filled in Sanity (enabled = true), the CMS data takes over automatically.
+  // We no longer use a fallback demo; it only renders if Sanity data is explicitly provided.
+  const videoHeroData = project?.videoHero?.enabled ? project.videoHero : null;
 
   return (
     <div className="w-full min-h-screen font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
@@ -338,7 +327,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 1.5 CASE STUDY VIDEO HERO (CMS-driven, reusable) ── */}
-      {/* <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} /> */}
+      <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} />
 
       {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
       <DramaticSection
@@ -465,7 +454,6 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       )}
 
       {/* ── 5.5 OPTIONAL VIDEO SECTION ── */}
-      {/* 
       {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
         <section className="relative w-full z-10 py-24" style={{ backgroundColor: '#010836' }}>
           <div className={`mx-auto px-6 md:px-12 ${project.videoSection.orientation === 'portrait' ? 'max-w-[450px]' : 'max-w-[1200px]'}`}>
@@ -497,7 +485,6 @@ const AriseVenturesExperience = ({ navigate, project }) => {
           </div>
         </section>
       )}
-      */}
 
       {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
       <section className="relative w-full z-10" style={{ backgroundColor: '#010836' }}>
