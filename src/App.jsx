@@ -202,19 +202,19 @@ const CareersModal = ({ onClose }) => {
 // --- GLOBAL PALETTE & TYPOGRAPHY (V2) ---
 const palette = {
   bg: '#010D54',        // PBH official navy
-  bgDeep: '#010836',    // Darker navy for depth
+  bgDeep: '#010D54',    // Darker navy for depth
   panel: '#0C185C',     // Elevated panel navy
-  primary: '#6865FA',   // PBH primary purple
-  secondary: '#D4CEFC', // Light purple
+  primary: '#6865FA',   // 60% PBH primary purple
+  secondary: '#D4CEFC', // 30% Light purple
   blue: '#2A97D9',      // Bright blue
-  accent: '#FFCD00',    // Yellow for high-contrast accents/buttons
+  accent: '#FFCD00',    // 10% Yellow for high-contrast accents/buttons
   purple: '#AF73DD',    // Secondary purple
   green: '#93D435',     // Secondary green
   orange: '#ED7E18',    // Secondary orange
   text: '#F4F4F5',
   fonts: {
     primary: "'Space Grotesk', sans-serif",
-    secondary: "'Karla', sans-serif"
+    secondary: "'Inter', sans-serif"
   }
 };
 
@@ -2913,7 +2913,7 @@ const Header = ({ navigate, current }) => {
           PurpleBlue House
         </div>
 
-        <nav className="hidden lg:flex items-center gap-2 text-sm font-medium tracking-wide bg-white/[0.04] border border-white/10 rounded-full px-3 py-2 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_50px_rgba(0,0,0,0.35)] font-secondary">
+        <nav className="hidden lg:flex items-center gap-2 text-base font-medium tracking-wide bg-white/[0.04] border border-white/10 rounded-full px-4 py-2.5 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_50px_rgba(0,0,0,0.35)] font-secondary">
           <NavLink onClick={() => { navigate('work'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('work')} active={current.startsWith('work') || activeMenu === 'work'}>Work</NavLink>
           <NavLink onClick={() => { navigate('services'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('services')} active={current.startsWith('services') || activeMenu === 'services'}>Services</NavLink>
           <NavLink onClick={() => { navigate('about'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('about')} active={['about', 'method', 'story', 'team'].includes(current) || activeMenu === 'about'}>About Us</NavLink>
@@ -3136,6 +3136,30 @@ const HomePage = ({ navigate }) => {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="min-h-screen text-[#F4F4F5] w-full relative" style={{ backgroundColor: palette.bgDeep }}>
       <section ref={heroRef} onMouseMove={handleMouseMove} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className="relative h-screen flex flex-col overflow-hidden w-full pt-28 pb-8 px-[3%]">
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0 pointer-events-none">
+          {/* Chic Artistic Background Cards (Brand Colors 60-30-10) */}
+          <div className="absolute inset-0 overflow-hidden">
+            {/* 60% Primary Purple (#6865FA) - Dominant structural card */}
+            <motion.div 
+              animate={{ rotate: [0, 5, 0], y: [0, -20, 0] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -top-[10%] -left-[10%] w-[60vw] h-[80vh] rounded-[40px] opacity-[0.25] blur-[4px] border border-white/10 backdrop-blur-3xl shadow-2xl mix-blend-screen" 
+              style={{ backgroundColor: palette.primary, transformOrigin: 'top left' }} 
+            />
+            
+            {/* 30% Light Purple (#D4CEFC) - Secondary soft card */}
+            <motion.div 
+              animate={{ rotate: [0, -8, 0], y: [0, 30, 0], x: [0, -20, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+              className="absolute top-[20%] right-[5%] w-[30vw] h-[50vh] rounded-[30px] opacity-[0.2] blur-[8px] border border-white/20 backdrop-blur-2xl shadow-xl mix-blend-screen" 
+              style={{ backgroundColor: palette.secondary }} 
+            />
+            
+            {/* 10% Yellow (#FFCD00) - Accent punchy card */}
+            <motion.div 
+              animate={{ rotate: [0, 15, 0], scale: [1, 1.1, 1] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+              className="absolute bottom-[15%] left-[20%] w-[15vw] h-[25vh] rounded-[24px] opacity-[0.15] blur-[12px] border border-white/30 backdrop-blur-xl mix-blend-screen" 
+              style={{ backgroundColor: palette.accent }} 
+            />
+          </div>
+
           <div className="absolute inset-0 flex justify-center items-center">
             <motion.div style={{ x: orbX, y: orbY }} className="relative w-full h-full flex justify-center items-center md:translate-x-[20%]">
               <div className="absolute w-[80vw] md:w-[600px] h-[80vw] md:h-[450px] rounded-[100%] blur-[120px] md:blur-[160px] opacity-[0.15] mix-blend-screen animate-pulse" style={{ backgroundColor: palette.primary, animationDuration: '8s' }} />
@@ -5405,7 +5429,7 @@ export default function App() {
     <GlobalContext.Provider value={globalData}>
       <div className="min-h-screen text-[#F4F4F5] w-full selection:text-white font-secondary" style={{ backgroundColor: palette.bgDeep, scrollBehavior: 'smooth', '--tw-selection-color': palette.primary + '4D' }}>
         <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Space+Grotesk:wght@300..700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Space+Grotesk:wght@300..700&display=swap');
         
         body { overflow-x: hidden; }
 

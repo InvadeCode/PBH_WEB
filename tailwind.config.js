@@ -24,11 +24,11 @@ export default {
       },
       fontFamily: {
         header: ['"Space Grotesk"', 'sans-serif'],
-        body: ['Karla', 'Inter', 'sans-serif'],
+        body: ['Inter', 'sans-serif'],
         // Brand typography — map the classes used across the app to the official fonts.
         primary: ['"Space Grotesk"', 'sans-serif'],   // display / headings / labels
-        secondary: ['Karla', 'Inter', 'sans-serif'],  // body copy
-        carla: ['Karla', 'Inter', 'sans-serif'],      // legacy alias ("Carla" → Karla)
+        secondary: ['Inter', 'sans-serif'],  // body copy
+        carla: ['Inter', 'sans-serif'],      // legacy alias
       },
       // ── 3-SIZE TYPE SYSTEM ──────────────────────────────────────────────
       // Every text-* utility collapses into exactly three sizes:
