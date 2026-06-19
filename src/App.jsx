@@ -698,6 +698,7 @@ const ProblemHoverCard = ({ title, icon, type }) => {
   function handleMouseMove({ currentTarget, clientX, clientY }) { const { left, top } = currentTarget.getBoundingClientRect(); mouseX.set(clientX - left); mouseY.set(clientY - top); }
   return (
     <motion.div onMouseMove={handleMouseMove} initial="initial" whileHover="hover" className="group relative cursor-default p-6 rounded-[16px] flex flex-col justify-center h-44 overflow-hidden transition-all duration-500 shadow-lg hover:-translate-y-1 w-full backdrop-blur-2xl" style={{ background: `linear-gradient(135deg, ${hexToRgba(palette.secondary, 0.07)} 0%, ${hexToRgba(palette.secondary, 0.01)} 100%)`, border: `1px solid ${hexToRgba(palette.secondary, 0.15)}`, borderBottom: `2px solid ${color}` }}>
+      <motion.div variants={{ initial: { opacity: 0 }, hover: { opacity: 0.95 } }} transition={{ duration: 0.4 }} className="absolute inset-0 z-0 pointer-events-none" style={{ backgroundColor: palette.primary }} />
       <motion.div className="pointer-events-none absolute -inset-px rounded-[16px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0" style={{ background: useMotionTemplate`radial-gradient(200px circle at ${mouseX}px ${mouseY}px, ${hexToRgba(palette.secondary, 0.15)}, transparent 80%)` }} />
       <motion.div variants={{ initial: { scale: 0.5, opacity: 0, x: -30, y: 30 }, hover: { scale: 2, opacity: 0.15, x: 0, y: 0 } }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} className="absolute -right-4 -bottom-4 w-28 h-28 blur-[25px] rounded-full pointer-events-none z-0" style={{ backgroundColor: color }} />
       <motion.div variants={{ initial: { scale: 0.5, opacity: 0, x: 30, y: -30 }, hover: { scale: 1.5, opacity: 0.1, x: 0, y: 0 } }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.05 }} className="absolute -left-4 -top-4 w-20 h-20 blur-[20px] rounded-full pointer-events-none z-0" style={{ backgroundColor: color }} />
@@ -2684,6 +2685,7 @@ const MenuHoverCard = ({ children, color, onClick }) => {
         WebkitBackdropFilter: 'blur(24px) saturate(150%)'
       }}
     >
+      <motion.div variants={{ initial: { opacity: 0 }, hover: { opacity: 0.95 } }} transition={{ duration: 0.4 }} className="absolute inset-0 z-0 pointer-events-none" style={{ backgroundColor: palette.primary }} />
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-[16px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0 w-full"
         style={{ background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, ${hexToRgba(palette.secondary, 0.2)}, transparent 80%)` }}
