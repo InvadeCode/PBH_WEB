@@ -465,6 +465,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       )}
 
       {/* ── 5.5 OPTIONAL VIDEO SECTION ── */}
+      {/* 
       {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
         <section className="relative w-full z-10 py-24" style={{ backgroundColor: '#010836' }}>
           <div className={`mx-auto px-6 md:px-12 ${project.videoSection.orientation === 'portrait' ? 'max-w-[450px]' : 'max-w-[1200px]'}`}>
@@ -496,6 +497,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
           </div>
         </section>
       )}
+      */}
 
       {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
       <section className="relative w-full z-10" style={{ backgroundColor: '#010836' }}>

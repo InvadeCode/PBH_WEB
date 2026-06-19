@@ -326,6 +326,7 @@ const BackToRootsExperience = ({ navigate, project }) => {
       <Narrative project={project} />
       <StoryChapterCarousel images={images} project={project} SITE_SETTINGS={SITE_SETTINGS} />
       {/* ── OPTIONAL VIDEO SECTION ── */}
+      {/* 
       {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
         <section className="py-24 bg-[var(--color-bg)] relative z-10 px-4 md:px-12">
           <div className={`mx-auto ${project.videoSection.orientation === 'portrait' ? 'max-w-md' : 'max-w-7xl'}`}>
@@ -355,6 +356,7 @@ const BackToRootsExperience = ({ navigate, project }) => {
           </div>
         </section>
       )}
+      */}
       
       <Arrival project={project} navigate={navigate} SITE_SETTINGS={SITE_SETTINGS} />
     </div>
