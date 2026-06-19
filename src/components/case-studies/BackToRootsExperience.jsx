@@ -160,66 +160,112 @@ const Narrative = ({ project }) => {
   );
 };
 
-// ── SCENE 3 · IMAGE CHAPTERS (vertical, artistic, gradient) ─────────────────
-const StoryChapter = ({ img, index, total }) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], [70, -70]);
-  const kb = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1, 1.06]);
+// ── SCENE 3 · STORYTELLING CAROUSEL ──────────────────────────────────────────
+const StoryChapterCarousel = ({ images, project }) => {
+  const containerRef = useRef(null);
 
-  const storyChapters = project?.fullStory?.storyChapters || [];
-  const chData = storyChapters.length > 0 ? storyChapters[index % storyChapters.length] : null;
-  const ch = chData ? { t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[index % DEFAULT_CHAPTERS.length];
-  const num = String(index + 1).padStart(2, '0');
-  const left = index % 2 === 0;
-  const grad = GRADS[index % GRADS.length];
+  // We use standard CSS horizontal scroll plus a smooth auto-scroll effect
+  // that can be overridden by user scrolling.
+  useEffect(() => {
+    let animationFrameId;
+    let lastTime = performance.now();
+    let speed = 0.5; // pixels per frame
+
+    const scrollLoop = (time) => {
+      const delta = time - lastTime;
+      lastTime = time;
+      
+      if (containerRef.current) {
+        // Only auto-scroll if the user isn't hovering
+        if (!containerRef.current.matches(':hover')) {
+          containerRef.current.scrollLeft += speed * (delta / 16);
+          
+          // Reset scroll to 0 if we reach the end (infinite effect approximated by repeating elements or just stopping)
+          if (containerRef.current.scrollLeft >= containerRef.current.scrollWidth - containerRef.current.clientWidth - 5) {
+             // For a true infinite carousel we would duplicate elements. 
+             // Here we'll just smoothly loop back to start.
+             containerRef.current.scrollLeft = 0;
+          }
+        }
+      }
+      animationFrameId = requestAnimationFrame(scrollLoop);
+    };
+
+    animationFrameId = requestAnimationFrame(scrollLoop);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
+  if (!images || images.length === 0) return null;
+
+  // Duplicate images for infinite scroll effect
+  const extendedImages = [...images, ...images, ...images];
 
   return (
-    <section ref={ref} className="relative min-h-screen flex items-center overflow-hidden py-24 md:py-28" style={{ background: grad }}>
-      {/* Ghost numeral */}
-      <span className="absolute font-serif pointer-events-none select-none leading-none"
-        style={{ color: `${C.terra}12`, fontSize: '52vh', top: '50%', transform: 'translateY(-50%)', [left ? 'right' : 'left']: '4%' }}>
-        {num}
-      </span>
-
-      <div className={`relative z-10 w-full max-w-7xl mx-auto px-[6%] flex flex-col gap-12 md:gap-14 items-center ${left ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-        {/* Film cell */}
-        <motion.figure className="md:w-[64%] flex justify-center" style={{ y }}
-          initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-15%' }} transition={{ duration: 1, ease: C.ease }}>
-          <div className="relative px-3 py-4 md:px-4 md:py-5" style={{ backgroundColor: '#0E0805', boxShadow: '0 40px 90px rgba(0,0,0,0.55)' }}>
-            <Sprockets pos="top" />
-            <Sprockets pos="bottom" />
-            <div className="relative overflow-hidden">
-              <motion.img src={img} alt={ch.t} className="block w-auto h-auto object-contain"
-                style={{ maxHeight: '68vh', maxWidth: 'min(60vw, 820px)', y: kb }} />
-              {/* Warm duotone gradient grade */}
-              <div className="absolute inset-0 pointer-events-none mix-blend-soft-light" style={{ background: `linear-gradient(155deg, ${C.terra} 0%, transparent 55%, ${C.soilDeep} 100%)` }} />
-              {/* Bottom gradient fade */}
-              <div className="absolute inset-x-0 bottom-0 h-1/3 pointer-events-none" style={{ background: `linear-gradient(to top, ${C.soilDeep}cc, transparent)` }} />
-              {/* Vignette */}
-              <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 90px rgba(0,0,0,0.5)' }} />
-              {/* Grain */}
-              <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.22 }} />
-            </div>
-            <div className="absolute inset-2 md:inset-2.5 border pointer-events-none" style={{ borderColor: `${C.cream}1f` }} />
-            <RegMarks />
-          </div>
-        </motion.figure>
-
-        {/* Caption */}
-        <motion.div className={`md:w-[36%] text-center ${left ? 'md:text-left' : 'md:text-right'}`}
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-15%' }} transition={{ duration: 0.9, delay: 0.2, ease: C.ease }}>
-          <div className={`flex items-center gap-3 mb-4 justify-center ${left ? 'md:justify-start' : 'md:justify-end md:flex-row-reverse'}`}>
-            <span className="h-px w-10" style={{ backgroundColor: C.terra }} />
-            <span className="text-[10px] uppercase tracking-[0.4em] font-secondary" style={{ color: C.terra }}>Chapter {num} / {String(total).padStart(2, '0')}</span>
-          </div>
-          <h3 className="font-serif leading-none mb-5" style={{
-            fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)',
-            background: `linear-gradient(120deg, ${C.cream}, ${C.terra})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-          }}>{ch.t}</h3>
-          <p className="font-serif font-light italic leading-relaxed" style={{ color: `${C.cream}b3`, fontSize: 'clamp(1.05rem, 1.7vw, 1.35rem)' }}>{ch.l}</p>
-        </motion.div>
+    <section className="relative py-24 md:py-32 overflow-hidden" style={{ backgroundColor: C.soilDeep }}>
+      <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.1 }} />
+      
+      <div className="text-center mb-16 px-[6%] relative z-10">
+        <h3 className="font-serif text-3xl md:text-5xl" style={{ color: C.terra }}>The Unfolding Story</h3>
+        <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${C.cream}66` }}>Scroll or drag to explore</p>
       </div>
+
+      <div 
+        ref={containerRef}
+        className="flex gap-8 md:gap-16 overflow-x-auto snap-x snap-mandatory hide-scrollbar px-[10vw] pb-16 pt-8 items-center"
+        style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+      >
+        {extendedImages.map((img, index) => {
+          const storyChapters = project?.fullStory?.storyChapters || [];
+          const chData = storyChapters.length > 0 ? storyChapters[index % storyChapters.length] : null;
+          const ch = chData ? { t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[index % DEFAULT_CHAPTERS.length];
+          const num = String((index % images.length) + 1).padStart(2, '0');
+
+          return (
+            <motion.div 
+              key={index} 
+              className="relative shrink-0 snap-center flex flex-col items-center"
+              style={{ width: 'min(85vw, 400px)' }}
+              initial={{ opacity: 0, rotateY: 45, x: 100 }}
+              whileInView={{ opacity: 1, rotateY: 0, x: 0 }}
+              viewport={{ margin: "-10%" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              {/* Vertical / Portrait Image Container */}
+              <div className="w-full aspect-[3/4] relative p-3 bg-[#0E0805] shadow-2xl overflow-hidden" 
+                   style={{ boxShadow: '0 30px 60px rgba(0,0,0,0.7)', transformStyle: 'preserve-3d' }}>
+                <Sprockets pos="top" />
+                <Sprockets pos="bottom" />
+                <div className="absolute inset-3 overflow-hidden">
+                  <img src={img} alt={ch.t} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 pointer-events-none mix-blend-soft-light" style={{ background: `linear-gradient(155deg, ${C.terra} 0%, transparent 55%, ${C.soilDeep} 100%)` }} />
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 pointer-events-none" style={{ background: `linear-gradient(to top, ${C.soilDeep}f2, transparent)` }} />
+                </div>
+                
+                {/* Floating Text within the "Page" */}
+                <div className="absolute bottom-8 inset-x-6 text-center z-20">
+                  <span className="text-[10px] uppercase tracking-[0.4em] font-secondary mb-3 block" style={{ color: C.terra }}>
+                    Chapter {num}
+                  </span>
+                  <h4 className="font-serif leading-none mb-3" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', color: C.cream }}>
+                    {ch.t}
+                  </h4>
+                  <p className="font-serif font-light italic leading-snug text-sm md:text-base" style={{ color: `${C.cream}b3` }}>
+                    {ch.l}
+                  </p>
+                </div>
+                <RegMarks />
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+      
+      {/* CSS to hide scrollbar for webkit browsers */}
+      <style dangerouslySetInnerHTML={{__html: `
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+      `}} />
     </section>
   );
 };
@@ -264,9 +310,7 @@ const BackToRootsExperience = ({ navigate, project }) => {
       <ScrollProgress />
       <Cover project={project} navigate={navigate} SITE_SETTINGS={SITE_SETTINGS} />
       <Narrative project={project} />
-      {images.map((img, i) => (
-        <StoryChapter key={i} img={img} index={i} total={images.length} />
-      ))}
+      <StoryChapterCarousel images={images} project={project} />
       {/* ── OPTIONAL VIDEO SECTION ── */}
       {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
         <section className="relative w-full py-24 md:py-32 px-[6%] z-10 bg-[#0E0805]">
