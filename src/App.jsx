@@ -2913,7 +2913,7 @@ const Header = ({ navigate, current }) => {
           PurpleBlue House
         </div>
 
-        <nav className="hidden lg:flex items-center gap-2 text-base font-medium tracking-wide bg-white/[0.04] border border-white/10 rounded-full px-4 py-2.5 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_50px_rgba(0,0,0,0.35)] font-secondary">
+        <nav className="hidden lg:flex items-center gap-2 text-xl font-medium tracking-wide bg-white/[0.04] border border-white/10 rounded-full px-5 py-3 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_50px_rgba(0,0,0,0.35)] font-secondary">
           <NavLink onClick={() => { navigate('work'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('work')} active={current.startsWith('work') || activeMenu === 'work'}>Work</NavLink>
           <NavLink onClick={() => { navigate('services'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('services')} active={current.startsWith('services') || activeMenu === 'services'}>Services</NavLink>
           <NavLink onClick={() => { navigate('about'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('about')} active={['about', 'method', 'story', 'team'].includes(current) || activeMenu === 'about'}>About Us</NavLink>

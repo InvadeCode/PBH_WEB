@@ -30,16 +30,16 @@ export default {
         secondary: ['Inter', 'sans-serif'],  // body copy
         carla: ['Inter', 'sans-serif'],      // legacy alias
       },
-      // ── 3-SIZE TYPE SYSTEM ──────────────────────────────────────────────
-      // Every text-* utility collapses into exactly three sizes:
-      //   Label (xs–sm) · Body (base–2xl) · Display (3xl–9xl)
+      // ── 4-SIZE TYPE SYSTEM ──────────────────────────────────────────────
+      // Every text-* utility collapses into exactly four sizes:
+      //   Label (xs–sm) · Body (base) · Nav/Sub (lg–2xl) · Display (3xl–9xl)
       fontSize: {
         'xs':   ['0.8125rem', { lineHeight: '1.45' }],   // LABEL
         'sm':   ['0.8125rem', { lineHeight: '1.45' }],   // LABEL
         'base': ['1.125rem',  { lineHeight: '1.6' }],    // BODY
-        'lg':   ['1.125rem',  { lineHeight: '1.6' }],    // BODY
-        'xl':   ['1.125rem',  { lineHeight: '1.6' }],    // BODY
-        '2xl':  ['1.125rem',  { lineHeight: '1.5' }],    // BODY
+        'lg':   ['1.25rem',   { lineHeight: '1.5' }],    // NAV / SUBHEADING (20px)
+        'xl':   ['1.25rem',   { lineHeight: '1.5' }],    // NAV / SUBHEADING (20px)
+        '2xl':  ['1.25rem',   { lineHeight: '1.5' }],    // NAV / SUBHEADING (20px)
         '3xl':  ['clamp(2.5rem, 5.2vw, 4.75rem)', { lineHeight: '1.05', letterSpacing: '-0.03em' }], // DISPLAY
         '4xl':  ['clamp(2.5rem, 5.2vw, 4.75rem)', { lineHeight: '1.05', letterSpacing: '-0.03em' }],
         '5xl':  ['clamp(2.5rem, 5.2vw, 4.75rem)', { lineHeight: '1.05', letterSpacing: '-0.03em' }],
