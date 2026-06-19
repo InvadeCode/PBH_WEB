@@ -58,7 +58,11 @@ const Logo = ({ logo, i, reduce }) => (
         loading="lazy"
         decoding="async"
         draggable="false"
-        className="pbh-logo relative z-10 h-[80px] md:h-[110px] w-auto max-w-none select-none object-contain"
+        className={`pbh-logo relative z-10 w-auto max-w-none select-none object-contain ${
+          ['NSE', 'ORF', 'Arise Ventures'].includes(logo.name)
+            ? 'h-[75px] md:h-[100px]'
+            : 'h-[105px] md:h-[140px]'
+        }`}
       />
     </div>
   </motion.div>
