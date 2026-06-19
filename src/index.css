@@ -29,20 +29,7 @@
   }
 }
 
-/* ── Collapse arbitrary text-[..] sizes into the 3-size system ──
-   (named text-* utilities are already remapped in tailwind.config.js) */
-.text-\[6px\], .text-\[8px\], .text-\[9px\], .text-\[10px\],
-.text-\[11px\], .text-\[12px\], .text-\[13px\] {
-  font-size: 0.8125rem !important;   /* LABEL */
-}
-.text-\[14px\], .text-\[15px\], .text-\[16px\], .text-\[17px\], .text-\[18px\] {
-  font-size: 1.125rem !important;    /* BODY */
-}
-.text-\[2rem\], .text-\[2\.5rem\], .text-\[3rem\], .text-\[4rem\],
-.text-\[5rem\], .text-\[6rem\], .text-\[7rem\], .text-\[8rem\],
-.text-\[15rem\], .text-\[12vw\], .text-\[8vw\] {
-  font-size: clamp(2.5rem, 5.2vw, 4.75rem) !important;   /* DISPLAY */
-}
+
 
 @layer components {
   /* ═══════════════════════════════════════════════════════════════

@@ -2962,9 +2962,9 @@ const Header = ({ navigate, current }) => {
               className="absolute inset-0 pointer-events-none opacity-100 w-full"
               style={{
                 background: `
-                  radial-gradient(circle at 20% 10%, ${hexToRgba(palette.primary, 0.18)}, transparent 32%),
-                  radial-gradient(circle at 80% 20%, ${hexToRgba(palette.blue, 0.14)}, transparent 34%),
-                  linear-gradient(180deg, ${hexToRgba(palette.bgDeep, 0.98)}, ${hexToRgba(palette.bg, 0.98)})
+                  radial-gradient(circle at 20% 10%, ${hexToRgba(palette.primary, 0.15)}, transparent 40%),
+                  radial-gradient(circle at 80% 20%, ${hexToRgba(palette.secondary, 0.12)}, transparent 40%),
+                  linear-gradient(180deg, ${hexToRgba(palette.bgDeep, 0.55)}, ${hexToRgba(palette.bg, 0.75)})
                 `
               }}
             />
@@ -3155,11 +3155,11 @@ const HomePage = ({ navigate }) => {
               style={{ backgroundColor: palette.secondary }} 
             />
             
-            {/* 10% Yellow (#ffcd00) */}
+            {/* 10% Additional Light Purple (#d4cefc) */}
             <motion.div 
               animate={{ rotate: [0, 15, 0], scale: [1, 1.2, 1], x: ['0%', '10%', '0%'], y: ['0%', '-10%', '0%'] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 5 }}
               className="absolute top-[30%] right-[20%] w-[30vw] h-[30vh] rounded-full blur-[100px] opacity-15 mix-blend-screen" 
-              style={{ backgroundColor: palette.accent }} 
+              style={{ backgroundColor: palette.secondary }} 
             />
           </div>
 
@@ -3311,9 +3311,9 @@ const HomePage = ({ navigate }) => {
       </section>
 
       <section className="py-32 px-[3%] relative w-full border-y border-white/5 text-left overflow-hidden" style={{ backgroundColor: palette.bgDeep }}>
-        {/* Ambient Mesh Glow (Yellow Accent) */}
+        {/* Ambient Mesh Glow (Light Purple) */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-          <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }} className="absolute top-[20%] left-[30%] w-[40vw] h-[40vh] rounded-full blur-[140px] opacity-20 mix-blend-screen" style={{ backgroundColor: palette.accent }} />
+          <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }} className="absolute top-[20%] left-[30%] w-[40vw] h-[40vh] rounded-full blur-[140px] opacity-20 mix-blend-screen" style={{ backgroundColor: palette.secondary }} />
         </div>
         <div className="relative z-10 w-full">
           <RevealText><h2 className="t-display mb-20">How It <AnimatedItalic>Works.</AnimatedItalic></h2></RevealText>
