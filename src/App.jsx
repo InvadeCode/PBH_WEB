@@ -3144,21 +3144,21 @@ const HomePage = ({ navigate }) => {
             {/* 60% Primary Purple (#6865fa) */}
             <motion.div 
               animate={{ rotate: [0, 5, 0], scale: [1, 1.05, 1], x: ['-5%', '5%', '-5%'], y: ['-5%', '5%', '-5%'] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-0 left-0 w-[80vw] h-[80vh] rounded-full blur-[140px] opacity-80 mix-blend-screen" 
+              className="absolute top-0 left-0 w-[80vw] h-[80vh] rounded-full blur-[140px] opacity-40 mix-blend-screen" 
               style={{ backgroundColor: palette.primary }} 
             />
             
             {/* 30% Light Purple (#d4cefc) */}
             <motion.div 
               animate={{ rotate: [0, -8, 0], scale: [1, 1.1, 1], x: ['5%', '-5%', '5%'], y: ['5%', '-5%', '5%'] }} transition={{ duration: 25, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-              className="absolute bottom-0 right-0 w-[50vw] h-[60vh] rounded-full blur-[120px] opacity-60 mix-blend-screen" 
+              className="absolute bottom-0 right-0 w-[50vw] h-[60vh] rounded-full blur-[120px] opacity-20 mix-blend-screen" 
               style={{ backgroundColor: palette.secondary }} 
             />
             
             {/* 10% Yellow (#ffcd00) */}
             <motion.div 
               animate={{ rotate: [0, 15, 0], scale: [1, 1.2, 1], x: ['0%', '10%', '0%'], y: ['0%', '-10%', '0%'] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 5 }}
-              className="absolute top-[30%] right-[20%] w-[30vw] h-[30vh] rounded-full blur-[100px] opacity-30 mix-blend-screen" 
+              className="absolute top-[30%] right-[20%] w-[30vw] h-[30vh] rounded-full blur-[100px] opacity-15 mix-blend-screen" 
               style={{ backgroundColor: palette.accent }} 
             />
           </div>
@@ -3170,7 +3170,7 @@ const HomePage = ({ navigate }) => {
             </motion.div>
           </div>
           <motion.div animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} className="absolute inset-0 flex justify-center items-center mix-blend-screen">
-            <div className="relative w-[140%] max-w-[1200px] h-[500px] md:translate-x-[20%]"><motion.div animate={{ scale: [1, 1.5, 1], opacity: [0, 0.4, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} className="absolute top-0 right-1/4 w-72 h-72 bg-white rounded-full blur-[100px]" /></div>
+            <div className="relative w-[140%] max-w-[1200px] h-[500px] md:translate-x-[20%]"><motion.div animate={{ scale: [1, 1.5, 1], opacity: [0, 0.15, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} className="absolute top-0 right-1/4 w-72 h-72 bg-white rounded-full blur-[100px]" /></div>
           </motion.div>
           <motion.div animate={{ opacity: isHovered ? 1 : 0 }} transition={{ duration: 0.8 }} className="absolute z-[5]" style={{ width: '800px', height: '800px', left: 0, top: 0, x: spotlightX, y: spotlightY }}>
             <div className="w-full h-full rounded-full mix-blend-screen" style={{ background: `radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(${rgbPrimary},0.03) 30%, transparent 60%)` }} />
