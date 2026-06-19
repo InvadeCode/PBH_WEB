@@ -87,7 +87,7 @@ const Cover = ({ project, navigate, SITE_SETTINGS }) => {
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.4 }}>
           {project.sector || 'Brand Storytelling'}
         </motion.span>
-        <h1 className="font-serif leading-[0.95]">
+        <h1 className="leading-[0.95]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
           {title.split(' ').map((word, wi) => (
             <span key={wi} className="block overflow-hidden">
               <motion.span className="inline-block" style={{
