@@ -168,7 +168,7 @@ const Narrative = ({ project }) => {
 };
 
 // ── SCENE 3 · STORYTELLING CAROUSEL ──────────────────────────────────────────
-const StoryChapterCarousel = ({ images, project }) => {
+const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
   const containerRef = useRef(null);
 
   // We use standard CSS horizontal scroll plus a smooth auto-scroll effect
@@ -207,8 +207,8 @@ const StoryChapterCarousel = ({ images, project }) => {
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.1 }} />
       
       <div className="text-center mb-16 px-[6%] relative z-10">
-        <h3 className="font-serif text-3xl md:text-5xl" style={{ color: C.terra }}>The Unfolding Story</h3>
-        <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${C.cream}66` }}>Scroll or drag to explore</p>
+        <h3 className="font-serif text-3xl md:text-5xl" style={{ color: C.terra }}>{project?.carouselTitle || 'The Unfolding Story'}</h3>
+        <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${C.cream}66` }}>{project?.carouselSubtext || 'Scroll or drag to explore'}</p>
       </div>
 
       <div 
@@ -324,7 +324,7 @@ const BackToRootsExperience = ({ navigate, project }) => {
       <ScrollProgress />
       <Cover project={project} navigate={navigate} SITE_SETTINGS={SITE_SETTINGS} />
       <Narrative project={project} />
-      <StoryChapterCarousel images={images} project={project} />
+      <StoryChapterCarousel images={images} project={project} SITE_SETTINGS={SITE_SETTINGS} />
       {/* ── OPTIONAL VIDEO SECTION ── */}
       {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
         <section className="relative w-full py-24 md:py-32 px-[6%] z-10 bg-[#0E0805]">

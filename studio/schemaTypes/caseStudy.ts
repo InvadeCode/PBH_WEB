@@ -11,7 +11,7 @@ export default defineType({
     defineField({
       name: 'challenge',
       title: 'Challenge',
-      type: 'string',
+      type: 'text',
     }),
     defineField({
       name: 'client',
@@ -24,6 +24,12 @@ export default defineType({
       type: 'image',
       description: 'The thumbnail image displayed on the main "Selected Work" grid. If empty, defaults to a colored gradient.',
       options: { hotspot: true }
+    }),
+    defineField({
+      name: 'overviewHeading',
+      title: 'Overview Heading',
+      type: 'string',
+      description: 'Defaults to "The Brand" if left blank.'
     }),
     defineField({
       name: 'challengeHeading',
@@ -42,6 +48,18 @@ export default defineType({
       title: 'Deliverables Heading',
       type: 'string',
       description: 'Defaults to "Core Deliverables" if left blank.'
+    }),
+    defineField({
+      name: 'carouselTitle',
+      title: 'Image Gallery Title',
+      type: 'string',
+      description: 'Title shown above the image carousel on the case study page. Defaults to "The Unfolding Story".'
+    }),
+    defineField({
+      name: 'carouselSubtext',
+      title: 'Image Gallery Subtext',
+      type: 'string',
+      description: 'Subtitle shown below the gallery title. Defaults to "Scroll or drag to explore".'
     }),
     defineField({
       name: 'colors',

@@ -17,6 +17,9 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(orderRank) {
   challengeHeading,
   solutionHeading,
   deliverablesHeading,
+  overviewHeading,
+  carouselTitle,
+  carouselSubtext,
   "fullStory": {
     "challenge": fullStory.challenge,
     "strategy": fullStory.strategy,
