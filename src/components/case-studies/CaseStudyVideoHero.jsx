@@ -1,0 +1,243 @@
+import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { Play, X } from 'lucide-react';
+
+/**
+ * CaseStudyVideoHero — reusable, CMS-driven cinematic video hero.
+ *
+ * Renders NOTHING (no DOM, no spacing) unless `videoHero.enabled` is true.
+ * Driven entirely by the `videoHero` object on a caseStudy document:
+ *   { enabled, backgroundColor, backgroundText, videoTitle, videoSubtitle,
+ *     thumbnailUrl, embedUrl, uploadedVideoUrl }
+ *
+ * Clicking the circular thumbnail expands it (shared layout animation)
+ * from a circle into a near-fullscreen player; ESC / click-outside closes it.
+ */
+const SHARED_ID = 'cs-video-hero-frame';
+
+const withAutoplay = (url) => {
+  if (!url) return url;
+  try {
+    const u = new URL(url);
+    u.searchParams.set('autoplay', '1');
+    if (/youtube|youtu\.be/.test(u.hostname)) u.searchParams.set('rel', '0');
+    return u.toString();
+  } catch {
+    return url;
+  }
+};
+
+const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
+  const {
+    backgroundColor = '#0A0A0A',
+    backgroundText,
+    videoTitle,
+    videoSubtitle,
+    thumbnailUrl,
+    embedUrl,
+    uploadedVideoUrl,
+  } = videoHero || {};
+
+  const enabled = videoHero?.enabled === true;
+  const bgText = (backgroundText || videoTitle || fallbackName || '').toString();
+  const hasVideo = Boolean(embedUrl || uploadedVideoUrl);
+
+  const [open, setOpen] = useState(false);
+  const prefersReduced = useReducedMotion();
+
+  const triggerRef = useRef(null);
+  const closeRef = useRef(null);
+  const videoRef = useRef(null);
+
+  const layoutTransition = prefersReduced
+    ? { duration: 0 }
+    : { duration: 0.6, ease: [0.16, 1, 0.3, 1] };
+
+  const closeVideo = () => {
+    // Pause native video immediately; embeds stop on unmount.
+    if (videoRef.current) {
+      try { videoRef.current.pause(); } catch { /* noop */ }
+    }
+    setOpen(false);
+  };
+
+  // ESC to close + body scroll lock + focus management while open.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === 'Escape') closeVideo(); };
+    window.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const focusTimer = setTimeout(() => closeRef.current?.focus(), 80);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+      clearTimeout(focusTimer);
+      triggerRef.current?.focus();
+    };
+  }, [open]);
+
+  // Conditional rendering — after all hooks, bail out entirely when disabled.
+  // No DOM, no spacing, nothing rendered.
+  if (!enabled) return null;
+
+  const carla = { fontFamily: '"Carla", sans-serif' };
+
+  const renderPlayer = () => {
+    if (embedUrl) {
+      return (
+        <iframe
+          className="absolute inset-0 w-full h-full"
+          src={withAutoplay(embedUrl)}
+          title={videoTitle || 'Case study video'}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+          allowFullScreen
+          style={{ border: 'none' }}
+        />
+      );
+    }
+    if (uploadedVideoUrl) {
+      return (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-contain bg-black"
+          src={uploadedVideoUrl}
+          poster={thumbnailUrl}
+          controls
+          autoPlay
+          playsInline
+        />
+      );
+    }
+    return (
+      <div className="absolute inset-0 grid place-items-center bg-black text-white/40 text-sm tracking-widest uppercase">
+        No video source
+      </div>
+    );
+  };
+
+  return (
+    <section
+      className="relative w-full overflow-hidden flex flex-col items-center justify-center py-28 md:py-40"
+      style={{ backgroundColor }}
+      aria-label={videoTitle || `${fallbackName} video`}
+    >
+      {/* Oversized background text (Carla) — sits behind the video, overflows the viewport */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <motion.span
+          aria-hidden="true"
+          className="font-bold uppercase whitespace-nowrap leading-none text-white/[0.06]"
+          style={{ ...carla, fontSize: 'clamp(6rem, 24vw, 26rem)' }}
+          animate={prefersReduced ? undefined : { x: ['-1.5%', '1.5%', '-1.5%'] }}
+          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          {bgText}
+        </motion.span>
+      </div>
+
+      {/* Circular video trigger — placeholder reserves space during expansion */}
+      <div className="relative z-10 w-[230px] h-[230px] sm:w-[300px] sm:h-[300px] lg:w-[380px] lg:h-[380px]">
+        {!open && (
+          <motion.button
+            ref={triggerRef}
+            layoutId={SHARED_ID}
+            onClick={() => setOpen(true)}
+            transition={layoutTransition}
+            style={{ borderRadius: '50%' }}
+            className="group absolute inset-0 overflow-hidden cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40 shadow-[0_30px_80px_rgba(0,0,0,0.55)]"
+            aria-label={`Play video${videoTitle ? `: ${videoTitle}` : ''}`}
+            whileTap={{ scale: 0.97 }}
+          >
+            {/* Thumbnail (scales slightly on hover) */}
+            <motion.div
+              className="absolute inset-0"
+              initial={false}
+              whileHover={prefersReduced ? undefined : { scale: 1.06 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {thumbnailUrl
+                ? <img src={thumbnailUrl} alt="" className="w-full h-full object-cover" />
+                : <div className="w-full h-full" style={{ background: 'radial-gradient(circle at 50% 40%, rgba(255,255,255,0.18), transparent 70%)' }} />}
+              <div className="absolute inset-0 bg-black/30 transition-colors duration-500 group-hover:bg-black/15" />
+            </motion.div>
+
+            {/* Pulsing ring */}
+            {!prefersReduced && (
+              <motion.span
+                className="absolute inset-0 rounded-full border border-white/40"
+                animate={{ scale: [1, 1.12], opacity: [0.5, 0] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
+              />
+            )}
+
+            {/* Play button overlay */}
+            <span className="absolute inset-0 grid place-items-center">
+              <span className="grid place-items-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/15 backdrop-blur-md border border-white/30 transition-transform duration-500 group-hover:scale-110 shadow-[0_0_40px_rgba(255,255,255,0.15)]">
+                <Play className="w-6 h-6 md:w-7 md:h-7 text-white translate-x-0.5" fill="currentColor" />
+              </span>
+            </span>
+          </motion.button>
+        )}
+      </div>
+
+      {/* Title / subtitle */}
+      {(videoTitle || videoSubtitle) && (
+        <motion.div
+          className="relative z-10 mt-10 md:mt-12 text-center px-6"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {videoTitle && <h2 className="text-2xl md:text-4xl text-white font-medium tracking-tight" style={carla}>{videoTitle}</h2>}
+          {videoSubtitle && <p className="mt-3 text-sm md:text-base text-white/55 max-w-xl mx-auto" style={carla}>{videoSubtitle}</p>}
+        </motion.div>
+      )}
+
+      {/* Fullscreen player (portal → escapes overflow/transform ancestors) */}
+      {createPortal(
+        <AnimatePresence>
+          {open && (
+            <>
+              {/* Dim backdrop — click outside to close */}
+              <motion.div
+                className="fixed inset-0 z-[200] bg-black/85 backdrop-blur-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: prefersReduced ? 0 : 0.4 }}
+                onClick={closeVideo}
+              />
+
+              {/* Expanding frame: circle → near-fullscreen, radius 50% → 0% */}
+              <motion.div
+                layoutId={SHARED_ID}
+                transition={layoutTransition}
+                style={{ borderRadius: hasVideo ? 0 : '0%' }}
+                className="fixed z-[210] inset-3 sm:inset-8 lg:inset-12 overflow-hidden bg-black shadow-[0_40px_120px_rgba(0,0,0,0.7)]"
+                role="dialog"
+                aria-modal="true"
+                aria-label={videoTitle || 'Case study video'}
+              >
+                {renderPlayer()}
+
+                <button
+                  ref={closeRef}
+                  onClick={closeVideo}
+                  className="absolute top-4 right-4 z-10 grid place-items-center w-11 h-11 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
+                  aria-label="Close video"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+    </section>
+  );
+};
+
+export default CaseStudyVideoHero;

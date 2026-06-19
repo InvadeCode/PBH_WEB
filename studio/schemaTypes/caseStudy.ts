@@ -118,6 +118,22 @@ export default defineType({
           of: [{ type: 'image' }],
         }),
         defineField({
+          name: 'storyChapters',
+          title: 'Story Chapters (Narrative Gallery)',
+          type: 'array',
+          description: 'Used for narrative-driven galleries like Back To Roots.',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                defineField({ name: 'title', title: 'Chapter Title', type: 'string' }),
+                defineField({ name: 'description', title: 'Chapter Description', type: 'text' }),
+                defineField({ name: 'image', title: 'Chapter Image', type: 'image' })
+              ]
+            }
+          ]
+        }),
+        defineField({
           name: 'stats',
           title: 'Stats',
           type: 'array',
@@ -132,6 +148,98 @@ export default defineType({
           ],
         }),
       ],
+    }),
+    defineField({
+      name: 'videoSection',
+      title: 'Video Section (Optional)',
+      type: 'object',
+      description: 'Optional video section for the case study.',
+      fields: [
+        defineField({
+          name: 'videoUrl',
+          title: 'Video Embed URL',
+          type: 'url',
+          description: 'e.g., YouTube or Vimeo embed URL'
+        }),
+        defineField({
+          name: 'videoFile',
+          title: 'Video File',
+          type: 'file',
+          options: { accept: 'video/*' },
+          description: 'Upload a video file (used if URL is not provided)'
+        })
+      ]
+    }),
+    defineField({
+      name: 'videoHero',
+      title: 'Video Hero Section',
+      type: 'object',
+      description: 'Optional cinematic video hero. Renders nothing unless "Enabled" is on.',
+      options: { collapsible: true, collapsed: true },
+      fields: [
+        defineField({
+          name: 'enabled',
+          title: 'Enabled',
+          type: 'boolean',
+          description: 'If off, this section renders nothing at all (no DOM, no spacing).',
+          initialValue: false,
+        }),
+        defineField({
+          name: 'backgroundColor',
+          title: 'Background Color',
+          type: 'string',
+          description: 'Hex color for the section background, e.g. #010836.',
+        }),
+        defineField({
+          name: 'backgroundText',
+          title: 'Oversized Background Text',
+          type: 'string',
+          description: 'Large text behind the video (usually the case study name). Defaults to the client name.',
+        }),
+        defineField({
+          name: 'videoTitle',
+          title: 'Video Title',
+          type: 'string',
+        }),
+        defineField({
+          name: 'videoSubtitle',
+          title: 'Video Subtitle',
+          type: 'string',
+        }),
+        defineField({
+          name: 'thumbnail',
+          title: 'Thumbnail',
+          type: 'image',
+          options: { hotspot: true },
+          description: 'Poster image shown inside the circular play button.',
+        }),
+        defineField({
+          name: 'embedUrl',
+          title: 'Embed URL',
+          type: 'url',
+          description: 'YouTube/Vimeo embed URL. Takes priority over an uploaded file.',
+        }),
+        defineField({
+          name: 'uploadedVideo',
+          title: 'Uploaded Video',
+          type: 'file',
+          options: { accept: 'video/*' },
+          description: 'Used when no Embed URL is provided.',
+        }),
+      ],
+    }),
+    defineField({
+      name: 'heroTypography',
+      title: 'Hero Typography',
+      type: 'array',
+      of: [{type: 'string'}],
+      description: 'Used for specialized hero sections (e.g. Leverage Edu letters)'
+    }),
+    defineField({
+      name: 'arrivalText',
+      title: 'Arrival Text',
+      type: 'string',
+      description: 'Used in the arrival/footer section of some case studies.'
     }),
     defineField({
       name: 'seoTitle',

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
+import { GlobalContext } from '../../App';
+import CaseStudyVideoHero from './CaseStudyVideoHero';
 
 const palette = {
   bgDeep: '#010836',
@@ -263,10 +265,26 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
 
 
 const AriseVenturesExperience = ({ navigate, project }) => {
+  const { SITE_SETTINGS } = React.useContext(GlobalContext) || {};
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, []);
 
   const heroImg = project?.fullStory?.heroImg || '';
   const cmsImages = project?.fullStory?.images || [];
+
+  // TEMPORARY DEMO content for the Arise showcase. Once `videoHero` is filled in
+  // Sanity (enabled = true), the CMS data takes over automatically — and any other
+  // case study using <CaseStudyVideoHero /> behaves identically.
+  const ariseVideoHeroDemo = {
+    enabled: true,
+    backgroundColor: '#0C185C',
+    backgroundText: project?.client || 'Arise Ventures',
+    videoTitle: 'Arise Ventures — The Film',
+    videoSubtitle: 'Backing the bold. The identity system, in motion.',
+    thumbnailUrl: heroImg || 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1200&q=80',
+    embedUrl: '',
+    uploadedVideoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+  };
+  const videoHeroData = project?.videoHero?.enabled ? project.videoHero : ariseVideoHeroDemo;
 
   return (
     <div className="w-full min-h-screen font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
@@ -275,9 +293,9 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* Navigation */}
       <div className="relative z-50 px-6 py-6 md:px-12 md:py-8 flex justify-between items-center mix-blend-difference pointer-events-none">
         <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-3 text-[10px] md:text-xs tracking-[0.2em] uppercase font-light text-white/80 hover:text-white transition-colors">
-          <ArrowLeft className="w-4 h-4" /> Back to Work
+          <ArrowLeft className="w-4 h-4" /> {SITE_SETTINGS?.csBackToWork || 'Back to Work'}
         </button>
-        <span className="text-[10px] md:text-xs tracking-[0.2em] uppercase font-light text-white/40">Case Study 01</span>
+        <span className="text-[10px] md:text-xs tracking-[0.2em] uppercase font-light text-white/40">{project?.type || 'Case Study'}</span>
       </div>
 
       {/* ── 1. CINEMATIC HERO (Boxed) ── */}
@@ -319,9 +337,12 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         </div>
       </section>
 
+      {/* ── 1.5 CASE STUDY VIDEO HERO (CMS-driven, reusable) ── */}
+      <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} />
+
       {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
-      <DramaticSection 
-        title="About the Brand."
+      <DramaticSection
+        title={project?.overviewHeading || "About the Brand."}
         content={project?.overview || project?.challenge || 'A premium brand experience crafted by PurpleBlue House.'}
         motionGraphic={<AboutGraphic />}
       />
@@ -329,7 +350,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 3. DRAMATIC: PROBLEM STATEMENT ── */}
       {(project?.challenge || project?.overview) && (
         <DramaticSection 
-          title="The Problem."
+          title={project?.challengeHeading || "The Problem."}
           content={project?.challenge || project?.overview || ''}
           motionGraphic={<ProblemGraphic />}
         />
@@ -362,7 +383,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </div>
             
               <h3 className="font-carla text-5xl md:text-7xl text-white mb-10 font-medium tracking-tight drop-shadow-lg" style={{ fontFamily: '"Carla", sans-serif' }}>
-                Creative Solution
+                {project?.solutionHeading || "Creative Solution"}
               </h3>
             
               {/* Readable Text with NO box */}
@@ -414,12 +435,39 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         </section>
       )}
 
+      {/* ── 5.5 OPTIONAL VIDEO SECTION ── */}
+      {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
+        <section className="relative w-full z-10 py-24" style={{ backgroundColor: '#010836' }}>
+          <div className="max-w-[1200px] mx-auto px-6 md:px-12">
+            <div className="relative w-full rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 bg-black aspect-video">
+              {project.videoSection.videoUrl ? (
+                <iframe
+                  className="w-full h-full"
+                  src={project.videoSection.videoUrl}
+                  title="Case Study Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ border: 'none' }}
+                />
+              ) : (
+                <video
+                  className="w-full h-full object-cover"
+                  src={project.videoSection.videoFileUrl}
+                  controls
+                  playsInline
+                />
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
       <section className="relative w-full z-10" style={{ backgroundColor: '#010836' }}>
         <div className="pb-32 px-6 md:px-12 max-w-[1400px] mx-auto relative">
           <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
             <h2 className="font-carla text-3xl md:text-5xl text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
-              Ecosystem Highlights
+              {project?.deliverablesHeading || "Ecosystem Highlights"}
             </h2>
           </ElegantFade>
 
@@ -460,13 +508,13 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       <section className="pt-12 pb-32 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
         <div className="max-w-[1200px] mx-auto">
           <ElegantFade>
-            <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#D4CEFC] mb-6 font-medium">Back to Portfolio</p>
+            <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#D4CEFC] mb-6 font-medium">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
             <motion.h2 
               onClick={() => navigate('work')} 
               className="font-carla text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity inline-block"
               style={{ fontFamily: '"Carla", sans-serif' }}
             >
-              All Work
+              {SITE_SETTINGS?.csAllProjects || 'All Work'}
             </motion.h2>
           </ElegantFade>
         </div>
