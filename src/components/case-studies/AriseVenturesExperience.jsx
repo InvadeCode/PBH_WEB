@@ -236,7 +236,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
             transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
             className="text-5xl md:text-7xl lg:text-[7rem] font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
             style={{ 
-              fontFamily: '"Carla", sans-serif',
+              fontFamily: '"Karla", sans-serif',
               backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
               backgroundSize: '300% auto',
             }}
@@ -246,10 +246,10 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         </motion.div>
         
         <motion.div style={{ opacity: contentOpacity, y: contentY }} className="absolute z-20 w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center">
-          <h3 className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-[#D4CEFC] mb-8 font-bold pb-4" style={{ fontFamily: '"Carla", sans-serif' }}>
+          <h3 className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-[#D4CEFC] mb-8 font-bold pb-4" style={{ fontFamily: '"Karla", sans-serif' }}>
              {title}
           </h3>
-          <p className="text-white/80 font-normal text-lg md:text-xl lg:text-2xl leading-relaxed md:leading-[1.6]" style={{ fontFamily: '"Carla", sans-serif' }}>
+          <p className="text-white/80 font-normal text-lg md:text-xl lg:text-2xl leading-relaxed md:leading-[1.6]" style={{ fontFamily: '"Karla", sans-serif' }}>
             {content}
           </p>
         </motion.div>
@@ -314,7 +314,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {(project?.tags || project?.roles || ['Branding', 'Visual Identity', 'Collateral']).map((tag, i) => (
-              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg" style={{ fontFamily: '"Carla", sans-serif' }}>
+              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg" style={{ fontFamily: '"Karla", sans-serif' }}>
                 {tag}
               </span>
             ))}
@@ -326,7 +326,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
               className="font-carla text-4xl md:text-6xl lg:text-[6rem] leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" 
               style={{ 
-                fontFamily: '"Carla", sans-serif',
+                fontFamily: '"Karla", sans-serif',
                 backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #D4CEFC 45%, #6865FA 50%, #D4CEFC 55%, #FFFFFF 70%, #FFFFFF 100%)',
                 backgroundSize: '300% auto',
               }}
@@ -390,7 +390,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
             
               <motion.h3
                 className="font-carla text-5xl md:text-7xl text-white mb-10 font-medium tracking-tight drop-shadow-lg"
-                style={{ fontFamily: '"Carla", sans-serif' }}
+                style={{ fontFamily: '"Karla", sans-serif' }}
                 initial={{ opacity: 0, y: 32, filter: 'blur(14px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.4 }}
@@ -400,7 +400,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </motion.h3>
             
               {/* Readable Text with NO box */}
-              <div className="space-y-8 text-white/95 font-normal text-lg md:text-xl leading-relaxed" style={{ fontFamily: '"Carla", sans-serif' }}>
+              <div className="space-y-8 text-white/95 font-normal text-lg md:text-xl leading-relaxed" style={{ fontFamily: '"Karla", sans-serif' }}>
                 <p>{project?.solution || 'A comprehensive brand strategy and visual identity system designed to elevate and unify the brand presence across all touchpoints.'}</p>
               
                 {/* Highlighted text block */}
@@ -456,7 +456,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         <section className="py-24 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
           <div className="max-w-[1000px] mx-auto">
             <ElegantFade>
-              <h2 className="font-carla text-2xl md:text-3xl lg:text-4xl leading-[1.4] text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
+              <h2 className="font-carla text-2xl md:text-3xl lg:text-4xl leading-[1.4] text-white tracking-tight" style={{ fontFamily: '"Karla", sans-serif' }}>
                 "{project.results[0]}"
               </h2>
             </ElegantFade>
@@ -501,7 +501,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       <section className="relative w-full z-10" style={{ backgroundColor: '#010836' }}>
         <div className="pb-32 px-6 md:px-12 max-w-[1400px] mx-auto relative">
           <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
-            <h2 className="font-carla text-3xl md:text-5xl text-white tracking-tight" style={{ fontFamily: '"Carla", sans-serif' }}>
+            <h2 className="font-carla text-3xl md:text-5xl text-white tracking-tight" style={{ fontFamily: '"Karla", sans-serif' }}>
               {project?.deliverablesHeading || "Ecosystem Highlights"}
             </h2>
           </ElegantFade>
@@ -547,7 +547,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
             <motion.h2 
               onClick={() => navigate('work')} 
               className="font-carla text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity inline-block"
-              style={{ fontFamily: '"Carla", sans-serif' }}
+              style={{ fontFamily: '"Karla", sans-serif' }}
             >
               {SITE_SETTINGS?.csAllProjects || 'All Work'}
             </motion.h2>

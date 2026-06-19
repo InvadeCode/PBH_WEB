@@ -213,7 +213,7 @@ const palette = {
   orange: '#ED7E18',    // Secondary orange
   text: '#F4F4F5',
   fonts: {
-    primary: "'Karla', sans-serif",
+    primary: "'Space Grotesk', sans-serif",
     secondary: "'Karla', sans-serif"
   }
 };
@@ -2387,7 +2387,7 @@ const StrategicEngine = ({ navigate }) => {
         <h2 className="text-3xl md:text-4xl font-light mb-10 font-primary">Project Context.</h2>
         <div className="space-y-6 w-full mb-12 max-w-3xl">
           <div className="w-full">
-            <label className="block text-2xl md:text-3xl font-medium text-white mb-6 font-primary" style={{ fontFamily: '"Carla", serif' }}>what is your expected commencement date?</label>
+            <label className="block text-2xl md:text-3xl font-medium text-white mb-6 font-primary" style={{ fontFamily: '"Karla", serif' }}>what is your expected commencement date?</label>
             <select value={context.duration} onChange={e => setContext({ ...context, duration: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
               <option value="Short term (minimum 3 months)" style={{ backgroundColor: palette.bgDeep }}>Short term (minimum 3 months)</option>
               <option value="Deep Dive- Branding (minimum 6 months)" style={{ backgroundColor: palette.bgDeep }}>Deep Dive- Branding (minimum 6 months)</option>
@@ -3157,23 +3157,37 @@ const HomePage = ({ navigate }) => {
           <InteractiveFlowingLines />
         </motion.div>
 
+        {/* Brand geometric accents */}
+        <div className="geo-circle hidden md:block" style={{ top: '16%', right: '6%' }} />
+        <div className="geo-diamond hidden md:block" style={{ bottom: '26%', right: '20%' }} />
+
         <div className="flex-1 flex flex-col justify-center w-full relative z-10 text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.05 }}
+            className="mb-7 inline-flex w-fit items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-md"
+          >
+            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: '#ffcd00', boxShadow: '0 0 10px #ffcd00' }} />
+            <span className="t-label text-white/70">Strategy · Story · Systems</span>
+          </motion.div>
           <RevealText delay={0.1}>
-            <h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 font-primary whitespace-pre-wrap">
+            <h1 className="t-display text-white drop-shadow-lg pb-2 whitespace-pre-wrap">
               {renderWithItalics(SITE_SETTINGS?.homeHeroTitle || "Breakthroughs happen when strategy and execution *move as one.*", "text-white/60 mx-2 whitespace-nowrap")}
             </h1>
           </RevealText>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 text-lg md:text-xl text-white/60 font-light max-w-3xl leading-relaxed tracking-wide font-secondary">{SITE_SETTINGS?.homeHeroSubtitle || "PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs."}</motion.p>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 t-body text-white/60 max-w-3xl">{SITE_SETTINGS?.homeHeroSubtitle || "PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs."}</motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.7 }} className="mt-12 flex flex-col sm:flex-row gap-6">
-            <PremiumButton onClick={() => navigate('assessment')} className="min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(${rgbPrimary}, 0.2)` }}>{SITE_SETTINGS.assessmentButton || 'Build My Brand Scope'} <Sparkles className="w-4 h-4 ml-2" /></PremiumButton>
+            <PremiumButton onClick={() => navigate('assessment')} className="min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(255, 205, 0, 0.28)` }}>{SITE_SETTINGS.assessmentButton || 'Build My Brand Scope'} <Sparkles className="w-4 h-4 ml-2" style={{ color: '#ffcd00' }} /></PremiumButton>
             <PremiumButton variant="secondary" onClick={() => navigate('work')} className="min-w-[240px]">{SITE_SETTINGS.homeExploreButton || 'Explore Our Work'}</PremiumButton>
           </motion.div>
         </div>
       </section>
 
-      <section className="py-24 px-[3%] relative w-full border-y border-white/5 text-left" style={{ backgroundColor: palette.bg }}>
-        <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-16 font-primary">Scaling a breakthrough <br /><AnimatedItalic className="text-white/50">requires deep alignment.</AnimatedItalic></h2></RevealText>
-        <FadeUp><p className="text-xl text-white/50 font-light max-w-3xl mb-16 leading-relaxed font-secondary">Low engagement, inconsistent visuals, and scattered teams aren't just creative issues—they are strategic bottlenecks. We align your brand thinking with execution to drive sustainable, long-term growth.</p></FadeUp>
+      <div className="divider-organic w-full" style={{ backgroundColor: palette.bgDeep }} />
+
+      <section className="py-24 px-[3%] relative w-full border-y border-white/5 text-left overflow-hidden" style={{ backgroundColor: palette.bg }}>
+        <div className="geo-diamond hidden md:block" style={{ top: '12%', right: '8%' }} />
+        <RevealText><h2 className="t-display mb-16">Scaling a breakthrough <br /><AnimatedItalic className="text-white/50">requires deep alignment.</AnimatedItalic></h2></RevealText>
+        <FadeUp><p className="t-body text-white/50 max-w-3xl mb-16">Low engagement, inconsistent visuals, and scattered teams aren't just creative issues—they are strategic bottlenecks. We align your brand thinking with execution to drive sustainable, long-term growth.</p></FadeUp>
         <StaggerGroup className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full">
           {PROBLEM_DATA.map((prob, i) => (
             <StaggerItem key={i}><ProblemHoverCard title={prob.title} icon={prob.icon} type={prob.type} /></StaggerItem>
@@ -3183,8 +3197,8 @@ const HomePage = ({ navigate }) => {
 
       <section className="py-32 px-[3%] w-full border-b border-white/5 text-left" style={{ backgroundColor: palette.bgDeep }}>
         <div className="max-w-4xl mb-24">
-          <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6 font-primary">Breakthrough innovation <br /><AnimatedItalic className="text-white/50">demands a new model.</AnimatedItalic></h2></RevealText>
-          <FadeUp><p className="text-xl text-white/50 font-light leading-relaxed font-secondary">{SITE_SETTINGS?.homeSection3Subtitle || "Traditional execution models struggle to translate complex ideas into scalable systems. We build a strategic foundation first, ensuring every asset accelerates your 5-year vision and market impact."}</p></FadeUp>
+          <RevealText><h2 className="t-display mb-6">Breakthrough innovation <br /><AnimatedItalic className="text-white/50">demands a new model.</AnimatedItalic></h2></RevealText>
+          <FadeUp><p className="t-body text-white/50">{SITE_SETTINGS?.homeSection3Subtitle || "Traditional execution models struggle to translate complex ideas into scalable systems. We build a strategic foundation first, ensuring every asset accelerates your 5-year vision and market impact."}</p></FadeUp>
         </div>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full">
           <StaggerItem>
@@ -3215,9 +3229,9 @@ const HomePage = ({ navigate }) => {
       <section className="py-32 px-[3%] relative w-full border-b border-white/5 text-left" style={{ backgroundColor: palette.bg }}>
         <div className="grid md:grid-cols-2 gap-16 items-center w-full">
           <FadeUp>
-            <h3 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.aboutPage?.philosophyLabel || "Our Philosophy"}</h3>
-            <h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary mb-6 leading-tight">{SITE_SETTINGS?.aboutPage?.philosophyTitle || "Engineering breakthroughs with the SciArt framework."}</h2>
-            <p className="text-lg text-white/60 font-light leading-relaxed font-secondary">{SITE_SETTINGS?.aboutPage?.philosophyText || "We bridge the divide between rigorous strategic logic and intense imagination. Science gives us the framework, the data, and the scalable systems. Art gives us the empathy, the visual impact, and the connection. Together, they create brands engineered for the future."}</p>
+            <h3 className="t-label mb-6" style={{ color: palette.accent }}>{SITE_SETTINGS?.aboutPage?.philosophyLabel || "Our Philosophy"}</h3>
+            <h2 className="t-display mb-6">{SITE_SETTINGS?.aboutPage?.philosophyTitle || "Engineering breakthroughs with the SciArt framework."}</h2>
+            <p className="t-body text-white/60">{SITE_SETTINGS?.aboutPage?.philosophyText || "We bridge the divide between rigorous strategic logic and intense imagination. Science gives us the framework, the data, and the scalable systems. Art gives us the empathy, the visual impact, and the connection. Together, they create brands engineered for the future."}</p>
           </FadeUp>
           <FadeUp delay={0.2} className="relative h-[300px] md:h-[400px] flex items-center justify-center rounded-[32px] border border-white/10 overflow-hidden shadow-2xl w-full" style={{ backgroundColor: palette.bgDeep }}>
             <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
@@ -3236,7 +3250,7 @@ const HomePage = ({ navigate }) => {
       </section>
 
       <section className="py-32 px-[3%] relative w-full text-left" style={{ backgroundColor: palette.panel }}>
-        <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-20 font-primary">{SITE_SETTINGS?.servicesHeader || "We connect strategy, story, and execution."}</h2></RevealText>
+        <RevealText><h2 className="t-display mb-20">{SITE_SETTINGS?.servicesHeader || "We connect strategy, story, and execution."}</h2></RevealText>
         <StaggerGroup className="grid md:grid-cols-3 gap-6 w-full">
           {Object.values(ROUTES_INFO).map((route, i) => {
             const rColor = palette[route.type] || palette.primary;
@@ -3259,7 +3273,7 @@ const HomePage = ({ navigate }) => {
       <section className="py-32 px-[3%] relative w-full border-y border-white/5 text-left overflow-hidden" style={{ backgroundColor: palette.bgDeep }}>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] opacity-[0.03] blur-[120px] pointer-events-none rounded-[100%]" style={{ backgroundColor: palette.primary }} />
         <div className="relative z-10 w-full">
-          <RevealText><h2 className="text-4xl md:text-6xl font-light tracking-tight mb-20 font-primary">How It <AnimatedItalic>Works.</AnimatedItalic></h2></RevealText>
+          <RevealText><h2 className="t-display mb-20">How It <AnimatedItalic>Works.</AnimatedItalic></h2></RevealText>
           <InteractiveHowItWorks />
         </div>
       </section>
@@ -3276,7 +3290,18 @@ const HomePage = ({ navigate }) => {
         </FadeUp>
       </section>
 
+      {/* ── Organic Divider ── */}
+      <div className="w-full" style={{ backgroundColor: palette.bgDeep }}>
+        <svg width="100%" height="24" viewBox="0 0 1440 24" preserveAspectRatio="none" className="block opacity-20">
+          <path d="M0 12 C120 4, 240 20, 360 12 S600 4, 720 12 S960 20, 1080 12 S1320 4, 1440 12" stroke={palette.primary} strokeWidth="1.5" fill="none" strokeLinecap="round" />
+        </svg>
+      </div>
+
       <section className="py-32 px-[3%] relative w-full border-b border-white/5" style={{ backgroundColor: palette.bgDeep }}>
+        {/* Decorative geometric shapes — reduced & intentional */}
+        <div className="absolute top-16 right-[8%] w-[100px] h-[100px] rounded-full border-[3px] opacity-[0.06] pointer-events-none" style={{ borderColor: palette.primary }} />
+        <div className="absolute bottom-24 left-[5%] w-[60px] h-[60px] rounded-[14px] border-[3px] opacity-[0.05] pointer-events-none rotate-45" style={{ borderColor: palette.accent }} />
+
         <div className="flex flex-col sm:flex-row justify-between items-end mb-24 gap-6 w-full text-left">
           <RevealText delay={0.1}><h2 className="text-4xl md:text-6xl font-light tracking-tight font-primary">Selected <AnimatedItalic className="text-white/50">Work.</AnimatedItalic></h2></RevealText>
           <PremiumButton variant="ghost" onClick={() => navigate('work')} className="px-0 py-0 group" style={{ color: palette.primary }}>View Archive <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
@@ -3286,18 +3311,20 @@ const HomePage = ({ navigate }) => {
             const hexColor = palette[cs.type] || palette.primary;
             return (
               <StaggerItem key={i}>
-                <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/5 rounded-[24px] overflow-hidden flex flex-col transition-all duration-700 cursor-pointer text-left h-[450px] w-full" style={{ backgroundColor: palette.panel }}>
-                  <div className="h-[250px] relative overflow-hidden border-b border-white/5 bg-white/[0.02]">
+                <div onClick={() => navigate('work/' + cs.id)} className="group relative rounded-[24px] overflow-hidden flex flex-col transition-all duration-500 cursor-pointer text-left h-[450px] w-full hover:translate-y-[-4px]" style={{ backgroundColor: palette.panel, border: `2px solid rgba(104, 101, 250, 0.15)`, boxShadow: `6px 6px 0px 0px rgba(104, 101, 250, 0.08)` }}>
+                  <div className="h-[250px] relative overflow-hidden bg-white/[0.02]" style={{ borderBottom: `3px solid ${hexColor}` }}>
                     <div className={`absolute inset-0 opacity-20 mix-blend-screen group-hover:scale-110 transition-transform duration-1000 ease-out`} style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
                     <div className="absolute inset-0 flex items-center justify-center"><span className="font-serif italic text-white/10 group-hover:text-white/30 transition-colors duration-700 text-5xl">{cs.client.split(' ')[0]}</span></div>
+                    {/* Hatching texture overlay */}
+                    <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'repeating-linear-gradient(45deg, white 0px, white 1px, transparent 1px, transparent 8px)', mixBlendMode: 'overlay' }} />
                   </div>
                   <div className="p-8 flex flex-col justify-between flex-1 w-full" style={{ backgroundColor: palette.panel }}>
                     <div>
-                      <span className="text-[10px] font-medium tracking-widest uppercase block mb-2 font-primary" style={{ color: hexColor }}>{cs.sector}</span>
-                      <h3 className="text-2xl font-light transition-colors font-primary group-hover:opacity-80" style={{ color: 'white' }}>{cs.client}</h3>
+                      <span className="text-[10px] font-bold tracking-widest uppercase block mb-2 font-primary px-3 py-1 rounded-full w-fit" style={{ color: hexColor, border: `2px solid ${hexColor}30`, backgroundColor: `${hexColor}10` }}>{cs.sector}</span>
+                      <h3 className="text-2xl font-light transition-colors font-primary group-hover:opacity-80 mt-3" style={{ color: 'white' }}>{cs.client}</h3>
                     </div>
                     <div className="flex justify-between items-end font-secondary">
-                      <div className="flex gap-2 flex-wrap">{(cs.tags || []).map(t => <span key={t} className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-white/50 uppercase">{t}</span>)}</div>
+                      <div className="flex gap-2 flex-wrap">{(cs.tags || []).map(t => <span key={t} className="px-3 py-1.5 rounded-full border-2 border-white/15 bg-white/5 text-[10px] text-white/60 uppercase font-bold tracking-wider">{t}</span>)}</div>
                       <ArrowUpRight className="w-5 h-5 text-white/30 group-hover:text-white transition-colors" />
                     </div>
                   </div>
@@ -3309,26 +3336,43 @@ const HomePage = ({ navigate }) => {
       </section>
 
       {/* Latest Thinking (Journal) */}
+      {/* ── Organic Divider ── */}
+      <div className="w-full" style={{ backgroundColor: palette.panel }}>
+        <svg width="100%" height="24" viewBox="0 0 1440 24" preserveAspectRatio="none" className="block opacity-15">
+          <path d="M0 12 C180 6, 360 18, 540 12 S900 6, 1080 12 S1320 18, 1440 12" stroke={palette.accent} strokeWidth="1.5" fill="none" strokeLinecap="round" />
+        </svg>
+      </div>
+
       <section className="py-32 px-[3%] relative w-full border-b border-white/5 text-left" style={{ backgroundColor: palette.panel }}>
+        {/* Decorative geometric accent — intentional, reduced */}
+        <div className="absolute top-12 left-[6%] w-[70px] h-[70px] rounded-full border-[3px] opacity-[0.05] pointer-events-none" style={{ borderColor: palette.accent }} />
+
         <div className="flex flex-col sm:flex-row justify-between items-end mb-16 gap-6 w-full text-left">
           <RevealText delay={0.1}><h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary">From the <AnimatedItalic className="text-white/50">House.</AnimatedItalic></h2></RevealText>
           <span onClick={() => navigate('journal')} className="text-sm font-secondary text-white/40 hover:text-white cursor-pointer transition-colors flex items-center gap-2 group">View Journal <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
         </div>
         <StaggerGroup className="grid md:grid-cols-3 gap-6 w-full">
-          {JOURNAL_ARTICLES.slice(0, 3).map((article, i) => (
+          {JOURNAL_ARTICLES.slice(0, 3).map((article, i) => {
+            const articleColor = palette[article.type] || palette.primary;
+            return (
             <StaggerItem key={i}>
-              <div onClick={() => navigate('article/' + article.id)} className="border border-white/10 rounded-[24px] p-8 h-full flex flex-col hover:-translate-y-2 transition-transform cursor-pointer group shadow-xl w-full" style={{ backgroundColor: palette.bgDeep }}>
-                <div className="text-[10px] tracking-widest uppercase mb-6 font-primary font-medium" style={{ color: palette[article.type] }}>{article.tag}</div>
-                <h4 className="text-2xl font-light text-white mb-12 font-primary group-hover:text-white/80 transition-colors leading-snug">{article.title}</h4>
-                <div className="mt-auto flex justify-between items-center text-xs text-white/40 font-secondary pt-6 border-t border-white/5 w-full">
-                  <span>{article.time}</span>
-                  <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all">
-                    <ArrowRight className="w-3 h-3 group-hover:text-white" />
+              <div onClick={() => navigate('article/' + article.id)} className="relative rounded-[24px] p-8 h-full flex flex-col hover:-translate-y-2 transition-all duration-300 cursor-pointer group w-full" style={{ backgroundColor: palette.bgDeep, border: `2px solid rgba(104, 101, 250, 0.15)`, boxShadow: `5px 5px 0px 0px rgba(104, 101, 250, 0.08)` }}>
+                {/* Hatching texture overlay */}
+                <div className="absolute inset-0 rounded-[24px] pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'repeating-linear-gradient(45deg, white 0px, white 1px, transparent 1px, transparent 10px)', mixBlendMode: 'overlay' }} />
+                <div className="relative z-10 flex flex-col h-full">
+                  <span className="text-[10px] tracking-widest uppercase mb-6 font-primary font-bold px-3 py-1 rounded-full w-fit" style={{ color: articleColor, border: `2px solid ${articleColor}30`, backgroundColor: `${articleColor}10` }}>{article.tag}</span>
+                  <h4 className="text-2xl font-light text-white mb-12 font-primary group-hover:text-white/80 transition-colors leading-snug">{article.title}</h4>
+                  <div className="mt-auto flex justify-between items-center text-xs text-white/40 font-secondary pt-6 w-full" style={{ borderTop: `2px solid rgba(104, 101, 250, 0.1)` }}>
+                    <span>{article.time}</span>
+                    <div className="w-9 h-9 rounded-full flex items-center justify-center group-hover:bg-white/10 transition-all" style={{ border: `2px solid rgba(255,255,255,0.15)` }}>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:text-white transition-colors" />
+                    </div>
                   </div>
                 </div>
               </div>
             </StaggerItem>
-          ))}
+            )
+          })}
         </StaggerGroup>
       </section>
 
@@ -3511,7 +3555,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
           
           <FadeUp className="mb-6 flex flex-wrap justify-center gap-4 font-secondary">
             {(project.tags || []).map(t => (
-              <span key={t} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg" style={{ fontFamily: '"Carla", sans-serif' }}>
+              <span key={t} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg" style={{ fontFamily: '"Karla", sans-serif' }}>
                 {t}
               </span>
             ))}
@@ -3520,7 +3564,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
           <FadeUp>
             <motion.h1 
               className="font-carla text-4xl md:text-6xl lg:text-[6rem] leading-[0.9] text-white font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] mb-6" 
-              style={{ fontFamily: '"Carla", sans-serif' }}
+              style={{ fontFamily: '"Karla", sans-serif' }}
             >
               {project.client}
             </motion.h1>
@@ -4955,8 +4999,14 @@ const LatestCredentialsPage = ({ navigate }) => {
 const Footer = ({ navigate }) => {
   const { SITE_SETTINGS } = useContext(GlobalContext);
   return (
-    <footer className="border-t border-white/5 pt-20 pb-12 px-[3%] relative z-10 w-full text-left" style={{ backgroundColor: palette.bgDeep }}>
-      <div className="w-full">
+    <footer className="border-t border-white/5 pt-20 pb-12 px-[3%] relative z-10 w-full text-left overflow-hidden" style={{ backgroundColor: palette.bgDeep }}>
+      {/* Decorative geometric shapes — Flat illustration accent */}
+      <div className="absolute top-8 right-[4%] w-[90px] h-[90px] rounded-full border-[3px] opacity-[0.04] pointer-events-none" style={{ borderColor: palette.primary }} />
+      <div className="absolute bottom-12 right-[12%] w-[50px] h-[50px] rounded-[12px] border-[3px] opacity-[0.04] pointer-events-none rotate-45" style={{ borderColor: palette.accent }} />
+      <div className="absolute top-1/2 left-[2%] w-[40px] h-[40px] rounded-full border-[2px] opacity-[0.03] pointer-events-none" style={{ borderColor: palette.blue }} />
+      {/* Subtle hatching texture */}
+      <div className="absolute inset-0 pointer-events-none opacity-[0.015]" style={{ backgroundImage: 'repeating-linear-gradient(45deg, white 0px, white 1px, transparent 1px, transparent 12px)', mixBlendMode: 'overlay' }} />
+      <div className="relative z-10 w-full">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-8 mb-16 w-full">
           <div className="md:col-span-2 flex flex-col items-start pr-8">
             <div className="flex items-center gap-3 text-xl font-medium tracking-wide mb-6 cursor-pointer font-primary" onClick={() => navigate('home')}>

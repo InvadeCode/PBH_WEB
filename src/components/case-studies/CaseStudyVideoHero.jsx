@@ -157,7 +157,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
   // No DOM, no spacing, nothing rendered.
   if (!enabled) return null;
 
-  const carla = { fontFamily: '"Carla", sans-serif' };
+  const carla = { fontFamily: '"Karla", sans-serif' };
 
   const renderPlayer = () => {
     if (embedUrl) {

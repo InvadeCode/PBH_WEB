@@ -2,6 +2,246 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══════════════════════════════════════════════════════════════
+   PBH ILLUSTRATION GUIDELINES — Aesthetic Layer
+   ─────────────────────────────────────────────────────────────
+   Stylized > Realistic | Flat + Dimensional Hybrid
+   Rounded Geometric Forms | 2–4 Colors Per Composition
+   Subtle Gradients & Hatching | Organic, Slightly Imperfect
+   ═══════════════════════════════════════════════════════════════ */
+
+@layer base {
+  body {
+    font-family: 'Karla', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Space Grotesk for headings — geometric yet organic */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', 'Karla', sans-serif;
+  }
+
+  /* Subtle selection color using brand palette */
+  ::selection {
+    background: rgba(104, 101, 250, 0.3);
+    color: #ffffff;
+  }
+}
+
+/* ── Collapse arbitrary text-[..] sizes into the 3-size system ──
+   (named text-* utilities are already remapped in tailwind.config.js) */
+.text-\[6px\], .text-\[8px\], .text-\[9px\], .text-\[10px\],
+.text-\[11px\], .text-\[12px\], .text-\[13px\] {
+  font-size: 0.8125rem !important;   /* LABEL */
+}
+.text-\[14px\], .text-\[15px\], .text-\[16px\], .text-\[17px\], .text-\[18px\] {
+  font-size: 1.125rem !important;    /* BODY */
+}
+.text-\[2rem\], .text-\[2\.5rem\], .text-\[3rem\], .text-\[4rem\],
+.text-\[5rem\], .text-\[6rem\], .text-\[7rem\], .text-\[8rem\],
+.text-\[15rem\], .text-\[12vw\], .text-\[8vw\] {
+  font-size: clamp(2.5rem, 5.2vw, 4.75rem) !important;   /* DISPLAY */
+}
+
+@layer components {
+  /* ═══════════════════════════════════════════════════════════════
+     TYPE SCALE — exactly three sizes (brand system)
+     Display (headings) · Body (copy) · Label (eyebrows/captions)
+     ═══════════════════════════════════════════════════════════════ */
+  .t-display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.5rem, 5.2vw, 4.75rem);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+  }
+  .t-body {
+    font-family: 'Karla', 'Inter', sans-serif;
+    font-size: 1.125rem;      /* 18px */
+    line-height: 1.65;
+    font-weight: 400;
+  }
+  .t-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.75rem;       /* 12px */
+    line-height: 1;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* ── Hatching Texture Overlay (Selective Use) ──
+     A sketch-like texture panel that can be applied to specific sections.
+     This is NOT global — it must be explicitly used with .hatching-texture */
+  .hatching-texture {
+    position: relative;
+  }
+  .hatching-texture::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: repeating-linear-gradient(
+      45deg,
+      currentColor 0px,
+      currentColor 1px,
+      transparent 1px,
+      transparent 8px
+    );
+    mix-blend-mode: overlay;
+    border-radius: inherit;
+  }
+
+  /* ── Scribble / Sketch Underline ──
+     Organic, slightly imperfect underline using SVG-like wavy border.
+     Not mathematically clean — gives human feel. */
+  .sketch-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .sketch-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: url("data:image/svg+xml,%3Csvg width='100' height='8' viewBox='0 0 100 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 4 C10 1, 20 7, 30 4 S50 1, 60 4 S80 7, 90 4 L100 4' stroke='%236865fa' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x;
+    background-size: 100px 8px;
+  }
+
+  /* ── Flat + Dimensional Card ──
+     Bold, graphic card with a hard offset shadow.
+     Rounded geometric forms. Clean, intentional. */
+  .card-graphic {
+    border-radius: 24px;
+    border: 3px solid #010d54;
+    background: #ffffff;
+    box-shadow: 6px 6px 0px 0px #010d54;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card-graphic:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 3px 3px 0px 0px #010d54;
+  }
+
+  /* Dark variant for existing navy panels */
+  .card-graphic-dark {
+    border-radius: 24px;
+    border: 2px solid rgba(104, 101, 250, 0.3);
+    background: rgba(12, 24, 92, 0.6);
+    box-shadow: 6px 6px 0px 0px rgba(104, 101, 250, 0.15);
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .card-graphic-dark:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 3px 3px 0px 0px rgba(104, 101, 250, 0.15);
+    border-color: rgba(104, 101, 250, 0.5);
+  }
+
+  /* ── Graphic Button (Flat + Dimensional Hybrid) ──
+     Pill shape, hard shadow, uppercase, organic hover with bounce. */
+  .btn-graphic {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 28px;
+    border-radius: 9999px;
+    border: 3px solid #010d54;
+    background: #ffcd00;
+    color: #010d54;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0px 0px #010d54;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .btn-graphic:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px #010d54;
+  }
+  .btn-graphic:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px 0px #010d54;
+  }
+
+  /* ── Decorative Geometric Shapes ──
+     Rounded geometric accent shapes for section decoration. */
+  .geo-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #6865fa;
+    opacity: 0.12;
+    position: absolute;
+    pointer-events: none;
+  }
+  .geo-diamond {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    border: 3px solid #ffcd00;
+    opacity: 0.10;
+    position: absolute;
+    pointer-events: none;
+    transform: rotate(45deg);
+  }
+
+  /* ── Subtle Depth Gradients (Large Surfaces Only) ──
+     As per guidelines: avoid gradients EXCEPT very subtle depth on large surfaces. */
+  .gradient-depth-purple {
+    background: linear-gradient(180deg, #010d54 0%, #0C185C 50%, #010836 100%);
+  }
+  .gradient-depth-warm {
+    background: linear-gradient(135deg, rgba(255, 205, 0, 0.05) 0%, transparent 60%);
+  }
+
+  /* ── Organic Divider ──
+     A wavy, hand-drawn-feel section divider. Not mathematically clean. */
+  .divider-organic {
+    width: 100%;
+    height: 32px;
+    background: url("data:image/svg+xml,%3Csvg width='1440' height='32' viewBox='0 0 1440 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 16 C120 8, 240 24, 360 16 S600 8, 720 16 S960 24, 1080 16 S1320 8, 1440 16' stroke='%236865fa' stroke-width='1.5' fill='none' stroke-linecap='round' opacity='0.15'/%3E%3C/svg%3E") no-repeat center;
+    background-size: 100% 100%;
+  }
+
+  /* ── Bold Outline Image Frame ──
+     For images that should feel intentional, reduced, graphic. */
+  .frame-graphic {
+    border-radius: 20px;
+    border: 3px solid #010d54;
+    box-shadow: 5px 5px 0px 0px #010d54;
+    overflow: hidden;
+  }
+
+  /* ── Accent Tag / Badge ──
+     Small label/badge in the flat illustration style. */
+  .tag-graphic {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 14px;
+    border-radius: 9999px;
+    border: 2px solid #010d54;
+    background: #d4cefc;
+    color: #010d54;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PRINT STYLES (Preserved from original)
+   ═══════════════════════════════════════════════════════════════ */
 @media print {
   /* 1. Force Browsers to Render Background Colors & Images */
   *,
