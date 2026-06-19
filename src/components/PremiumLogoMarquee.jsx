@@ -116,36 +116,36 @@ const PremiumLogoMarquee = () => {
       </motion.div>
 
       {/* Marquee — contained light panel so the logos read clearly */}
-      <div className="px-[4%]">
+      <div className="w-full border-y border-black/5">
         <div
-          className="relative mx-auto max-w-[94rem] h-[160px] md:h-[190px] rounded-[28px] overflow-hidden bg-[#F4F2EC] ring-1 ring-black/[0.06] shadow-[0_30px_90px_-30px_rgba(0,0,0,0.6)]"
+          className="relative w-full h-[160px] md:h-[190px] overflow-hidden bg-[#d4cefc]"
           onMouseEnter={() => { speedTarget.current = SLOW_FACTOR; }}
           onMouseLeave={() => { speedTarget.current = 1; }}
         >
           {/* Edge fades into the panel */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-16 md:w-40 bg-gradient-to-r from-[#F4F2EC] to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-16 md:w-40 bg-gradient-to-l from-[#F4F2EC] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-16 md:w-40 bg-gradient-to-r from-[#d4cefc] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-16 md:w-40 bg-gradient-to-l from-[#d4cefc] to-transparent" />
 
-        {/* Track — two identical sets translated by a single motion value */}
-        <motion.div className="absolute top-0 left-0 h-full flex w-max items-center will-change-transform" style={{ x }}>
-          <div ref={firstSet} className="flex items-center shrink-0">
-            {LOGOS.map((logo, i) => <Logo key={`a-${i}`} logo={logo} i={i} reduce={reduce} />)}
-          </div>
-          <div className="flex items-center shrink-0" aria-hidden="true">
-            {LOGOS.map((logo, i) => <Logo key={`b-${i}`} logo={logo} i={i} reduce={reduce} />)}
-          </div>
-        </motion.div>
+          {/* Track — two identical sets translated by a single motion value */}
+          <motion.div className="absolute top-0 left-0 h-full flex w-max items-center will-change-transform" style={{ x }}>
+            <div ref={firstSet} className="flex items-center shrink-0">
+              {LOGOS.map((logo, i) => <Logo key={`a-${i}`} logo={logo} i={i} reduce={reduce} />)}
+            </div>
+            <div className="flex items-center shrink-0" aria-hidden="true">
+              {LOGOS.map((logo, i) => <Logo key={`b-${i}`} logo={logo} i={i} reduce={reduce} />)}
+            </div>
+          </motion.div>
         </div>
       </div>
 
       <style>{`
         .pbh-logo {
-          filter: grayscale(100%);
-          opacity: 0.7;
-          transition: filter 520ms cubic-bezier(0.16,1,0.3,1),
-                      opacity 520ms cubic-bezier(0.16,1,0.3,1);
+          filter: grayscale(100%) brightness(0) opacity(0.4);
+          transition: filter 520ms cubic-bezier(0.16,1,0.3,1);
         }
-        .pbh-slot:hover .pbh-logo { filter: grayscale(0%); opacity: 1; }
+        .pbh-slot:hover .pbh-logo { 
+          filter: grayscale(0%) brightness(1) opacity(1); 
+        }
 
         .pbh-hover {
           transition: transform 520ms cubic-bezier(0.16,1,0.3,1);
@@ -159,7 +159,7 @@ const PremiumLogoMarquee = () => {
           width: 200px; height: 130px;
           transform: translate(-50%,-50%) scale(0.7);
           border-radius: 9999px;
-          background: radial-gradient(circle, rgba(104,101,250,0.22) 0%, rgba(104,101,250,0) 70%);
+          background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
           filter: blur(26px);
           opacity: 0;
           pointer-events: none;
