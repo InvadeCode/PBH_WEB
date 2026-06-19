@@ -3211,7 +3211,12 @@ const HomePage = ({ navigate }) => {
 
       <div className="divider-organic w-full" style={{ backgroundColor: palette.bgDeep }} />
 
-      <section className="py-24 px-[3%] relative w-full border-y border-white/5 text-left overflow-hidden" style={{ backgroundColor: palette.bg }}>
+      <section className="py-24 px-[3%] relative w-full border-y border-white/5 text-left overflow-hidden" style={{ backgroundColor: palette.bgDeep }}>
+        {/* Ambient Mesh Glow (Primary Purple) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <motion.div animate={{ x: ['-5%', '5%', '-5%'], y: ['-5%', '5%', '-5%'] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }} className="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vh] rounded-full blur-[140px] opacity-40 mix-blend-screen" style={{ backgroundColor: palette.primary }} />
+        </div>
+        <div className="relative z-10 w-full">
         <div className="geo-diamond hidden md:block" style={{ top: '12%', right: '8%' }} />
         <RevealText><h2 className="t-display mb-16">Scaling a breakthrough <br /><AnimatedItalic className="text-white/50">requires deep alignment.</AnimatedItalic></h2></RevealText>
         <FadeUp><p className="t-body text-white/50 max-w-3xl mb-16">Low engagement, inconsistent visuals, and scattered teams aren't just creative issues—they are strategic bottlenecks. We align your brand thinking with execution to drive sustainable, long-term growth.</p></FadeUp>
@@ -3220,6 +3225,7 @@ const HomePage = ({ navigate }) => {
             <StaggerItem key={i}><ProblemHoverCard title={prob.title} icon={prob.icon} type={prob.type} /></StaggerItem>
           ))}
         </StaggerGroup>
+        </div>
       </section>
 
       <section className="py-32 px-[3%] w-full border-b border-white/5 text-left" style={{ backgroundColor: palette.bgDeep }}>
@@ -3229,7 +3235,7 @@ const HomePage = ({ navigate }) => {
         </div>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full">
           <StaggerItem>
-            <div className="border border-white/5 rounded-[24px] p-10 md:p-14 h-full w-full" style={{ backgroundColor: palette.panel }}>
+            <div className="border border-white/10 rounded-[24px] p-10 md:p-14 h-full w-full backdrop-blur-3xl" style={{ background: `linear-gradient(135deg, ${hexToRgba(palette.panel, 0.5)} 0%, ${hexToRgba(palette.bgDeep, 0.5)} 100%)`, boxShadow: `inset 0 1px 0 ${hexToRgba(palette.secondary, 0.1)}` }}>
               <h3 className="text-white/40 text-sm tracking-widest uppercase mb-10 font-primary">The Old Way</h3>
               <ul className="space-y-8 font-secondary">
                 <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[0] || "Execution disconnected from core business objectives."}</span></li>
@@ -3239,8 +3245,9 @@ const HomePage = ({ navigate }) => {
             </div>
           </StaggerItem>
           <StaggerItem>
-            <div className="border rounded-[24px] p-10 md:p-14 relative overflow-hidden h-full w-full" style={{ background: `linear-gradient(to bottom right, rgba(${rgbPrimary},0.1), transparent)`, borderColor: `rgba(${rgbPrimary},0.2)` }}>
-              <div className="absolute bottom-0 right-0 w-64 h-64 opacity-[0.1] blur-[80px] pointer-events-none" style={{ backgroundColor: palette.primary }} />
+            <div className="border rounded-[24px] p-10 md:p-14 relative overflow-hidden h-full w-full backdrop-blur-3xl" style={{ background: `linear-gradient(to bottom right, rgba(${rgbPrimary},0.2), rgba(${rgbPrimary},0.05))`, borderColor: `rgba(${rgbPrimary},0.4)`, boxShadow: `0 30px 60px ${hexToRgba(palette.primary, 0.1)}, inset 0 1px 0 ${hexToRgba(palette.secondary, 0.3)}` }}>
+              <div className="absolute bottom-[-10%] right-[-10%] w-80 h-80 opacity-[0.35] blur-[100px] pointer-events-none" style={{ backgroundColor: palette.primary }} />
+              <div className="absolute top-[-10%] left-[-10%] w-64 h-64 opacity-[0.25] blur-[80px] pointer-events-none" style={{ backgroundColor: palette.secondary }} />
               <h3 className="text-sm tracking-widest uppercase mb-10 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>The PBH Way</h3>
               <ul className="space-y-8 relative z-10 font-secondary">
                 <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[0] || "Mapping the root business gap before designing anything."}</span></li>
@@ -3276,16 +3283,21 @@ const HomePage = ({ navigate }) => {
         </div>
       </section>
 
-      <section className="py-32 px-[3%] relative w-full text-left" style={{ backgroundColor: palette.panel }}>
-        <RevealText><h2 className="t-display mb-20">{SITE_SETTINGS?.servicesHeader || "We connect strategy, story, and execution."}</h2></RevealText>
+      <section className="py-32 px-[3%] relative w-full text-left overflow-hidden" style={{ backgroundColor: palette.bgDeep }}>
+        {/* Ambient Mesh Glow (Light Purple) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <motion.div animate={{ x: ['5%', '-5%', '5%'], y: ['5%', '-5%', '5%'] }} transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }} className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vh] rounded-full blur-[140px] opacity-30 mix-blend-screen" style={{ backgroundColor: palette.secondary }} />
+        </div>
+        <div className="relative z-10 w-full">
+          <RevealText><h2 className="t-display mb-20">{SITE_SETTINGS?.servicesHeader || "We connect strategy, story, and execution."}</h2></RevealText>
         <StaggerGroup className="grid md:grid-cols-3 gap-6 w-full">
           {Object.values(ROUTES_INFO).map((route, i) => {
             const rColor = palette[route.type] || palette.primary;
             return (
               <StaggerItem key={route.id}>
-                <SpotlightCard className="rounded-[24px] h-full w-full">
-                  <div className="border border-white/10 rounded-[24px] p-10 h-full flex flex-col hover:border-white/20 transition-colors w-full" style={{ backgroundColor: palette.bgDeep }}>
-                    <div className="w-14 h-14 rounded-[12px] border border-white/10 flex items-center justify-center mb-8" style={{ backgroundColor: rColor, color: palette.bgDeep, border: 'none' }}>{route.icon}</div>
+                <SpotlightCard className="rounded-[24px] h-full w-full backdrop-blur-2xl">
+                  <div className="border border-white/10 rounded-[24px] p-10 h-full flex flex-col hover:border-white/30 transition-all duration-500 w-full" style={{ background: `linear-gradient(135deg, ${hexToRgba(palette.panel, 0.4)} 0%, ${hexToRgba(palette.bgDeep, 0.4)} 100%)`, boxShadow: `inset 0 1px 0 ${hexToRgba(palette.secondary, 0.1)}` }}>
+                    <div className="w-14 h-14 rounded-[12px] border border-white/10 flex items-center justify-center mb-8 shadow-lg" style={{ backgroundColor: rColor, color: palette.bgDeep, border: 'none' }}>{route.icon}</div>
                     <h4 className="text-2xl font-light mb-4 font-primary">{route.title}</h4>
                     <p className="text-white/50 font-light leading-relaxed mb-10 flex-grow font-secondary">{route.desc}</p>
                     <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="self-start px-0 group hover:bg-transparent text-white/70">Explore Route <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
@@ -3295,10 +3307,14 @@ const HomePage = ({ navigate }) => {
             )
           })}
         </StaggerGroup>
+        </div>
       </section>
 
       <section className="py-32 px-[3%] relative w-full border-y border-white/5 text-left overflow-hidden" style={{ backgroundColor: palette.bgDeep }}>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] opacity-[0.03] blur-[120px] pointer-events-none rounded-[100%]" style={{ backgroundColor: palette.primary }} />
+        {/* Ambient Mesh Glow (Yellow Accent) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }} className="absolute top-[20%] left-[30%] w-[40vw] h-[40vh] rounded-full blur-[140px] opacity-20 mix-blend-screen" style={{ backgroundColor: palette.accent }} />
+        </div>
         <div className="relative z-10 w-full">
           <RevealText><h2 className="t-display mb-20">How It <AnimatedItalic>Works.</AnimatedItalic></h2></RevealText>
           <InteractiveHowItWorks />
