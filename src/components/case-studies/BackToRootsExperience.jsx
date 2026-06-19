@@ -54,59 +54,66 @@ const ScrollProgress = () => {
   return <motion.div className="fixed top-0 left-0 right-0 h-[3px] origin-left z-50" style={{ scaleX: scrollYProgress, background: `linear-gradient(90deg, ${C.terra}, ${C.cream})` }} />;
 };
 
-// ── SCENE 1 · COVER (heading clearly visible) ───────────────────────────────
+// ── SCENE 1 · COVER (Curtain Reveal) ───────────────────────────────
 const Cover = ({ project, navigate, SITE_SETTINGS }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const imgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
   const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
-  const titleY = useTransform(scrollYProgress, [0, 1], ['0%', '-25%']);
   const heroImage = project.bannerImage || project.fullStory?.heroImg || project.imageUrl;
   const title = (project.client || 'Back To Roots').toUpperCase();
 
   return (
     <section ref={ref} className="relative h-screen overflow-hidden" style={{ backgroundColor: C.soil }}>
+      
+      {/* The Banner Image (revealed underneath) */}
       <motion.div className="absolute inset-0" style={{ y: imgY, scale: imgScale }}>
         {heroImage && <img src={heroImage} alt="" className="w-full h-full object-cover" />}
-        <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, ${C.soil}d9 0%, ${C.soil}55 40%, ${C.soilDeep}f2 100%)` }} />
+        {/* We keep a subtle gradient so it blends into the rest of the site */}
+        <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, ${C.soil}cc 0%, ${C.soil}22 40%, ${C.soilDeep}f2 100%)` }} />
       </motion.div>
 
-      {/* Top bar */}
-      <div className="absolute top-0 inset-x-0 z-20 flex justify-between items-center px-[5%] pt-9">
-        <button onClick={() => navigate('work')} className="flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors" style={{ color: `${C.cream}99` }}>
-          <ArrowLeft className="w-4 h-4" /> {SITE_SETTINGS?.csBackToWork || 'Work'}
-        </button>
-        <span className="text-[10px] uppercase tracking-[0.3em] font-secondary" style={{ color: `${C.cream}66` }}>
-          {project?.type || 'A Story'}
-        </span>
-      </div>
-
-      {/* Heading */}
-      <motion.div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6" style={{ y: titleY }}>
+      {/* The Opening Brown Interface Curtain */}
+      <motion.div 
+        className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none"
+        style={{ backgroundColor: C.soil }}
+        initial={{ y: '0%' }}
+        animate={{ y: '-100%' }}
+        transition={{ duration: 1.4, delay: 2.2, ease: [0.76, 0, 0.24, 1] }}
+      >
         <motion.span className="block text-[11px] md:text-xs uppercase tracking-[0.5em] mb-8 font-secondary" style={{ color: C.terra }}
-          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.4 }}>
+          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.2 }}>
           {project.sector || 'Brand Storytelling'}
         </motion.span>
-        <h1 className="leading-[0.95]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+        <h1 className="leading-[0.95] text-center" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
           {title.split(' ').map((word, wi) => (
             <span key={wi} className="block overflow-hidden">
               <motion.span className="inline-block" style={{
                 fontSize: 'clamp(3rem, 11vw, 11rem)', letterSpacing: '0.04em',
                 background: `linear-gradient(120deg, ${C.cream}, ${C.terra})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               }}
-                initial={{ y: '110%' }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.3 + wi * 0.12, ease: C.ease }}>
+                initial={{ y: '110%' }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.1 + wi * 0.12, ease: C.ease }}>
                 {word}
               </motion.span>
             </span>
           ))}
         </h1>
-        <motion.div className="w-px mt-10 origin-top" style={{ backgroundColor: C.terra }}
-          initial={{ height: 0 }} animate={{ height: 64 }} transition={{ duration: 1.4, delay: 1.1, ease: C.ease }} />
       </motion.div>
 
-      {/* Scroll cue */}
-      <motion.div className="absolute bottom-10 inset-x-0 z-20 flex flex-col items-center gap-3"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8 }}>
+      {/* Top bar (fades in after curtain) */}
+      <motion.div className="absolute top-0 inset-x-0 z-30 flex justify-between items-center px-[5%] pt-9"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 3.2 }}>
+        <button onClick={() => navigate('work')} className="flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70" style={{ color: `${C.cream}99` }}>
+          <ArrowLeft className="w-4 h-4" /> {SITE_SETTINGS?.csBackToWork || 'Work'}
+        </button>
+        <span className="text-[10px] uppercase tracking-[0.3em] font-secondary" style={{ color: `${C.cream}66` }}>
+          {project?.type || 'A Story'}
+        </span>
+      </motion.div>
+
+      {/* Scroll cue (fades in after curtain) */}
+      <motion.div className="absolute bottom-10 inset-x-0 z-30 flex flex-col items-center gap-3"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.5, duration: 1 }}>
         <span className="text-[9px] uppercase tracking-[0.4em] font-secondary" style={{ color: `${C.cream}55` }}>{SITE_SETTINGS?.csScrollStory || 'Scroll the story'}</span>
         <motion.div className="w-5 h-8 rounded-full border flex justify-center pt-1.5" style={{ borderColor: `${C.cream}40` }}>
           <motion.div className="w-1 h-1.5 rounded-full" style={{ backgroundColor: C.terra }}
@@ -127,7 +134,7 @@ const Narrative = ({ project }) => {
 
   return (
     <section className="relative py-28 md:py-40 px-[7%]" style={{ background: `linear-gradient(180deg, ${C.soilDeep}, ${C.soil})` }}>
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto relative z-10">
         <div className="grid md:grid-cols-2 gap-x-16 gap-y-14 md:gap-y-20">
           {beats.map((b, i) => (
             <motion.div key={b.k} className={i === beats.length - 1 && beats.length % 2 !== 0 ? 'md:col-span-2 md:max-w-2xl' : ''}
@@ -165,27 +172,22 @@ const StoryChapterCarousel = ({ images, project }) => {
   const containerRef = useRef(null);
 
   // We use standard CSS horizontal scroll plus a smooth auto-scroll effect
-  // that can be overridden by user scrolling.
   useEffect(() => {
     let animationFrameId;
     let lastTime = performance.now();
-    let speed = 0.5; // pixels per frame
+    let speed = 0.6; // pixels per frame
 
     const scrollLoop = (time) => {
       const delta = time - lastTime;
       lastTime = time;
       
       if (containerRef.current) {
-        // Only auto-scroll if the user isn't hovering
-        if (!containerRef.current.matches(':hover')) {
-          containerRef.current.scrollLeft += speed * (delta / 16);
-          
-          // Reset scroll to 0 if we reach the end (infinite effect approximated by repeating elements or just stopping)
-          if (containerRef.current.scrollLeft >= containerRef.current.scrollWidth - containerRef.current.clientWidth - 5) {
-             // For a true infinite carousel we would duplicate elements. 
-             // Here we'll just smoothly loop back to start.
-             containerRef.current.scrollLeft = 0;
-          }
+        // Auto-scroll runs continuously
+        containerRef.current.scrollLeft += speed * (delta / 16);
+        
+        // Soft loop
+        if (containerRef.current.scrollLeft >= containerRef.current.scrollWidth - containerRef.current.clientWidth - 5) {
+            containerRef.current.scrollLeft = 0;
         }
       }
       animationFrameId = requestAnimationFrame(scrollLoop);
@@ -211,7 +213,7 @@ const StoryChapterCarousel = ({ images, project }) => {
 
       <div 
         ref={containerRef}
-        className="flex gap-8 md:gap-16 overflow-x-auto snap-x snap-mandatory hide-scrollbar px-[10vw] pb-16 pt-8 items-center"
+        className="flex gap-16 md:gap-24 overflow-x-auto snap-x snap-mandatory hide-scrollbar px-[10vw] pb-16 pt-8 items-center"
         style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
       >
         {extendedImages.map((img, index) => {
@@ -224,15 +226,27 @@ const StoryChapterCarousel = ({ images, project }) => {
             <motion.div 
               key={index} 
               className="relative shrink-0 snap-center flex flex-col items-center"
-              style={{ width: 'min(85vw, 400px)' }}
+              style={{ width: 'min(85vw, 420px)' }}
               initial={{ opacity: 0, rotateY: 45, x: 100 }}
               whileInView={{ opacity: 1, rotateY: 0, x: 0 }}
               viewport={{ margin: "-10%" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
+              {/* Giant Background Ghost Numeral */}
+              <span className="absolute font-serif pointer-events-none select-none leading-none z-0"
+                style={{ 
+                  color: `${C.terra}1a`, 
+                  fontSize: '40vh', 
+                  top: '50%', 
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)'
+                }}>
+                {num}
+              </span>
+
               {/* Vertical / Portrait Image Container */}
-              <div className="w-full aspect-[3/4] relative p-3 bg-[#0E0805] shadow-2xl overflow-hidden" 
-                   style={{ boxShadow: '0 30px 60px rgba(0,0,0,0.7)', transformStyle: 'preserve-3d' }}>
+              <div className="w-full aspect-[3/4] relative p-3 bg-[#0E0805] shadow-2xl overflow-hidden z-10" 
+                   style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.8)', transformStyle: 'preserve-3d' }}>
                 <Sprockets pos="top" />
                 <Sprockets pos="bottom" />
                 <div className="absolute inset-3 overflow-hidden">
