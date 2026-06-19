@@ -697,8 +697,8 @@ const ProblemHoverCard = ({ title, icon, type }) => {
   const color = palette[type] || palette.primary; const mouseX = useMotionValue(0); const mouseY = useMotionValue(0);
   function handleMouseMove({ currentTarget, clientX, clientY }) { const { left, top } = currentTarget.getBoundingClientRect(); mouseX.set(clientX - left); mouseY.set(clientY - top); }
   return (
-    <motion.div onMouseMove={handleMouseMove} initial="initial" whileHover="hover" className="group relative cursor-default p-6 border rounded-[16px] flex flex-col justify-center h-44 overflow-hidden transition-all duration-500 shadow-lg hover:-translate-y-1 w-full" style={{ backgroundColor: palette.panel, borderColor: 'rgba(255,255,255,0.05)', borderBottom: `3px solid ${color}` }}>
-      <motion.div className="pointer-events-none absolute -inset-px rounded-[16px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0" style={{ background: useMotionTemplate`radial-gradient(150px circle at ${mouseX}px ${mouseY}px, ${color}15, transparent 80%)` }} />
+    <motion.div onMouseMove={handleMouseMove} initial="initial" whileHover="hover" className="group relative cursor-default p-6 rounded-[16px] flex flex-col justify-center h-44 overflow-hidden transition-all duration-500 shadow-lg hover:-translate-y-1 w-full backdrop-blur-2xl" style={{ background: `linear-gradient(135deg, ${hexToRgba(palette.secondary, 0.07)} 0%, ${hexToRgba(palette.secondary, 0.01)} 100%)`, border: `1px solid ${hexToRgba(palette.secondary, 0.15)}`, borderBottom: `2px solid ${color}` }}>
+      <motion.div className="pointer-events-none absolute -inset-px rounded-[16px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0" style={{ background: useMotionTemplate`radial-gradient(200px circle at ${mouseX}px ${mouseY}px, ${hexToRgba(palette.secondary, 0.15)}, transparent 80%)` }} />
       <motion.div variants={{ initial: { scale: 0.5, opacity: 0, x: -30, y: 30 }, hover: { scale: 2, opacity: 0.15, x: 0, y: 0 } }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }} className="absolute -right-4 -bottom-4 w-28 h-28 blur-[25px] rounded-full pointer-events-none z-0" style={{ backgroundColor: color }} />
       <motion.div variants={{ initial: { scale: 0.5, opacity: 0, x: 30, y: -30 }, hover: { scale: 1.5, opacity: 0.1, x: 0, y: 0 } }} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.05 }} className="absolute -left-4 -top-4 w-20 h-20 blur-[20px] rounded-full pointer-events-none z-0" style={{ backgroundColor: color }} />
       <div className="relative z-10 flex flex-col items-start gap-4">
@@ -2675,17 +2675,18 @@ const MenuHoverCard = ({ children, color, onClick }) => {
       onMouseMove={handleMouseMove}
       initial="initial"
       whileHover="hover"
-      className="group relative cursor-pointer p-6 rounded-[16px] border border-white/15 hover:border-white/30 transition-all duration-500 overflow-hidden h-full flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.45)] hover:-translate-y-1 w-full"
+      className="group relative cursor-pointer p-6 rounded-[16px] transition-all duration-500 overflow-hidden h-full flex flex-col shadow-[0_20px_60px_rgba(0,0,0,0.45)] hover:-translate-y-1 w-full"
       style={{
-        backgroundColor: `${palette.bgDeep}`,
-        borderBottom: `4px solid ${color}`,
-        backdropFilter: 'blur(16px) saturate(140%)',
-        WebkitBackdropFilter: 'blur(16px) saturate(140%)'
+        background: `linear-gradient(135deg, ${hexToRgba(palette.secondary, 0.08)} 0%, ${hexToRgba(palette.secondary, 0.02)} 100%)`,
+        border: `1px solid ${hexToRgba(palette.secondary, 0.15)}`,
+        borderBottom: `2px solid ${color}`,
+        backdropFilter: 'blur(24px) saturate(150%)',
+        WebkitBackdropFilter: 'blur(24px) saturate(150%)'
       }}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px rounded-[16px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0 w-full"
-        style={{ background: useMotionTemplate`radial-gradient(350px circle at ${mouseX}px ${mouseY}px, ${color}15, transparent 80%)` }}
+        style={{ background: useMotionTemplate`radial-gradient(400px circle at ${mouseX}px ${mouseY}px, ${hexToRgba(palette.secondary, 0.2)}, transparent 80%)` }}
       />
       <motion.div
         variants={{ initial: { scale: 0.8, opacity: 0, rotate: 0 }, hover: { scale: 1.8, opacity: 0.1, rotate: 90 } }}
@@ -3136,27 +3137,30 @@ const HomePage = ({ navigate }) => {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="min-h-screen text-[#F4F4F5] w-full relative" style={{ backgroundColor: palette.bgDeep }}>
       <section ref={heroRef} onMouseMove={handleMouseMove} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className="relative h-screen flex flex-col overflow-hidden w-full pt-28 pb-8 px-[3%]">
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0 pointer-events-none">
-          {/* Chic Artistic Background Cards (Brand Colors 60-30-10) */}
-          <div className="absolute inset-0 overflow-hidden">
-            {/* 60% Primary Purple (#6865FA) - Dominant structural card */}
+          {/* Sophisticated Glass Panes (Light Purple & Primary Mix) */}
+          <div className="absolute inset-0 overflow-hidden perspective-1000">
+            {/* Elegant large glass pane */}
             <motion.div 
-              animate={{ rotate: [0, 5, 0], y: [0, -20, 0] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-[10%] -left-[10%] w-[60vw] h-[80vh] rounded-[40px] opacity-[0.25] blur-[4px] border border-white/10 backdrop-blur-3xl shadow-2xl mix-blend-screen" 
-              style={{ backgroundColor: palette.primary, transformOrigin: 'top left' }} 
+              animate={{ rotateX: [0, 5, 0], rotateY: [0, -5, 0], y: [0, -15, 0] }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute -top-[5%] -left-[5%] w-[60vw] h-[70vh] rounded-[32px] border" 
+              style={{ 
+                background: `linear-gradient(135deg, ${hexToRgba(palette.secondary, 0.03)} 0%, transparent 100%)`,
+                borderColor: hexToRgba(palette.secondary, 0.1),
+                backdropFilter: 'blur(4px)',
+                boxShadow: `0 30px 60px ${hexToRgba(palette.primary, 0.05)}, inset 0 1px 0 ${hexToRgba(palette.secondary, 0.2)}`
+              }} 
             />
             
-            {/* 30% Light Purple (#D4CEFC) - Secondary soft card */}
+            {/* Elegant medium glass pane */}
             <motion.div 
-              animate={{ rotate: [0, -8, 0], y: [0, 30, 0], x: [0, -20, 0] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-              className="absolute top-[20%] right-[5%] w-[30vw] h-[50vh] rounded-[30px] opacity-[0.2] blur-[8px] border border-white/20 backdrop-blur-2xl shadow-xl mix-blend-screen" 
-              style={{ backgroundColor: palette.secondary }} 
-            />
-            
-            {/* 10% Yellow (#FFCD00) - Accent punchy card */}
-            <motion.div 
-              animate={{ rotate: [0, 15, 0], scale: [1, 1.1, 1] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-              className="absolute bottom-[15%] left-[20%] w-[15vw] h-[25vh] rounded-[24px] opacity-[0.15] blur-[12px] border border-white/30 backdrop-blur-xl mix-blend-screen" 
-              style={{ backgroundColor: palette.accent }} 
+              animate={{ rotateX: [0, -8, 0], rotateY: [0, 8, 0], y: [0, 25, 0] }} transition={{ duration: 25, repeat: Infinity, ease: "linear", delay: 2 }}
+              className="absolute top-[25%] right-[2%] w-[35vw] h-[45vh] rounded-[24px] border" 
+              style={{ 
+                background: `linear-gradient(135deg, ${hexToRgba(palette.secondary, 0.04)} 0%, transparent 100%)`,
+                borderColor: hexToRgba(palette.secondary, 0.15),
+                backdropFilter: 'blur(6px)',
+                boxShadow: `0 20px 40px ${hexToRgba(palette.primary, 0.05)}, inset 0 1px 0 ${hexToRgba(palette.secondary, 0.25)}`
+              }} 
             />
           </div>
 
