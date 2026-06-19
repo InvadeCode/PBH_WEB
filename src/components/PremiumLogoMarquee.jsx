@@ -120,15 +120,16 @@ const PremiumLogoMarquee = () => {
       </motion.div>
 
       {/* Marquee — contained light panel so the logos read clearly */}
-      <div className="w-full border-y border-black/5">
+      <div className="w-full border-y border-black/10">
         <div
-          className="relative w-full h-[160px] md:h-[190px] overflow-hidden bg-[#d4cefc]"
+          className="relative w-full h-[160px] md:h-[190px] overflow-hidden"
+          style={{ backgroundColor: '#d4cefc' }}
           onMouseEnter={() => { speedTarget.current = SLOW_FACTOR; }}
           onMouseLeave={() => { speedTarget.current = 1; }}
         >
           {/* Edge fades into the panel */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-16 md:w-40 bg-gradient-to-r from-[#d4cefc] to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-16 md:w-40 bg-gradient-to-l from-[#d4cefc] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-16 md:w-40" style={{ background: 'linear-gradient(to right, #d4cefc, transparent)' }} />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-16 md:w-40" style={{ background: 'linear-gradient(to left, #d4cefc, transparent)' }} />
 
           {/* Track — two identical sets translated by a single motion value */}
           <motion.div className="absolute top-0 left-0 h-full flex w-max items-center will-change-transform" style={{ x }}>
@@ -144,11 +145,13 @@ const PremiumLogoMarquee = () => {
 
       <style>{`
         .pbh-logo {
-          filter: grayscale(100%) brightness(0) opacity(0.4);
-          transition: filter 520ms cubic-bezier(0.16,1,0.3,1);
+          filter: grayscale(100%) brightness(0);
+          opacity: 0.7;
+          transition: filter 520ms cubic-bezier(0.16,1,0.3,1), opacity 520ms cubic-bezier(0.16,1,0.3,1);
         }
         .pbh-slot:hover .pbh-logo { 
-          filter: grayscale(0%) brightness(1) opacity(1); 
+          filter: grayscale(0%) brightness(1);
+          opacity: 1; 
         }
 
         .pbh-hover {
