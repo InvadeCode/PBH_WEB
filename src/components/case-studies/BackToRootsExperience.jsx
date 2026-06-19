@@ -160,64 +160,77 @@ const Narrative = ({ project }) => {
   );
 };
 
-// ── SCENE 3 · IMAGE CHAPTERS (vertical, artistic, gradient) ─────────────────
-const StoryChapter = ({ img, index, total }) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const y = useTransform(scrollYProgress, [0, 1], [70, -70]);
-  const kb = useTransform(scrollYProgress, [0, 0.5, 1], [1.1, 1, 1.06]);
+// ── SCENE 3 · STORYTELLING GALLERY (Horizontal Scroll) ─────────────────
+const StorytellingGallery = ({ images, project }) => {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: targetRef });
+  
+  // The scroll distance is based on the number of images to ensure a smooth, slow scroll
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', `-${100 * (images.length - 1)}%`]);
 
-  const storyChapters = project?.fullStory?.storyChapters || [];
-  const chData = storyChapters.length > 0 ? storyChapters[index % storyChapters.length] : null;
-  const ch = chData ? { t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[index % DEFAULT_CHAPTERS.length];
-  const num = String(index + 1).padStart(2, '0');
-  const left = index % 2 === 0;
-  const grad = GRADS[index % GRADS.length];
+  if (!images || images.length === 0) return null;
 
   return (
-    <section ref={ref} className="relative min-h-screen flex items-center overflow-hidden py-24 md:py-28" style={{ background: grad }}>
-      {/* Ghost numeral */}
-      <span className="absolute font-serif pointer-events-none select-none leading-none"
-        style={{ color: `${C.terra}12`, fontSize: '52vh', top: '50%', transform: 'translateY(-50%)', [left ? 'right' : 'left']: '4%' }}>
-        {num}
-      </span>
+    <section ref={targetRef} className="relative bg-[#0E0805]" style={{ height: `${images.length * 100}vh` }}>
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center">
+        {/* Background gradient that shifts slowly */}
+        <motion.div className="absolute inset-0 pointer-events-none opacity-50" 
+          style={{ 
+            background: `radial-gradient(120% 90% at 50% 50%, ${C.terra}26 0%, transparent 60%)`,
+            x: useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
+          }} 
+        />
+        
+        <motion.div style={{ x }} className="flex h-full items-center">
+          {images.map((img, index) => {
+            const storyChapters = project?.fullStory?.storyChapters || [];
+            const chData = storyChapters.length > 0 ? storyChapters[index % storyChapters.length] : null;
+            const ch = chData ? { t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[index % DEFAULT_CHAPTERS.length];
+            const num = String(index + 1).padStart(2, '0');
+            
+            return (
+              <div key={index} className="w-screen h-screen shrink-0 flex flex-col md:flex-row items-center justify-center px-[6%] gap-12 relative overflow-hidden">
+                
+                {/* Ghost numeral */}
+                <span className="absolute font-serif pointer-events-none select-none leading-none z-0"
+                  style={{ color: `${C.terra}0c`, fontSize: '45vh', top: '50%', transform: 'translateY(-50%)', right: '5%' }}>
+                  {num}
+                </span>
 
-      <div className={`relative z-10 w-full max-w-7xl mx-auto px-[6%] flex flex-col gap-12 md:gap-14 items-center ${left ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-        {/* Film cell */}
-        <motion.figure className="md:w-[64%] flex justify-center" style={{ y }}
-          initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-15%' }} transition={{ duration: 1, ease: C.ease }}>
-          <div className="relative px-3 py-4 md:px-4 md:py-5" style={{ backgroundColor: '#0E0805', boxShadow: '0 40px 90px rgba(0,0,0,0.55)' }}>
-            <Sprockets pos="top" />
-            <Sprockets pos="bottom" />
-            <div className="relative overflow-hidden">
-              <motion.img src={img} alt={ch.t} className="block w-auto h-auto object-contain"
-                style={{ maxHeight: '68vh', maxWidth: 'min(60vw, 820px)', y: kb }} />
-              {/* Warm duotone gradient grade */}
-              <div className="absolute inset-0 pointer-events-none mix-blend-soft-light" style={{ background: `linear-gradient(155deg, ${C.terra} 0%, transparent 55%, ${C.soilDeep} 100%)` }} />
-              {/* Bottom gradient fade */}
-              <div className="absolute inset-x-0 bottom-0 h-1/3 pointer-events-none" style={{ background: `linear-gradient(to top, ${C.soilDeep}cc, transparent)` }} />
-              {/* Vignette */}
-              <div className="absolute inset-0 pointer-events-none" style={{ boxShadow: 'inset 0 0 90px rgba(0,0,0,0.5)' }} />
-              {/* Grain */}
-              <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.22 }} />
-            </div>
-            <div className="absolute inset-2 md:inset-2.5 border pointer-events-none" style={{ borderColor: `${C.cream}1f` }} />
-            <RegMarks />
-          </div>
-        </motion.figure>
+                <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row gap-12 md:gap-20 items-center justify-center">
+                  {/* Film cell */}
+                  <figure className="w-full md:w-[60%] flex justify-center">
+                    <div className="relative px-3 py-4 md:px-4 md:py-5" style={{ backgroundColor: '#0E0805', boxShadow: '0 40px 90px rgba(0,0,0,0.55)' }}>
+                      <Sprockets pos="top" />
+                      <Sprockets pos="bottom" />
+                      <div className="relative overflow-hidden">
+                        <img src={img} alt={ch.t} className="block w-auto h-auto object-contain"
+                          style={{ maxHeight: '65vh', maxWidth: 'min(70vw, 900px)' }} />
+                        <div className="absolute inset-0 pointer-events-none mix-blend-soft-light" style={{ background: `linear-gradient(155deg, ${C.terra} 0%, transparent 55%, ${C.soilDeep} 100%)` }} />
+                        <div className="absolute inset-x-0 bottom-0 h-1/3 pointer-events-none" style={{ background: `linear-gradient(to top, ${C.soilDeep}cc, transparent)` }} />
+                        <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.22 }} />
+                      </div>
+                      <div className="absolute inset-2 md:inset-2.5 border pointer-events-none" style={{ borderColor: `${C.cream}1f` }} />
+                      <RegMarks />
+                    </div>
+                  </figure>
 
-        {/* Caption */}
-        <motion.div className={`md:w-[36%] text-center ${left ? 'md:text-left' : 'md:text-right'}`}
-          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-15%' }} transition={{ duration: 0.9, delay: 0.2, ease: C.ease }}>
-          <div className={`flex items-center gap-3 mb-4 justify-center ${left ? 'md:justify-start' : 'md:justify-end md:flex-row-reverse'}`}>
-            <span className="h-px w-10" style={{ backgroundColor: C.terra }} />
-            <span className="text-[10px] uppercase tracking-[0.4em] font-secondary" style={{ color: C.terra }}>Chapter {num} / {String(total).padStart(2, '0')}</span>
-          </div>
-          <h3 className="font-serif leading-none mb-5" style={{
-            fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)',
-            background: `linear-gradient(120deg, ${C.cream}, ${C.terra})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-          }}>{ch.t}</h3>
-          <p className="font-serif font-light italic leading-relaxed" style={{ color: `${C.cream}b3`, fontSize: 'clamp(1.05rem, 1.7vw, 1.35rem)' }}>{ch.l}</p>
+                  {/* Caption */}
+                  <div className="w-full md:w-[40%] text-center md:text-left flex flex-col justify-center">
+                    <div className="flex items-center gap-3 mb-6 justify-center md:justify-start">
+                      <span className="h-px w-12" style={{ backgroundColor: C.terra }} />
+                      <span className="text-[10px] uppercase tracking-[0.4em] font-secondary" style={{ color: C.terra }}>Chapter {num} / {String(images.length).padStart(2, '0')}</span>
+                    </div>
+                    <h3 className="font-serif leading-[1.1] mb-6" style={{
+                      fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                      background: `linear-gradient(120deg, ${C.cream}, ${C.terra})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                    }}>{ch.t}</h3>
+                    <p className="font-serif font-light italic leading-relaxed" style={{ color: `${C.cream}b3`, fontSize: 'clamp(1.1rem, 1.8vw, 1.4rem)' }}>{ch.l}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
@@ -232,7 +245,7 @@ const Arrival = ({ project, navigate, SITE_SETTINGS }) => {
   const fg = useTransform(scrollYProgress, [0, 1], [C.cream, '#2A1810']);
 
   return (
-    <motion.section ref={ref} style={{ backgroundColor: bg }} className="py-40 md:py-52 px-[6%] min-h-screen flex flex-col items-center justify-center">
+    <motion.section ref={ref} style={{ backgroundColor: bg }} className="py-40 md:py-52 px-[6%] min-h-screen flex flex-col items-center justify-center relative z-20">
       <motion.h2 style={{ color: fg }} className="text-4xl md:text-7xl font-serif leading-snug text-center max-w-4xl mb-24 whitespace-pre-line">
         {project?.arrivalText || "A journey completed,\na story eternal."}
       </motion.h2>
@@ -264,9 +277,7 @@ const BackToRootsExperience = ({ navigate, project }) => {
       <ScrollProgress />
       <Cover project={project} navigate={navigate} SITE_SETTINGS={SITE_SETTINGS} />
       <Narrative project={project} />
-      {images.map((img, i) => (
-        <StoryChapter key={i} img={img} index={i} total={images.length} />
-      ))}
+      <StorytellingGallery images={images} project={project} />
       {/* ── OPTIONAL VIDEO SECTION ── */}
       {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
         <section className="relative w-full py-24 md:py-32 px-[6%] z-10 bg-[#0E0805]">
