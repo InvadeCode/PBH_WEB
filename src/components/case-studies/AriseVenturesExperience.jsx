@@ -467,8 +467,12 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 5.5 OPTIONAL VIDEO SECTION ── */}
       {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
         <section className="relative w-full z-10 py-24" style={{ backgroundColor: '#010836' }}>
-          <div className="max-w-[1200px] mx-auto px-6 md:px-12">
-            <div className="relative w-full rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 bg-black aspect-video">
+          <div className={`mx-auto px-6 md:px-12 ${project.videoSection.orientation === 'portrait' ? 'max-w-[450px]' : 'max-w-[1200px]'}`}>
+            <div className={`relative w-full rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 bg-black ${
+              project.videoSection.orientation === 'portrait' ? 'aspect-[9/16]' : 
+              project.videoSection.orientation === 'square' ? 'aspect-square' : 
+              'aspect-video'
+            }`}>
               {project.videoSection.videoUrl ? (
                 <iframe
                   className="w-full h-full"
@@ -482,7 +486,9 @@ const AriseVenturesExperience = ({ navigate, project }) => {
                 <video
                   className="w-full h-full object-cover"
                   src={project.videoSection.videoFileUrl}
-                  controls
+                  autoPlay
+                  loop
+                  muted
                   playsInline
                 />
               )}

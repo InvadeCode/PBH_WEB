@@ -327,23 +327,27 @@ const BackToRootsExperience = ({ navigate, project }) => {
       <StoryChapterCarousel images={images} project={project} SITE_SETTINGS={SITE_SETTINGS} />
       {/* ── OPTIONAL VIDEO SECTION ── */}
       {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
-        <section className="relative w-full py-24 md:py-32 px-[6%] z-10 bg-[#0E0805]">
-          <div className="max-w-[1200px] mx-auto">
-            <div className="relative w-full rounded-[1rem] md:rounded-[2rem] overflow-hidden shadow-2xl border border-white/5 bg-black aspect-video">
+        <section className="py-24 bg-[var(--color-bg)] relative z-10 px-4 md:px-12">
+          <div className={`mx-auto ${project.videoSection.orientation === 'portrait' ? 'max-w-md' : 'max-w-7xl'}`}>
+            <div className={`w-full rounded-2xl overflow-hidden bg-black/5 shadow-2xl relative ${
+              project.videoSection.orientation === 'portrait' ? 'aspect-[9/16]' : 
+              project.videoSection.orientation === 'square' ? 'aspect-square max-w-2xl mx-auto' : 
+              'aspect-video'
+            }`}>
               {project.videoSection.videoUrl ? (
-                <iframe
-                  className="w-full h-full"
+                <iframe 
                   src={project.videoSection.videoUrl}
-                  title="Case Study Video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  className="w-full h-full"
+                  allow="autoplay; fullscreen; picture-in-picture"
                   allowFullScreen
-                  style={{ border: 'none' }}
                 />
               ) : (
-                <video
-                  className="w-full h-full object-cover"
+                <video 
                   src={project.videoSection.videoFileUrl}
-                  controls
+                  className="w-full h-full object-cover"
+                  autoPlay 
+                  loop 
+                  muted 
                   playsInline
                 />
               )}

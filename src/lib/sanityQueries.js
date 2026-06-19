@@ -34,6 +34,7 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(orderRank) {
     }
   },
   "videoSection": {
+    "orientation": videoSection.orientation,
     "videoUrl": videoSection.videoUrl,
     "videoFileUrl": videoSection.videoFile.asset->url
   },

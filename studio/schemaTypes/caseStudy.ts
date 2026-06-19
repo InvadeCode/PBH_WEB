@@ -176,6 +176,21 @@ export default defineType({
       description: 'Use this to add a standard video anywhere in the case study.',
       fields: [
         defineField({
+          name: 'orientation',
+          title: 'Video Orientation',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'Landscape (16:9)', value: 'landscape' },
+              { title: 'Portrait (9:16 Mobile format)', value: 'portrait' },
+              { title: 'Square (1:1)', value: 'square' }
+            ],
+            layout: 'radio'
+          },
+          initialValue: 'landscape',
+          description: 'Choose the display shape so the video fits beautifully without cropping.'
+        }),
+        defineField({
           name: 'videoUrl',
           title: 'Video Embed URL',
           type: 'url',
