@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PBH Scope Builder — How It Works</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+  :root {
+    --ink:    #0F0F1A;
+    --sub:    #5A5A78;
+    --light:  #8A8AAA;
+    --accent: #6865FA;
+    --blue:   #2A97D9;
+    --gold:   #E8A800;
+    --green:  #16A34A;
+    --red:    #DC2626;
+    --border: #E8E8F0;
+    --bg:     #FAFAFA;
+    --panel:  #F3F3F9;
+    --dark:   #010836;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5pt;
+    color: var(--ink);
+    background: white;
+    line-height: 1.75;
+  }
+
+  @media print {
+    .no-print { display: none !important; }
+    body { font-size: 9.5pt; }
+    .cover { min-height: auto; padding: 60px; page-break-after: always; }
+    .chapter { page-break-before: always; }
+    .chapter:first-of-type { page-break-before: avoid; }
+    .card, .callout, .step-block { page-break-inside: avoid; }
+  }
+
+  /* ---- COVER ---- */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #010836 0%, #0D1A5C 55%, #0F1035 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 80px;
+  }
+  .cover-top {}
+  .cover-eyebrow {
+    font-size: 9pt;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #6865FA;
+    margin-bottom: 28px;
+  }
+  .cover h1 {
+    font-family: 'Lora', serif;
+    font-size: 42pt;
+    font-weight: 400;
+    line-height: 1.2;
+    color: white;
+    margin-bottom: 20px;
+    max-width: 700px;
+  }
+  .cover h1 em { color: rgba(255,255,255,0.45); font-style: italic; }
+  .cover-sub {
+    font-size: 13pt;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 60px;
+  }
+  .cover-divider {
+    width: 48px;
+    height: 2px;
+    background: #6865FA;
+    margin-bottom: 32px;
+  }
+  .cover-bottom {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 28px;
+  }
+  .cover-bottom p {
+    font-size: 9pt;
+    color: rgba(255,255,255,0.3);
+  }
+  .cover-bottom strong { color: rgba(255,255,255,0.6); }
+
+  /* ---- BODY ---- */
+  .doc {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 72px 80px;
+  }
+
+  /* ---- CHAPTERS ---- */
+  .chapter { margin-bottom: 72px; }
+  .chapter-label {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .chapter h2 {
+    font-family: 'Lora', serif;
+    font-size: 24pt;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.25;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .chapter h2 em { font-style: italic; color: var(--sub); }
+  .chapter p {
+    color: var(--sub);
+    margin-bottom: 16px;
+    font-size: 10.5pt;
+  }
+  .chapter p strong { color: var(--ink); font-weight: 600; }
+  h3 {
+    font-size: 12pt;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 36px;
+    margin-bottom: 10px;
+  }
+  h4 {
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 28px;
+    margin-bottom: 8px;
+  }
+
+  /* ---- ANALOGY BOX ---- */
+  .analogy {
+    background: var(--dark);
+    color: white;
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin: 24px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .analogy::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    font-family: 'Lora', serif;
+    font-size: 120pt;
+    color: rgba(104,101,250,0.12);
+    line-height: 1;
+  }
+  .analogy-label {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #6865FA;
+    margin-bottom: 10px;
+  }
+  .analogy p {
+    color: rgba(255,255,255,0.7);
+    font-style: italic;
+    font-size: 11pt;
+    line-height: 1.7;
+    margin: 0;
+    font-family: 'Lora', serif;
+  }
+  .analogy p strong { color: white; font-style: normal; }
+
+  /* ---- CALLOUT ---- */
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 10pt;
+    line-height: 1.65;
+  }
+  .callout.blue  { background: rgba(42,151,217,0.07);  border-left: 3px solid var(--blue); }
+  .callout.green { background: rgba(22,163,74,0.07);   border-left: 3px solid var(--green); }
+  .callout.gold  { background: rgba(232,168,0,0.08);   border-left: 3px solid var(--gold); }
+  .callout.purple{ background: rgba(104,101,250,0.07); border-left: 3px solid var(--accent); }
+  .callout strong { color: var(--ink); font-weight: 600; display: block; margin-bottom: 4px; }
+  .callout p { margin: 0; color: var(--sub); }
+
+  /* ---- STEP BLOCKS ---- */
+  .steps { display: flex; flex-direction: column; gap: 0; margin: 24px 0; }
+  .step-block {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    position: relative;
+  }
+  .step-block::after {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 44px;
+    bottom: -4px;
+    width: 2px;
+    background: var(--border);
+  }
+  .step-block:last-child::after { display: none; }
+  .step-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 10pt;
+    flex-shrink: 0;
+    color: white;
+    background: var(--accent);
+  }
+  .step-num.blue  { background: var(--blue); }
+  .step-num.green { background: var(--green); }
+  .step-num.gold  { background: var(--gold); color: #3A2E00; }
+  .step-num.dark  { background: var(--ink); }
+  .step-content { padding-bottom: 28px; }
+  .step-content h3 { margin-top: 8px; margin-bottom: 4px; }
+  .step-content p { font-size: 10pt; margin-bottom: 0; }
+  .step-tag {
+    display: inline-block;
+    font-size: 7.5pt;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+  .tag-p1 { background: rgba(104,101,250,0.1); color: var(--accent); }
+  .tag-p2 { background: rgba(42,151,217,0.1);  color: var(--blue); }
+  .tag-p3 { background: rgba(22,163,74,0.1);   color: var(--green); }
+  .tag-p4 { background: rgba(232,168,0,0.1);   color: var(--gold); }
+
+  /* ---- CARDS ---- */
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card h4 { margin-top: 0; }
+  .card p { font-size: 9.5pt; color: var(--sub); margin: 0; }
+  .card.accent { border-color: var(--accent); background: rgba(104,101,250,0.04); }
+  .card.blue   { border-color: var(--blue);   background: rgba(42,151,217,0.04); }
+  .card.green  { border-color: var(--green);  background: rgba(22,163,74,0.04); }
+
+  /* ---- PANEL PREVIEW ---- */
+  .panel-preview {
+    background: #0C185C;
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin: 24px 0;
+    color: white;
+  }
+  .panel-preview-title {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .panel-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .panel-row:last-child { border: none; }
+  .panel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+  .panel-row-content {}
+  .panel-row-label {
+    font-size: 8pt;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 4px;
+  }
+  .panel-row-value {
+    font-size: 10pt;
+    color: rgba(255,255,255,0.85);
+  }
+
+  /* ---- WHAT GOES OUT ---- */
+  .output-row {
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+    align-items: flex-start;
+  }
+  .output-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .output-text h4 { margin-top: 0; }
+  .output-text p { font-size: 9.5pt; margin: 0; }
+
+  /* ---- QUOTE ---- */
+  blockquote {
+    font-family: 'Lora', serif;
+    font-size: 14pt;
+    font-style: italic;
+    color: var(--sub);
+    border-left: 3px solid var(--accent);
+    padding-left: 24px;
+    margin: 28px 0;
+    line-height: 1.6;
+  }
+
+  /* ---- HR ---- */
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* ---- PRINT BTN ---- */
+  .print-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 10pt;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(104,101,250,0.35);
+    font-family: 'Inter', sans-serif;
+    z-index: 100;
+  }
+  .print-btn:hover { background: #5855e8; }
+
+  ul.plain { list-style: none; padding: 0; }
+  ul.plain li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--sub);
+    font-size: 10pt;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  ul.plain li:last-child { border: none; }
+  ul.plain li::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; }
+
+  .big-number {
+    font-family: 'Lora', serif;
+    font-size: 52pt;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+    display: block;
+  }
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 24px 0; }
+  .stat-box { text-align: center; }
+  .stat-box .big-number { font-size: 36pt; }
+  .stat-box p { font-size: 9pt; color: var(--sub); margin: 4px 0 0; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">⬇ Save as PDF</button>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-top">
+    <div class="cover-eyebrow">PurpleBlue House — For Everyone</div>
+    <h1>How the Scope Builder<br /><em>actually works.</em></h1>
+    <div class="cover-divider"></div>
+    <p class="cover-sub">A plain-language explanation of the quiz, the live panel on the right, and the final report — written for anyone who doesn't write code.</p>
+  </div>
+  <div class="cover-bottom">
+    <p><strong>PurpleBlue House</strong> · Scope Builder · June 2026</p>
+    <p>Internal Reference · Not for Client Distribution</p>
+  </div>
+</div>
+
+
+<div class="doc">
+
+  <!-- ===== CHAPTER 0: THE BIG PICTURE ===== -->
+  <div class="chapter">
+    <div class="chapter-label">Before we begin</div>
+    <h2>What is the Scope Builder, and why does it exist?</h2>
+
+    <p>Most branding agencies start a client relationship the same way — a long discovery call, a generic proposal sent a week later, and a back-and-forth that can drag on for days. The client doesn't really know what they need. The agency doesn't really know the client yet. It's a slow, frustrating beginning.</p>
+
+    <p>The <strong>Scope Builder</strong> is our answer to that problem. It's an interactive tool — like a smart questionnaire — that sits on our website and helps a potential client figure out exactly what kind of brand work they need, before we ever get on a call.</p>
+
+    <p>By the time someone finishes it, three things have happened:</p>
+    <ul class="plain">
+      <li>They've told us everything we need to know to have a sharp first conversation.</li>
+      <li>They've seen a personalized snapshot of their brand's gaps and recommended services.</li>
+      <li>We've already received their full brief — automatically — in our inbox as a beautifully formatted PDF.</li>
+    </ul>
+
+    <div class="analogy">
+      <div class="analogy-label">Think of it like this</div>
+      <p>Imagine going to a doctor who, instead of asking you to fill out a form at reception, sits you down and walks you through six thoughtful questions. Based on your answers, they already know which specialist you need and what tests to run — before the consultation even starts. <strong>That's what the Scope Builder does, but for branding.</strong></p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-box">
+        <span class="big-number">6</span>
+        <p>Diagnostic questions asked</p>
+      </div>
+      <div class="stat-box">
+        <span class="big-number">94</span>
+        <p>Individual deliverables in the system</p>
+      </div>
+      <div class="stat-box">
+        <span class="big-number">3</span>
+        <p>Service routes available</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ===== CHAPTER 1: THE JOURNEY ===== -->
+  <div class="chapter">
+    <div class="chapter-label">Chapter One</div>
+    <h2>The full journey, step by step</h2>
+
+    <p>From the moment someone lands on the Scope Builder page to the moment they receive their report, there are <strong>eight distinct moments</strong>. Here's each one explained plainly.</p>
+
+    <div class="steps">
+
+      <div class="step-block">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <span class="step-tag tag-p1">Getting Started</span>
+          <h3>We ask who we're building this for</h3>
+          <p>The first screen has just two fields — the brand or company name, and the industry (optional). That's it. This is intentional: we don't want to overwhelm anyone before they've even begun. The company name is required because it personalises every screen that follows — including the final report, which will say "Scope Snapshot for <em>[their company name]</em>" at the top.</p>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <span class="step-tag tag-p1">Phase 1 — Diagnosis</span>
+          <h3>Six questions that reveal everything</h3>
+          <p>This is the heart of the Scope Builder. Six questions, each one designed to surface a specific kind of brand problem. Some questions are single-choice ("pick the one that fits most"), and some are multi-choice ("tick everything that applies"). There's also a small text box under each question where the person can add their own context in their own words — this appears in the final report.</p>
+          <p>The questions are deliberately written in plain business language, not agency jargon. Someone who has never worked with a branding agency before should be able to answer all of them comfortably.</p>
+
+          <div class="callout blue">
+            <strong>Auto-advance on single-choice questions</strong>
+            <p>When a person picks an answer on a single-choice question, the page moves forward on its own after half a second. This creates a smooth, survey-like experience — no need to click "Next." Multi-choice questions stay on the same screen until the person clicks "Continue," so they have time to select multiple options.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num blue">3</div>
+        <div class="step-content">
+          <span class="step-tag tag-p2">Phase 2 — Diagnosis Result</span>
+          <h3>We show them what the diagnosis found</h3>
+          <p>Immediately after the last question is answered, the system processes all the responses and shows the person their <strong>"brand opportunity areas"</strong> — a plain-English explanation of where their brand is most likely breaking down.</p>
+          <p>It also recommends which of our three service routes is most relevant for them. Each route card has a "Read More" option that opens a longer, story-like description of what that service involves — written specifically to help someone understand whether it resonates with their situation.</p>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num blue">4</div>
+        <div class="step-content">
+          <span class="step-tag tag-p2">Phase 2 — Route Selection</span>
+          <h3>They confirm (or adjust) which routes apply</h3>
+          <p>The system pre-selects the recommended routes based on the diagnosis. But the person has full control — they can add or remove routes freely. This step exists because sometimes a client already knows they need something specific, even if the quiz didn't point there.</p>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num blue">5</div>
+        <div class="step-content">
+          <span class="step-tag tag-p2">Phase 2 — Deliverables</span>
+          <h3>They build their actual scope</h3>
+          <p>This is where the scope gets specific. The system shows all the individual deliverables available within their selected routes — things like "Brand Discovery Workshop," "Logo Design," "Social Templates," "Event Branding," and so on.</p>
+          <p>The person can tick exactly which ones they want. For each selected item, they can also label it as <strong>Standard, High, or Critical priority</strong> — which tells us what matters most to them.</p>
+          <p>The system also enforces a logical order: some deliverables require others to be done first. If you try to select "Brand Guidelines" without first having selected "Logo" and "Color Palette," the system will notice and ask whether you'd like to add the required foundations automatically. See Chapter 3 for the full explanation of this logic.</p>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num green">6</div>
+        <div class="step-content">
+          <span class="step-tag tag-p3">Phase 3 — Context</span>
+          <h3>Three last questions about how they want to work</h3>
+          <p>Three simple dropdown menus ask: (1) How deeply involved do you want us to be — light-touch, selective, or fully end-to-end? (2) Are you thinking short-term, a deep dive, or long-term? (3) What's your expected project duration — 3 months, 6 months, or an ongoing retainer?</p>
+          <p>This helps us understand their working style and budget range before the first call, without having to ask directly about money.</p>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num green">7</div>
+        <div class="step-content">
+          <span class="step-tag tag-p3">Final Step</span>
+          <h3>They tell us where to send the report</h3>
+          <p>Three fields: Full Name, Work Email, and Phone Number. The company name was already collected at the very first step, so we don't ask again. When they click "Generate Report & Send Brief," everything is processed instantly in their browser and sent simultaneously in three directions. See Chapter 4 for what happens at this moment.</p>
+        </div>
+      </div>
+
+      <div class="step-block">
+        <div class="step-num gold">8</div>
+        <div class="step-content">
+          <span class="step-tag tag-p4">Completion</span>
+          <h3>The Official Scope Snapshot appears</h3>
+          <p>The final screen is their personalised report — visible right there in the browser, no download required. It shows a visual "Brand Alignment" radar chart, their recommended routes, their execution preferences, and the full list of deliverables they selected. They can print it or save it as a PDF from this screen. This same document has already been emailed to them and to us.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ===== CHAPTER 2: THE QUIZ LOGIC ===== -->
+  <div class="chapter">
+    <div class="chapter-label">Chapter Two</div>
+    <h2>How the quiz figures out what's wrong <em>with a brand</em></h2>
+
+    <p>The six questions don't just collect information — each answer is linked to a specific type of brand problem. The system quietly tracks which problems are appearing most frequently across the answers, and at the end it identifies the most dominant issue.</p>
+
+    <p>Here are the five types of brand problems the system knows how to identify:</p>
+
+    <div class="card-grid">
+      <div class="card accent">
+        <h4>Messaging Inconsistency</h4>
+        <p>Different teams are saying different things. There are no clear messaging guidelines. The brand sounds like multiple people talking over each other.</p>
+      </div>
+      <div class="card accent">
+        <h4>Generic Identity</h4>
+        <p>The visuals feel outdated, forgettable, or generic. The brand doesn't look distinctive enough to stand out from competitors.</p>
+      </div>
+      <div class="card blue">
+        <h4>Weak Narrative</h4>
+        <p>Low engagement. The campaigns don't connect emotionally. People understand what the brand sells, but not why it matters.</p>
+      </div>
+      <div class="card blue">
+        <h4>Lack of Systems</h4>
+        <p>No playbook, no templates, no repeatable process. Good execution happens by accident rather than by design.</p>
+      </div>
+      <div class="card green">
+        <h4>Execution Gap</h4>
+        <p>The brand strategy exists, but the team can't keep up with it. The gap between what's planned and what gets done keeps growing.</p>
+      </div>
+    </div>
+
+    <h3>How the scoring works</h3>
+    <p>Every answer option is secretly tagged with one of the five problem types above, and a weight — either 1 or 2. When a person picks an answer, that weight is added to a running score for that problem type. By the end of six questions, the problem type with the highest total score wins.</p>
+
+    <div class="analogy">
+      <div class="analogy-label">An analogy</div>
+      <p>Think of it like a voting machine. Every answer you give casts a vote — sometimes one vote, sometimes two — for a specific problem type. At the end, the problem type with the most votes is declared the winner. <strong>If two problems tie, both are declared winners</strong> and both get addressed in the recommendation.</p>
+    </div>
+
+    <h3>From problem to route</h3>
+    <p>Once the winning problem is identified, the system maps it directly to one of our three service routes:</p>
+
+    <ul class="plain">
+      <li><strong>Messaging Inconsistency, Generic Identity, or Lack of Systems</strong> → Brand Boulevard (identity and brand systems work)</li>
+      <li><strong>Weak Narrative</strong> → Sci-Art Saga (innovation communication and storytelling)</li>
+      <li><strong>Execution Gap</strong> → Storytelling Corner (campaign direction and content execution)</li>
+    </ul>
+
+    <div class="callout gold">
+      <strong>What if someone answers "None of the Above" to everything?</strong>
+      <p>The system handles this gracefully. If no problem type scores any points, it defaults to recommending Brand Boulevard — our most foundational service, and the safest starting point for any brand.</p>
+    </div>
+  </div>
+
+
+  <!-- ===== CHAPTER 3: DEPENDENCIES ===== -->
+  <div class="chapter">
+    <div class="chapter-label">Chapter Three</div>
+    <h2>Why the system sometimes asks you to add more <em>than you expected</em></h2>
+
+    <p>In branding, some things can only be done properly if other things exist first. You can't write "Brand Guidelines" if you haven't designed the logo yet. You can't build "Social Templates" without a grid system. This is true in real project work, and the Scope Builder reflects it.</p>
+
+    <p>Every deliverable in the system has a list of things it depends on — its prerequisites. These are relationships that our strategists have mapped carefully based on how real projects actually unfold.</p>
+
+    <div class="analogy">
+      <div class="analogy-label">Think of it like a recipe</div>
+      <p>You can't make a cake without flour. If you click "add cake" to your shopping list, the system says: <strong>"Great — but you'll also need flour, eggs, and sugar. Should I add those for you?"</strong> It's not blocking you. It's making sure you don't get halfway through the project and realise you're missing the foundations.</p>
+    </div>
+
+    <h3>What happens when you select a deliverable that needs prerequisites</h3>
+
+    <div class="steps">
+      <div class="step-block">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>A pop-up appears</h3>
+          <p>The system spots that the deliverable you selected requires one or more earlier deliverables that you haven't yet chosen. It pauses and shows you exactly which ones are missing.</p>
+        </div>
+      </div>
+      <div class="step-block">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>You get two choices</h3>
+          <p><strong>Option A: Add everything at once.</strong> The system adds your chosen deliverable plus all its prerequisites in one click. This is the recommended option — it keeps your scope logically coherent. <strong>Option B: Add it with a warning.</strong> The deliverable is added to your scope, but it gets a small "Missing Prerequisites" badge so that both you and the PBH team can see at a glance that something may need to be discussed.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>What happens when you remove a deliverable that others depend on</h3>
+    <p>The system works in reverse too. If you try to remove something that other selected deliverables depend on, it warns you and lists everything that would break. You can either remove everything in the chain together, or change your mind and keep it.</p>
+
+    <div class="callout green">
+      <strong>Why this matters for our clients</strong>
+      <p>Many branding scopes get stalled mid-project because a foundational piece wasn't planned. A client gets a design system built, but then there's no brand positioning document to base it on. This system makes those structural decisions visible upfront, so the first call is a conversation about strategy — not about what was missed.</p>
+    </div>
+  </div>
+
+
+  <!-- ===== CHAPTER 4: LIVE BLUEPRINT ===== -->
+  <div class="chapter">
+    <div class="chapter-label">Chapter Four</div>
+    <h2>The panel on the right: <em>the Live Blueprint</em></h2>
+
+    <p>From the moment someone starts answering questions, a panel appears on the right side of their screen (or in a drawer on mobile). It's called the <strong>Live Blueprint</strong>. It updates in real time as the person moves through the tool.</p>
+
+    <p>Its purpose is simple: <em>show the client what their scope is shaping up to be, as they build it.</em> There's no waiting until the end to see what you're getting. The picture builds in front of you.</p>
+
+    <div class="panel-preview">
+      <div class="panel-preview-title">Live Blueprint — Example state mid-way through</div>
+      <div class="panel-row">
+        <div class="panel-dot" style="background: #6865FA;"></div>
+        <div class="panel-row-content">
+          <div class="panel-row-label">System State</div>
+          <div class="panel-row-value">We are repositioning an existing brand</div>
+        </div>
+      </div>
+      <div class="panel-row">
+        <div class="panel-dot" style="background: #F59E0B;"></div>
+        <div class="panel-row-content">
+          <div class="panel-row-label">Strategic Gaps</div>
+          <div class="panel-row-value">⚡ Messaging Inconsistency</div>
+        </div>
+      </div>
+      <div class="panel-row">
+        <div class="panel-dot" style="background: white;"></div>
+        <div class="panel-row-content">
+          <div class="panel-row-label">Active Directives</div>
+          <div class="panel-row-value">✓ Brand Discovery Workshop<br/>✓ Brand Audit<br/>✓ Competitor Landscape Mapping</div>
+        </div>
+      </div>
+      <div class="panel-row">
+        <div class="panel-dot" style="background: #22C55E;"></div>
+        <div class="panel-row-content">
+          <div class="panel-row-label">System Health</div>
+          <div class="panel-row-value">85% — Strategic Completeness</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>The four sections of the Live Blueprint</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4>System State</h4>
+        <p>Shows the brand stage the person selected in Question 1 — e.g. "We are launching a new brand." Before they answer, it shows "Awaiting Initialization" with a spinner.</p>
+      </div>
+      <div class="card">
+        <h4>Strategic Gaps</h4>
+        <p>Shows the identified problem cluster(s) as glowing orange tags, like "Messaging Inconsistency." This updates instantly after the diagnosis is complete. Before that, it shows "Analyzing Vulnerabilities."</p>
+      </div>
+      <div class="card">
+        <h4>Active Directives</h4>
+        <p>Shows every deliverable the person has selected so far. Each one slides in or out with an animation as they tick and untick boxes. Before any are selected, it shows "Standby for Directives."</p>
+      </div>
+      <div class="card">
+        <h4>System Health</h4>
+        <p>A circular progress ring showing a "Strategic Completeness" percentage. It starts at 50% (just for answering the first question) and can reach 100% once a brand stage, diagnosis, and deliverables are all in place.</p>
+      </div>
+    </div>
+
+    <h3>How the completeness percentage is calculated</h3>
+    <p>It's not a complex formula — it's a simple readiness signal:</p>
+    <ul class="plain">
+      <li><strong>You always start at 50%</strong> — just for arriving and beginning.</li>
+      <li><strong>+20%</strong> when you answer the first question about your brand stage.</li>
+      <li><strong>+15%</strong> when the diagnosis is complete and your gaps are identified.</li>
+      <li><strong>+15%</strong> when you've selected at least one deliverable.</li>
+    </ul>
+    <p>Maximum is 100%. The ring turns <strong>green</strong> when you hit 100%, signalling that you've given us everything we need to start a conversation.</p>
+
+    <div class="callout purple">
+      <strong>Why show this in real time?</strong>
+      <p>It gives the person a sense of progress and agency. They can see their brief taking shape. It also creates a natural motivation to complete the tool — the more they fill in, the more detailed the panel gets, and the more it feels like something real is being built specifically for them.</p>
+    </div>
+  </div>
+
+
+  <!-- ===== CHAPTER 5: THE SCOPE SNAPSHOT ===== -->
+  <div class="chapter">
+    <div class="chapter-label">Chapter Five</div>
+    <h2>The Official Scope Snapshot: <em>what the final report contains</em></h2>
+
+    <p>Once someone submits their contact details, the Official Scope Snapshot appears immediately on screen. This is their personalized brand strategy brief — not a generic template, but a document assembled from exactly what they told us.</p>
+
+    <p>It has four sections:</p>
+
+    <h3>1. The Header</h3>
+    <p>Their company name, the name of the person who filled it out, and the date it was generated. Labelled "Official Scope Snapshot" — because it is.</p>
+
+    <h3>2. Brand Alignment Profile</h3>
+    <p>A radar chart (a pentagon-shaped diagram) showing five dimensions of their brand's health: Messaging, Identity, Narrative, Systems, and Execution. The dimensions where problems were identified appear as low scores on the chart, creating a visual picture of where the gaps are.</p>
+    <p>In the centre of the chart is a single <strong>"Brand Health Index"</strong> number — the average of the five scores. This number is not meant to be a precise measurement. It's a conversation-starting snapshot that makes the abstract concrete.</p>
+
+    <h3>3. Execution Context</h3>
+    <p>A simple table showing: which brand stage they're at, how deeply they want us involved, their project timeline preference, their duration preference, and — critically — our system's <strong>"Suggested Starting Point"</strong>: the first deliverable their project should begin with, based on everything they've selected.</p>
+
+    <h3>4. Selected Deliverables Blueprint</h3>
+    <p>Every deliverable they chose, listed clearly with its ID number and their chosen priority level (Standard, High, or Critical). If any item has a missing prerequisite warning, a small alert icon appears next to it.</p>
+
+    <div class="callout gold">
+      <strong>The "Suggested Starting Point" — how is it determined?</strong>
+      <p>The system looks at everything the person selected, expands that list to include all the foundational deliverables those items depend on, and identifies what comes first in the logical order. It prioritises the foundational pieces — things like a Brand Discovery Workshop or an Innovation Framework — because those are what everything else is built on.</p>
+    </div>
+  </div>
+
+
+  <!-- ===== CHAPTER 6: WHAT GETS SENT ===== -->
+  <div class="chapter">
+    <div class="chapter-label">Chapter Six</div>
+    <h2>What happens the moment someone hits <em>"Generate Report"</em></h2>
+
+    <p>When the submit button is clicked, three things happen simultaneously and automatically — the person doesn't have to do anything except wait a few seconds for the screen to change.</p>
+
+    <div class="output-row">
+      <div class="output-icon" style="background: rgba(104,101,250,0.1);">📄</div>
+      <div class="output-text">
+        <h4>A PDF is generated</h4>
+        <p>A fully formatted PDF is created entirely within the person's browser — no server involved in building it. It includes the diagnostic responses, strategy blueprint, and all selected deliverables grouped by route and line item. This is the document the PBH team uses as the client brief going into the first call.</p>
+      </div>
+    </div>
+
+    <div class="output-row">
+      <div class="output-icon" style="background: rgba(42,151,217,0.1);">📊</div>
+      <div class="output-text">
+        <h4>An Excel file is generated</h4>
+        <p>A formatted spreadsheet is also created, structured with sections for the diagnostic responses and full deliverables list. This goes to the PBH internal team only — not to the client — as a working document for project planning and CRM entry.</p>
+      </div>
+    </div>
+
+    <div class="output-row">
+      <div class="output-icon" style="background: rgba(22,163,74,0.1);">✉️</div>
+      <div class="output-text">
+        <h4>Two emails are sent at the same time</h4>
+        <p><strong>To the PBH team:</strong> A detailed briefing email with both the PDF and Excel attached. It includes a summary of the quiz answers, the identified gaps, the selected routes and deliverables, and the execution context. <strong>To the client:</strong> A professional, warm email thanking them for completing the tool and attaching the PDF Scope Snapshot. It mentions that the team will reach out within 24 hours.</p>
+      </div>
+    </div>
+
+    <div class="output-row">
+      <div class="output-icon" style="background: rgba(232,168,0,0.1);">🗄️</div>
+      <div class="output-text">
+        <h4>The lead is saved to our database</h4>
+        <p>All the data — contact details, quiz answers, selected deliverables, priorities, context — is also sent to our backend and stored in our database. This means every lead is logged automatically, with no manual data entry required.</p>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <strong>Nothing is stored on our servers before they hit submit</strong>
+      <p>While someone is filling in the Scope Builder, their answers are only held in their browser's memory. Nothing is sent to us until they complete the final step and click "Generate Report." Their data isn't captured partway through if they abandon the tool.</p>
+    </div>
+  </div>
+
+
+  <!-- ===== CHAPTER 7: SAVED PROGRESS ===== -->
+  <div class="chapter">
+    <div class="chapter-label">Chapter Seven</div>
+    <h2>What happens if someone leaves <em>halfway through</em></h2>
+
+    <p>The Scope Builder saves progress automatically in the person's own browser. This means if they close the tab, go for lunch, come back an hour later, and reopen the link — they'll find themselves exactly where they left off. Every answer, every selected deliverable, every context preference — all of it is preserved.</p>
+
+    <div class="analogy">
+      <div class="analogy-label">Think of it like this</div>
+      <p>It works like a word processor that auto-saves every few seconds. <strong>The draft lives on your computer, not on ours.</strong> As long as you return on the same browser on the same device, your progress is waiting for you.</p>
+    </div>
+
+    <div class="callout gold">
+      <strong>If someone starts fresh on a different device</strong>
+      <p>Because the progress is saved to their browser and not their account (there are no accounts in the Scope Builder), opening the link on a different device or a different browser will show a fresh, empty tool. They would need to start again.</p>
+    </div>
+  </div>
+
+
+  <!-- ===== CHAPTER 8: QUICK REFERENCE ===== -->
+  <div class="chapter">
+    <div class="chapter-label">Chapter Eight</div>
+    <h2>Quick reference: terms you might hear</h2>
+
+    <ul class="plain">
+      <li><strong>Cluster</strong> — The type of brand problem the diagnosis identified. e.g. "Messaging Inconsistency."</li>
+      <li><strong>Route</strong> — One of our three service areas: Brand Boulevard, Sci-Art Saga, or Storytelling Corner.</li>
+      <li><strong>Deliverable</strong> — A specific, named piece of work within a route. e.g. "Logo Design," "Brand Guidelines," "Event Branding."</li>
+      <li><strong>Line Item</strong> — A group of deliverables that belong together under one umbrella. e.g. "Brand Identity System" is a line item containing Logo, Typography System, Color Palette, etc.</li>
+      <li><strong>Prerequisites / Interdependence</strong> — The deliverables that must be done first before another can begin. The system enforces this logic automatically.</li>
+      <li><strong>Live Blueprint</strong> — The real-time panel on the right side of the screen that shows the scope being built as the person answers questions.</li>
+      <li><strong>Official Scope Snapshot</strong> — The final personalised report shown on screen and emailed to both the client and the PBH team after submission.</li>
+      <li><strong>Strategic Completeness</strong> — The percentage shown in the Live Blueprint's health ring. A readiness signal, not a strict measurement — it tells the person how complete their brief is becoming.</li>
+      <li><strong>Suggested Starting Point</strong> — The first deliverable the system recommends beginning with, based on what was selected and what comes first logically in the project sequence.</li>
+      <li><strong>Brand Health Index</strong> — The number in the centre of the radar chart. The average of five brand dimension scores, used as a conversation starter — not a scientific rating.</li>
+    </ul>
+
+    <blockquote>"The Scope Builder is not a quiz. It's a diagnostic instrument that respects a client's time and gives them something real in return."</blockquote>
+  </div>
+
+
+  <hr />
+  <p style="text-align: center; color: var(--light); font-size: 8.5pt; margin-top: 24px;">
+    PurpleBlue House · Scope Builder · Plain Language Reference · June 2026
+  </p>
+
+</div>
+</body>
+</html>

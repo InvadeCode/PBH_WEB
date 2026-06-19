@@ -14,6 +14,7 @@ export default defineType({
     { name: 'journal', title: 'Journal Page' },
     { name: 'work', title: 'Work Page' },
     { name: 'footer', title: 'Footer & Contact' },
+    { name: 'caseStudies', title: 'Case Studies UI' },
   ],
   fields: [
     // ── HOME PAGE ──
@@ -180,6 +181,14 @@ export default defineType({
     defineField({ name: 'contactEmail', title: 'Contact Email', type: 'string', group: 'footer' }),
     defineField({ name: 'contactPhone', title: 'Contact Phone', type: 'string', group: 'footer' }),
     defineField({ name: 'contactAddress', title: 'Contact Address', type: 'string', group: 'footer' }),
+
+    // ── CASE STUDIES UI ──
+    defineField({ name: 'csBackToWork', title: 'Back to Work Text', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csSeeMoreWork', title: 'See More Work Text', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csAllProjects', title: 'All Projects Text', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csScrollStory', title: 'Scroll Story Text', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csTheApproach', title: 'The Approach Text', type: 'string', group: 'caseStudies' }),
+
 
     // ── PRESERVED EXISTING FIELDS ──
     defineField({ name: 'coreValuesHeader', title: 'Core Values Header', type: 'string', group: 'about' }),

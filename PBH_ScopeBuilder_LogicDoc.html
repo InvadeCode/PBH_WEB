@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PBH Scope Builder — System Logic Document</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --ink:     #0F0F1A;
+    --sub:     #44445C;
+    --accent:  #6865FA;
+    --blue:    #2A97D9;
+    --gold:    #FFCD00;
+    --green:   #22C55E;
+    --border:  #E4E4ED;
+    --bg:      #FAFAFA;
+    --panel:   #F4F4F8;
+    --code-bg: #1A1A2E;
+    --code-fg: #A5B4FC;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 10pt;
+    color: var(--ink);
+    background: white;
+    line-height: 1.65;
+  }
+
+  /* ---- PRINT ---- */
+  @media print {
+    .no-print { display: none !important; }
+    body { font-size: 9pt; }
+    section { page-break-inside: avoid; }
+    h2 { page-break-before: always; }
+    h2:first-of-type { page-break-before: avoid; }
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; }
+  }
+
+  /* ---- COVER ---- */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #010836 0%, #0C185C 60%, #1a0a3d 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .cover-label {
+    font-size: 10pt;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+  }
+  .cover h1 {
+    font-size: 38pt;
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    color: white;
+  }
+  .cover h1 strong { font-weight: 700; color: var(--accent); }
+  .cover-sub {
+    font-size: 13pt;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    max-width: 520px;
+    margin-bottom: 60px;
+  }
+  .cover-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 600px;
+  }
+  .cover-meta-item label {
+    display: block;
+    font-size: 7pt;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 4px;
+  }
+  .cover-meta-item span {
+    font-size: 10pt;
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+  }
+  .cover-rail {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--accent), var(--blue));
+  }
+
+  /* ---- LAYOUT ---- */
+  .doc {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 64px 80px;
+  }
+
+  /* ---- TOC ---- */
+  .toc {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px 40px;
+    margin-bottom: 64px;
+  }
+  .toc h2 { font-size: 9pt; letter-spacing: 0.25em; text-transform: uppercase; color: var(--sub); margin-bottom: 20px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin-bottom: 6px; }
+  .toc a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .toc-sub { font-size: 9pt; color: var(--sub); display: block; margin-left: 16px; }
+
+  /* ---- HEADINGS ---- */
+  h2 {
+    font-size: 20pt;
+    font-weight: 300;
+    color: var(--ink);
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    margin-top: 56px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  h2 .sec-num {
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    padding: 2px 8px;
+    background: rgba(104,101,250,0.08);
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  h3 {
+    font-size: 12pt;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 32px;
+    margin-bottom: 10px;
+  }
+  h4 {
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+  p { margin-bottom: 12px; color: var(--sub); }
+  p strong { color: var(--ink); font-weight: 600; }
+
+  /* ---- CODE ---- */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8.5pt;
+    background: rgba(104,101,250,0.08);
+    color: var(--accent);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    line-height: 1.7;
+    border-radius: 10px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+  pre .k  { color: #C792EA; }  /* keyword */
+  pre .s  { color: #C3E88D; }  /* string */
+  pre .c  { color: #546E7A; font-style: italic; }  /* comment */
+  pre .n  { color: #82AAFF; }  /* name */
+  pre .v  { color: #F78C6C; }  /* value */
+
+  /* ---- TABLES ---- */
+  .table-wrap { overflow-x: auto; margin: 16px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9pt;
+  }
+  th {
+    background: var(--ink);
+    color: white;
+    font-weight: 600;
+    font-size: 8pt;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--sub);
+  }
+  tr:nth-child(even) td { background: var(--panel); }
+  td code { font-size: 7.5pt; }
+  td strong { color: var(--ink); }
+
+  /* ---- CALLOUTS ---- */
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 9.5pt;
+    line-height: 1.6;
+  }
+  .callout.info  { background: rgba(42,151,217,0.08); border-left: 3px solid var(--blue); }
+  .callout.warn  { background: rgba(255,205,0,0.08);  border-left: 3px solid var(--gold); }
+  .callout.logic { background: rgba(104,101,250,0.08);border-left: 3px solid var(--accent); }
+  .callout.green { background: rgba(34,197,94,0.08);  border-left: 3px solid var(--green); }
+  .callout strong { font-weight: 700; display: block; margin-bottom: 4px; }
+
+  /* ---- STEP PILLS ---- */
+  .step-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 24px;
+    align-items: center;
+  }
+  .step-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 99px;
+    font-size: 8pt;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .step-pill.p1 { background: rgba(104,101,250,0.1); border-color: var(--accent); color: var(--accent); }
+  .step-pill.p2 { background: rgba(42,151,217,0.1);  border-color: var(--blue); color: var(--blue); }
+  .step-pill.p3 { background: rgba(34,197,94,0.1);   border-color: var(--green); color: var(--green); }
+  .step-pill.p4 { background: rgba(255,205,0,0.1);   border-color: #B8930A; color: #8A6E00; }
+  .step-arrow { color: #C0C0D0; font-size: 10pt; margin: 0 2px; }
+
+  /* ---- DELIVERABLE LAYER ---- */
+  .layer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .layer-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .layer-card h5 {
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .layer-card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .layer-card li {
+    font-size: 8.5pt;
+    color: var(--sub);
+    padding: 2px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .layer-card li:last-child { border: none; }
+  .did { font-size: 7.5pt; color: var(--accent); font-family: 'JetBrains Mono', monospace; margin-right: 6px; }
+
+  /* ---- FLOW DIAGRAM ---- */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 16px 0;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    position: relative;
+  }
+  .flow-step::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 36px;
+    bottom: -4px;
+    width: 2px;
+    background: var(--border);
+  }
+  .flow-step:last-child::before { display: none; }
+  .flow-num {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-weight: 700;
+    font-size: 9pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-bottom: 4px;
+  }
+  .flow-num.blue   { background: var(--blue); }
+  .flow-num.green  { background: var(--green); }
+  .flow-num.gold   { background: var(--gold); color: #3A2E00; }
+  .flow-num.dark   { background: var(--ink); }
+  .flow-body { padding-bottom: 24px; }
+  .flow-body h4 { margin-top: 0; }
+  .flow-body p { margin-bottom: 4px; font-size: 9pt; }
+
+  /* ---- HR ---- */
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* ---- PRINT BUTTON ---- */
+  .print-btn {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 10pt;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(104,101,250,0.4);
+    font-family: 'Inter', sans-serif;
+  }
+  .print-btn:hover { background: #5855e8; }
+</style>
+</head>
+<body>
+
+<!-- PRINT BUTTON -->
+<button class="print-btn no-print" onclick="window.print()">⬇ Save as PDF</button>
+
+<!-- COVER PAGE -->
+<div class="cover">
+  <div class="cover-rail"></div>
+  <div class="cover-label">PurpleBlue House — Internal Documentation</div>
+  <h1>Scope Builder<br /><strong>System Logic</strong></h1>
+  <p class="cover-sub">A complete technical reference for the Live Blueprint and Official Scope Snapshot — covering the diagnostic engine, dependency system, step machine, output generation, and data model.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <label>Document Type</label>
+      <span>System Architecture</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Component</label>
+      <span>StrategicEngine</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>File</label>
+      <span>src/App.jsx</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Stack</label>
+      <span>React 18 / Vite 5</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Animation</label>
+      <span>Framer Motion 12</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Date</label>
+      <span>June 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- DOCUMENT BODY -->
+<div class="doc">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#s1">System Architecture Overview</a></li>
+      <li><a href="#s2">Data Dictionary</a>
+        <span class="toc-sub">Quiz Questions · Routes · Deliverables · Cluster Mapping</span>
+      </li>
+      <li><a href="#s3">Step Machine — Complete Phase Flow</a>
+        <span class="toc-sub">All N+7 steps, state transitions, and back-navigation</span>
+      </li>
+      <li><a href="#s4">Diagnostic Engine</a>
+        <span class="toc-sub">processDiagnosis · cluster scoring · route assignment</span>
+      </li>
+      <li><a href="#s5">Dependency System</a>
+        <span class="toc-sub">parsePrerequisites · BFS graph traversal · modal guard</span>
+      </li>
+      <li><a href="#s6">Live Blueprint — LiveScopePreview</a>
+        <span class="toc-sub">Four live panels · completeness ring · animations</span>
+      </li>
+      <li><a href="#s7">Official Scope Snapshot</a>
+        <span class="toc-sub">BrandHealthRadar · Execution Context · Deliverables Blueprint</span>
+      </li>
+      <li><a href="#s8">Submit Flow &amp; Output Generation</a>
+        <span class="toc-sub">jsPDF · ExcelJS · Resend email · Supabase save</span>
+      </li>
+      <li><a href="#s9">State Persistence</a>
+        <span class="toc-sub">LocalStorage · keys · restoration on mount</span>
+      </li>
+    </ol>
+  </div>
+
+
+  <!-- ===== SECTION 1 ===== -->
+  <h2 id="s1"><span class="sec-num">01</span> System Architecture Overview</h2>
+
+  <p>The entire Scope Builder is a single React component called <code>StrategicEngine</code>, defined around line 923 of <code>src/App.jsx</code>. It is rendered at the <code>/assessment</code> route and receives one prop — <code>navigate</code> — which is the app's internal page-switching function.</p>
+
+  <h3>Component State</h3>
+  <p>All logic is driven by a flat state object inside the component. There is no external state manager (Redux, Zustand, etc.). Every variable is a React <code>useState</code> hook:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>State Variable</th><th>Type</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>step</code></td><td><code>number</code></td><td>Index into <code>stepsArray[]</code>. Drives the entire UI. 0 = splash, 1–N = quiz, N+1 to N+6 = post-diagnosis phases.</td></tr>
+        <tr><td><code>answers</code></td><td><code>Record&lt;string, option | option[]&gt;</code></td><td>Keyed by question ID. Stores the selected option object(s). Single-select stores one object; multi-select stores an array.</td></tr>
+        <tr><td><code>comments</code></td><td><code>Record&lt;string, string&gt;</code></td><td>Optional free-text context the user types per question.</td></tr>
+        <tr><td><code>clusters</code></td><td><code>string[]</code></td><td>The winning problem cluster(s) identified after diagnosis. e.g. <code>['Messaging Inconsistency']</code></td></tr>
+        <tr><td><code>routes</code></td><td><code>string[]</code></td><td>Recommended route IDs derived from clusters. e.g. <code>['BB', 'SAS']</code></td></tr>
+        <tr><td><code>selectedRoutes</code></td><td><code>string[]</code></td><td>User-editable copy of <code>routes</code>. User can add/remove in Step N+2.</td></tr>
+        <tr><td><code>selectedDeliverables</code></td><td><code>string[]</code></td><td>Array of deliverable IDs (D001–D094) the user has toggled on.</td></tr>
+        <tr><td><code>priorities</code></td><td><code>Record&lt;string, string&gt;</code></td><td>Priority label per deliverable: <code>'Standard' | 'High' | 'Critical'</code></td></tr>
+        <tr><td><code>warnings</code></td><td><code>string[]</code></td><td>Deliverable IDs flagged as having unmet prerequisites (user overrode the guard).</td></tr>
+        <tr><td><code>context</code></td><td><code>{depth, timeline, duration}</code></td><td>Engagement depth, project timeline, and project duration chosen in Step N+4.</td></tr>
+        <tr><td><code>leadForm</code></td><td><code>{name, email, phone, company}</code></td><td>Contact details entered in Step N+5 before submission.</td></tr>
+        <tr><td><code>isSubmitting</code></td><td><code>boolean</code></td><td>Locks the submit button while async operations are in flight.</td></tr>
+        <tr><td><code>dependencyModal</code></td><td><code>null | {type, deliverable, related}</code></td><td>Controls the dependency guard overlay. <code>null</code> = hidden.</td></tr>
+        <tr><td><code>expandedRoute</code></td><td><code>string | null</code></td><td>Which route card is showing its expanded description.</td></tr>
+        <tr><td><code>isLoaded</code></td><td><code>boolean</code></td><td>Prevents LocalStorage writes until the mount-time restore has completed.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Data Sources</h3>
+  <p>The component reads from a <code>GlobalContext</code> which is populated either from Sanity CMS (live) or from static master arrays defined at the top of <code>App.jsx</code> as a fallback:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Context Key</th><th>Static Fallback</th><th>Sanity Query</th></tr></thead>
+      <tbody>
+        <tr><td><code>QUIZ_QUESTIONS</code></td><td><code>QUIZ_QUESTIONS</code> array (6 questions)</td><td><code>GET_QUIZ_QUESTIONS</code></td></tr>
+        <tr><td><code>ROUTES_INFO</code></td><td><code>ROUTES_INFO</code> object (3 routes)</td><td><code>GET_ROUTES_INFO</code></td></tr>
+        <tr><td><code>DELIVERABLES_MASTER</code></td><td><code>DELIVERABLES_MASTER</code> array (D001–D094)</td><td><code>GET_DELIVERABLES</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><code>N_QUIZ</code> is computed as <code>QUIZ_QUESTIONS.length</code> at runtime, so the step machine automatically adjusts if questions are added or removed in the CMS.</p>
+
+
+  <!-- ===== SECTION 2 ===== -->
+  <h2 id="s2"><span class="sec-num">02</span> Data Dictionary</h2>
+
+  <h3>Quiz Questions (6 total)</h3>
+  <p>Each question object has: <code>id</code>, <code>title</code>, <code>multiSelect</code> flag, and an <code>options</code> array. Each option carries an optional <code>cluster</code> tag and <code>weight</code> number used by the diagnostic engine.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>#</th><th>ID</th><th>Question</th><th>Type</th><th>Clusters triggered</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td><code>stage</code></td><td>Where is your brand right now?</td><td>Single</td><td>None (context only)</td></tr>
+        <tr><td>1</td><td><code>q1</code></td><td>What feels most inconsistent about your brand?</td><td>Multi</td><td>Messaging Inconsistency (×2), Generic Identity (×2)</td></tr>
+        <tr><td>2</td><td><code>q2</code></td><td>How is your campaign and content engagement?</td><td>Single</td><td>Weak Narrative (×2), Lack of Systems (×2)</td></tr>
+        <tr><td>3</td><td><code>q3</code></td><td>How does your team currently execute?</td><td>Multi</td><td>Lack of Systems (×2), Execution Gap (×1)</td></tr>
+        <tr><td>4</td><td><code>q4</code></td><td>What best describes your visual identity?</td><td>Multi</td><td>Generic Identity (×2), Weak Narrative (×2)</td></tr>
+        <tr><td>5</td><td><code>q5</code></td><td>What is your biggest bottleneck for growth?</td><td>Multi</td><td>Lack of Systems (×2), Execution Gap (×1), Messaging Inconsistency (×2)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info">
+    <strong>Note on "None of the Above" options</strong>
+    Every multi-select question includes a "None of the Above" option whose ID starts with <code>none</code>. Selecting it deselects all other picks. Its cluster is <code>'None'</code> and weight is <code>0</code>, so it contributes zero signal to diagnosis.
+  </div>
+
+  <h3>Cluster → Route Mapping</h3>
+  <p>After scoring, the highest-weighted clusters map directly to service route IDs:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Cluster</th><th>Route ID</th><th>Route Name</th></tr></thead>
+      <tbody>
+        <tr><td>Messaging Inconsistency</td><td><code>BB</code></td><td>Brand Boulevard</td></tr>
+        <tr><td>Generic Identity</td><td><code>BB</code></td><td>Brand Boulevard</td></tr>
+        <tr><td>Lack of Systems</td><td><code>BB</code></td><td>Brand Boulevard</td></tr>
+        <tr><td>Weak Narrative</td><td><code>SAS</code></td><td>Sci-Art Saga</td></tr>
+        <tr><td>Execution Gap</td><td><code>STC</code></td><td>Storytelling Corner</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout warn">
+    <strong>Fallback</strong>
+    If no cluster reaches a positive score (all "None of the Above" answers), the engine defaults to <code>['BB']</code> — Brand Boulevard as the safe starting recommendation.
+  </div>
+
+  <h3>Routes</h3>
+  <p>Three service routes are defined in <code>ROUTES_INFO</code>, each with: <code>id</code>, <code>title</code>, <code>desc</code>, <code>expandedDesc</code>, <code>icon</code>, <code>type</code> (palette key), <code>bestFor</code>, and a <code>lineItems</code> array.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Route</th><th>ID</th><th>Line Items</th><th>Focus</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Brand Boulevard</strong></td><td><code>BB</code></td>
+          <td>BB1 Brand Workshop &amp; Audit<br/>BB2 Brand Identity System<br/>BB3 Design System<br/>BB4 Giveaways &amp; Collaterals</td>
+          <td>Identity, positioning, messaging, and brand systems</td>
+        </tr>
+        <tr>
+          <td><strong>Sci-Art Saga</strong></td><td><code>SAS</code></td>
+          <td>SS1 Innovation Frameworks<br/>SS2 Experience &amp; IP Strategy<br/>SS3 Product Storytelling<br/>SS4 GTM Communication</td>
+          <td>Innovation communication and experience-led narratives</td>
+        </tr>
+        <tr>
+          <td><strong>Storytelling Corner</strong></td><td><code>STC</code></td>
+          <td>SC1 Creative Direction<br/>SC2 Social &amp; Website Framework<br/>SC4 Event Branding</td>
+          <td>Campaign ideas, creative direction, execution-ready content</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Deliverables Master (D001–D094)</h3>
+  <p>94 deliverables are defined in <code>DELIVERABLES_MASTER</code>. Each has: <code>id</code> (D001 format), <code>lineItem</code> (parent line item ID), <code>name</code>, and <code>interdependence</code> (prerequisite IDs or <code>'None'</code>).</p>
+
+  <div class="callout logic">
+    <strong>Interdependence Syntax</strong>
+    The <code>interdependence</code> field accepts three formats: <code>'None'</code> — no prerequisites. <code>'D006'</code> — single prerequisite. <code>'D002, D003, D004'</code> — comma-separated list. <code>'D019-D026'</code> — a sequential ID range (inclusive), which the <code>parsePrerequisites()</code> function expands into individual IDs D019, D020 … D026.
+  </div>
+
+  <p>Foundation deliverables — those with <code>'None'</code> interdependence — form Layer 0/1 of the scope. The system tracks a hardcoded set:</p>
+  <pre>const layer01Ids = [
+  'D001','D002','D003','D004','D005','D006','D007','D008',  // BB1 Workshop/Audit
+  'D037','D038','D039','D040','D041','D042','D043'           // SS1 Innovation Framework
+];</pre>
+
+  <p>The complete set organized by route and line item:</p>
+  <div class="layer-grid">
+    <div class="layer-card">
+      <h5>BB1 — Brand Workshop &amp; Audit</h5>
+      <ul>
+        <li><span class="did">D001</span> Brand Discovery Workshop</li>
+        <li><span class="did">D002</span> Brand Audit</li>
+        <li><span class="did">D003</span> Stakeholder Interviews Summary</li>
+        <li><span class="did">D004</span> Competitor Landscape Mapping</li>
+        <li><span class="did">D005</span> Audience Understanding Snapshot</li>
+        <li><span class="did">D006</span> Brand Gap Analysis</li>
+        <li><span class="did">D007</span> Positioning Territories</li>
+        <li><span class="did">D008</span> Workshop Summary Deck</li>
+      </ul>
+    </div>
+    <div class="layer-card">
+      <h5>BB2 — Brand Identity System</h5>
+      <ul>
+        <li><span class="did">D009</span> Logo (Primary)</li>
+        <li><span class="did">D010</span> Logo Variations</li>
+        <li><span class="did">D011</span> Logo Usage Guidelines</li>
+        <li><span class="did">D012</span> Typography System</li>
+        <li><span class="did">D013</span> Color Palette</li>
+        <li><span class="did">D014</span> Visual Language</li>
+        <li><span class="did">D015</span> Iconography Style</li>
+        <li><span class="did">D016</span> Imagery Direction</li>
+        <li><span class="did">D017</span> Brand Guidelines</li>
+        <li><span class="did">D018</span> Quick Brand Reference Sheet</li>
+      </ul>
+    </div>
+    <div class="layer-card">
+      <h5>BB3 — Design System</h5>
+      <ul>
+        <li><span class="did">D019</span> Layout Grid System</li>
+        <li><span class="did">D020</span> Typography Hierarchy</li>
+        <li><span class="did">D021</span> Color Application Rules</li>
+        <li><span class="did">D022</span> Visual Consistency Rules</li>
+        <li><span class="did">D023</span> Social Templates</li>
+        <li><span class="did">D024</span> Presentation Templates</li>
+        <li><span class="did">D025</span> Document Templates</li>
+        <li><span class="did">D026</span> UI Components</li>
+        <li><span class="did">D027</span> Design System Manual</li>
+      </ul>
+    </div>
+    <div class="layer-card">
+      <h5>BB4 — Collaterals</h5>
+      <ul>
+        <li><span class="did">D028–D036</span> Cards, Letterheads, Email Signatures, Merchandise, Brochures, Lanyards, Event Collaterals, Packaging Design, Packaging System</li>
+      </ul>
+    </div>
+    <div class="layer-card">
+      <h5>SS1 — Innovation Frameworks</h5>
+      <ul>
+        <li><span class="did">D037</span> Innovation Framework</li>
+        <li><span class="did">D038</span> Concept Simplification Models</li>
+        <li><span class="did">D039</span> Science-to-Human Translation</li>
+        <li><span class="did">D040</span> Narrative Framework</li>
+        <li><span class="did">D041</span> Metaphor Systems</li>
+        <li><span class="did">D042</span> Knowledge Architecture</li>
+        <li><span class="did">D043</span> Framework Deck</li>
+      </ul>
+    </div>
+    <div class="layer-card">
+      <h5>SS2–SS4 / SC1–SC4</h5>
+      <ul>
+        <li><span class="did">D044–D050</span> Experience &amp; IP (SS2)</li>
+        <li><span class="did">D051–D057</span> Product Story (SS3)</li>
+        <li><span class="did">D058–D065</span> GTM (SS4)</li>
+        <li><span class="did">D066–D071</span> Creative Direction (SC1)</li>
+        <li><span class="did">D072–D086</span> Social &amp; Web (SC2)</li>
+        <li><span class="did">D087–D094</span> Event Branding (SC4)</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- ===== SECTION 3 ===== -->
+  <h2 id="s3"><span class="sec-num">03</span> Step Machine — Complete Phase Flow</h2>
+
+  <p>The step machine is an array called <code>stepsArray</code>. Rendering is done by indexing into it: <code>stepsArray[step]</code>. <code>AnimatePresence mode="wait"</code> wraps each step so there is a slide transition between every state change.</p>
+
+  <p>With 6 quiz questions (N = 6), the full step index map is:</p>
+
+  <div class="step-flow">
+    <span class="step-pill p1">0 — Splash</span>
+    <span class="step-arrow">→</span>
+    <span class="step-pill p1">1–6 — Quiz</span>
+    <span class="step-arrow">→</span>
+    <span class="step-pill p2">7 — Diagnosis</span>
+    <span class="step-arrow">→</span>
+    <span class="step-pill p2">8 — Route Select</span>
+    <span class="step-arrow">→</span>
+    <span class="step-pill p2">9 — Deliverables</span>
+    <span class="step-arrow">→</span>
+    <span class="step-pill p3">10 — Context</span>
+    <span class="step-arrow">→</span>
+    <span class="step-pill p3">11 — Lead Capture</span>
+    <span class="step-arrow">→</span>
+    <span class="step-pill p4">12 — Scope Snapshot</span>
+  </div>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num">0</div>
+      <div class="flow-body">
+        <h4>Splash — Brand Identification</h4>
+        <p><strong>UI:</strong> Two text inputs: "Brand / Business Name" (required, maps to <code>leadForm.company</code>) and "Industry / Sector" (optional, maps to <code>leadForm.industry</code>).</p>
+        <p><strong>Gate:</strong> "Start Scope Builder" button is disabled if <code>leadForm.company</code> is empty. On click: <code>setStep(1)</code>.</p>
+        <p><strong>Note:</strong> This is the only step that does not show the <code>LiveScopePreview</code> sidebar. The sidebar appears for steps 1 through N+5 only.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-num">1–6</div>
+      <div class="flow-body">
+        <h4>Phase 1 — Diagnosis (Quiz Questions)</h4>
+        <p><strong>Source:</strong> Generated dynamically via <code>QUIZ_QUESTIONS.map()</code>. One step per question.</p>
+        <p><strong>Single-select behavior:</strong> Clicking an option fires <code>handleQuizSelect()</code>, which stores the answer, then automatically advances to the next step after a 500 ms delay (giving the selection a visual moment before transitioning). On the final question it calls <code>processDiagnosis()</code> instead of advancing.</p>
+        <p><strong>Multi-select behavior:</strong> Options toggle on/off. A "Select All" button selects every non-none option. Advancing requires a "Continue" button click, calling <code>handleMultiSelectContinue()</code>. If all questions have been answered (step === N), it calls <code>processDiagnosis()</code>; otherwise it increments step.</p>
+        <p><strong>Comments field:</strong> Each question has a <code>textarea</code> below the options. Values are stored in <code>comments[questionId]</code>. These appear in the PDF and Excel output.</p>
+        <p><strong>Progress bar:</strong> A fixed top bar appears (steps 1–N+5) showing phase name, percentage, animated fill, and a pulsing beacon dot at the progress edge.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-num blue">N+1</div>
+      <div class="flow-body">
+        <h4>Diagnosis Result — Opportunity Areas</h4>
+        <p><strong>Trigger:</strong> Reached automatically after the last quiz answer is processed by <code>processDiagnosis()</code>, which calls <code>setStep(N_QUIZ + 1)</code>.</p>
+        <p><strong>UI:</strong> Displays the identified clusters as a natural language summary, then shows route cards for each recommended route. Each card has a "Read More" toggle that expands a multi-paragraph <code>expandedDesc</code> narrative.</p>
+        <p><strong>Action:</strong> "Customize Scope" advances to N+2.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-num blue">N+2</div>
+      <div class="flow-body">
+        <h4>Route Selection — Scope Architecture</h4>
+        <p><strong>UI:</strong> Checkboxes for all three routes (BB, SAS, STC). Pre-selected based on <code>routes</code> from diagnosis. User can add or remove any route.</p>
+        <p><strong>Gate:</strong> "Select Deliverables" disabled unless at least one route is selected.</p>
+        <p><strong>State written:</strong> <code>selectedRoutes</code></p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-num blue">N+3</div>
+      <div class="flow-body">
+        <h4>Deliverables Selection — Build Your Scope</h4>
+        <p><strong>UI:</strong> Renders only the line items and deliverables belonging to <code>selectedRoutes</code>. Each deliverable is a checkbox card. Selected cards show a Priority dropdown: <code>Standard | High | Critical</code>.</p>
+        <p><strong>Dependency guard:</strong> Toggling a deliverable passes through <code>handleDeliverableToggle()</code>, which checks for unmet prerequisites or broken dependents and shows a modal if any are found. See Section 5.</p>
+        <p><strong>"Select All" per line item:</strong> Adds all deliverables in that line item to <code>selectedDeliverables</code> at once, bypassing the dependency modal.</p>
+        <p><strong>State written:</strong> <code>selectedDeliverables</code>, <code>priorities</code>, <code>warnings</code></p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-num green">N+4</div>
+      <div class="flow-body">
+        <h4>Project Context — Execution Parameters</h4>
+        <p><strong>UI:</strong> Three <code>&lt;select&gt;</code> dropdowns.</p>
+        <p><strong>Depth:</strong> <code>Light-touch consulting</code> / <code>Strategic direction + selected assets</code> / <code>End-to-end brand transformation</code></p>
+        <p><strong>Timeline:</strong> <code>Short term</code> / <code>Deep Dive</code> / <code>Long Term</code></p>
+        <p><strong>Duration:</strong> <code>Short term (min 3 months)</code> / <code>Deep Dive- Branding (min 6 months)</code> / <code>Long Term Engagement (1 year)</code></p>
+        <p><strong>Gate:</strong> "Finalize Blueprint" disabled unless both Depth and Timeline are selected. Duration has a default of "Deep Dive - Branding."</p>
+        <p><strong>State written:</strong> <code>context.depth</code>, <code>context.timeline</code>, <code>context.duration</code></p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-num green">N+5</div>
+      <div class="flow-body">
+        <h4>Lead Capture — Contact Details</h4>
+        <p><strong>UI:</strong> Three required inputs: Full Name, Work Email, Phone Number. The company name was already collected at Step 0.</p>
+        <p><strong>Submit:</strong> Fires <code>submitLead(e)</code>, which generates the PDF, Excel, sends emails, saves to Supabase, then calls <code>setStep(N_QUIZ + 6)</code> on success. See Section 8.</p>
+        <p><strong>Error:</strong> On failure, <code>alert()</code> shows the Resend API error. State remains at N+5 so the user can retry.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-num gold">N+6</div>
+      <div class="flow-body">
+        <h4>Official Scope Snapshot — Final Output</h4>
+        <p>The read-only report rendered in the browser. The progress bar and sidebar are hidden at this step. Print/PDF action is available. See Section 7.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Back Navigation</strong>
+    Every step (except 0 and N+6) has a top-bar "Back" button that simply calls <code>setStep(step - 1)</code>. There is no validation on back navigation — the user can freely move backwards without losing any selections.
+  </div>
+
+
+  <!-- ===== SECTION 4 ===== -->
+  <h2 id="s4"><span class="sec-num">04</span> Diagnostic Engine</h2>
+
+  <p>The diagnosis logic is entirely contained in <code>processDiagnosis(finalAnswers)</code>, called once after the final quiz answer is submitted. It operates in three passes:</p>
+
+  <h3>Pass 1 — Cluster Scoring</h3>
+  <pre><span class="k">const</span> clusterScores = {};
+Object.values(finalAnswers).forEach(ans => {
+  <span class="k">const</span> opts = Array.isArray(ans) ? ans : [ans]; <span class="c">// normalize single → array</span>
+  opts.forEach(opt => {
+    <span class="k">if</span> (opt && opt.cluster) {
+      clusterScores[opt.cluster] = (clusterScores[opt.cluster] || 0) + (opt.weight || 1);
+    }
+  });
+});</pre>
+  <p>Each selected option accumulates its <code>weight</code> value into the cluster it belongs to. Options with <code>cluster: 'None'</code> or weight 0 contribute nothing. After this loop, <code>clusterScores</code> is a dictionary like <code>{ 'Messaging Inconsistency': 4, 'Generic Identity': 2 }</code>.</p>
+
+  <h3>Pass 2 — Winner Selection</h3>
+  <pre><span class="k">let</span> maxScore = 0, topClusters = [];
+<span class="k">for</span> (<span class="k">const</span> [cluster, score] <span class="k">of</span> Object.entries(clusterScores)) {
+  <span class="k">if</span> (score > maxScore)      { maxScore = score; topClusters = [cluster]; }
+  <span class="k">else if</span> (score === maxScore) { topClusters.push(cluster); }  <span class="c">// tie → include both</span>
+}</pre>
+  <p>The engine finds the highest scoring cluster. In case of a tie (two clusters both hit the max), <strong>all tied clusters are included</strong> as co-winners. This means the user can receive multiple route recommendations.</p>
+
+  <h3>Pass 3 — Route Assignment</h3>
+  <pre><span class="k">const</span> foundRoutes = <span class="k">new</span> Set();
+topClusters.forEach(c => {
+  <span class="k">if</span> (clusterToRoute[c]) foundRoutes.add(clusterToRoute[c]);
+});
+<span class="k">const</span> recRoutes = Array.from(foundRoutes).length > 0 ? Array.from(foundRoutes) : [<span class="s">'BB'</span>];
+setRoutes(recRoutes);
+setSelectedRoutes(recRoutes); <span class="c">// pre-tick the route selection checkboxes</span>
+setStep(N_QUIZ + 1);</pre>
+
+  <div class="callout logic">
+    <strong>Example Diagnosis</strong>
+    A user who selects "Different teams communicate differently" (cluster: Messaging Inconsistency, weight: 2) on Q1, and "Messaging inconsistency across touchpoints" (weight: 2) on Q5, accumulates score 4 for Messaging Inconsistency. If no other cluster scores 4 or higher, the result is <code>['BB']</code> → Brand Boulevard recommended.
+  </div>
+
+  <h3>Why clusters are stored (not just routes)</h3>
+  <p>The <code>clusters</code> state is used in three downstream places: (1) the <code>BrandHealthRadar</code> SVG visualization lowers specific dimension scores based on which cluster is active; (2) it appears in the email HTML sent to the PBH internal team; (3) it is saved to Supabase for CRM analysis.</p>
+
+
+  <!-- ===== SECTION 5 ===== -->
+  <h2 id="s5"><span class="sec-num">05</span> Dependency System</h2>
+
+  <p>The dependency system prevents a user from selecting an advanced deliverable without its prerequisites, and warns when removing a deliverable that other selected deliverables depend on. It uses a Breadth-First Search (BFS) graph traversal.</p>
+
+  <h3>parsePrerequisites(field)</h3>
+  <p>Takes the raw <code>interdependence</code> string and returns a flat array of prerequisite IDs:</p>
+  <pre><span class="k">const</span> parsePrerequisites = (field) => {
+  <span class="k">if</span> (field === <span class="s">"None"</span> || !field) <span class="k">return</span> [];
+  <span class="k">const</span> results = [];
+  <span class="k">const</span> parts = field.split(<span class="s">","</span>);
+  <span class="k">for</span> (<span class="k">let</span> part <span class="k">of</span> parts) {
+    part = part.trim();
+    <span class="k">const</span> rangeMatch = part.match(<span class="s">/^D(\d{3})[–-]D(\d{3})$/</span>);
+    <span class="k">if</span> (rangeMatch) {
+      <span class="c">// e.g. "D019-D026" → ['D019','D020',...,'D026']</span>
+      <span class="k">const</span> start = parseInt(rangeMatch[1]), end = parseInt(rangeMatch[2]);
+      <span class="k">for</span> (<span class="k">let</span> n = start; n &lt;= end; n++) results.push(<span class="s">"D"</span> + String(n).padStart(3, <span class="s">"0"</span>));
+    } <span class="k">else if</span> (part.match(<span class="s">/^D\d{3}$/</span>)) {
+      results.push(part);
+    }
+  }
+  <span class="k">return</span> results;
+};</pre>
+  <div class="callout warn">
+    <strong>Important:</strong> The regex handles both regular hyphens (-) and em-dashes (–) in the range syntax, since copy-paste from design documents may introduce either character.
+  </div>
+
+  <h3>findUnmetPrerequisites(deliverableId, currentSelections, deliverablesList)</h3>
+  <p>Returns every prerequisite of <code>deliverableId</code> (and their transitive prerequisites) that are not already in <code>currentSelections</code>. Uses iterative BFS to avoid stack overflows on deep chains:</p>
+  <pre><span class="k">const</span> findUnmetPrerequisites = (deliverableId, currentSelections, deliverablesList) => {
+  <span class="k">const</span> unmet = [], queue = [deliverableId], visited = <span class="k">new</span> Set();
+  <span class="k">while</span> (queue.length > 0) {
+    <span class="k">const</span> current = queue.pop();
+    <span class="k">if</span> (visited.has(current)) <span class="k">continue</span>;
+    visited.add(current);
+    <span class="k">const</span> deliv = deliverablesList.find(d => d.id === current);
+    <span class="k">if</span> (!deliv || deliv.interdependence === <span class="s">"None"</span>) <span class="k">continue</span>;
+    <span class="k">const</span> prereqs = parsePrerequisites(deliv.interdependence);
+    <span class="k">for</span> (<span class="k">const</span> prereq <span class="k">of</span> prereqs) {
+      <span class="k">if</span> (!currentSelections.includes(prereq) && !unmet.includes(prereq)) {
+        unmet.push(prereq);
+        queue.push(prereq); <span class="c">// recurse into this prereq's own prereqs</span>
+      }
+    }
+  }
+  <span class="k">return</span> unmet;
+};</pre>
+
+  <h3>findAllDependents(deliverableId, currentSelections, deliverablesList)</h3>
+  <p>Reverse lookup: finds every deliverable in <code>currentSelections</code> that would be broken (i.e., have an unmet prerequisite) if <code>deliverableId</code> were removed:</p>
+  <pre><span class="k">const</span> findAllDependents = (deliverableId, currentSelections, deliverablesList) => {
+  <span class="k">const</span> dependents = [];
+  <span class="k">for</span> (<span class="k">const</span> sel <span class="k">of</span> currentSelections) {
+    <span class="k">if</span> (sel === deliverableId) <span class="k">continue</span>;
+    <span class="c">// Simulate removal by passing selections without deliverableId</span>
+    <span class="k">const</span> unmet = findUnmetPrerequisites(sel, currentSelections.filter(x => x !== deliverableId));
+    <span class="k">if</span> (unmet.includes(deliverableId)) dependents.push(sel);
+  }
+  <span class="k">return</span> dependents;
+};</pre>
+
+  <h3>handleDeliverableToggle(dId) — The Guard Gate</h3>
+  <p>This is the function called whenever a user clicks a deliverable checkbox:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Scenario</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Adding</strong> a deliverable with <strong>no unmet prerequisites</strong></td>
+          <td>Directly adds to <code>selectedDeliverables</code>. No modal.</td>
+        </tr>
+        <tr>
+          <td><strong>Adding</strong> a deliverable with <strong>unmet prerequisites</strong></td>
+          <td>Opens <code>dependencyModal</code> with <code>type: 'add'</code>. Lists all missing prereqs. User can: (A) add all prerequisites automatically, or (B) add the item anyway with a warning badge.</td>
+        </tr>
+        <tr>
+          <td><strong>Removing</strong> a deliverable with <strong>no dependents</strong></td>
+          <td>Directly removes from <code>selectedDeliverables</code> and clears any warning for it.</td>
+        </tr>
+        <tr>
+          <td><strong>Removing</strong> a deliverable that <strong>others depend on</strong></td>
+          <td>Opens <code>dependencyModal</code> with <code>type: 'remove'</code>. Lists all dependents that would break. User can: (A) remove both the item and all its dependents, or (B) cancel.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout green">
+    <strong>Warning State</strong>
+    When a user chooses "Keep with warning" on add, the deliverable ID is added to <code>warnings[]</code>. The deliverable card displays a yellow "Missing Prereqs" badge. This warning is visible in the Scope Snapshot in the browser and in the PDF/Excel output via a ⚠️ icon next to the deliverable name.
+  </div>
+
+  <h3>computeSuggestedStartingPoint(selectedDelivs, priorities, deliverablesList)</h3>
+  <p>Called at submission time to determine what the client should work on first:</p>
+  <ol style="padding-left: 20px; margin: 12px 0; color: var(--sub);">
+    <li style="margin-bottom: 6px;">Expand the selected deliverables with all their transitive prerequisites.</li>
+    <li style="margin-bottom: 6px;">Filter this expanded set to only foundation deliverables (the <code>layer01Ids</code> set).</li>
+    <li style="margin-bottom: 6px;">If none are found, return the name of the first deliverable in the set.</li>
+    <li style="margin-bottom: 6px;">If exactly one foundation deliverable is found, return its name.</li>
+    <li>If multiple foundations exist, return the name of the first one (simplified resolution for the current build).</li>
+  </ol>
+  <p>The result appears in the Scope Snapshot's Execution Context table as <strong>"Suggested Starting Point"</strong> and in the PDF's Strategy Blueprint section.</p>
+
+
+  <!-- ===== SECTION 6 ===== -->
+  <h2 id="s6"><span class="sec-num">06</span> Live Blueprint — LiveScopePreview</h2>
+
+  <p><code>LiveScopePreview</code> is a sub-component defined inside <code>StrategicEngine</code>. It is rendered in a sticky sidebar (<code>top: 160px</code>, <code>h-[calc(100vh-200px)]</code>) on desktop (md+) for every step from 1 through N+5. On mobile it appears behind a "View Live Scope" bottom drawer toggle.</p>
+
+  <h3>Visual Container</h3>
+  <p>The outer shell is a glassmorphic card: dark panel background at 40% opacity, indigo radial gradient at the top, a subtle 16px grid overlay, a conic gradient that rotates continuously at 40s/revolution (hidden on print), a white-to-transparent top fade, and a left-edge sweeper — a 2px indigo line that travels from top to bottom on a 4s loop.</p>
+
+  <h3>Four Live Panels</h3>
+  <p>Inside a vertical layout with a connection spine on the left (a pulsing light animates down it on a 2.5s loop), four panels update in real time as the user progresses:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Panel</th><th>Label</th><th>Source</th><th>Empty State</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>1. System State</strong></td>
+          <td>Terminal icon + indigo node</td>
+          <td><code>answers.stage</code> — shows the label from the stage question answer</td>
+          <td>"Awaiting Initialization…" with a spinning loader icon</td>
+        </tr>
+        <tr>
+          <td><strong>2. Strategic Gaps</strong></td>
+          <td>Alert icon + orange node</td>
+          <td><code>clusters[]</code> — each cluster as an orange glowing pill chip</td>
+          <td>"Analyzing Vulnerabilities…" with a pulsing orange dot</td>
+        </tr>
+        <tr>
+          <td><strong>3. Active Directives</strong></td>
+          <td>Layers icon + white node</td>
+          <td><code>selectedDeliverables[]</code> filtered through DELIVERABLES_MASTER for names</td>
+          <td>Target icon + "Standby for Directives"</td>
+        </tr>
+        <tr>
+          <td><strong>4. System Health</strong></td>
+          <td>Activity icon + green node</td>
+          <td><code>calculateCompleteness()</code> — circular progress ring</td>
+          <td>Always shows (starts at 50%)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>calculateCompleteness()</h3>
+  <p>A simple additive score — not a percentage of required fields completed, but a readiness signal:</p>
+  <pre><span class="k">const</span> calculateCompleteness = () => {
+  <span class="k">let</span> score = <span class="v">50</span>;                             <span class="c">// baseline: always at least 50%</span>
+  <span class="k">if</span> (answers.stage)              score += <span class="v">20</span>; <span class="c">// brand stage answered</span>
+  <span class="k">if</span> (clusters.length > <span class="v">0</span>)        score += <span class="v">15</span>; <span class="c">// diagnosis completed</span>
+  <span class="k">if</span> (selectedDeliverables.length > <span class="v">0</span>) score += <span class="v">15</span>; <span class="c">// at least one deliverable chosen</span>
+  <span class="k">return</span> score; <span class="c">// max: 100%</span>
+};</pre>
+  <p>The score drives a SVG circle stroke animation. The stroke color switches from indigo (<code>palette.blue</code>) to green (<code>palette.green</code>) when the score reaches 100.</p>
+
+  <h3>Panel animations</h3>
+  <p>The Active Directives list uses Framer Motion's <code>layout</code> prop with <code>AnimatePresence</code>, so deliverables animate in (slide from left) and out (slide to right) individually as the user toggles them. Each new item's checkmark SVG path draws with <code>pathLength: 0 → 1</code> on entry. Each node on the connection spine pulses with a scale oscillation on a 2s loop, color-coded to the panel it belongs to.</p>
+
+
+  <!-- ===== SECTION 7 ===== -->
+  <h2 id="s7"><span class="sec-num">07</span> Official Scope Snapshot</h2>
+
+  <p>The Scope Snapshot (Step N+6) is a read-only, print-optimized view. It renders inside a dark card with a gradient-border wrapper and a <code>print:</code> override that removes shadows and rounds to allow clean A4 printing.</p>
+
+  <h3>Layout: Two-Column Grid</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Left Column</th><th>Right Column</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>Brand Alignment Profile</strong><br/>
+            <code>BrandHealthRadar</code> SVG pentagon chart showing 5 dimensions
+          </td>
+          <td>
+            <strong>Selected Deliverables Blueprint</strong><br/>
+            A scrollable list of every deliverable in <code>selectedDeliverables</code>, with name, ID, priority label, and warning icon
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Recommended Ecosystems</strong><br/>
+            Pills showing route icon + name for each item in <code>selectedRoutes</code>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Execution Context</strong><br/>
+            Key-value table: Brand Stage, Engagement Depth, Project Timeline, Project Duration, Suggested Starting Point
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>BrandHealthRadar</h3>
+  <p>A custom SVG pentagon radar chart rendered with no external charting library:</p>
+  <ul style="padding-left: 20px; margin: 12px 0; color: var(--sub); line-height: 2;">
+    <li>5 dimensions: Messaging, Identity, Narrative, Systems, Execution.</li>
+    <li>Each dimension gets a base score of 90. If the identified <code>clusters</code> list contains the matching cluster name (e.g. "Messaging Inconsistency" → Messaging), that dimension drops to its low score (35–45 range).</li>
+    <li>The pentagon data polygon animates in with a spring scale from the center.</li>
+    <li>An overall Brand Health Index (simple average of all 5 scores) appears as a number in the center.</li>
+    <li>The 5 grid levels (20% → 100%) and radial axes are drawn as faint background lines.</li>
+  </ul>
+
+  <pre><span class="c">// Dimension score rules</span>
+{ label: <span class="s">'Messaging'</span>, score: clusters.includes(<span class="s">'Messaging Inconsistency'</span>) ? <span class="v">35</span> : <span class="v">90</span> }
+{ label: <span class="s">'Identity'</span>,  score: clusters.includes(<span class="s">'Generic Identity'</span>)        ? <span class="v">40</span> : <span class="v">85</span> }
+{ label: <span class="s">'Narrative'</span>,  score: clusters.includes(<span class="s">'Weak Narrative'</span>)           ? <span class="v">30</span> : <span class="v">85</span> }
+{ label: <span class="s">'Systems'</span>,    score: clusters.includes(<span class="s">'Lack of Systems'</span>)          ? <span class="v">25</span> : <span class="v">80</span> }
+{ label: <span class="s">'Execution'</span>,  score: clusters.includes(<span class="s">'Execution Gap'</span>)            ? <span class="v">45</span> : <span class="v">85</span> }</pre>
+
+  <h3>Footer</h3>
+  <p>Two buttons: "Print" (calls <code>window.print()</code>) and "Return to Website" (calls <code>navigate('home')</code>). A disclaimer reads: "This snapshot has been securely routed to our partners. We will review your requirements and reach out within 24 hours to schedule a discovery alignment."</p>
+
+
+  <!-- ===== SECTION 8 ===== -->
+  <h2 id="s8"><span class="sec-num">08</span> Submit Flow &amp; Output Generation</h2>
+
+  <p>When the user submits the lead form at Step N+5, <code>submitLead(e)</code> runs a multi-stage async pipeline:</p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num">1</div>
+      <div class="flow-body">
+        <h4>Lead Data Assembly</h4>
+        <p>Builds <code>leadData</code>: merges <code>leadForm</code> with <code>clusters</code>, <code>routes</code>, <code>deliverables</code>, <code>context</code>, <code>startingPoint</code>, current ISO date, status <code>'New'</code>, and a random score (60–99) as a placeholder engagement score.</p>
+        <p>Groups deliverables by Route → LineItem for clean PDF/email structure.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-num">2</div>
+      <div class="flow-body">
+        <h4>PDF Generation (jsPDF)</h4>
+        <p>Uses <code>jsPDF</code> (A4 pt units) to generate a multi-page PDF entirely in the browser:</p>
+        <ul style="padding-left: 20px; margin-top: 8px; color: var(--sub); line-height: 2;">
+          <li>Dark header block (<code>#121228</code>) with "Brand Scope Report" title and confidential label</li>
+          <li>Client details section</li>
+          <li>Diagnostic Responses: each question in a rounded rectangle block with question title (bold), selected answer(s) (indigo bullet), and any comments</li>
+          <li>Strategy Blueprint: Depth, Timeline, Suggested Starting Point in key/value pairs</li>
+          <li>Selected Deliverables: grouped by Route then LineItem, rendered in a 2-column grid with individual deliverable names</li>
+          <li>Footer on each page: "PurpleBlue House — Scope Builder Report"</li>
+          <li><code>checkPage()</code> is called before every block — if the content would overflow the page bottom margin, it inserts a new page first.</li>
+        </ul>
+        <p>Output: Base64-encoded via <code>doc.output('datauristring')</code>, then split to extract raw base64.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-num">3</div>
+      <div class="flow-body">
+        <h4>Excel Generation (ExcelJS)</h4>
+        <p>Uses <code>ExcelJS</code> to build a formatted workbook in the browser. The single worksheet "Scope of Work" includes:</p>
+        <ul style="padding-left: 20px; margin-top: 8px; color: var(--sub); line-height: 2;">
+          <li>PBH branding header row with dark fill and white bold text</li>
+          <li>Company, contact, and submission date rows</li>
+          <li>Diagnostic Responses section header + one row per answered question</li>
+          <li>Selected Deliverables section with ID, name, priority, and interdependence for each item</li>
+          <li>Execution Context rows (Depth, Timeline, Duration)</li>
+        </ul>
+        <p>Output: Written to an ArrayBuffer, converted to binary string, then base64-encoded via <code>window.btoa(binary)</code>.</p>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-num blue">4</div>
+      <div class="flow-body">
+        <h4>Parallel Async Operations</h4>
+        <p>Three promises are fired simultaneously via <code>Promise.all()</code>:</p>
+        <ul style="padding-left: 20px; margin-top: 8px; color: var(--sub); line-height: 2;">
+          <li><strong>saveLeadPromise</strong> → <code>POST /api/save-lead</code> with the full lead data object. This endpoint saves to Supabase (or Sanity). Failure here is logged as a warning but does not block the user flow.</li>
+          <li><strong>emailPromise</strong> → <code>sendEmailViaResend(subject, htmlContent, attachments)</code> — sends to the PBH internal team (<code>anant@invadecode.com</code>). Attachments: PDF + Excel.</li>
+          <li><strong>clientEmailPromise</strong> → <code>sendEmailViaResend(clientSubject, clientHtmlContent, clientAttachments, leadForm.email)</code> — sends to the respondent. Attachments: PDF only (no Excel).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flow-step">
+      <div class="flow-num green">5</div>
+      <div class="flow-body">
+        <h4>Step Advance</h4>
+        <p>If the internal email promise resolves with <code>success: true</code>, calls <code>setStep(N_QUIZ + 6)</code> to show the Scope Snapshot screen. If it fails, shows an <code>alert()</code> with the Resend API error and stays on Step N+5.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>sendEmailViaResend</h3>
+  <p>A shared async helper at the top of <code>App.jsx</code>. It <code>POST</code>s to <code>/api/send-email</code> with a JSON body containing <code>to</code>, <code>subject</code>, <code>html</code>, and <code>attachments</code>. The server-side handler calls the Resend API. The default <code>to</code> address (when no <code>toEmail</code> arg is passed) is hardcoded to the PBH internal address.</p>
+
+  <h3>Email Content Structure</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Email</th><th>Recipient</th><th>Subject</th><th>Attachments</th><th>Content</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Internal</td>
+          <td>PBH team</td>
+          <td><code>New Lead: [company] - Scope Builder</code></td>
+          <td>PDF + Excel</td>
+          <td>Full lead data: contact info, quiz Q&amp;A, selected routes, deliverables list grouped by route/line item, engagement context, suggested starting point</td>
+        </tr>
+        <tr>
+          <td>Client</td>
+          <td><code>leadForm.email</code></td>
+          <td><code>Your Scope Snapshot | PurpleBlue House</code></td>
+          <td>PDF only</td>
+          <td>Thank you note confirming scope snapshot is attached. Mentions 24-hour follow-up.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ===== SECTION 9 ===== -->
+  <h2 id="s9"><span class="sec-num">09</span> State Persistence — LocalStorage</h2>
+
+  <p>To prevent users from losing progress on accidental page refresh, the entire StrategicEngine state is persisted to <code>localStorage</code> on every change and restored on mount.</p>
+
+  <h3>Key</h3>
+  <pre><span class="k">const</span> STORAGE_KEY = <span class="s">'pbh_scope_builder_state'</span>;</pre>
+
+  <h3>What is Persisted</h3>
+  <pre>{ step, answers, comments, clusters, routes, selectedRoutes,
+  selectedDeliverables, priorities, context, leadForm }</pre>
+  <p>The <code>warnings</code> array, <code>expandedRoute</code>, <code>dependencyModal</code>, and <code>isSubmitting</code> are deliberately <em>not</em> persisted — these are transient UI state that should reset on page load.</p>
+
+  <h3>Restore on Mount</h3>
+  <pre><span class="n">useEffect</span>(() => {
+  <span class="k">const</span> savedState = localStorage.getItem(<span class="s">'pbh_scope_builder_state'</span>);
+  <span class="k">if</span> (savedState) {
+    <span class="k">try</span> {
+      <span class="k">const</span> parsed = JSON.parse(savedState);
+      <span class="c">// Each key is individually restored via its setter,</span>
+      <span class="c">// guarded by an existence check to avoid overwriting defaults.</span>
+      <span class="k">if</span> (parsed.step) setStep(parsed.step);
+      <span class="k">if</span> (parsed.answers) setAnswers(parsed.answers);
+      <span class="c">// ... and so on for each key</span>
+    } <span class="k">catch</span> (e) {
+      console.error(<span class="s">"Failed to load saved progress"</span>, e);
+    }
+  }
+  setIsLoaded(<span class="k">true</span>); <span class="c">// gate: prevents write-effect from firing before restore</span>
+}, []);</pre>
+
+  <h3>Write Effect</h3>
+  <pre><span class="n">useEffect</span>(() => {
+  <span class="k">if</span> (isLoaded) {
+    localStorage.setItem(<span class="s">'pbh_scope_builder_state'</span>, JSON.stringify({
+      step, answers, comments, clusters, routes, selectedRoutes,
+      selectedDeliverables, priorities, context, leadForm
+    }));
+  }
+}, [step, answers, comments, clusters, routes, selectedRoutes,
+    selectedDeliverables, priorities, context, leadForm, isLoaded]);</pre>
+
+  <div class="callout warn">
+    <strong>Clearing Saved State</strong>
+    There is currently no "Start Over" or "Clear Progress" button in the UI. To reset, a developer can run <code>localStorage.removeItem('pbh_scope_builder_state')</code> in the browser console. A user clearing their browser data will also clear the state.
+  </div>
+
+
+  <!-- FOOTER -->
+  <hr />
+  <p style="text-align: center; color: var(--sub); font-size: 8pt; margin-top: 24px;">
+    PurpleBlue House — Scope Builder System Logic Document &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; Confidential &amp; Proprietary
+  </p>
+
+</div>
+</body>
+</html>

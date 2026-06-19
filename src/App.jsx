@@ -18,7 +18,8 @@ import BackToRootsExperience from './components/case-studies/BackToRootsExperien
 import ParamInnovationExperience from './components/case-studies/ParamInnovationExperience';
 import SnowLeopardExperience from './components/case-studies/SnowLeopardExperience';
 import AriseVenturesExperience from './components/case-studies/AriseVenturesExperience';
-import { LeverageEduExperience } from './components/case-studies/LeverageEduExperience';
+
+import PremiumLogoMarquee from './components/PremiumLogoMarquee';
 
 export const GlobalContext = createContext(null);
 
@@ -212,7 +213,7 @@ const palette = {
   orange: '#ED7E18',    // Secondary orange
   text: '#F4F4F5',
   fonts: {
-    primary: "'Space Grotesk', sans-serif",
+    primary: "'Karla', sans-serif",
     secondary: "'Karla', sans-serif"
   }
 };
@@ -3024,7 +3025,6 @@ const SelectedCollaboratorsSection = () => {
     { name: "Firefox",                   src: "/clients/logos/firefox/1_firefox.png" },
     { name: "IIT Delhi",                 src: "/clients/logos/iit/iitd_raw_images_01.png", centerCrop: true },
     { name: "Arise Ventures",            src: "/clients/logos/arise_ventures/Asset 3@4x.png" },
-    { name: "Leverage Edu",              src: "/clients/logos/leverage_edu/8_leverage.png" },
     { name: "Navankur",                  src: "/clients/logos/navankur/5_navankur.png" },
     { name: "Earthy Souls",              src: "/clients/logos/earthy_souls/6_earthy.png" },
     { name: "EBT",                       src: "/clients/logos/ebt/7_ebt.png" },
@@ -3264,7 +3264,7 @@ const HomePage = ({ navigate }) => {
         </div>
       </section>
 
-      <SelectedCollaboratorsSection />
+      <PremiumLogoMarquee />
 
       {/* Global Mission */}
       <section className="py-32 px-[3%] text-center border-b border-white/5 relative overflow-hidden w-full" style={{ backgroundColor: palette.bgDeep }}>
@@ -3418,20 +3418,7 @@ const BrandBoulevardMarquee = ({ images, client, bgHex }) => {
 const WorkDetailPage = ({ navigate, projectId }) => {
   const { CASE_STUDIES, FAQS } = useContext(GlobalContext);
 
-  // Intercept Leverage Edu mock before Sanity lookup
-  if (projectId === 'leverage-edu-mock') {
-    const mockProject = {
-      id: "leverage-edu-mock",
-      client: "Leverage Edu",
-      sector: "EdTech",
-      type: "Storytelling Corner",
-      tags: ["Brand Identity", "Visual Narrative", "Cinematic Web"],
-      challenge: "When an established educational platform requires a completely refined narrative, the approach must center on clarity, authority, and deeply empathetic storytelling.",
-      imageUrl: "/clients/logos/leverage_edu/8_leverage.png",
-      bannerImage: "/clients/logos/leverage_edu/8_leverage.png"
-    };
-    return <LeverageEduExperience project={mockProject} onBack={() => navigate('work')} />;
-  }
+
 
   const caseStudies = CASE_STUDIES;
   const projectIndex = caseStudies.findIndex(p => p.id === projectId);
@@ -3469,9 +3456,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     return <BackToRootsExperience navigate={navigate} project={project} />;
   }
 
-  if (clientName.includes('leverage')) {
-    return <LeverageEduExperience project={project} onBack={() => navigate('/work')} />;
-  }
+
 
   const targetClients = [
     'snow leopard',
@@ -3645,7 +3630,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
                   </div>
                   <div>
                     <p className="text-sm text-white/40 mb-2 font-secondary">Secondary Body (Sans)</p>
-                    <p className="text-4xl font-primary font-light text-white">Space Grotesk</p>
+                    <p className="text-4xl font-primary font-light text-white">Karla</p>
                     <p className="text-lg font-primary text-white/50 mt-4 break-words font-light">0123456789 !@#$%^&*()</p>
                   </div>
                 </div>
@@ -4347,16 +4332,6 @@ const ServiceModal = ({ navigate, routeId, onClose }) => {
 const WorkPage = ({ navigate }) => {
   const { SITE_SETTINGS, CASE_STUDIES } = useContext(GlobalContext);
   const caseStudies = [
-    {
-      id: "leverage-edu-mock",
-      client: "Leverage Edu",
-      sector: "EdTech",
-      type: "Storytelling Corner",
-      tags: ["Brand Identity", "Visual Narrative", "Cinematic Web"],
-      challenge: "When an established educational platform requires a completely refined narrative, the approach must center on clarity, authority, and deeply empathetic storytelling.",
-      imageUrl: "/clients/logos/leverage_edu/8_leverage.png",
-      bannerImage: "/clients/logos/leverage_edu/8_leverage.png"
-    },
     ...CASE_STUDIES
   ];
   return (

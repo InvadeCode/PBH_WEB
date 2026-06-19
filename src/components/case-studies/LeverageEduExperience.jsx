@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, X, ArrowLeft } from 'lucide-react';
+import { GlobalContext } from '../../App';
 
 const LeverageEduExperience = ({ project, onBack }) => {
+  const { SITE_SETTINGS } = React.useContext(GlobalContext) || {};
   const [videoOpen, setVideoOpen] = useState(false);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const LeverageEduExperience = ({ project, onBack }) => {
   };
 
   return (
-    <div className="min-h-screen w-full relative overflow-hidden" style={{ backgroundColor: '#FFA8DF' }}>
+    <div className="min-h-screen w-full relative overflow-hidden" style={{ backgroundColor: project?.colors?.[0] || '#FFA8DF' }}>
       
       {/* Back Button */}
       <motion.div 
@@ -45,7 +47,7 @@ const LeverageEduExperience = ({ project, onBack }) => {
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-          Back
+          {SITE_SETTINGS?.csBackToWork || 'Back'}
         </button>
       </motion.div>
 
@@ -54,12 +56,12 @@ const LeverageEduExperience = ({ project, onBack }) => {
       {/* ═══════════════════════════════════════════════════ */}
       <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
         
-        {/* Typography Background: "lev [video] rage" */}
+        {/* Typography Background */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
 
           {/* Outline 'L' — far left, faded */}
           <span 
-            className="absolute text-[18vw] md:text-[22vw] lg:text-[25vw] font-black leading-none lowercase"
+            className="absolute text-[18vw] md:text-[22vw] lg:text-[25vw] font-black leading-none lowercase whitespace-nowrap"
             style={{ 
               left: '-3vw',
               fontFamily: "'Inter', 'Helvetica Neue', sans-serif",
@@ -68,59 +70,65 @@ const LeverageEduExperience = ({ project, onBack }) => {
               letterSpacing: '-0.04em'
             }}
           >
-            l
+            {project?.heroTypography?.[0] || 'l'}
           </span>
 
           {/* Solid 'ev' */}
           <span 
-            className="absolute text-[18vw] md:text-[22vw] lg:text-[25vw] font-black leading-none text-[#2D2D2D] lowercase"
+            className="absolute text-[18vw] md:text-[22vw] lg:text-[25vw] font-black leading-none text-[#2D2D2D] lowercase whitespace-nowrap"
             style={{ 
               left: '8vw',
               fontFamily: "'Inter', 'Helvetica Neue', sans-serif",
               letterSpacing: '-0.04em'
             }}
           >
-            ev
+            {project?.heroTypography?.[1] || 'ev'}
           </span>
 
           {/* Solid 'rage' — right of video */}
           <span 
-            className="absolute text-[18vw] md:text-[22vw] lg:text-[25vw] font-black leading-none text-[#2D2D2D] lowercase"
+            className="absolute text-[18vw] md:text-[22vw] lg:text-[25vw] font-black leading-none text-[#2D2D2D] lowercase whitespace-nowrap"
             style={{ 
               right: '-1vw',
               fontFamily: "'Inter', 'Helvetica Neue', sans-serif",
               letterSpacing: '-0.04em'
             }}
           >
-            rage
+            {project?.heroTypography?.[2] || 'rage'}
           </span>
         </div>
 
-        {/* ── Circular Video Thumbnail (replaces the "e") ── */}
+        {/* ── Circular Video Thumbnail ── */}
         <motion.div 
           variants={fadeIn}
           initial="hidden"
           animate="visible"
-          className="relative z-10 w-[50vw] h-[50vw] max-w-[500px] max-h-[500px] md:w-[28vw] md:h-[28vw] md:max-w-[480px] md:max-h-[480px] rounded-full overflow-hidden shadow-2xl group cursor-pointer"
-          onClick={() => setVideoOpen(true)}
+          className={`relative z-10 w-[50vw] h-[50vw] max-w-[500px] max-h-[500px] md:w-[28vw] md:h-[28vw] md:max-w-[480px] md:max-h-[480px] rounded-full overflow-hidden shadow-2xl ${project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl ? 'group cursor-pointer' : ''}`}
+          onClick={() => {
+            if (project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) {
+              setVideoOpen(true);
+            }
+          }}
           style={{ border: '4px solid rgba(45, 45, 45, 0.08)' }}
         >
           {/* Thumbnail */}
           <img 
             src={project?.bannerImage || '/clients/logos/leverage_edu/8_leverage.png'} 
             alt="Video Cover" 
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
           
           {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/25 group-hover:bg-black/15 transition-colors duration-500" />
+          <div className="absolute inset-0 bg-black/25 transition-colors duration-500 group-hover:bg-black/15" />
           
           {/* Play Button */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-black/60">
-              <Play className="w-6 h-6 md:w-8 md:h-8 text-white ml-1" fill="white" />
+          {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-black/60">
+                <Play className="w-6 h-6 md:w-8 md:h-8 text-white ml-1" fill="white" />
+              </div>
             </div>
-          </div>
+          )}
         </motion.div>
 
         {/* ── "Meet" Annotation (Bottom-Left) ── */}
@@ -159,10 +167,10 @@ const LeverageEduExperience = ({ project, onBack }) => {
           </div>
           <div className="mt-3">
             <p className="font-bold text-xl md:text-2xl leading-tight text-[#2D2D2D]" style={{ fontFamily: "'Inter', sans-serif" }}>
-              Leverage Edu
+              {project?.client || 'Leverage Edu'}
             </p>
             <p className="font-normal text-sm md:text-base text-[#2D2D2D]/70 leading-tight mt-1" style={{ fontFamily: "'Inter', sans-serif" }}>
-              EdTech Brand Transformation
+              {project?.sector ? `${project.sector} Brand Transformation` : 'EdTech Brand Transformation'}
             </p>
           </div>
         </motion.div>
@@ -194,16 +202,28 @@ const LeverageEduExperience = ({ project, onBack }) => {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="w-[95vw] h-[85vh] md:w-[90vw] md:h-[80vh] max-w-[1600px]"
+              className="w-[95vw] h-[85vh] md:w-[90vw] md:h-[80vh] max-w-[1600px] flex items-center justify-center bg-black/50"
             >
-              <iframe
-                className="w-full h-full rounded-2xl"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&controls=1&modestbranding=1&rel=0"
-                title="Leverage Edu Video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                style={{ border: 'none' }}
-              />
+              {project?.videoSection?.videoUrl ? (
+                <iframe
+                  className="w-full h-full rounded-2xl"
+                  src={project.videoSection.videoUrl}
+                  title="Case Study Video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ border: 'none' }}
+                />
+              ) : project?.videoSection?.videoFileUrl ? (
+                <video
+                  className="w-full h-full rounded-2xl object-cover"
+                  src={project.videoSection.videoFileUrl}
+                  controls
+                  autoPlay
+                  playsInline
+                />
+              ) : (
+                <div className="text-white/50 text-xl font-light">Video placeholder - add via CMS</div>
+              )}
             </motion.div>
           </motion.div>
         )}
@@ -225,7 +245,7 @@ const LeverageEduExperience = ({ project, onBack }) => {
             className="text-4xl md:text-6xl font-light mb-12 text-black tracking-tight"
             style={{ fontFamily: "'Inter', sans-serif" }}
           >
-            The Approach
+            {SITE_SETTINGS?.csTheApproach || 'The Approach'}
           </motion.h2>
           <motion.p 
             variants={fadeIn}
@@ -243,7 +263,7 @@ const LeverageEduExperience = ({ project, onBack }) => {
             <div>
               <h4 className="text-xs uppercase tracking-[0.2em] text-gray-400 mb-4 font-medium">Scope</h4>
               <div className="flex flex-wrap gap-2">
-                {(project?.tags || ["Brand Identity", "Visual Narrative"]).map(tag => (
+                {(project?.tags || project?.roles || ["Brand Identity", "Visual Narrative"]).map(tag => (
                   <span key={tag} className="px-3 py-1 rounded-full border border-gray-300 text-xs text-gray-600 uppercase tracking-wider">{tag}</span>
                 ))}
               </div>
@@ -259,13 +279,13 @@ const LeverageEduExperience = ({ project, onBack }) => {
       {/* Back to Work CTA */}
       <section className="py-20 px-8 md:px-24 bg-[#0A0A0A] text-center">
         <h3 className="text-3xl md:text-4xl font-light text-white mb-8 tracking-tight" style={{ fontFamily: "'Inter', sans-serif" }}>
-          See more work
+          {SITE_SETTINGS?.csSeeMoreWork || 'See more work'}
         </h3>
         <button 
           onClick={onBack}
           className="px-8 py-4 border border-white/20 rounded-full text-white/70 hover:text-white hover:border-white/50 transition-all text-sm uppercase tracking-widest"
         >
-          All Projects
+          {SITE_SETTINGS?.csAllProjects || 'All Projects'}
         </button>
       </section>
     </div>

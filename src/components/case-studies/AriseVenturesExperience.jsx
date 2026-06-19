@@ -365,7 +365,13 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         <div className="py-24 md:py-32 px-6 md:px-12 max-w-[1400px] mx-auto relative">
         
           {/* Ambient Background Aura behind the whole section (blended) */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#6865FA_0%,transparent_60%)] opacity-[0.15] blur-[80px] pointer-events-none" />
+          <motion.div
+            className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#6865FA_0%,transparent_60%)] blur-[80px] pointer-events-none"
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 0.18, scale: 1 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
+          />
         
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
           
@@ -382,9 +388,16 @@ const AriseVenturesExperience = ({ navigate, project }) => {
                 The Solution
               </div>
             
-              <h3 className="font-carla text-5xl md:text-7xl text-white mb-10 font-medium tracking-tight drop-shadow-lg" style={{ fontFamily: '"Carla", sans-serif' }}>
+              <motion.h3
+                className="font-carla text-5xl md:text-7xl text-white mb-10 font-medium tracking-tight drop-shadow-lg"
+                style={{ fontFamily: '"Carla", sans-serif' }}
+                initial={{ opacity: 0, y: 32, filter: 'blur(14px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              >
                 {project?.solutionHeading || "Creative Solution"}
-              </h3>
+              </motion.h3>
             
               {/* Readable Text with NO box */}
               <div className="space-y-8 text-white/95 font-normal text-lg md:text-xl leading-relaxed" style={{ fontFamily: '"Carla", sans-serif' }}>
@@ -392,14 +405,30 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               
                 {/* Highlighted text block */}
                 {(project?.fullStory?.execution || project?.solutionHeading) && (
-                  <motion.div 
-                    initial={{ backgroundSize: '0% 100%' }}
-                    whileInView={{ backgroundSize: '100% 100%' }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
-                    className="bg-gradient-to-r from-[#6865FA]/20 to-transparent bg-no-repeat pt-6 pb-6 pl-8 mt-10 border-l-4 border-[#D4CEFC] rounded-r-xl"
+                  <motion.div
+                    initial={{ opacity: 0, y: 22 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-12%' }}
+                    transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative overflow-hidden pt-6 pb-6 pl-8 mt-10 rounded-r-xl"
                   >
-                    <p className="font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
+                    {/* Drawing accent border */}
+                    <motion.span
+                      className="absolute left-0 top-0 bottom-0 w-1 bg-[#D4CEFC] origin-top shadow-[0_0_12px_#D4CEFC]"
+                      initial={{ scaleY: 0 }}
+                      whileInView={{ scaleY: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    />
+                    {/* Gradient fill sweep */}
+                    <motion.span
+                      className="absolute inset-0 bg-gradient-to-r from-[#6865FA]/25 to-transparent origin-left"
+                      initial={{ scaleX: 0 }}
+                      whileInView={{ scaleX: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.3, delay: 0.7, ease: 'easeOut' }}
+                    />
+                    <p className="relative z-10 font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
                       {project?.fullStory?.execution || project?.solutionHeading}
                     </p>
                   </motion.div>
@@ -410,9 +439,9 @@ const AriseVenturesExperience = ({ navigate, project }) => {
             {/* Right Side: Visualizer (Organic & Floating) */}
             <motion.div 
               className="lg:col-span-5 h-[400px] lg:h-full relative flex items-center justify-center pointer-events-none"
-              initial={{ opacity: 0, scale: 0.8, filter: 'blur(20px)' }}
-              whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-              transition={{ duration: 1.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              initial={{ opacity: 0, scale: 0.82, rotate: -6, filter: 'blur(22px)', clipPath: 'circle(0% at 50% 50%)' }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0, filter: 'blur(0px)', clipPath: 'circle(82% at 50% 50%)' }}
+              transition={{ duration: 1.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               viewport={{ once: true, margin: "-10%" }}
             >
                 <SolutionVisualizer />

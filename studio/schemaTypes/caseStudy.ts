@@ -151,9 +151,9 @@ export default defineType({
     }),
     defineField({
       name: 'videoSection',
-      title: 'Video Section (Optional)',
+      title: 'Standard Video Embed (Optional)',
       type: 'object',
-      description: 'Optional video section for the case study.',
+      description: 'Used for a standard video block embedded within the case study content.',
       fields: [
         defineField({
           name: 'videoUrl',
@@ -172,10 +172,10 @@ export default defineType({
     }),
     defineField({
       name: 'videoHero',
-      title: 'Video Hero Section',
+      title: 'Cinematic Fullscreen Video Hero (For Premium Layouts)',
       type: 'object',
-      description: 'Optional cinematic video hero. Renders nothing unless "Enabled" is on.',
-      options: { collapsible: true, collapsed: true },
+      description: 'Optional cinematic video hero used in premium layouts (e.g., Arise Ventures). Renders nothing unless "Enabled" is checked.',
+      options: { collapsible: true, collapsed: false },
       fields: [
         defineField({
           name: 'enabled',
