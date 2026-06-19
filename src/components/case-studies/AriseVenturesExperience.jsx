@@ -338,7 +338,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 1.5 CASE STUDY VIDEO HERO (CMS-driven, reusable) ── */}
-      <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} />
+      {/* <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} /> */}
 
       {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
       <DramaticSection
