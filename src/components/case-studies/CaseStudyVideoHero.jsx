@@ -303,7 +303,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
             <>
               {/* Dim backdrop — click outside to close */}
               <motion.div
-                className="fixed inset-0 z-[200] bg-black/85 backdrop-blur-sm"
+                className="fixed inset-0 z-[99998] bg-black/85 backdrop-blur-sm"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -316,7 +316,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
                 layoutId={SHARED_ID}
                 transition={layoutTransition}
                 style={{ borderRadius: hasVideo ? 0 : '0%' }}
-                className="fixed z-[210] inset-3 sm:inset-8 lg:inset-12 overflow-hidden bg-black shadow-[0_40px_120px_rgba(0,0,0,0.7)]"
+                className="fixed z-[99999] inset-3 sm:inset-8 lg:inset-12 overflow-hidden bg-black shadow-[0_40px_120px_rgba(0,0,0,0.7)]"
                 role="dialog"
                 aria-modal="true"
                 aria-label={videoTitle || 'Case study video'}
