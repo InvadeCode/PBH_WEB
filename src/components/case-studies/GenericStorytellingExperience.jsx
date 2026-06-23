@@ -341,7 +341,7 @@ const GenericStorytellingExperience = ({ navigate, project }) => {
         const videoData = hasVideoHero ? project.videoHero : {
           enabled: true,
           backgroundColor: c.soilDeep,
-          backgroundText: (project.client || 'Case Study').split(' ')[0],
+          backgroundText: project.client || 'Case Study',
           videoTitle: 'Watch Video',
           videoSubtitle: 'Experience the story in motion.',
           embedUrl: project.videoSection.videoUrl,

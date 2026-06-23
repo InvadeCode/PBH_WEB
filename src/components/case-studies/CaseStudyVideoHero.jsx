@@ -202,16 +202,17 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
       <MotionBackdrop reduced={prefersReduced} />
 
       {/* Oversized background text (Carla) — sits behind the video, overflows the viewport */}
-      <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none select-none">
-        <motion.span
+      <div className="absolute inset-0 z-[1] flex items-center pointer-events-none select-none overflow-hidden">
+        <motion.div
           aria-hidden="true"
-          className="font-bold uppercase whitespace-nowrap leading-none text-white/[0.06]"
+          className="flex font-bold uppercase whitespace-nowrap leading-none text-white/[0.06]"
           style={{ ...carla, fontSize: 'clamp(6rem, 24vw, 26rem)' }}
-          animate={prefersReduced ? undefined : { x: ['-1.5%', '1.5%', '-1.5%'] }}
-          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
+          animate={prefersReduced ? undefined : { x: [0, '-50%'] }}
+          transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
         >
-          {bgText}
-        </motion.span>
+          <span className="pr-12">{Array(8).fill(bgText + ' — ').join('')}</span>
+          <span>{Array(8).fill(bgText + ' — ').join('')}</span>
+        </motion.div>
       </div>
 
       {/* Circular video trigger — placeholder reserves space during expansion */}
@@ -234,9 +235,13 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
               whileHover={prefersReduced ? undefined : { scale: 1.06 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              {thumbnailUrl
-                ? <img src={thumbnailUrl} alt="" className="w-full h-full object-cover" />
-                : <div className="w-full h-full" style={{ background: 'radial-gradient(circle at 50% 40%, rgba(255,255,255,0.18), transparent 70%)' }} />}
+              {thumbnailUrl ? (
+                <img src={thumbnailUrl} alt="" className="w-full h-full object-cover" />
+              ) : uploadedVideoUrl ? (
+                <video src={uploadedVideoUrl} autoPlay loop muted playsInline className="w-full h-full object-cover scale-[1.2]" />
+              ) : (
+                <div className="w-full h-full" style={{ background: 'radial-gradient(circle at 50% 40%, rgba(255,255,255,0.18), transparent 70%)' }} />
+              )}
               <div className="absolute inset-0 bg-black/30 transition-colors duration-500 group-hover:bg-black/15" />
             </motion.div>
 
