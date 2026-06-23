@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <canvas id="c"></canvas>
+  <script>
+    const img = new Image();
+    img.src = "public/clients/logos/hero_lectro/hero_lectro_new.png";
+    img.onload = () => {
+      const canvas = document.getElementById("c");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      const data = ctx.getImageData(0, 0, img.width, img.height).data;
+      
+      // sample 10x10 grid
+      for (let y = 0; y < img.height; y += img.height/10) {
+        for (let x = 0; x < img.width; x += img.width/10) {
+          const i = (Math.floor(y) * img.width + Math.floor(x)) * 4;
+          console.log(`x=${Math.floor(x)}, y=${Math.floor(y)}: rgba(${data[i]}, ${data[i+1]}, ${data[i+2]}, ${data[i+3]})`);
+        }
+      }
+    };
+  </script>
+</body>
+</html>
