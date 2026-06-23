@@ -208,7 +208,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
           className="flex font-bold uppercase whitespace-nowrap leading-none text-white/[0.06]"
           style={{ ...carla, fontSize: 'clamp(6rem, 24vw, 26rem)' }}
           animate={prefersReduced ? undefined : { x: [0, '-50%'] }}
-          transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
+          transition={{ duration: 160, repeat: Infinity, ease: 'linear' }}
         >
           <span className="pr-12">{Array(8).fill(bgText + ' — ').join('')}</span>
           <span>{Array(8).fill(bgText + ' — ').join('')}</span>
@@ -323,10 +323,24 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
               >
                 {renderPlayer()}
 
+                {/* Back Button (Top Left) */}
+                <button
+                  onClick={closeVideo}
+                  className="absolute top-6 left-6 z-10 flex items-center gap-2 px-4 py-2 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
+                  aria-label="Go back"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                  </svg>
+                  <span className="text-sm font-medium tracking-wide uppercase font-secondary">Back</span>
+                </button>
+
+                {/* X Button (Top Right) */}
                 <button
                   ref={closeRef}
                   onClick={closeVideo}
-                  className="absolute top-4 right-4 z-10 grid place-items-center w-11 h-11 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
+                  className="absolute top-6 right-6 z-10 grid place-items-center w-11 h-11 rounded-full bg-black/50 hover:bg-black/80 border border-white/20 text-white transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40"
                   aria-label="Close video"
                 >
                   <X className="w-5 h-5" />
