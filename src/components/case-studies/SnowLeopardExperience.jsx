@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import createGlobe from 'cobe';
+import CaseStudyVideoHero from './CaseStudyVideoHero';
 
 // --- PLANETARY SWARM COMPONENT (World Map Background, Full Screen, Tap to cycle) ---
 const PlanetarySwarm = ({ images, currentAssetIndex, setCurrentAssetIndex }) => {
@@ -348,6 +349,27 @@ const SnowLeopardExperience = ({ navigate, project }) => {
             setCurrentAssetIndex={setCurrentAssetIndex} 
           />
         )}
+
+        {/* ── CINEMATIC VIDEO HERO ── */}
+        {(() => {
+          const hasVideoHero = project?.videoHero?.enabled;
+          const hasVideoSection = project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl;
+          
+          if (!hasVideoHero && !hasVideoSection) return null;
+          
+          const videoData = hasVideoHero ? project.videoHero : {
+            enabled: true,
+            backgroundColor: '#0A0514', // Match SnowLeopard bg
+            backgroundText: project.client || 'Case Study',
+            videoTitle: 'Watch Video',
+            videoSubtitle: 'Experience the story in motion.',
+            embedUrl: project.videoSection?.videoUrl,
+            uploadedVideoUrl: project.videoSection?.videoFileUrl,
+            thumbnailUrl: null
+          };
+          
+          return <CaseStudyVideoHero videoHero={videoData} fallbackName={project.client} />;
+        })()}
 
         {/* ROW 5: OUTCOME */}
         <motion.div 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
+import CaseStudyVideoHero from './CaseStudyVideoHero';
 
 const LegacyExperience = ({ project, navigate, palette }) => {
   const hexColor = palette[project.type] || palette.primary;
@@ -90,6 +91,27 @@ const LegacyExperience = ({ project, navigate, palette }) => {
           </div>
         </div>
       </section>
+
+      {/* ── CINEMATIC VIDEO HERO ── */}
+      {(() => {
+        const hasVideoHero = project?.videoHero?.enabled;
+        const hasVideoSection = project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl;
+        
+        if (!hasVideoHero && !hasVideoSection) return null;
+        
+        const videoData = hasVideoHero ? project.videoHero : {
+          enabled: true,
+          backgroundColor: hexColor,
+          backgroundText: project.client || 'Case Study',
+          videoTitle: 'Watch Video',
+          videoSubtitle: 'Experience the story in motion.',
+          embedUrl: project.videoSection?.videoUrl,
+          uploadedVideoUrl: project.videoSection?.videoFileUrl,
+          thumbnailUrl: null
+        };
+        
+        return <CaseStudyVideoHero videoHero={videoData} fallbackName={project.client} />;
+      })()}
 
       {/* Footer Navigation */}
       <section className="px-4 md:px-12 py-20 border-t border-white/10 bg-black/40">
