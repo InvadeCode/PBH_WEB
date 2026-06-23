@@ -259,17 +259,35 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
         )}
       </div>
 
-      {/* Title / subtitle */}
+      {/* Preface / Title & Subtitle Callout */}
       {(videoTitle || videoSubtitle) && (
         <motion.div
-          className="relative z-10 mt-10 md:mt-12 text-center px-6"
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          className="absolute z-10 bottom-8 left-6 md:bottom-16 md:left-12 lg:left-16 flex flex-col items-start"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: '-10%' }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         >
-          {videoTitle && <h2 className="text-2xl md:text-4xl text-white font-medium tracking-tight" style={carla}>{videoTitle}</h2>}
-          {videoSubtitle && <p className="mt-3 text-sm md:text-base text-white/55 max-w-xl mx-auto" style={carla}>{videoSubtitle}</p>}
+          {/* Hand-drawn SVG Arrow pointing right */}
+          <div className="mb-4 text-white/70">
+            <svg width="48" height="16" viewBox="0 0 64 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-80">
+              <path d="M1 12C15.5 8 32 16 48 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M42 6L48 12L42 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          
+          <div className="flex flex-col gap-1">
+            {videoTitle && (
+              <h2 className="text-lg md:text-xl text-white font-medium tracking-tight" style={carla}>
+                {videoTitle}
+              </h2>
+            )}
+            {videoSubtitle && (
+              <p className="text-sm md:text-base text-white/55 max-w-[200px] md:max-w-[250px]" style={carla}>
+                {videoSubtitle}
+              </p>
+            )}
+          </div>
         </motion.div>
       )}
 
