@@ -2,6 +2,7 @@ import { useRef, useEffect, useContext } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
+import CaseStudyVideoHero from './CaseStudyVideoHero';
 
 const ease = [0.16, 1, 0.3, 1];
 
@@ -330,36 +331,26 @@ const GenericStorytellingExperience = ({ navigate, project }) => {
       <Cover project={project} navigate={navigate} SITE_SETTINGS={SITE_SETTINGS} c={c} />
       <Narrative project={project} c={c} />
       <StoryChapterCarousel images={images} project={project} SITE_SETTINGS={SITE_SETTINGS} c={c} />
-      {/* ── OPTIONAL VIDEO SECTION ── */}
-      {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
-        <section className="py-24 bg-[var(--color-bg)] relative z-10 px-4 md:px-12">
-          <div className={`mx-auto ${project.videoSection.orientation === 'portrait' ? 'max-w-md' : 'max-w-7xl'}`}>
-            <div className={`w-full rounded-2xl overflow-hidden bg-black/5 shadow-2xl relative ${
-              project.videoSection.orientation === 'portrait' ? 'aspect-[9/16]' : 
-              project.videoSection.orientation === 'square' ? 'aspect-square max-w-2xl mx-auto' : 
-              'aspect-video'
-            }`}>
-              {project.videoSection.videoUrl ? (
-                <iframe 
-                  src={project.videoSection.videoUrl}
-                  className="w-full h-full"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                />
-              ) : (
-                <video 
-                  src={project.videoSection.videoFileUrl}
-                  className="w-full h-full object-cover"
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline
-                />
-              )}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* ── CINEMATIC VIDEO HERO ── */}
+      {(() => {
+        const hasVideoHero = project?.videoHero?.enabled;
+        const hasVideoSection = project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl;
+        
+        if (!hasVideoHero && !hasVideoSection) return null;
+        
+        const videoData = hasVideoHero ? project.videoHero : {
+          enabled: true,
+          backgroundColor: c.soilDeep,
+          backgroundText: (project.client || 'Case Study').split(' ')[0],
+          videoTitle: 'Watch Video',
+          videoSubtitle: 'Experience the story in motion.',
+          embedUrl: project.videoSection.videoUrl,
+          uploadedVideoUrl: project.videoSection.videoFileUrl,
+          thumbnailUrl: null
+        };
+        
+        return <CaseStudyVideoHero videoHero={videoData} fallbackName={project.client} />;
+      })()}
       
       <Arrival project={project} navigate={navigate} SITE_SETTINGS={SITE_SETTINGS} c={c} />
     </div>
