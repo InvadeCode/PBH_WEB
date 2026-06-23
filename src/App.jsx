@@ -3093,7 +3093,7 @@ const SelectedCollaboratorsSection = () => {
           100% { transform: translateX(-33.333333%); }
         }
         .animate-collab-marquee {
-          animation: collab-marquee 30s linear infinite;
+          animation: collab-marquee 18s linear infinite;
         }
         .logo-item img, .logo-item div {
           filter: drop-shadow(0 0 0px transparent);
