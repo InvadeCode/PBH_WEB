@@ -3026,7 +3026,7 @@ const Header = ({ navigate, current }) => {
 
 const SelectedCollaboratorsSection = () => {
   const logos = [
-    { name: "Hero Lectro",               src: "/clients/logos/hero_lectro/xx_lectro.png" },
+    { name: "Hero Lectro",               src: "/clients/logos/hero_lectro/hero_lectro_new.png" },
     { name: "Firefox",                   src: "/clients/logos/firefox/1_firefox.png" },
     { name: "IIT Delhi",                 src: "/clients/logos/iit/iitd_raw_images_01.png", centerCrop: true },
     { name: "Arise Ventures",            src: "/clients/logos/arise_ventures/Asset 3@4x.png" },
