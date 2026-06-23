@@ -21,7 +21,7 @@ const EASE = [0.16, 1, 0.3, 1];
 
 // Uniform sizing — every logo rendered at the same height (object-contain).
 const LOGOS = [
-  { src: '/pbh-logos/hero-lectro.png',        name: 'Hero Lectro' },
+  { src: '/clients/logos/hero_lectro/hero_lectro_transparent.png', name: 'Hero Lectro' },
   { src: '/pbh-logos/arise-ventures.png',     name: 'Arise Ventures' },
   { src: '/pbh-logos/firefox.png',            name: 'Firefox' },
   { src: '/pbh-logos/leverage-edu.png',       name: 'Leverage Edu' },
@@ -41,7 +41,7 @@ const LOGOS = [
   { src: '/pbh-logos/novus.png',              name: 'IIT Delhi' },
 ];
 
-const BASE_SPEED = 24;   // px / second — slow & cinematic
+const BASE_SPEED = 48;   // px / second — slow & cinematic
 const SLOW_FACTOR = 0.7; // ~30% slower on hover (never pauses)
 
 const Logo = ({ logo, i, reduce }) => (
