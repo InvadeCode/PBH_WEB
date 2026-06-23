@@ -3026,37 +3026,37 @@ const Header = ({ navigate, current }) => {
 
 const SelectedCollaboratorsSection = () => {
   const logos = [
-    { name: "Hero Lectro",               src: "/clients/logos/hero_lectro/hero_lectro_new.png" },
-    { name: "Firefox",                   src: "/clients/logos/firefox/1_firefox.png", invert: true },
-    { name: "IIT Delhi",                 src: "/clients/logos/iit/iitd_raw_images_01.png", centerCrop: true, invert: true },
-    { name: "Arise Ventures",            src: "/clients/logos/arise_ventures/Asset 3@4x.png", invert: true },
-    { name: "Navankur",                  src: "/clients/logos/navankur/5_navankur.png", invert: true },
-    { name: "Earthy Souls",              src: "/clients/logos/earthy_souls/6_earthy.png", invert: true },
-    { name: "EBT",                       src: "/clients/logos/ebt/7_ebt.png", invert: true },
+    { name: "Hero Lectro",               src: "/clients/logos/hero_lectro/hero_lectro_transparent.png" },
+    { name: "Firefox",                   src: "/clients/logos/firefox/1_firefox.png" },
+    { name: "IIT Delhi",                 src: "/clients/logos/iit/iitd_raw_images_01.png", centerCrop: true },
+    { name: "Arise Ventures",            src: "/clients/logos/arise_ventures/Asset 3@4x.png" },
+    { name: "Navankur",                  src: "/clients/logos/navankur/5_navankur.png" },
+    { name: "Earthy Souls",              src: "/clients/logos/earthy_souls/6_earthy.png" },
+    { name: "EBT",                       src: "/clients/logos/ebt/7_ebt.png" },
     { name: "Snow Leopard Trust",        src: "/clients/logos/snow_leopard_trust/SLT-Logo-2016-300ppi-Transparent-BlackText-01.png", invert: true },
-    { name: "Back To Roots",             src: "/clients/logos/back_to_roots/back_to_roots_logo.png", invert: true },
-    { name: "Observer Research Found.",  src: "/clients/logos/orf/ORF_Logo_CMYK-2.png", invert: true },
-    { name: "Param Innovation",          src: "/clients/logos/param/9_param.png", invert: true },
-    { name: "Veauli",                    src: "/clients/logos/veauli_techniks/10_veauli.png", invert: true },
-    { name: "IGF",                       src: "/clients/logos/igf/3_igf.png", invert: true },
+    { name: "Back To Roots",             src: "/clients/logos/back_to_roots/back_to_roots_logo.png" },
+    { name: "Observer Research Found.",  src: "/clients/logos/orf/ORF_Logo_CMYK-2.png" },
+    { name: "Param Innovation",          src: "/clients/logos/param/9_param.png" },
+    { name: "Veauli",                    src: "/clients/logos/veauli_techniks/10_veauli.png" },
+    { name: "IGF",                       src: "/clients/logos/igf/3_igf.png" },
   ];
 
   const renderLogo = (logo, idx) => (
     <div key={`${logo.name}-${idx}`} className="flex items-center justify-center shrink-0 mx-4 md:mx-5 group cursor-pointer">
-      <div className="flex items-center justify-center px-8 md:px-10 py-5 md:py-6 rounded-2xl border border-white/[0.07] bg-white/[0.03] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:border-white/[0.18] group-hover:bg-white/[0.07] group-hover:-translate-y-1.5 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+      <div className={`flex items-center justify-center px-8 md:px-10 py-5 md:py-6 rounded-2xl border ${logo.noContainer ? 'border-transparent bg-transparent' : 'border-white/[0.07] bg-white/[0.03]'} transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:-translate-y-1.5 group-hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)] ${logo.noContainer ? '' : 'group-hover:border-white/[0.18] group-hover:bg-white/[0.07]'}`}>
         {logo.centerCrop ? (
           <img
             src={logo.src}
             alt={logo.name}
             style={{ objectFit: 'cover', objectPosition: 'center center', ...(logo.invert ? { filter: 'brightness(0) invert(1)' } : {}) }}
-            className="h-28 md:h-40 w-[260px] md:w-[360px] transition-all duration-500 opacity-80 group-hover:opacity-100"
+            className={`h-28 md:h-40 w-[260px] md:w-[360px] transition-all duration-500 opacity-80 group-hover:opacity-100 ${logo.mixBlendScreen ? 'mix-blend-screen' : ''} ${logo.mixBlendMultiply ? 'mix-blend-multiply' : ''}`}
           />
         ) : (
           <img
             src={logo.src}
             alt={logo.name}
             style={logo.invert ? { filter: 'brightness(0) invert(1)' } : {}}
-            className="h-28 md:h-40 max-w-[260px] md:max-w-[360px] w-auto object-contain transition-all duration-500 opacity-80 group-hover:opacity-100"
+            className={`h-28 md:h-40 max-w-[260px] md:max-w-[360px] w-auto object-contain transition-all duration-500 opacity-80 group-hover:opacity-100 ${logo.mixBlendScreen ? 'mix-blend-screen' : ''} ${logo.mixBlendMultiply ? 'mix-blend-multiply' : ''}`}
           />
         )}
       </div>
@@ -3093,7 +3093,7 @@ const SelectedCollaboratorsSection = () => {
           100% { transform: translateX(-33.333333%); }
         }
         .animate-collab-marquee {
-          animation: collab-marquee 55s linear infinite;
+          animation: collab-marquee 30s linear infinite;
         }
         .logo-item img, .logo-item div {
           filter: drop-shadow(0 0 0px transparent);
