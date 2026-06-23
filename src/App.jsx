@@ -3027,18 +3027,18 @@ const Header = ({ navigate, current }) => {
 const SelectedCollaboratorsSection = () => {
   const logos = [
     { name: "Hero Lectro",               src: "/clients/logos/hero_lectro/hero_lectro_new.png" },
-    { name: "Firefox",                   src: "/clients/logos/firefox/1_firefox.png" },
-    { name: "IIT Delhi",                 src: "/clients/logos/iit/iitd_raw_images_01.png", centerCrop: true },
-    { name: "Arise Ventures",            src: "/clients/logos/arise_ventures/Asset 3@4x.png" },
-    { name: "Navankur",                  src: "/clients/logos/navankur/5_navankur.png" },
-    { name: "Earthy Souls",              src: "/clients/logos/earthy_souls/6_earthy.png" },
-    { name: "EBT",                       src: "/clients/logos/ebt/7_ebt.png" },
+    { name: "Firefox",                   src: "/clients/logos/firefox/1_firefox.png", invert: true },
+    { name: "IIT Delhi",                 src: "/clients/logos/iit/iitd_raw_images_01.png", centerCrop: true, invert: true },
+    { name: "Arise Ventures",            src: "/clients/logos/arise_ventures/Asset 3@4x.png", invert: true },
+    { name: "Navankur",                  src: "/clients/logos/navankur/5_navankur.png", invert: true },
+    { name: "Earthy Souls",              src: "/clients/logos/earthy_souls/6_earthy.png", invert: true },
+    { name: "EBT",                       src: "/clients/logos/ebt/7_ebt.png", invert: true },
     { name: "Snow Leopard Trust",        src: "/clients/logos/snow_leopard_trust/SLT-Logo-2016-300ppi-Transparent-BlackText-01.png", invert: true },
-    { name: "Back To Roots",             src: "/clients/logos/back_to_roots/back_to_roots_logo.png" },
-    { name: "Observer Research Found.",  src: "/clients/logos/orf/ORF_Logo_CMYK-2.png" },
-    { name: "Param Innovation",          src: "/clients/logos/param/9_param.png" },
-    { name: "Veauli",                    src: "/clients/logos/veauli_techniks/10_veauli.png" },
-    { name: "IGF",                       src: "/clients/logos/igf/3_igf.png" },
+    { name: "Back To Roots",             src: "/clients/logos/back_to_roots/back_to_roots_logo.png", invert: true },
+    { name: "Observer Research Found.",  src: "/clients/logos/orf/ORF_Logo_CMYK-2.png", invert: true },
+    { name: "Param Innovation",          src: "/clients/logos/param/9_param.png", invert: true },
+    { name: "Veauli",                    src: "/clients/logos/veauli_techniks/10_veauli.png", invert: true },
+    { name: "IGF",                       src: "/clients/logos/igf/3_igf.png", invert: true },
   ];
 
   const renderLogo = (logo, idx) => (
