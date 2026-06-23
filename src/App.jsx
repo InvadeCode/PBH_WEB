@@ -18,6 +18,8 @@ import BackToRootsExperience from './components/case-studies/BackToRootsExperien
 import ParamInnovationExperience from './components/case-studies/ParamInnovationExperience';
 import SnowLeopardExperience from './components/case-studies/SnowLeopardExperience';
 import AriseVenturesExperience from './components/case-studies/AriseVenturesExperience';
+import LegacyExperience from './components/case-studies/LegacyExperience';
+import GenericStorytellingExperience from './components/case-studies/GenericStorytellingExperience';
 
 import PremiumLogoMarquee from './components/PremiumLogoMarquee';
 
@@ -3508,10 +3510,17 @@ const WorkDetailPage = ({ navigate, projectId }) => {
 
 
   const caseStudies = CASE_STUDIES;
-  const projectIndex = caseStudies.findIndex(p => p.id === projectId);
-  const project = caseStudies[projectIndex] || caseStudies[0];
-  const nextProject = caseStudies[(projectIndex + 1) % caseStudies.length];
-  const prevProject = caseStudies[(projectIndex - 1 + caseStudies.length) % caseStudies.length];
+  let projectIndex = caseStudies.findIndex(p => p.id === projectId);
+  
+  if (projectIndex === -1 && projectId) {
+    const searchStr = projectId.replace(/-/g, ' ').toLowerCase();
+    projectIndex = caseStudies.findIndex(p => (p.client || '').toLowerCase().includes(searchStr));
+  }
+  
+  const safeProjectIndex = projectIndex !== -1 ? projectIndex : 0;
+  const project = caseStudies[safeProjectIndex];
+  const nextProject = caseStudies[(safeProjectIndex + 1) % caseStudies.length];
+  const prevProject = caseStudies[(safeProjectIndex - 1 + caseStudies.length) % caseStudies.length];
   const hexColor = palette[project.type] || palette.primary;
 
   useEffect(() => {
@@ -3520,346 +3529,52 @@ const WorkDetailPage = ({ navigate, projectId }) => {
 
   const clientName = (project.client || '').toLowerCase();
 
-  const ariseClients = [
+    const ariseClients = [
     'arise ventures',
     'piston des sports',
     'hero lectro',
-    'param innovation',
-    'sunburst',
-    'earthy souls',
+    'firefox bikes',
+    'veauli techniks',
     'veauli',
-    'novus fin',
+    'albatross energetics',
+    'albatross',
+    'leverage edu'
   ];
   if (ariseClients.some(target => clientName.includes(target))) {
     return <AriseVenturesExperience navigate={navigate} project={project} />;
   }
 
-  const btrClients = [
-    'back to roots',
-    'albatross',
-    'ega wellness'
-  ];
-  if (btrClients.some(target => clientName.includes(target))) {
-    return <BackToRootsExperience navigate={navigate} project={project} />;
-  }
+  
 
 
 
-  const targetClients = [
+    const targetClients = [
     'snow leopard',
     'fermentech',
     'american chemical',
-    'navankur'
+    'sayre therapeutics',
+    'observer research',
+    'param innovation',
+    'best iu',
+    'india global forum'
   ];
 
   if (targetClients.some(target => clientName.includes(target))) {
     return <SnowLeopardExperience navigate={navigate} project={project} />;
   }
 
-  return (
-    <div className="min-h-screen text-[#F4F4F5] w-full" style={{ backgroundColor: palette.bgDeep }}>
+  const legacyClients = [
+    'aura skincare',
+    'lumina tech',
+    'novus fin',
+    'aero dynamics'
+  ];
 
-      {/* Hero Section - Cinematic Boxed Layout */}
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-32 md:pb-40 pt-10 px-4 md:px-8">
-        
-        {/* Floating Box Hero Banner */}
-        <div className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto h-[50vh] md:h-[65vh] rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
-          <motion.div
-            initial={{ opacity: 0, clipPath: 'inset(10% 10% 10% 10% round 30px)', filter: 'blur(20px)' }}
-            animate={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 0px)', filter: 'blur(0px)' }}
-            transition={{ duration: 2.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full h-full relative overflow-hidden"
-          >
-            {(project.bannerImage || project.fullStory?.heroImg || project.imageUrl) ? (
-              <motion.img 
-                src={project.bannerImage || project.fullStory?.heroImg || project.imageUrl} 
-                alt={`${project.client} hero`} 
-                className="absolute inset-0 w-full h-full object-cover opacity-100" 
-                initial={{ scale: 1.15 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 3, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              />
-            ) : (
-              <div className="w-full h-full bg-[#0C185C] relative flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 opacity-40 mix-blend-screen" style={{ background: `linear-gradient(to bottom right, ${hexColor}, transparent)` }} />
-                <span className="font-serif italic text-9xl md:text-[15rem] whitespace-nowrap overflow-hidden opacity-10 text-white pointer-events-none">
-                  {project.client ? project.client.split(' ')[0] : 'Work'}
-                </span>
-              </div>
-            )}
-          </motion.div>
-        </div>
+  if (legacyClients.some(target => clientName.includes(target))) {
+    return <LegacyExperience navigate={navigate} project={project} palette={palette} />;
+  }
 
-        {/* Text Below the Banner Box */}
-        <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16 w-full max-w-5xl">
-          <button onClick={() => navigate('work')} className="absolute -top-16 left-0 text-white/60 hover:text-white text-sm transition-colors flex items-center gap-2 group font-secondary">
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
-          </button>
-          
-          <FadeUp className="mb-6 flex flex-wrap justify-center gap-4 font-secondary">
-            {(project.tags || []).map(t => (
-              <span key={t} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg" style={{ fontFamily: '"Karla", sans-serif' }}>
-                {t}
-              </span>
-            ))}
-          </FadeUp>
-
-          <FadeUp>
-            <motion.h1 
-              className="font-carla text-4xl md:text-6xl lg:text-[6rem] leading-[0.9] text-white font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] mb-6" 
-              style={{ fontFamily: '"Karla", sans-serif' }}
-            >
-              {project.client}
-            </motion.h1>
-            <p className="text-xl md:text-2xl text-white/70 font-light font-secondary max-w-3xl leading-relaxed mx-auto">
-              {project.challenge}
-            </p>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* Meta Data — Seamless */}
-      <section className="w-full py-8 px-4 md:px-8">
-        <div className="flex flex-wrap justify-center gap-6 md:gap-12 max-w-5xl mx-auto font-secondary">
-          {[
-            ['Client', project.client],
-            ['Sector', project.sector],
-            ['Core Route', project.route],
-            ['Year', '2025'],
-          ].map(([label, value]) => (
-            <div key={label} className="text-center">
-              <h4 className="text-[10px] text-white/30 uppercase tracking-[0.2em] mb-1 font-primary">{label}</h4>
-              <p className="text-sm md:text-base text-white/70 font-light">{value}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Story & Context */}
-      {(project.roles?.length > 0 || project.overview || project.solution) && (
-        <section className="py-32 px-[3%] w-full">
-          <div className="grid md:grid-cols-12 gap-16 w-full text-left">
-            {project.roles?.length > 0 && (
-              <div className="md:col-span-4">
-                <FadeUp>
-                  <h3 className="text-3xl font-light mb-8 font-primary text-white border-b border-white/10 pb-6">
-                    {project.deliverablesHeading || "Core Deliverables"}
-                  </h3>
-                  <ul className="space-y-4 font-secondary">
-                    {project.roles.map(r => (
-                      <li key={r} className="flex items-center gap-3 text-white/70 text-lg font-light"><CheckCircle2 className="w-5 h-5" style={{ color: hexColor }} /> {r}</li>
-                    ))}
-                  </ul>
-                </FadeUp>
-              </div>
-            )}
-            <div className={project.roles?.length > 0 ? 'md:col-span-8' : 'md:col-span-12'}>
-              <StaggerGroup className="space-y-16 font-secondary text-white/70 font-light text-xl leading-relaxed">
-                {project.overview && (
-                  <StaggerItem>
-                    <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">
-                      {project.challengeHeading || "The Challenge"}
-                    </h4>
-                    <p>{project.overview}</p>
-                  </StaggerItem>
-                )}
-                {project.solution && (
-                  <StaggerItem>
-                    <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary">
-                      {project.solutionHeading || "The PBH Solution"}
-                    </h4>
-                    <p className="text-2xl text-white font-medium leading-snug">{project.solution}</p>
-                  </StaggerItem>
-                )}
-              </StaggerGroup>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Image Gallery Layout */}
-      {project?.fullStory?.images && project.fullStory.images.length > 0 && (
-        <>
-          {project.route === "Brand Boulevard" ? (
-            <section className="w-full overflow-hidden border-t border-white/5 relative z-20">
-               <BrandBoulevardMarquee images={project.fullStory.images} client={project.client} bgHex={palette.bgDeep} />
-            </section>
-          ) : (
-            <section className="w-full px-[3%] mb-32">
-              <div className="grid grid-cols-1 gap-12 max-w-6xl mx-auto">
-                {project.fullStory.images.map((img, idx) => (
-                  <FadeUp key={idx} delay={0.1} className="w-full">
-                    <div className="w-full rounded-[32px] overflow-hidden border border-white/10 shadow-2xl bg-[#05050A]">
-                      <img src={img} alt={`${project.client} showcase ${idx + 1}`} className="w-full h-auto object-cover" />
-                    </div>
-                  </FadeUp>
-                ))}
-              </div>
-            </section>
-          )}
-        </>
-      )}
-
-      {/* Design System & Colors (Conditional) */}
-      {project?.colors?.length > 0 && (
-        <section className="py-32 px-[3%] w-full border-t border-white/5 bg-[#010626] text-left">
-          <FadeUp className="max-w-6xl mx-auto w-full">
-            <h3 className="text-3xl font-light mb-16 font-primary text-center">Design System</h3>
-
-            <div className="grid md:grid-cols-2 gap-16 mb-24 w-full items-center">
-              <div>
-                <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Typography</h4>
-                <div className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col gap-8">
-                  <div className="border-b border-white/10 pb-6">
-                    <p className="text-sm text-white/40 mb-2 font-secondary">Primary Display (Serif)</p>
-                    <p className="text-5xl font-serif italic text-white">Ogg / Playfair</p>
-                    <p className="text-xl font-serif text-white/50 mt-4 break-words">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-white/40 mb-2 font-secondary">Secondary Body (Sans)</p>
-                    <p className="text-4xl font-primary font-light text-white">Karla</p>
-                    <p className="text-lg font-primary text-white/50 mt-4 break-words font-light">0123456789 !@#$%^&*()</p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">Color Palette</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  {(project.colors || []).map((col, i) => (
-                    <div key={i} className="rounded-[16px] overflow-hidden border border-white/10 bg-white/[0.02] flex flex-col h-40 shadow-inner group">
-                      <div className="flex-1 transition-transform group-hover:scale-105 origin-bottom" style={{ backgroundColor: col }} />
-                      <div className="p-4 font-mono text-xs text-white/70 bg-[#0A0A0A] flex justify-between">
-                        <span>{i === 0 ? 'Primary' : `Accent 0${i}`}</span>
-                        <span>{col}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </FadeUp>
-        </section>
-      )}
-      {/* Full Story Block (Extended Content) */}
-      {project.fullStory && (
-        <section className="py-24 px-[3%] w-full bg-[#05050A] text-left border-t border-white/5">
-          <FadeUp className="max-w-7xl mx-auto w-full">
-            <div className={`grid gap-16 mb-24 ${project.fullStory.strategy && project.fullStory.execution ? 'md:grid-cols-2' : 'max-w-4xl mx-auto'}`}>
-              {project.fullStory.strategy && (
-                <div>
-                  <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Strategy</h4>
-                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.strategy}</p>
-                </div>
-              )}
-              {project.fullStory.execution && (
-                <div>
-                  <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-6 font-primary">The Execution</h4>
-                  <p className="text-xl text-white/80 font-light font-secondary leading-relaxed">{project.fullStory.execution}</p>
-                </div>
-              )}
-            </div>
-
-            {project.fullStory.stats && project.fullStory.stats.length > 0 && (
-              <div className="grid md:grid-cols-3 gap-8 mb-24">
-                {project.fullStory.stats.map(stat => (
-                  <div key={stat._key || stat.label} className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col justify-center shadow-lg relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 group-hover:opacity-30 transition-opacity pointer-events-none" style={{ backgroundColor: hexColor }} />
-                    <h4 className="text-[10px] text-white/40 uppercase tracking-widest mb-4 font-primary relative z-10">{stat.label}</h4>
-                    <p className="text-3xl text-white font-light font-primary relative z-10">{stat.val}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </FadeUp>
-        </section>
-      )}
-
-      {/* Results / Impact */}
-      {project.results?.length > 0 && (
-        <section className="py-32 px-[3%] w-full border-t border-white/5 bg-[#010825] text-left">
-          <FadeUp className="max-w-6xl mx-auto w-full">
-            <h3 className="text-3xl font-light mb-16 font-primary text-center">Project Impact</h3>
-            <div className="grid md:grid-cols-3 gap-8">
-              {project.results.map((res, i) => (
-                <div key={i} className="border border-white/10 rounded-[24px] p-10 bg-white/[0.02] flex flex-col items-center text-center shadow-lg relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 transition-opacity group-hover:opacity-30 pointer-events-none" style={{ backgroundColor: hexColor }} />
-                  <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center mb-8 bg-[#05050A] text-white relative z-10">
-                    {i === 0 ? <BarChart2 className="w-6 h-6" style={{ color: hexColor }} /> : i === 1 ? <Target className="w-6 h-6" style={{ color: hexColor }} /> : <Sparkles className="w-6 h-6" style={{ color: hexColor }} />}
-                  </div>
-                  <p className="text-xl text-white/90 font-light font-secondary leading-relaxed relative z-10">{res}</p>
-                </div>
-              ))}
-            </div>
-          </FadeUp>
-        </section>
-      )}
-
-      {/* Section: FAQ */}
-      <section className="py-24 px-[3%] w-full border-t border-white/5 bg-[#010825] text-left">
-        <FadeUp className="max-w-4xl mx-auto w-full">
-          <h3 className="text-3xl font-light mb-8 font-primary text-center">Frequently Asked Questions</h3>
-          <StaggerGroup className="space-y-4 font-secondary w-full">
-            {(project.pageFaqs && project.pageFaqs.length > 0 ? project.pageFaqs : FAQS).map((faq, i) => (
-              <StaggerItem key={i}>
-                <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01] w-full text-left">
-                  <h4 className="font-medium text-white mb-2">{faq.question}</h4>
-                  <p className="text-sm text-white/50">{faq.answer}</p>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
-        </FadeUp>
-      </section>
-
-      {/* Project Navigation Footer */}
-      <section className="relative w-full h-[50vh] flex flex-col md:flex-row border-t border-white/10">
-        {/* Previous Project */}
-        <div
-          onClick={() => navigate('work/' + prevProject.id)}
-          className="relative flex-1 flex flex-col justify-center items-start cursor-pointer group overflow-hidden border-b md:border-b-0 md:border-r border-white/10 h-full p-12 md:p-16 lg:p-24"
-        >
-          <div className="absolute inset-0 bg-[#05050A] z-0" />
-          {prevProject.imageUrl && (
-            <img src={prevProject.imageUrl} alt={prevProject.client} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-30 mix-blend-luminosity transition-all duration-1000 group-hover:scale-105 z-0" />
-          )}
-          <div className="absolute inset-0 opacity-40 mix-blend-screen transition-opacity duration-1000 group-hover:opacity-80 z-0" style={{ background: `linear-gradient(to right, ${palette[prevProject.type] || palette.primary}, transparent)` }} />
-
-          <div className="relative z-10 text-left w-full">
-            <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary flex items-center justify-start gap-3 text-white/50 group-hover:text-white transition-colors">
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-2 transition-transform duration-500" />
-              Previous Project
-            </span>
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white/80 group-hover:text-white transition-colors">
-              {prevProject.client}
-            </h2>
-          </div>
-        </div>
-
-        {/* Next Project */}
-        <div
-          onClick={() => navigate('work/' + nextProject.id)}
-          className="relative flex-1 flex flex-col justify-center items-end cursor-pointer group overflow-hidden h-full p-12 md:p-16 lg:p-24"
-        >
-          <div className="absolute inset-0 bg-[#05050A] z-0" />
-          {nextProject.imageUrl && (
-            <img src={nextProject.imageUrl} alt={nextProject.client} className="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-30 mix-blend-luminosity transition-all duration-1000 group-hover:scale-105 z-0" />
-          )}
-          <div className="absolute inset-0 opacity-40 mix-blend-screen transition-opacity duration-1000 group-hover:opacity-80 z-0" style={{ background: `linear-gradient(to left, ${palette[nextProject.type] || palette.primary}, transparent)` }} />
-
-          <div className="relative z-10 text-right w-full">
-            <span className="text-sm font-medium tracking-widest uppercase mb-6 font-primary flex items-center justify-end gap-3 text-white/50 group-hover:text-white transition-colors">
-              Next Project
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-500" />
-            </span>
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-light tracking-tight font-primary text-white/80 group-hover:text-white transition-colors">
-              {nextProject.client}
-            </h2>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+  return <GenericStorytellingExperience navigate={navigate} project={project} />;
 };
 
 
@@ -5256,7 +4971,11 @@ export default function App() {
   }) : QUIZ_QUESTIONS;
 
   const { data: sanityCaseStudies } = useSanity(CASE_STUDIES_QUERY);
-  const finalCaseStudies = sanityCaseStudies?.length > 0 ? sanityCaseStudies : CASE_STUDIES;
+  const finalCaseStudiesRaw = sanityCaseStudies?.length > 0 ? sanityCaseStudies : CASE_STUDIES;
+  const finalCaseStudies = finalCaseStudiesRaw.map(cs => ({
+    ...cs,
+    id: cs.id || (cs.client || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+  }));
 
   const { data: sanityTeamMembers } = useSanity(GET_TEAM_MEMBERS);
   const finalTeamMembers = mergeWithFallback(TEAM_MEMBERS_MASTER, sanityTeamMembers, "Team");
