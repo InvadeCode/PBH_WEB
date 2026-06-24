@@ -2,18 +2,29 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
+import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
+import { getSafeEmbedUrl } from '../../lib/videoUtils';
 
 const LegacyExperience = ({ project, navigate, palette }) => {
   const hexColor = palette[project.type] || palette.primary;
+  const mediaItems = normalizeMediaItems(project.fullStory?.media || project.fullStory?.images, project.client || 'Case study media');
+  const heroImage = project.bannerVideo || project.fullStory?.heroVideo || project.bannerImage || project.fullStory?.heroImg || project.imageUrl;
+
   return (
     <div className="min-h-screen text-[#F4F4F5] w-full" style={{ backgroundColor: hexColor }}>
       {/* Fallback old UI */}
       {/* Hero Section - Cinematic Boxed Layout */}
       <section className="relative w-full flex flex-col items-center justify-start z-10 pb-32 md:pb-40 pt-10 px-4 md:px-8">
-        {project.bannerImage ? (
+        {heroImage ? (
           <div className="w-full max-w-7xl mx-auto aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden mb-12 shadow-2xl relative">
             <div className="absolute inset-0 bg-black/20 mix-blend-overlay z-10 pointer-events-none"></div>
-            <img src={project.bannerImage} alt={`${project.client} Hero`} className="w-full h-full object-cover" />
+            <CaseStudyMedia
+              src={heroImage}
+              alt={`${project.client} Hero`}
+              className="w-full h-full object-cover"
+              priority
+              sizes="(min-width: 1280px) 1280px, 100vw"
+            />
           </div>
         ) : (
           <div className="w-full h-24 md:h-32 mb-8"></div>
@@ -81,36 +92,80 @@ const LegacyExperience = ({ project, navigate, palette }) => {
               <p>{project.solution}</p>
             </div>
             
-            {project.imageUrl && !project.bannerImage && (
-              <div className="w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
-                <div className="aspect-[4/3] w-full relative">
-                  <img src={project.imageUrl} alt={`${project.client} Visuals`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                </div>
+            {mediaItems.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                {mediaItems.map((media, index) => (
+                  <div
+                    key={media.key}
+                    className={`${index % 3 === 0 ? 'sm:col-span-2' : ''} rounded-2xl overflow-hidden shadow-2xl border border-white/10 group bg-black/20 flex items-center justify-center p-2`}
+                  >
+                    <CaseStudyMedia
+                      item={media}
+                      alt={media.alt || `${project.client} Visual ${index + 1}`}
+                      className="w-full h-auto max-h-[80vh] object-contain transition-transform duration-700 group-hover:scale-105"
+                      sizes={index % 3 === 0 ? '(min-width: 1024px) 60vw, 100vw' : '(min-width: 640px) 50vw, 100vw'}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : project.imageUrl && !heroImage && (
+              <div className="w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10 group flex items-center justify-center p-2 bg-black/20">
+                <CaseStudyMedia
+                  src={project.imageUrl}
+                  alt={`${project.client} Visuals`}
+                  className="w-full h-auto max-h-[80vh] object-contain transition-transform duration-700 group-hover:scale-105"
+                  sizes="(min-width: 1024px) 60vw, 100vw"
+                />
               </div>
             )}
           </div>
         </div>
       </section>
 
-      {/* ── CINEMATIC VIDEO HERO ── */}
+      {/* ── CINEMATIC VIDEO HERO & ADDITIONAL VIDEOS ── */}
       {(() => {
         const hasVideoHero = project?.videoHero?.enabled;
-        const hasVideoSection = project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl;
         
-        if (!hasVideoHero && !hasVideoSection) return null;
+        const allVideos = [];
+        if (project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) {
+          allVideos.push({
+            videoTitle: project.videoSection.videoTitle,
+            videoSubtitle: project.videoSection.videoSubtitle,
+            thumbnailUrl: project.videoSection.thumbnailUrl,
+            videoUrl: getSafeEmbedUrl(project.videoSection.videoUrl),
+            videoFileUrl: project.videoSection.videoFileUrl,
+            orientation: project.videoSection.orientation
+          });
+        }
+        if (project?.videoSection?.videos?.length > 0) {
+          project.videoSection.videos.forEach(v => {
+            allVideos.push({
+              videoTitle: v.videoTitle,
+              videoSubtitle: v.videoSubtitle,
+              thumbnailUrl: v.thumbnailUrl,
+              videoUrl: getSafeEmbedUrl(v.videoUrl),
+              videoFileUrl: v.videoFileUrl,
+              orientation: project.videoSection.orientation
+            });
+          });
+        }
+
+        if (!hasVideoHero && allVideos.length === 0) return null;
         
-        const videoData = hasVideoHero ? project.videoHero : {
+        const mainVideoData = hasVideoHero ? project.videoHero : {
           enabled: true,
           backgroundColor: hexColor,
           backgroundText: project.client || 'Case Study',
-          videoTitle: 'Watch Video',
-          videoSubtitle: 'Experience the story in motion.',
-          embedUrl: project.videoSection?.videoUrl,
-          uploadedVideoUrl: project.videoSection?.videoFileUrl,
-          thumbnailUrl: null
+          videoTitle: allVideos[0]?.videoTitle || 'Watch Video',
+          videoSubtitle: allVideos[0]?.videoSubtitle || 'Experience the story in motion.',
+          embedUrl: allVideos[0]?.videoUrl,
+          uploadedVideoUrl: allVideos[0]?.videoFileUrl,
+          thumbnailUrl: allVideos[0]?.thumbnailUrl
         };
         
-        return <CaseStudyVideoHero videoHero={videoData} fallbackName={project.client} />;
+        return (
+          <CaseStudyVideoHero videoHero={mainVideoData} fallbackName={project.client} allVideos={allVideos} />
+        );
       })()}
 
       {/* Footer Navigation */}
@@ -121,7 +176,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
             className="group flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-300 font-secondary uppercase tracking-widest text-sm"
           >
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-            Back to All Work
+            All Case Studies
           </button>
         </div>
       </section>

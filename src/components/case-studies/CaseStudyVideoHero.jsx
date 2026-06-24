@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Play, X } from 'lucide-react';
+import CaseStudyMedia from './CaseStudyMedia';
+import { getEmbedThumbnailUrl, getSafeEmbedUrl } from '../../lib/videoUtils';
 
 /**
  * CaseStudyVideoHero — reusable, CMS-driven cinematic video hero.
@@ -28,100 +30,137 @@ const withAutoplay = (url) => {
   }
 };
 
-// Deterministic particle field (no layout-thrash randomness on re-render)
-const PARTICLES = Array.from({ length: 16 }, (_, i) => ({
-  id: i,
-  left: (i * 61) % 100,
-  size: 2 + (i % 3),
-  delay: (i % 6) * 0.9,
-  dur: 9 + (i % 7),
-}));
-
-/** Cinematic motion-graphics backdrop that sits behind the video. */
-const MotionBackdrop = ({ reduced }) => (
+/** Kanti Sweets-style technical preface backdrop. */
+const KantiPrefaceBackdrop = ({ backgroundColor, reduced }) => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-    {/* Drifting gradient orbs */}
-    <motion.div
-      className="absolute -top-[20%] -left-[15%] w-[70vw] h-[70vw] rounded-full mix-blend-screen"
-      style={{ background: 'radial-gradient(circle, rgba(124,120,255,0.40) 0%, transparent 60%)', filter: 'blur(110px)' }}
-      animate={reduced ? undefined : { x: ['0%', '14%', '0%'], y: ['0%', '10%', '0%'], scale: [1, 1.18, 1] }}
-      transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-    />
-    <motion.div
-      className="absolute -bottom-[20%] -right-[12%] w-[60vw] h-[60vw] rounded-full mix-blend-screen"
-      style={{ background: 'radial-gradient(circle, rgba(212,206,252,0.34) 0%, transparent 60%)', filter: 'blur(120px)' }}
-      animate={reduced ? undefined : { x: ['0%', '-12%', '0%'], y: ['0%', '-8%', '0%'], scale: [1.12, 1, 1.12] }}
-      transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut' }}
-    />
-    <motion.div
-      className="absolute top-1/3 left-1/2 w-[40vw] h-[40vw] rounded-full mix-blend-screen -translate-x-1/2"
-      style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 65%)', filter: 'blur(90px)' }}
-      animate={reduced ? undefined : { opacity: [0.4, 0.85, 0.4], scale: [0.9, 1.1, 0.9] }}
-      transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
-    />
-
-    {/* Slow rotating conic halo, masked to a ring behind the center */}
-    <motion.div
-      className="absolute left-1/2 top-1/2 w-[130vh] h-[130vh] -translate-x-1/2 -translate-y-1/2 rounded-full mix-blend-screen"
-      style={{
-        background: 'conic-gradient(from 0deg, transparent 0deg, rgba(255,255,255,0.35) 40deg, transparent 120deg, transparent 240deg, rgba(124,120,255,0.30) 300deg, transparent 360deg)',
-        opacity: 0.13,
-        maskImage: 'radial-gradient(circle, transparent 28%, black 40%, transparent 72%)',
-        WebkitMaskImage: 'radial-gradient(circle, transparent 28%, black 40%, transparent 72%)',
-      }}
-      animate={reduced ? undefined : { rotate: 360 }}
-      transition={{ duration: 44, repeat: Infinity, ease: 'linear' }}
-    />
-
-    {/* Rising particles */}
-    {!reduced && PARTICLES.map((p) => (
-      <motion.span
-        key={p.id}
-        className="absolute rounded-full bg-white/40"
-        style={{ left: `${p.left}%`, bottom: '-4%', width: p.size, height: p.size }}
-        animate={{ y: ['0vh', '-118vh'], opacity: [0, 0.7, 0] }}
-        transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: 'linear' }}
-      />
-    ))}
-
-    {/* Fine technical grid */}
     <div
-      className="absolute inset-0 opacity-[0.04]"
+      className="absolute inset-0"
       style={{
-        backgroundImage: 'linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)',
+        background: `linear-gradient(112deg, ${backgroundColor} 0%, #171b61 46%, #5f5da2 100%)`,
+      }}
+    />
+    <div
+      className="absolute inset-0 opacity-[0.13]"
+      style={{
+        backgroundImage: 'linear-gradient(rgba(255,255,255,0.58) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.58) 1px, transparent 1px)',
         backgroundSize: '64px 64px',
       }}
     />
-
-    {/* Sweeping light beam */}
-    <motion.div
-      className="absolute top-0 bottom-0 w-1/3"
-      style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)' }}
-      animate={reduced ? undefined : { x: ['-60%', '360%'] }}
-      transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', repeatDelay: 4 }}
+    <div
+      className="absolute inset-0"
+      style={{
+        background: 'linear-gradient(90deg, rgba(1,8,54,0.72) 0%, rgba(1,8,54,0.16) 32%, rgba(212,206,252,0.11) 100%)',
+      }}
     />
+    <div
+      className="absolute inset-0 opacity-70"
+      style={{
+        background: 'linear-gradient(to bottom, rgba(1,8,54,0.18), transparent 22%, transparent 72%, rgba(1,8,54,0.44))',
+      }}
+    />
+    {!reduced && (
+      <motion.div
+        className="absolute inset-y-0 -left-1/3 w-1/2"
+        style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent)' }}
+        animate={{ x: ['0%', '310%'] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', repeatDelay: 5 }}
+      />
+    )}
   </div>
 );
 
-const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
+const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos = [] }) => {
   const {
-    backgroundColor = '#0A0A0A',
+    backgroundColor = '#010836',
     backgroundText,
-    videoTitle,
-    videoSubtitle,
-    thumbnailUrl,
-    embedUrl,
-    uploadedVideoUrl,
   } = videoHero || {};
 
-  const enabled = videoHero?.enabled === true;
-  const bgText = (backgroundText || videoTitle || fallbackName || '').toString();
-  const hasVideo = Boolean(embedUrl || uploadedVideoUrl);
+  const heroVideoItem = videoHero?.videos?.[0] || videoHero || {};
+  
+  const directVideoTitle = heroVideoItem.videoTitle;
+  const directVideoSubtitle = heroVideoItem.videoSubtitle;
+  const directThumbnailUrl = heroVideoItem.thumbnailUrl;
+  const directEmbedUrl = heroVideoItem.embedUrl;
+  const directUploadedVideoUrl = heroVideoItem.uploadedVideoUrl;
 
-  const [open, setOpen] = useState(false);
+  // Build the list of videos to render
+  const heroVideos = [];
+
+  // Add all videos from videoHero.videos if they exist
+  if (videoHero?.videos && videoHero.videos.length > 0) {
+    videoHero.videos.forEach((v, idx) => {
+      heroVideos.push({
+        videoTitle: v.videoTitle || (idx === 0 ? directVideoTitle : undefined),
+        videoSubtitle: v.videoSubtitle || (idx === 0 ? directVideoSubtitle : undefined),
+        embedUrl: v.embedUrl,
+        uploadedVideoUrl: v.uploadedVideoUrl,
+        thumbnailUrl: v.thumbnailUrl || (idx === 0 ? directThumbnailUrl : undefined),
+      });
+    });
+  } else if (directEmbedUrl || directUploadedVideoUrl || (videoHero?.enabled && (!allVideos || allVideos.length === 0))) {
+    // Fallback to flat fields (for synthetic videoHero objects)
+    // Only push an empty one if there are NO other videos, otherwise we get a blank "NO VIDEO SOURCE" circle
+    heroVideos.push({
+      videoTitle: directVideoTitle,
+      videoSubtitle: directVideoSubtitle,
+      embedUrl: directEmbedUrl,
+      uploadedVideoUrl: directUploadedVideoUrl,
+      thumbnailUrl: directThumbnailUrl,
+    });
+  }
+
+  if (allVideos && allVideos.length > 0) {
+    allVideos.forEach((v, idx) => {
+      const vEmbed = v.embedUrl || v.videoUrl;
+      const vUpload = v.uploadedVideoUrl || v.videoFileUrl;
+      
+      // Prevent duplicating any video already in heroVideos
+      const duplicateIndex = heroVideos.findIndex(hv => {
+        return (vEmbed && hv.embedUrl === vEmbed) || 
+               (vUpload && hv.uploadedVideoUrl === vUpload);
+      });
+      
+      if (duplicateIndex !== -1) {
+        const existing = heroVideos[duplicateIndex];
+        const hasDefaultTitle = !existing.videoTitle || existing.videoTitle === 'Watch Video';
+        const hasDefaultSubtitle = !existing.videoSubtitle || existing.videoSubtitle === 'Experience the story in motion.';
+        heroVideos[duplicateIndex] = {
+          ...existing,
+          videoTitle: hasDefaultTitle ? (v.videoTitle || existing.videoTitle) : existing.videoTitle,
+          videoSubtitle: hasDefaultSubtitle ? (v.videoSubtitle || existing.videoSubtitle) : existing.videoSubtitle,
+          thumbnailUrl: existing.thumbnailUrl || v.thumbnailUrl,
+          orientation: existing.orientation || v.orientation,
+        };
+        return;
+      }
+      
+      heroVideos.push({
+        ...v,
+        videoTitle: v.videoTitle || (idx === 0 ? directVideoTitle : undefined),
+        videoSubtitle: v.videoSubtitle || (idx === 0 ? directVideoSubtitle : undefined),
+        embedUrl: vEmbed,
+        uploadedVideoUrl: vUpload,
+        thumbnailUrl: v.thumbnailUrl || (idx === 0 ? directThumbnailUrl : undefined),
+      });
+    });
+  }
+
+  const enabled = videoHero?.enabled === true || heroVideos.length > 0;
+  const bgText = (backgroundText || heroVideos[0]?.videoTitle || fallbackName || 'CASE STUDY').toString();
+  const normalizedBackdropText = bgText.replace(/\s+/g, ' ').trim();
+  const normalizedFallbackName = (fallbackName || '').toString().replace(/\s+/g, ' ').trim();
+  const shouldUsePunchWord = normalizedFallbackName
+    && normalizedBackdropText.toLowerCase() === normalizedFallbackName.toLowerCase();
+  const backdropText = shouldUsePunchWord
+    ? normalizedBackdropText.split(' ').filter(Boolean).slice(-1)[0]
+    : normalizedBackdropText;
+
+  const [activeVideoIndex, setActiveVideoIndex] = useState(null);
+  const isOpen = activeVideoIndex !== null;
+  const activeVideo = isOpen ? heroVideos[activeVideoIndex] : null;
+
   const prefersReduced = useReducedMotion();
 
-  const triggerRef = useRef(null);
   const closeRef = useRef(null);
   const videoRef = useRef(null);
 
@@ -130,16 +169,14 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
     : { duration: 0.6, ease: [0.16, 1, 0.3, 1] };
 
   const closeVideo = () => {
-    // Pause native video immediately; embeds stop on unmount.
     if (videoRef.current) {
       try { videoRef.current.pause(); } catch { /* noop */ }
     }
-    setOpen(false);
+    setActiveVideoIndex(null);
   };
 
-  // ESC to close + body scroll lock + focus management while open.
   useEffect(() => {
-    if (!open) return;
+    if (!isOpen) return;
     const onKey = (e) => { if (e.key === 'Escape') closeVideo(); };
     window.addEventListener('keydown', onKey);
     const prevOverflow = document.body.style.overflow;
@@ -149,36 +186,34 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
       window.removeEventListener('keydown', onKey);
       document.body.style.overflow = prevOverflow;
       clearTimeout(focusTimer);
-      triggerRef.current?.focus();
     };
-  }, [open]);
+  }, [isOpen]);
 
-  // Conditional rendering — after all hooks, bail out entirely when disabled.
-  // No DOM, no spacing, nothing rendered.
   if (!enabled) return null;
 
   const carla = { fontFamily: '"Karla", sans-serif' };
 
-  const renderPlayer = () => {
-    if (embedUrl) {
+  const renderPlayer = (video) => {
+    if (!video) return null;
+    if (video.embedUrl || video.videoUrl) {
       return (
         <iframe
           className="absolute inset-0 w-full h-full"
-          src={withAutoplay(embedUrl)}
-          title={videoTitle || 'Case study video'}
+          src={withAutoplay(getSafeEmbedUrl(video.embedUrl || video.videoUrl))}
+          title={video.videoTitle || 'Case study video'}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
           allowFullScreen
           style={{ border: 'none' }}
         />
       );
     }
-    if (uploadedVideoUrl) {
+    if (video.uploadedVideoUrl || video.videoFileUrl) {
       return (
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-contain bg-black"
-          src={uploadedVideoUrl}
-          poster={thumbnailUrl}
+          src={video.uploadedVideoUrl || video.videoFileUrl}
+          poster={video.thumbnailUrl}
           controls
           autoPlay
           playsInline
@@ -194,112 +229,132 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
 
   return (
     <section
-      className="relative w-full overflow-hidden flex flex-col items-center justify-center py-28 md:py-40"
+      className="relative w-full overflow-hidden flex flex-col items-center justify-center min-h-[430px] md:min-h-[520px] lg:min-h-[560px] py-20 md:py-28"
       style={{ backgroundColor }}
-      aria-label={videoTitle || `${fallbackName} video`}
+      aria-label={heroVideos[0]?.videoTitle || `${fallbackName} video`}
     >
-      {/* Motion-graphics backdrop */}
-      <MotionBackdrop reduced={prefersReduced} />
+      <KantiPrefaceBackdrop backgroundColor={backgroundColor} reduced={prefersReduced} />
 
-      {/* Oversized background text (Carla) — sits behind the video, overflows the viewport */}
-      <div className="absolute inset-0 z-[1] flex items-center pointer-events-none select-none overflow-hidden">
+      {/* Oversized Kanti-style background text */}
+      <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none select-none overflow-hidden">
         <motion.div
           aria-hidden="true"
-          className="flex font-bold uppercase whitespace-nowrap leading-none text-white/[0.06]"
-          style={{ ...carla, fontSize: 'clamp(6rem, 24vw, 26rem)' }}
-          animate={prefersReduced ? undefined : { x: [0, '-50%'] }}
-          transition={{ duration: 160, repeat: Infinity, ease: 'linear' }}
+          className="font-black uppercase whitespace-nowrap leading-none text-white/[0.075]"
+          style={{ ...carla, fontSize: 'clamp(8rem, 32vw, 30rem)' }}
+          animate={prefersReduced ? undefined : { x: ['2%', '-2%', '2%'] }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <span className="pr-12">{Array(8).fill(bgText + ' — ').join('')}</span>
-          <span>{Array(8).fill(bgText + ' — ').join('')}</span>
+          {backdropText}
         </motion.div>
       </div>
 
-      {/* Circular video trigger — placeholder reserves space during expansion */}
-      <div className="relative z-10 w-[230px] h-[230px] sm:w-[300px] sm:h-[300px] lg:w-[380px] lg:h-[380px]">
-        {!open && (
-          <motion.button
-            ref={triggerRef}
-            layoutId={SHARED_ID}
-            onClick={() => setOpen(true)}
-            transition={layoutTransition}
-            style={{ borderRadius: '50%' }}
-            className="group absolute inset-0 overflow-hidden cursor-pointer focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40 shadow-[0_30px_80px_rgba(0,0,0,0.55)]"
-            aria-label={`Play video${videoTitle ? `: ${videoTitle}` : ''}`}
-            whileTap={{ scale: 0.97 }}
-          >
-            {/* Thumbnail (scales slightly on hover) */}
-            <motion.div
-              className="absolute inset-0"
-              initial={false}
-              whileHover={prefersReduced ? undefined : { scale: 1.06 }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {thumbnailUrl ? (
-                <img src={thumbnailUrl} alt="" className="w-full h-full object-cover" />
-              ) : uploadedVideoUrl ? (
-                <video src={uploadedVideoUrl} autoPlay loop muted playsInline className="w-full h-full object-cover scale-[1.2]" />
-              ) : (
-                <div className="w-full h-full" style={{ background: 'radial-gradient(circle at 50% 40%, rgba(255,255,255,0.18), transparent 70%)' }} />
-              )}
-              <div className="absolute inset-0 bg-black/30 transition-colors duration-500 group-hover:bg-black/15" />
-            </motion.div>
+      {/* Circular video triggers (mapped horizontally) */}
+      <div className="relative z-10 flex flex-wrap items-center justify-center gap-8 md:gap-16 px-4 w-full">
+        {heroVideos.map((video, idx) => {
+          const vTitle = video.videoTitle || 'Watch Video';
+          const vThumb = video.thumbnailUrl;
+          const vEmbed = video.embedUrl || video.videoUrl;
+          const vEmbedThumb = getEmbedThumbnailUrl(vEmbed);
+          const vUpload = video.uploadedVideoUrl || video.videoFileUrl;
+          const fallbackLabel = (backdropText || vTitle || fallbackName || 'Play').slice(0, 12);
 
-            {/* Pulsing ring */}
-            {!prefersReduced && (
-              <motion.span
-                className="absolute inset-0 rounded-full border border-white/40"
-                animate={{ scale: [1, 1.12], opacity: [0.5, 0] }}
-                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
-              />
-            )}
+          return (
+            <div key={idx} className="relative flex flex-col items-center">
+              <div className={`relative shrink-0 ${heroVideos.length > 1 ? 'w-[150px] h-[150px] sm:w-[220px] sm:h-[220px] lg:w-[280px] lg:h-[280px]' : 'w-[190px] h-[190px] sm:w-[260px] sm:h-[260px] lg:w-[330px] lg:h-[330px]'}`}>
+                {!isOpen && (
+                  <motion.button
+                    layoutId={`${SHARED_ID}-${idx}`}
+                    onClick={() => setActiveVideoIndex(idx)}
+                    transition={layoutTransition}
+                    style={{ borderRadius: '50%' }}
+                    className="group absolute inset-0 overflow-hidden cursor-pointer border border-white/20 bg-white/[0.03] focus:outline-none focus-visible:ring-4 focus-visible:ring-white/40 shadow-[0_30px_90px_rgba(0,0,0,0.45)]"
+                    aria-label={`Play video${vTitle ? `: ${vTitle}` : ''}`}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <motion.div
+                      className="absolute inset-0"
+                      initial={false}
+                      whileHover={prefersReduced ? undefined : { scale: 1.06 }}
+                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      {vUpload ? (
+                        <video
+                          src={vUpload}
+                          poster={vThumb || vEmbedThumb || undefined}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          preload="metadata"
+                          className="w-full h-full object-cover scale-[1.08]"
+                        />
+                      ) : vThumb || vEmbedThumb ? (
+                        <CaseStudyMedia
+                          src={vThumb || vEmbedThumb}
+                          alt=""
+                          className="w-full h-full object-cover"
+                          sizes="(min-width: 1024px) 320px, 240px"
+                        />
+                      ) : (
+                        <div className="w-full h-full grid place-items-center bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,0.16),rgba(255,255,255,0.035)_58%,rgba(1,8,54,0.24))]">
+                          <span className="text-white/18 text-5xl md:text-6xl font-black uppercase tracking-tight" style={carla}>
+                            {fallbackLabel}
+                          </span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-black/25 transition-colors duration-500 group-hover:bg-black/10" />
+                    </motion.div>
 
-            {/* Play button overlay */}
-            <span className="absolute inset-0 grid place-items-center">
-              <span className="grid place-items-center w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/15 backdrop-blur-md border border-white/30 transition-transform duration-500 group-hover:scale-110 shadow-[0_0_40px_rgba(255,255,255,0.15)]">
-                <Play className="w-6 h-6 md:w-7 md:h-7 text-white translate-x-0.5" fill="currentColor" />
-              </span>
-            </span>
-          </motion.button>
-        )}
+                    {!prefersReduced && (
+                      <motion.span
+                        className="absolute inset-0 rounded-full border border-white/45"
+                        animate={{ scale: [1, 1.08], opacity: [0.45, 0] }}
+                        transition={{ duration: 2.6, repeat: Infinity, ease: 'easeOut', delay: idx * 0.5 }}
+                      />
+                    )}
+
+                    <span className="absolute inset-0 grid place-items-center">
+                      <span className="grid place-items-center w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/16 backdrop-blur-md border border-white/35 transition-transform duration-500 group-hover:scale-110 shadow-[0_0_44px_rgba(255,255,255,0.18)]">
+                        <Play className="w-5 h-5 md:w-6 md:h-6 text-white translate-x-0.5" fill="currentColor" aria-hidden="true" />
+                      </span>
+                    </span>
+                  </motion.button>
+                )}
+              </div>
+
+            </div>
+          );
+        })}
       </div>
 
-      {/* Preface / Title & Subtitle Callout */}
-      {(videoTitle || videoSubtitle) && (
-        <motion.div
-          className="absolute z-10 bottom-8 left-6 md:bottom-16 md:left-12 lg:left-16 flex flex-col items-start"
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: '-10%' }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-        >
-          {/* Hand-drawn SVG Arrow pointing right */}
-          <div className="mb-4 text-white/70">
-            <svg width="48" height="16" viewBox="0 0 64 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-80">
-              <path d="M1 12C15.5 8 32 16 48 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M42 6L48 12L42 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          
-          <div className="flex flex-col gap-1">
-            {videoTitle && (
-              <h2 className="text-lg md:text-xl text-white font-medium tracking-tight" style={carla}>
-                {videoTitle}
-              </h2>
-            )}
-            {videoSubtitle && (
-              <p className="text-sm md:text-base text-white/55 max-w-[200px] md:max-w-[250px]" style={carla}>
-                {videoSubtitle}
-              </p>
-            )}
-          </div>
-        </motion.div>
-      )}
+      {/* CMS-driven preface copy */}
+      <motion.div
+        className="absolute z-10 bottom-6 left-5 right-5 md:bottom-12 md:left-12 md:right-auto lg:left-16 flex flex-col items-start pointer-events-none"
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+      >
+        {/* Hand-drawn SVG Arrow pointing right */}
+        <div className="mb-4 text-white/70">
+          <svg width="48" height="16" viewBox="0 0 64 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="opacity-80">
+            <path d="M1 12C15.5 8 32 16 48 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M42 6L48 12L42 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        
+        <h2 className="text-lg md:text-2xl text-white font-medium tracking-tight mb-2" style={carla}>
+          {heroVideos[0]?.videoTitle || 'Watch Video'}
+        </h2>
+        <p className="text-sm md:text-base text-white/60 max-w-[300px]" style={carla}>
+          {heroVideos[0]?.videoSubtitle || 'Experience the story in motion.'}
+        </p>
+      </motion.div>
 
       {/* Fullscreen player (portal → escapes overflow/transform ancestors) */}
       {createPortal(
         <AnimatePresence>
-          {open && (
+          {isOpen && (
             <>
               {/* Dim backdrop — click outside to close */}
               <motion.div
@@ -313,15 +368,15 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study' }) => {
 
               {/* Expanding frame: circle → near-fullscreen, radius 50% → 0% */}
               <motion.div
-                layoutId={SHARED_ID}
+                layoutId={`${SHARED_ID}-${activeVideoIndex}`}
                 transition={layoutTransition}
-                style={{ borderRadius: hasVideo ? 0 : '0%' }}
+                style={{ borderRadius: (activeVideo?.embedUrl || activeVideo?.uploadedVideoUrl || activeVideo?.videoUrl || activeVideo?.videoFileUrl) ? 0 : '0%' }}
                 className="fixed z-[99999] inset-3 sm:inset-8 lg:inset-12 overflow-hidden bg-black shadow-[0_40px_120px_rgba(0,0,0,0.7)]"
                 role="dialog"
                 aria-modal="true"
-                aria-label={videoTitle || 'Case study video'}
+                aria-label={activeVideo?.videoTitle || 'Case study video'}
               >
-                {renderPlayer()}
+                {renderPlayer(activeVideo)}
 
                 {/* Back Button (Top Left) */}
                 <button

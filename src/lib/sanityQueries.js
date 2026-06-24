@@ -1,5 +1,9 @@
-export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(orderRank) {
-  "id": coalesce(id, _id),
+export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(coalesce(order, 999999), orderRank, _createdAt) {
+  _id,
+  _createdAt,
+  "cmsId": _id,
+  id,
+  orderRank,
   client,
   sector,
   challenge,
@@ -14,29 +18,73 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(orderRank) {
   order,
   "imageUrl": image.asset->url,
   "bannerImage": bannerImage.asset->url,
+  "bannerVideo": bannerVideo.asset->url,
+  "bannerImageDimensions": bannerImage.asset->metadata.dimensions,
   challengeHeading,
   solutionHeading,
   deliverablesHeading,
   overviewHeading,
   carouselTitle,
   carouselSubtext,
+  reachHeading,
+  reachSubtext,
+  outcomeHeading,
+  outcomeText,
+  teamCredits,
   "fullStory": {
     "challenge": fullStory.challenge,
     "strategy": fullStory.strategy,
     "execution": fullStory.execution,
     "stats": fullStory.stats,
     "heroImg": fullStory.heroImg.asset->url,
+    "heroVideo": fullStory.heroVideo.asset->url,
+    "heroImgDimensions": fullStory.heroImg.asset->metadata.dimensions,
     "images": fullStory.images[].asset->url,
+    "media": fullStory.images[] {
+      _key,
+      alt,
+      caption,
+      "url": asset->url,
+      "mimeType": asset->mimeType,
+      "extension": asset->extension,
+      "metadata": asset->metadata {
+        lqip,
+        "dimensions": dimensions {
+          width,
+          height,
+          aspectRatio
+        }
+      }
+    },
     "storyChapters": fullStory.storyChapters[] {
       title,
       description,
-      "imageUrl": image.asset->url
+      "imageUrl": image.asset->url,
+      "videoUrl": video.asset->url,
+      "image": {
+        "url": image.asset->url,
+        "mimeType": image.asset->mimeType,
+        "extension": image.asset->extension
+      },
+      "video": {
+        "url": video.asset->url
+      }
     }
   },
-  "videoSection": {
-    "orientation": videoSection.orientation,
-    "videoUrl": videoSection.videoUrl,
-    "videoFileUrl": videoSection.videoFile.asset->url
+  "videoSection": videoSection {
+    orientation,
+    videoTitle,
+    videoSubtitle,
+    videoUrl,
+    "thumbnailUrl": thumbnail.asset->url,
+    "videoFileUrl": videoFile.asset->url,
+    "videos": videos[] {
+      videoTitle,
+      videoSubtitle,
+      "thumbnailUrl": thumbnail.asset->url,
+      "videoUrl": videoUrl,
+      "videoFileUrl": videoFile.asset->url
+    }
   },
   "videoHero": videoHero {
     enabled,
@@ -46,10 +94,16 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(orderRank) {
     videoSubtitle,
     embedUrl,
     "thumbnailUrl": thumbnail.asset->url,
-    "uploadedVideoUrl": uploadedVideo.asset->url
+    "uploadedVideoUrl": uploadedVideo.asset->url,
+    "videos": videos[] {
+      videoTitle,
+      videoSubtitle,
+      embedUrl,
+      "thumbnailUrl": thumbnail.asset->url,
+      "uploadedVideoUrl": uploadedVideo.asset->url
+    }
   },
   heroTypography,
-  arrivalText,
   seoTitle,
   metaDescription,
   focusKeyword,

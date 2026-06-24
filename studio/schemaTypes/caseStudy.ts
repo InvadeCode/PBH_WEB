@@ -20,10 +20,17 @@ export default defineType({
     }),
     defineField({
       name: 'bannerImage',
-      title: 'Work Page Banner Image',
+      title: 'Work Page Banner Image (1920 x 1080 px)',
       type: 'image',
-      description: 'The thumbnail image displayed on the main "Selected Work" grid. If empty, defaults to a colored gradient.',
+      description: 'The thumbnail image displayed on the main "Selected Work" grid. Recommended size: 1920 x 1080 px (16:9 Landscape). If empty, defaults to a colored gradient.',
       options: { hotspot: true }
+    }),
+    defineField({
+      name: 'bannerVideo',
+      title: 'Work Page Banner Video (Fallback for Image)',
+      type: 'file',
+      options: { accept: 'video/*' },
+      description: 'Upload a video to be used as the banner. If provided, the video will take precedence over the Banner Image.'
     }),
     defineField({
       name: 'overviewHeading',
@@ -62,6 +69,30 @@ export default defineType({
       description: 'Subtitle shown below the gallery title. Defaults to "Scroll or drag to explore".'
     }),
     defineField({
+      name: 'reachHeading',
+      title: 'Interactive Reach Section Heading',
+      type: 'string',
+      description: 'Optional heading for the Snow Leopard-style interactive map/gallery section. Leave blank to hide the heading.'
+    }),
+    defineField({
+      name: 'reachSubtext',
+      title: 'Interactive Reach Section Subtext',
+      type: 'string',
+      description: 'Optional subtext for the Snow Leopard-style interactive map/gallery section.'
+    }),
+    defineField({
+      name: 'outcomeHeading',
+      title: 'Outcome Section Heading',
+      type: 'string',
+      description: 'Optional heading shown near the end of Snow Leopard-style case studies. Leave blank to hide this section heading.'
+    }),
+    defineField({
+      name: 'outcomeText',
+      title: 'Outcome Section Body',
+      type: 'text',
+      description: 'Optional body copy shown near the end of Snow Leopard-style case studies. Leave blank to hide the outcome copy.'
+    }),
+    defineField({
       name: 'colors',
       title: 'Colors',
       type: 'array',
@@ -74,8 +105,9 @@ export default defineType({
     }),
     defineField({
       name: 'order',
-      title: 'Order',
+      title: 'Display Order (Optional)',
       type: 'number',
+      description: 'Optional numeric override for case study sequencing. Lower numbers appear first. If blank, the draggable Sanity order is used; if that is blank too, source order is preserved.',
     }),
     defineField({
       name: 'overview',
@@ -103,6 +135,92 @@ export default defineType({
       name: 'sector',
       title: 'Sector',
       type: 'string',
+      description: 'Select the sector this case study belongs to. Choose "Other" if none fit.',
+      options: {
+        layout: 'dropdown',
+        list: [
+          'Architecture & Urban Design',
+          'Education & Research Institutions',
+          'Universities & Centres of Excellence',
+          'Financial Services',
+          'Food & Nutrition',
+          'Ayurveda, Yoga & Wellness',
+          'Personal Care & Beauty',
+          'Mother & Baby Care',
+          'Health & Medical',
+          'Biotechnology',
+          'Pharmaceutical',
+          'Cognitive Science & Neuroscience',
+          'Agri-tech',
+          'Vertical / Urban Farming',
+          'Environmental Science',
+          'Sustainability & Conservation',
+          'Renewable Energy',
+          'EV & Clean Transport',
+          'Advanced Manufacturing',
+          '3D Printing',
+          'Chemical Industries',
+          'Nanotechnology',
+          'Artificial Intelligence',
+          'Emerging Technology',
+          'Information Technology',
+          'Defence',
+          'Aviation & Aerospace',
+          'Geology & Earth Sciences',
+          'Sports & Fitness',
+          'Fashion & Textile',
+          'Consumer Products',
+          'Public Policy & Think Tanks',
+          'Media, Events & Knowledge Platforms',
+          'Spiritual Tech / Faith Tech',
+          'Other',
+        ],
+      },
+    }),
+    defineField({
+      name: 'teamCredits',
+      title: 'Team Credits',
+      type: 'object',
+      description:
+        'The people who worked on this project. Shown as a credits section at the bottom of the case study. Add as many members as you like — each has an editable Name and Title/Role.',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({
+          name: 'heading',
+          title: 'Section Heading',
+          type: 'string',
+          initialValue: 'The Minds Behind the Magic',
+        }),
+        defineField({
+          name: 'subtext',
+          title: 'Subtext (optional)',
+          type: 'string',
+        }),
+        defineField({
+          name: 'members',
+          title: 'Team Members',
+          type: 'array',
+          of: [
+            {
+              type: 'object',
+              name: 'member',
+              title: 'Member',
+              fields: [
+                {
+                  name: 'name',
+                  title: 'Name',
+                  type: 'string',
+                  validation: (Rule) => Rule.required(),
+                },
+                {name: 'title', title: 'Title / Role', type: 'string'},
+              ],
+              preview: {
+                select: {title: 'name', subtitle: 'title'},
+              },
+            },
+          ],
+        }),
+      ],
     }),
     defineField({
       name: 'solution',
@@ -128,12 +246,44 @@ export default defineType({
         defineField({ name: 'challenge', title: 'Challenge', type: 'text' }),
         defineField({ name: 'execution', title: 'Execution', type: 'text' }),
         defineField({ name: 'strategy', title: 'Strategy', type: 'text' }),
-        defineField({ name: 'heroImg', title: 'Hero Image', type: 'image' }),
+        defineField({ 
+          name: 'heroImg', 
+          title: 'Hero Image (2560 x 1440 px)', 
+          type: 'image',
+          description: 'Spans the top of the case study. Recommended size: 2560 x 1440 px (16:9 Landscape).' 
+        }),
+        defineField({ 
+          name: 'heroVideo', 
+          title: 'Hero Video (Fallback for Image)', 
+          type: 'file',
+          options: { accept: 'video/*' },
+          description: 'Spans the top of the case study. If provided, this video takes precedence over the Hero Image.' 
+        }),
         defineField({
           name: 'images',
-          title: 'Images',
+          title: 'Gallery Media (Images, GIFs, Videos)',
           type: 'array',
-          of: [{ type: 'image' }],
+          description: 'Supports static images, GIFs, and videos. For Masonry Grids (Arise/Leverage): Mix 1200x1200 and 1920x1080. For Carousels (Albatross): Strictly Portrait 1080x1440.',
+          of: [
+            {
+              type: 'image',
+              options: { hotspot: true },
+              fields: [
+                defineField({ name: 'alt', title: 'Alt Text', type: 'string' }),
+                defineField({ name: 'caption', title: 'Caption', type: 'string' }),
+              ],
+            },
+            {
+              type: 'file',
+              name: 'videoFile',
+              title: 'Video File',
+              options: { accept: 'video/*' },
+              fields: [
+                defineField({ name: 'alt', title: 'Alt Text', type: 'string' }),
+                defineField({ name: 'caption', title: 'Caption', type: 'string' }),
+              ],
+            }
+          ],
         }),
         defineField({
           name: 'storyChapters',
@@ -145,9 +295,22 @@ export default defineType({
               type: 'object',
               name: 'storyChapter',
               fields: [
+                defineField({ name: 'chapterLabel', title: 'Chapter Label (e.g. "Chapter 1", "Phase One")', type: 'string' }),
                 defineField({ name: 'title', title: 'Chapter Title', type: 'string' }),
                 defineField({ name: 'description', title: 'Chapter Description', type: 'text' }),
-                defineField({ name: 'image', title: 'Chapter Image', type: 'image' })
+                defineField({ 
+                  name: 'image', 
+                  title: 'Chapter Image', 
+                  type: 'image',
+                  description: 'Supports both Portrait and Landscape. The UI will automatically adjust to prevent cropping.'
+                }),
+                defineField({ 
+                  name: 'video', 
+                  title: 'Chapter Video (Fallback for Image)', 
+                  type: 'file',
+                  options: { accept: 'video/*' },
+                  description: 'If provided, this video takes precedence over the Chapter Image.'
+                })
               ]
             }
           ]
@@ -176,32 +339,46 @@ export default defineType({
       description: 'Use this to add a standard video anywhere in the case study.',
       fields: [
         defineField({
-          name: 'orientation',
-          title: 'Video Orientation',
+          name: 'videoTitle',
+          title: 'Preface Title (Fallback)',
           type: 'string',
-          options: {
-            list: [
-              { title: 'Landscape (16:9)', value: 'landscape' },
-              { title: 'Portrait (9:16 Mobile format)', value: 'portrait' },
-              { title: 'Square (1:1)', value: 'square' }
-            ],
-            layout: 'radio'
-          },
-          initialValue: 'landscape',
-          description: 'Choose the display shape so the video fits beautifully without cropping.'
+          description: 'Optional title for the Kanti-style video preface when the first video has no title.',
         }),
         defineField({
-          name: 'videoUrl',
-          title: 'Video Embed URL',
-          type: 'url',
-          description: 'e.g., YouTube or Vimeo embed URL'
+          name: 'videoSubtitle',
+          title: 'Preface Subtitle (Fallback)',
+          type: 'string',
+          description: 'Optional subtitle for the Kanti-style video preface when the first video has no subtitle.',
         }),
         defineField({
-          name: 'videoFile',
-          title: 'Video File',
-          type: 'file',
-          options: { accept: 'video/*' },
-          description: 'Upload a video file (used if URL is not provided)'
+          name: 'thumbnail',
+          title: 'Preface Thumbnail (Fallback)',
+          type: 'image',
+          options: { hotspot: true },
+          description: 'Optional circular preface image when the first video has no thumbnail.',
+        }),
+        defineField({
+          name: 'videos',
+          title: 'Videos',
+          type: 'array',
+          description: 'Add your videos here. They will appear as circles that expand to fullscreen. 1 video = Centered. 2+ = Side-by-Side.',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                defineField({ name: 'videoTitle', title: 'Video Title', type: 'string' }),
+                defineField({ name: 'videoSubtitle', title: 'Video Subtitle', type: 'string' }),
+                defineField({ 
+                  name: 'thumbnail', 
+                  title: 'Thumbnail (Square)', 
+                  type: 'image', 
+                  options: { hotspot: true }
+                }),
+                defineField({ name: 'videoUrl', title: 'Video Embed URL', type: 'url' }),
+                defineField({ name: 'videoFile', title: 'Uploaded Video', type: 'file', options: { accept: 'video/*' } }),
+              ]
+            }
+          ]
         })
       ]
     }),
@@ -233,33 +410,46 @@ export default defineType({
         }),
         defineField({
           name: 'videoTitle',
-          title: 'Video Title',
+          title: 'Preface Title (Fallback)',
           type: 'string',
+          description: 'Optional title for the Kanti-style video preface when the first video has no title.',
         }),
         defineField({
           name: 'videoSubtitle',
-          title: 'Video Subtitle',
+          title: 'Preface Subtitle (Fallback)',
           type: 'string',
+          description: 'Optional subtitle for the Kanti-style video preface when the first video has no subtitle.',
         }),
         defineField({
           name: 'thumbnail',
-          title: 'Thumbnail',
+          title: 'Preface Thumbnail (Fallback)',
           type: 'image',
           options: { hotspot: true },
-          description: 'Poster image shown inside the circular play button.',
+          description: 'Optional circular preface image when the first video has no thumbnail.',
         }),
         defineField({
-          name: 'embedUrl',
-          title: 'Embed URL',
-          type: 'url',
-          description: 'YouTube/Vimeo embed URL. Takes priority over an uploaded file.',
-        }),
-        defineField({
-          name: 'uploadedVideo',
-          title: 'Uploaded Video',
-          type: 'file',
-          options: { accept: 'video/*' },
-          description: 'Used when no Embed URL is provided.',
+          name: 'videos',
+          title: 'Videos',
+          type: 'array',
+          description: 'Add your videos here. 1 video = Centered. 2+ videos = Side-by-Side.',
+          of: [
+            {
+              type: 'object',
+              fields: [
+                defineField({ name: 'videoTitle', title: 'Video Title', type: 'string' }),
+                defineField({ name: 'videoSubtitle', title: 'Video Subtitle', type: 'string' }),
+                defineField({ 
+                  name: 'thumbnail', 
+                  title: 'Thumbnail (1200 x 1200 px Square)', 
+                  type: 'image', 
+                  options: { hotspot: true },
+                  description: 'Must be exactly Square (1200 x 1200 px).'
+                }),
+                defineField({ name: 'embedUrl', title: 'Embed URL', type: 'url' }),
+                defineField({ name: 'uploadedVideo', title: 'Uploaded Video', type: 'file', options: { accept: 'video/*' } }),
+              ]
+            }
+          ]
         }),
       ],
     }),
@@ -269,12 +459,6 @@ export default defineType({
       type: 'array',
       of: [{type: 'string'}],
       description: 'Used for specialized hero sections (e.g. Leverage Edu letters)'
-    }),
-    defineField({
-      name: 'arrivalText',
-      title: 'Arrival Text',
-      type: 'string',
-      description: 'Used in the arrival/footer section of some case studies.'
     }),
     defineField({
       name: 'seoTitle',

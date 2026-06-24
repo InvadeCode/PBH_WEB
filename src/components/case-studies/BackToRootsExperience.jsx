@@ -1,7 +1,10 @@
-import { useRef, useEffect, useContext } from 'react';
+import React, { useRef, useEffect, useContext } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
+import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
+import CaseStudyVideoHero from './CaseStudyVideoHero';
+import { getSafeEmbedUrl } from '../../lib/videoUtils';
 
 // ── Palette ───────────────────────────────────────────────────────────────
 const C = {
@@ -60,7 +63,7 @@ const Cover = ({ project, navigate, SITE_SETTINGS }) => {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const imgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
   const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
-  const heroImage = project.bannerImage || project.fullStory?.heroImg || project.imageUrl;
+  const heroImage = project.bannerVideo || project.fullStory?.heroVideo || project.bannerImage || project.fullStory?.heroImg || project.imageUrl;
   const title = (project.client || 'Back To Roots').toUpperCase();
 
   return (
@@ -68,7 +71,15 @@ const Cover = ({ project, navigate, SITE_SETTINGS }) => {
       
       {/* The Banner Image (revealed underneath) */}
       <motion.div className="absolute inset-0" style={{ y: imgY, scale: imgScale }}>
-        {heroImage && <img src={heroImage} alt="" className="w-full h-full object-cover" />}
+        {heroImage && (
+          <CaseStudyMedia
+            src={heroImage}
+            alt={`${project.client || 'Case study'} hero`}
+            className="w-full h-full object-cover"
+            priority
+            sizes="100vw"
+          />
+        )}
         {/* We keep a subtle gradient so it blends into the rest of the site */}
         <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, ${C.soil}cc 0%, ${C.soil}22 40%, ${C.soilDeep}f2 100%)` }} />
       </motion.div>
@@ -81,40 +92,40 @@ const Cover = ({ project, navigate, SITE_SETTINGS }) => {
         animate={{ y: '-100%' }}
         transition={{ duration: 1.4, delay: 2.2, ease: [0.76, 0, 0.24, 1] }}
       >
-        <motion.span className="block text-[11px] md:text-xs uppercase tracking-[0.5em] mb-8 font-secondary" style={{ color: C.terra }}
-          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.2 }}>
-          {project.sector || 'Brand Storytelling'}
-        </motion.span>
-        <h1 className="leading-[0.95] text-center" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-          {title.split(' ').map((word, wi) => (
-            <span key={wi} className="block overflow-hidden">
-              <motion.span className="inline-block" style={{
-                fontSize: 'clamp(3rem, 11vw, 11rem)', letterSpacing: '0.04em',
-                background: `linear-gradient(120deg, ${C.cream}, ${C.terra})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-              }}
-                initial={{ y: '110%' }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.1 + wi * 0.12, ease: C.ease }}>
-                {word}
-              </motion.span>
-            </span>
+
+        <h1 className="leading-[0.95] text-center whitespace-nowrap font-primary">
+          {title.split(' ').map((word, wi, arr) => (
+            <React.Fragment key={wi}>
+              <span className="inline-block overflow-hidden align-bottom">
+                <motion.span className="inline-block align-bottom" style={{
+                  fontSize: 'clamp(2rem, 8vw, 9rem)', letterSpacing: '0.04em',
+                  background: `linear-gradient(120deg, ${C.cream}, ${C.terra})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                }}
+                  initial={{ y: '110%' }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.1 + wi * 0.12, ease: C.ease }}>
+                  {word}
+                </motion.span>
+              </span>
+              {wi < arr.length - 1 && <span className="inline-block w-[3vw]">&nbsp;</span>}
+            </React.Fragment>
           ))}
         </h1>
       </motion.div>
 
       {/* Top bar (fades in after curtain) */}
-      <motion.div className="absolute top-0 inset-x-0 z-30 flex justify-between items-center px-[5%] pt-9"
+      <motion.div className="absolute top-0 inset-x-0 z-30 flex items-center gap-3 px-[5%] pt-28"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 3.2 }}>
-        <button onClick={() => navigate('work')} className="flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70" style={{ color: `${C.cream}99` }}>
-          <ArrowLeft className="w-4 h-4" /> {SITE_SETTINGS?.csBackToWork || 'Work'}
+        <button onClick={() => navigate('home')} className="flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border" style={{ color: C.cream, borderColor: `${C.cream}33`, backgroundColor: `${C.soilDeep}33`, backdropFilter: 'blur(8px)' }}>
+          <ArrowLeft className="w-4 h-4" /> Home
         </button>
-        <span className="text-[10px] uppercase tracking-[0.3em] font-secondary" style={{ color: `${C.cream}66` }}>
-          {project?.type || 'A Story'}
-        </span>
+        <button onClick={() => navigate('work')} className="flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border text-white/60 hover:text-white border-white/20 bg-white/5 backdrop-blur-md">
+          <ArrowLeft className="w-4 h-4" /> All Case Studies
+        </button>
       </motion.div>
 
       {/* Scroll cue (fades in after curtain) */}
       <motion.div className="absolute bottom-10 inset-x-0 z-30 flex flex-col items-center gap-3"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.5, duration: 1 }}>
-        <span className="text-[9px] uppercase tracking-[0.4em] font-secondary" style={{ color: `${C.cream}55` }}>{SITE_SETTINGS?.csScrollStory || 'Scroll the story'}</span>
+        <span className="text-xs uppercase tracking-[0.4em] font-secondary" style={{ color: `${C.cream}55` }}>{SITE_SETTINGS?.csScrollStory || 'Scroll the story'}</span>
         <motion.div className="w-5 h-8 rounded-full border flex justify-center pt-1.5" style={{ borderColor: `${C.cream}40` }}>
           <motion.div className="w-1 h-1.5 rounded-full" style={{ backgroundColor: C.terra }}
             animate={{ y: [0, 8, 0], opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }} />
@@ -141,11 +152,11 @@ const Narrative = ({ project }) => {
               initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-12%' }}
               transition={{ duration: 1, delay: i * 0.08, ease: C.ease }}>
               <div className="flex items-center gap-3 mb-5">
-                <span className="font-serif text-sm" style={{ color: C.terra }}>{String(i + 1).padStart(2, '0')}</span>
+                <span className="font-primary text-sm" style={{ color: C.terra }}>{String(i + 1).padStart(2, '0')}</span>
                 <span className="h-px w-10" style={{ backgroundColor: `${C.terra}88` }} />
-                <h3 className="text-sm md:text-base font-serif uppercase tracking-[0.2em]" style={{ color: C.terra }}>{b.k}</h3>
+                <h3 className="text-sm md:text-base font-primary uppercase tracking-[0.2em]" style={{ color: C.terra }}>{b.k}</h3>
               </div>
-              <p className="font-serif font-light leading-relaxed whitespace-pre-line" style={{ color: `${C.cream}d9`, fontSize: 'clamp(1.05rem, 1.6vw, 1.4rem)' }}>
+              <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-base md:text-lg" style={{ color: `${C.cream}d9` }}>
                 {b.v}
               </p>
             </motion.div>
@@ -155,8 +166,8 @@ const Narrative = ({ project }) => {
         {project.fullStory?.execution && (
           <motion.blockquote className="mt-24 md:mt-32 text-center"
             initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-12%' }} transition={{ duration: 1.1, ease: C.ease }}>
-            <span className="block font-serif mb-4" style={{ color: C.terra, fontSize: '3.5rem', lineHeight: 1 }}>“</span>
-            <p className="font-serif font-light italic leading-snug mx-auto max-w-3xl" style={{ color: C.cream, fontSize: 'clamp(1.6rem, 3.5vw, 3rem)' }}>
+            <span className="block font-primary mb-4 text-4xl" style={{ color: C.terra, lineHeight: 1 }}>“</span>
+            <p className="font-primary font-light leading-snug mx-auto max-w-3xl text-2xl md:text-3xl" style={{ color: C.cream }}>
               {project.fullStory.execution}
             </p>
             <div className="w-16 h-px mx-auto mt-10" style={{ backgroundColor: C.terra }} />
@@ -207,7 +218,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.1 }} />
       
       <div className="text-center mb-16 px-[6%] relative z-10">
-        <h3 className="font-serif text-3xl md:text-5xl" style={{ color: C.terra }}>{project?.carouselTitle || 'The Unfolding Story'}</h3>
+        <h3 className="font-primary text-2xl md:text-4xl" style={{ color: C.terra }}>{project?.carouselTitle || 'The Unfolding Story'}</h3>
         <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${C.cream}66` }}>{project?.carouselSubtext || 'Scroll or drag to explore'}</p>
       </div>
 
@@ -219,12 +230,11 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
         {extendedImages.map((img, index) => {
           const storyChapters = project?.fullStory?.storyChapters || [];
           const chData = storyChapters.length > 0 ? storyChapters[index % storyChapters.length] : null;
-          const ch = chData ? { t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[index % DEFAULT_CHAPTERS.length];
-          const num = String((index % images.length) + 1).padStart(2, '0');
+          const ch = chData ? { label: chData.chapterLabel, t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[index % DEFAULT_CHAPTERS.length];
 
           return (
             <motion.div 
-              key={index} 
+              key={`${img.key}-${index}`} 
               className="relative shrink-0 snap-center flex flex-col items-center"
               style={{ width: 'min(85vw, 420px)' }}
               initial={{ opacity: 0, rotateY: 45, x: 100 }}
@@ -232,42 +242,39 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
               viewport={{ margin: "-10%" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              {/* Giant Background Ghost Numeral */}
-              <span className="absolute font-serif pointer-events-none select-none leading-none z-0"
-                style={{ 
-                  color: `${C.terra}1a`, 
-                  fontSize: '40vh', 
-                  top: '50%', 
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)'
-                }}>
-                {num}
-              </span>
-
-              {/* Vertical / Portrait Image Container */}
-              <div className="w-full aspect-[3/4] relative p-3 bg-[#0E0805] shadow-2xl overflow-hidden z-10" 
+              {/* Adaptive Image Container */}
+              <div className="w-full relative p-3 bg-[#0E0805] shadow-2xl overflow-hidden z-10" 
                    style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.8)', transformStyle: 'preserve-3d' }}>
                 <Sprockets pos="top" />
                 <Sprockets pos="bottom" />
-                <div className="absolute inset-3 overflow-hidden">
-                  <img src={img} alt={ch.t} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 pointer-events-none mix-blend-soft-light" style={{ background: `linear-gradient(155deg, ${C.terra} 0%, transparent 55%, ${C.soilDeep} 100%)` }} />
-                  <div className="absolute inset-x-0 bottom-0 h-1/2 pointer-events-none" style={{ background: `linear-gradient(to top, ${C.soilDeep}f2, transparent)` }} />
-                </div>
-                
-                {/* Floating Text within the "Page" */}
-                <div className="absolute bottom-8 inset-x-6 text-center z-20">
-                  <span className="text-[10px] uppercase tracking-[0.4em] font-secondary mb-3 block" style={{ color: C.terra }}>
-                    Chapter {num}
-                  </span>
-                  <h4 className="font-serif leading-none mb-3" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', color: C.cream }}>
-                    {ch.t}
-                  </h4>
-                  <p className="font-serif font-light italic leading-snug text-sm md:text-base" style={{ color: `${C.cream}b3` }}>
-                    {ch.l}
-                  </p>
+                <div className="w-full overflow-hidden bg-white/5 flex items-center justify-center relative border border-white/5 p-2">
+                  {img ? (
+                    <CaseStudyMedia
+                      item={img}
+                      alt={ch.t}
+                      className="w-full h-auto object-contain shadow-inner"
+                      sizes="(min-width: 768px) 420px, 85vw"
+                    />
+                  ) : (
+                    <div className="w-full aspect-[3/4] flex items-center justify-center">
+                      <span className="text-white/30 text-xs uppercase tracking-widest font-secondary">Media Unavailable</span>
+                    </div>
+                  )}
                 </div>
                 <RegMarks />
+              </div>
+
+              {/* Chapter Text */}
+              <div className="mt-8 text-center max-w-[80%]">
+                <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
+                  {ch.label || `Chapter ${index + 1}`}
+                </p>
+                <h4 className="text-lg md:text-xl font-primary mb-3" style={{ color: C.cream }}>
+                  {ch.t}
+                </h4>
+                <p className="text-sm font-secondary leading-relaxed" style={{ color: `${C.cream}AA` }}>
+                  {ch.l}
+                </p>
               </div>
             </motion.div>
           );
@@ -284,38 +291,10 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
   );
 };
 
-// ── SCENE 4 · ARRIVAL ───────────────────────────────────────────────────────
-const Arrival = ({ project, navigate, SITE_SETTINGS }) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start center', 'center center'] });
-  const bg = useTransform(scrollYProgress, [0, 1], [C.soilDeep, C.cream]);
-  const fg = useTransform(scrollYProgress, [0, 1], [C.cream, '#2A1810']);
-
-  return (
-    <motion.section ref={ref} style={{ backgroundColor: bg }} className="py-40 md:py-52 px-[6%] min-h-screen flex flex-col items-center justify-center">
-      <motion.h2 style={{ color: fg }} className="text-4xl md:text-7xl font-serif leading-snug text-center max-w-4xl mb-24 whitespace-pre-line">
-        {project?.arrivalText || "A journey completed,\na story eternal."}
-      </motion.h2>
-      <motion.div style={{ color: fg, borderColor: 'currentColor' }} className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-4xl text-center border-t pt-16 opacity-90">
-        {[['Client', project.client], ['Route', project.route || 'Brand Boulevard'], ['Roles', project.roles?.join(' · ') || 'Branding · Storytelling']].map(([k, v]) => (
-          <div key={k}>
-            <h4 className="text-[10px] uppercase tracking-[0.3em] opacity-50 mb-3 font-secondary">{k}</h4>
-            <p className="text-xl md:text-2xl font-serif">{v}</p>
-          </div>
-        ))}
-      </motion.div>
-      <motion.button onClick={() => navigate('work')} style={{ color: fg, borderColor: 'currentColor' }}
-        className="mt-24 px-8 py-3 rounded-full border uppercase tracking-[0.25em] text-[11px] font-secondary font-medium transition-opacity hover:opacity-60">
-        {SITE_SETTINGS?.csBackToWork || '← Back to all work'}
-      </motion.button>
-    </motion.section>
-  );
-};
-
 // ── ROOT ────────────────────────────────────────────────────────────────────
 const BackToRootsExperience = ({ navigate, project }) => {
   const { SITE_SETTINGS } = useContext(GlobalContext) || {};
-  const images = (project.fullStory?.images || []).map(it => (typeof it === 'string' ? it : it?.url || it?.imageUrl)).filter(Boolean);
+  const images = normalizeMediaItems(project.fullStory?.media || project.fullStory?.images, project.client || 'Case study media');
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, []);
 
@@ -326,37 +305,41 @@ const BackToRootsExperience = ({ navigate, project }) => {
       <Narrative project={project} />
       <StoryChapterCarousel images={images} project={project} SITE_SETTINGS={SITE_SETTINGS} />
       {/* ── OPTIONAL VIDEO SECTION ── */}
-      {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
-        <section className="py-24 bg-[var(--color-bg)] relative z-10 px-4 md:px-12">
-          <div className={`mx-auto ${project.videoSection.orientation === 'portrait' ? 'max-w-md' : 'max-w-7xl'}`}>
-            <div className={`w-full rounded-2xl overflow-hidden bg-black/5 shadow-2xl relative ${
-              project.videoSection.orientation === 'portrait' ? 'aspect-[9/16]' : 
-              project.videoSection.orientation === 'square' ? 'aspect-square max-w-2xl mx-auto' : 
-              'aspect-video'
-            }`}>
-              {project.videoSection.videoUrl ? (
-                <iframe 
-                  src={project.videoSection.videoUrl}
-                  className="w-full h-full"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowFullScreen
-                />
-              ) : (
-                <video 
-                  src={project.videoSection.videoFileUrl}
-                  className="w-full h-full object-cover"
-                  autoPlay 
-                  loop 
-                  muted 
-                  playsInline
-                />
-              )}
-            </div>
-          </div>
-        </section>
-      )}
-      
-      <Arrival project={project} navigate={navigate} SITE_SETTINGS={SITE_SETTINGS} />
+      {(() => {
+        const allVideos = [];
+        if (project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) {
+          allVideos.push({
+            videoTitle: project.videoSection.videoTitle,
+            videoSubtitle: project.videoSection.videoSubtitle,
+            thumbnailUrl: project.videoSection.thumbnailUrl,
+            videoUrl: getSafeEmbedUrl(project.videoSection.videoUrl),
+            videoFileUrl: project.videoSection.videoFileUrl,
+            orientation: project.videoSection.orientation
+          });
+        }
+        if (project?.videoSection?.videos?.length > 0) {
+          project.videoSection.videos.forEach(v => {
+            allVideos.push({
+              videoTitle: v.videoTitle,
+              videoSubtitle: v.videoSubtitle,
+              thumbnailUrl: v.thumbnailUrl,
+              videoUrl: getSafeEmbedUrl(v.videoUrl),
+              videoFileUrl: v.videoFileUrl,
+              orientation: project.videoSection.orientation // Inherit parent orientation if not set
+            });
+          });
+        }
+
+        if (allVideos.length === 0) return null;
+
+        return (
+          <CaseStudyVideoHero 
+            videoHero={{ enabled: true, backgroundColor: C.soilDeep, backgroundText: project.client || 'Case Study' }} 
+            fallbackName={project.client} 
+            allVideos={allVideos} 
+          />
+        );
+      })()}
     </div>
   );
 };

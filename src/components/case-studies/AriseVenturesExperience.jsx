@@ -3,12 +3,19 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'fram
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
+import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
+import { getSafeEmbedUrl } from '../../lib/videoUtils';
 
 const palette = {
-  bgDeep: '#010836',
-  panel: '#0C185C',
-  primary: '#6865FA',
-  secondary: '#D4CEFC',
+  bgDeep: '#010d54',
+  panel: '#0c185c',
+  primary: '#6865fa',
+  secondary: '#d4cefc',
+  blue: '#2a97d9',
+  accent: '#ffcd00',
+  purple: '#af73dd',
+  green: '#93d435',
+  orange: '#b9d5ff',
   text: '#F4F4F5'
 };
 
@@ -43,24 +50,38 @@ const ElegantFade = ({ children, delay = 0, className = "" }) => (
   </motion.div>
 );
 
+const getUrlAspectRatio = (url) => {
+  if (!url) return null;
+  const match = url.match(/-(\d+)x(\d+)\.[a-z0-9]+(?:\?|$)/i);
+  if (!match) return null;
+  const width = Number(match[1]);
+  const height = Number(match[2]);
+  return width > 0 && height > 0 ? width / height : null;
+};
+
+const getDimensionsAspectRatio = (dimensions) => {
+  const ratio = dimensions?.aspectRatio;
+  if (Number.isFinite(ratio) && ratio > 0) return ratio;
+  const width = Number(dimensions?.width);
+  const height = Number(dimensions?.height);
+  return width > 0 && height > 0 ? width / height : null;
+};
+
 /* --- 3. Creative Hero Entrance --- */
-const CreativeHeroReveal = ({ src, alt, delay = 0 }) => {
+const CreativeHeroReveal = ({ src, alt, aspectRatio }) => {
+  const resolvedAspectRatio = aspectRatio || getUrlAspectRatio(src) || 16 / 9;
+
   return (
-    <motion.div
-      initial={{ opacity: 0, clipPath: 'inset(10% 10% 10% 10% round 30px)', filter: 'blur(20px)' }}
-      animate={{ opacity: 1, clipPath: 'inset(0% 0% 0% 0% round 0px)', filter: 'blur(0px)' }}
-      transition={{ duration: 2.5, delay, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full h-full relative overflow-hidden"
-    >
-      <motion.img 
-        src={src} 
+    <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-[#0c185c]/70">
+      <CaseStudyMedia
+        src={src}
         alt={alt}
-        className="w-full h-full object-cover"
-        initial={{ scale: 1.15 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 3, delay, ease: [0.16, 1, 0.3, 1] }}
+        className="w-full h-full object-contain"
+        priority
+        sizes="(min-width: 1280px) 1280px, 95vw"
+        style={{ aspectRatio: resolvedAspectRatio }}
       />
-    </motion.div>
+    </div>
   );
 };
 
@@ -156,13 +177,14 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
       whileInView={{ clipPath: 'inset(0% 0 0 0)', scale: 1 }}
       viewport={{ once: true, margin: "-5%" }}
       transition={{ duration: 1.6, delay, ease: [0.25, 1, 0.5, 1] }}
-      className="w-full h-full relative group overflow-hidden bg-black"
+      className="w-full h-full relative group overflow-hidden bg-black flex items-center justify-center p-6"
     >
-      <motion.img 
-        src={src} 
+      <CaseStudyMedia
+        src={src}
         alt={alt}
-        style={{ y }}
-        className="w-full h-[140%] object-cover absolute top-[-20%] left-0 transition-transform duration-[2s] group-hover:scale-110 opacity-80 group-hover:opacity-100"
+        className="w-full h-full object-contain transition-transform duration-[2s] group-hover:scale-105 opacity-90 group-hover:opacity-100"
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        motionProps={{ style: { y: useTransform(smoothProgress, [0, 1], [-yOffset/2, yOffset/2]) } }}
       />
       
       {/* Creative Glassmorphism Overlay on Hover */}
@@ -223,7 +245,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
   const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
 
   return (
-    <section ref={ref} className="h-[200vh] relative w-full" style={{ backgroundColor: '#010836' }}>
+    <section ref={ref} className="h-[150vh] relative w-full" style={{ backgroundColor: '#010836' }}>
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#010836' }}>
         
         <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
@@ -246,10 +268,10 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         </motion.div>
         
         <motion.div style={{ opacity: contentOpacity, y: contentY }} className="absolute z-20 w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center">
-          <h3 className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-[#D4CEFC] mb-8 font-bold pb-4" style={{ fontFamily: '"Karla", sans-serif' }}>
+          <h3 className="text-xs tracking-[0.2em] uppercase text-[#D4CEFC] mb-8 font-bold pb-4 font-secondary">
              {title}
           </h3>
-          <p className="text-white/80 font-normal text-lg md:text-xl lg:text-2xl leading-relaxed md:leading-[1.6]" style={{ fontFamily: '"Karla", sans-serif' }}>
+          <p className="text-white/80 font-normal text-lg md:text-xl leading-relaxed md:leading-[1.6] font-secondary">
             {content}
           </p>
         </motion.div>
@@ -268,32 +290,45 @@ const AriseVenturesExperience = ({ navigate, project }) => {
   const { SITE_SETTINGS } = React.useContext(GlobalContext) || {};
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, []);
 
-  const heroImg = project?.fullStory?.heroImg || '';
-  const cmsImages = project?.fullStory?.images || [];
+  const heroImg = project?.bannerVideo || project?.fullStory?.heroVideo || project?.bannerImage || project?.fullStory?.heroImg || project?.imageUrl || '';
+  const heroAspectRatio = getDimensionsAspectRatio(project?.bannerImageDimensions)
+    || getDimensionsAspectRatio(project?.fullStory?.heroImgDimensions)
+    || getUrlAspectRatio(heroImg)
+    || 16 / 9;
+  const cmsMedia = normalizeMediaItems(project?.fullStory?.media || project?.fullStory?.images, project?.client || 'Case study media');
 
   // When `videoHero` is filled in Sanity (enabled = true), the CMS data takes over automatically.
   // We no longer use a fallback demo; it only renders if Sanity data is explicitly provided.
   const videoHeroData = project?.videoHero?.enabled ? project.videoHero : null;
 
   return (
-    <div className="w-full min-h-screen font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
+    <div className="w-full min-h-screen overflow-x-hidden font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
       <ChicAmbientBackground />
 
       {/* Navigation */}
-      <div className="relative z-50 px-6 py-6 md:px-12 md:py-8 flex justify-between items-center mix-blend-difference pointer-events-none">
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-3 text-[10px] md:text-xs tracking-[0.2em] uppercase font-light text-white/80 hover:text-white transition-colors">
-          <ArrowLeft className="w-4 h-4" /> {SITE_SETTINGS?.csBackToWork || 'Back to Work'}
+      <div className="relative z-50 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex items-center gap-3 pointer-events-none">
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white">
+          <ArrowLeft className="w-4 h-4" /> Home
         </button>
-        <span className="text-[10px] md:text-xs tracking-[0.2em] uppercase font-light text-white/40">{project?.type || 'Case Study'}</span>
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white">
+          <ArrowLeft className="w-4 h-4" /> All Case Studies
+        </button>
       </div>
 
       {/* ── 1. CINEMATIC HERO (Boxed) ── */}
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-40 md:pb-48 pt-10 px-4 md:px-8" style={{ backgroundColor: '#010836' }}>
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-20 md:pb-24 pt-10 px-4 md:px-8" style={{ backgroundColor: '#010836' }}>
         
         {/* Floating Box Hero Banner */}
-        <div className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto h-[50vh] md:h-[65vh] rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">
+        <div
+          className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5"
+          style={{ aspectRatio: heroAspectRatio }}
+        >
            {heroImg ? (
-             <CreativeHeroReveal src={heroImg} alt={`${project?.client || 'Case Study'} Banner`} delay={0.2} />
+             <CreativeHeroReveal
+               src={heroImg}
+               alt={`${project?.client || 'Case Study'} Banner`}
+               aspectRatio={heroAspectRatio}
+             />
            ) : (
              <div className="w-full h-full bg-[#0C185C]" />
            )}
@@ -303,7 +338,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {(project?.tags || project?.roles || ['Branding', 'Visual Identity', 'Collateral']).map((tag, i) => (
-              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg" style={{ fontFamily: '"Karla", sans-serif' }}>
+              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-xs tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-secondary">
                 {tag}
               </span>
             ))}
@@ -313,9 +348,8 @@ const AriseVenturesExperience = ({ navigate, project }) => {
             <motion.h1 
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-              className="font-carla text-4xl md:text-6xl lg:text-[6rem] leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" 
+              className="font-primary text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" 
               style={{ 
-                fontFamily: '"Karla", sans-serif',
                 backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #D4CEFC 45%, #6865FA 50%, #D4CEFC 55%, #FFFFFF 70%, #FFFFFF 100%)',
                 backgroundSize: '300% auto',
               }}
@@ -351,7 +385,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         {/* Top gradient – blends IN from previous DramaticSection */}
         <div className="absolute top-0 left-0 right-0 h-[120px] bg-gradient-to-b from-[#010836] to-transparent pointer-events-none z-20" />
         
-        <div className="py-24 md:py-32 px-6 md:px-12 max-w-[1400px] mx-auto relative">
+        <div className="py-16 md:py-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
         
           {/* Ambient Background Aura behind the whole section (blended) */}
           <motion.div
@@ -378,8 +412,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </div>
             
               <motion.h3
-                className="font-carla text-5xl md:text-7xl text-white mb-10 font-medium tracking-tight drop-shadow-lg"
-                style={{ fontFamily: '"Karla", sans-serif' }}
+                className="font-primary text-5xl md:text-7xl text-white mb-10 font-medium tracking-tight drop-shadow-lg"
                 initial={{ opacity: 0, y: 32, filter: 'blur(14px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.4 }}
@@ -389,7 +422,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </motion.h3>
             
               {/* Readable Text with NO box */}
-              <div className="space-y-8 text-white/95 font-normal text-lg md:text-xl leading-relaxed" style={{ fontFamily: '"Karla", sans-serif' }}>
+              <div className="space-y-8 text-white/95 font-normal text-lg md:text-xl leading-relaxed font-secondary">
                 <p>{project?.solution || 'A comprehensive brand strategy and visual identity system designed to elevate and unify the brand presence across all touchpoints.'}</p>
               
                 {/* Highlighted text block */}
@@ -442,10 +475,10 @@ const AriseVenturesExperience = ({ navigate, project }) => {
 
       {/* ── 5. STATEMENT ── */}
       {(project?.results?.length > 0) && (
-        <section className="py-24 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
+        <section className="py-16 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
           <div className="max-w-[1000px] mx-auto">
             <ElegantFade>
-              <h2 className="font-carla text-2xl md:text-3xl lg:text-4xl leading-[1.4] text-white tracking-tight" style={{ fontFamily: '"Karla", sans-serif' }}>
+              <h2 className="font-primary text-2xl md:text-3xl lg:text-4xl leading-[1.4] text-white tracking-tight">
                 "{project.results[0]}"
               </h2>
             </ElegantFade>
@@ -454,73 +487,70 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       )}
 
       {/* ── 5.5 OPTIONAL VIDEO SECTION ── */}
-      {(project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) && (
-        <section className="relative w-full z-10 py-24" style={{ backgroundColor: '#010836' }}>
-          <div className={`mx-auto px-6 md:px-12 ${project.videoSection.orientation === 'portrait' ? 'max-w-[450px]' : 'max-w-[1200px]'}`}>
-            <div className={`relative w-full rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 bg-black ${
-              project.videoSection.orientation === 'portrait' ? 'aspect-[9/16]' : 
-              project.videoSection.orientation === 'square' ? 'aspect-square' : 
-              'aspect-video'
-            }`}>
-              {project.videoSection.videoUrl ? (
-                <iframe
-                  className="w-full h-full"
-                  src={project.videoSection.videoUrl}
-                  title="Case Study Video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  style={{ border: 'none' }}
-                />
-              ) : (
-                <video
-                  className="w-full h-full object-cover"
-                  src={project.videoSection.videoFileUrl}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                />
-              )}
-            </div>
-          </div>
-        </section>
-      )}
+      {(() => {
+        const allVideos = [];
+        if (project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) {
+          allVideos.push({
+            videoTitle: project.videoSection.videoTitle,
+            videoSubtitle: project.videoSection.videoSubtitle,
+            thumbnailUrl: project.videoSection.thumbnailUrl,
+            videoUrl: getSafeEmbedUrl(project.videoSection.videoUrl),
+            videoFileUrl: project.videoSection.videoFileUrl,
+            orientation: project.videoSection.orientation
+          });
+        }
+        if (project?.videoSection?.videos?.length > 0) {
+          project.videoSection.videos.forEach(v => {
+            allVideos.push({
+              videoTitle: v.videoTitle,
+              videoSubtitle: v.videoSubtitle,
+              thumbnailUrl: v.thumbnailUrl,
+              videoUrl: getSafeEmbedUrl(v.videoUrl),
+              videoFileUrl: v.videoFileUrl,
+              orientation: project.videoSection.orientation // Inherit parent orientation
+            });
+          });
+        }
+
+        if (allVideos.length === 0) return null;
+
+        return (
+          <CaseStudyVideoHero 
+            videoHero={{ enabled: true, backgroundColor: '#010836', backgroundText: project.client || 'Case Study' }} 
+            fallbackName={project.client} 
+            allVideos={allVideos} 
+          />
+        );
+      })()}
 
       {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
       <section className="relative w-full z-10" style={{ backgroundColor: '#010836' }}>
-        <div className="pb-32 px-6 md:px-12 max-w-[1400px] mx-auto relative">
+        <div className="pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
           <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
-            <h2 className="font-carla text-3xl md:text-5xl text-white tracking-tight" style={{ fontFamily: '"Karla", sans-serif' }}>
+            <h2 className="font-primary text-3xl md:text-5xl text-white tracking-tight">
               {project?.deliverablesHeading || "Ecosystem Highlights"}
             </h2>
           </ElegantFade>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[300px] md:auto-rows-[400px]">
-            {cmsImages.length > 0 ? (
-              cmsImages.map((imgUrl, index) => {
-                const patternIndex = index % 5;
-                let spanClass = "md:col-span-12";
-                if (patternIndex === 0) spanClass = "md:col-span-8 md:row-span-2";
-                if (patternIndex === 1) spanClass = "md:col-span-4 md:row-span-1";
-                if (patternIndex === 2) spanClass = "md:col-span-4 md:row-span-1"; 
-                if (patternIndex === 3) spanClass = "md:col-span-6 md:row-span-1";
-                if (patternIndex === 4) spanClass = "md:col-span-6 md:row-span-1";
-
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            {cmsMedia.length > 0 ? (
+              cmsMedia.map((media, index) => {
                 const yOffsets = [70, 40, -50, 60, -30];
+                const parallaxY = yOffsets[index % yOffsets.length];
                 
                 return (
-                  <div key={index} className={`${spanClass} rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-gradient-to-br from-[#0C185C] to-[#010836]`}>
+                  <div key={media.key} className="break-inside-avoid rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-gradient-to-br from-[#0C185C] to-[#010836]">
                     <ParallaxImage 
-                      src={imgUrl} 
-                      alt={`Highlight 0${index + 1}`} 
-                      delay={0.1 * (patternIndex + 1)} 
-                      yOffset={yOffsets[patternIndex]} 
+                      src={media.url}
+                      alt={media.alt || `Highlight 0${index + 1}`}
+                      delay={0.1 * ((index % 3) + 1)} 
+                      yOffset={parallaxY} 
                     />
                   </div>
                 );
               })
             ) : (
-              <div className="md:col-span-12 rounded-[2rem] min-h-[400px] bg-[#0C185C]/30 flex items-center justify-center text-white/30 tracking-widest font-light ring-1 ring-white/10">
+              <div className="w-full rounded-[2rem] min-h-[400px] bg-[#0C185C]/30 flex items-center justify-center text-white/30 tracking-widest font-light ring-1 ring-white/10 break-inside-avoid">
                 AWAITING CMS MEDIA
               </div>
             )}
@@ -529,16 +559,15 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 7. FOOTER ── */}
-      <section className="pt-12 pb-32 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
+      <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
         <div className="max-w-[1200px] mx-auto">
           <ElegantFade>
-            <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-[#D4CEFC] mb-6 font-medium">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
+            <p className="text-xs tracking-[0.3em] uppercase text-[#D4CEFC] mb-6 font-medium font-secondary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
             <motion.h2 
               onClick={() => navigate('work')} 
-              className="font-carla text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity inline-block"
-              style={{ fontFamily: '"Karla", sans-serif' }}
+              className="font-primary text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"
             >
-              {SITE_SETTINGS?.csAllProjects || 'All Work'}
+              <ArrowLeft className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20" /> {SITE_SETTINGS?.csAllProjects || 'All Case Studies'}
             </motion.h2>
           </ElegantFade>
         </div>
