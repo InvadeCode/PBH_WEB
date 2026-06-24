@@ -21,7 +21,7 @@ const getStatContent = (stat) => {
   return { label, value };
 };
 
-const PlanetarySwarm = ({ images, currentAssetIndex, setCurrentAssetIndex, title, subtext }) => {
+const PlanetarySwarm = ({ images, currentAssetIndex, setCurrentAssetIndex, title, subtext, worldMapImage }) => {
   const hasIntro = title || subtext;
 
   return (
@@ -47,7 +47,7 @@ const PlanetarySwarm = ({ images, currentAssetIndex, setCurrentAssetIndex, title
         <div 
           className="absolute inset-0 pointer-events-none mix-blend-screen"
           style={{
-            backgroundImage: "url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')",
+            backgroundImage: `url('${worldMapImage || 'https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg'}')`,
             backgroundSize: '90%',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
@@ -382,7 +382,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                  <span className="w-8 h-[1px] bg-cyan-400/50" />
                  Context
               </h3>
-              <p className="text-xl md:text-2xl lg:text-3xl font-primary text-white leading-[1.6] tracking-tight drop-shadow-2xl">
+              <p className="text-lg md:text-xl font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
                 {content.problem}
               </p>
             </motion.div>
@@ -411,12 +411,12 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                  <span className="w-8 h-[1px] bg-indigo-400/50" />
               </h3>
               {content.solution1 && (
-                <p className="text-xl md:text-2xl lg:text-3xl font-primary text-white leading-[1.6] tracking-tight drop-shadow-2xl mb-8">
+                <p className="text-lg md:text-xl font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl mb-8">
                   {content.solution1}
                 </p>
               )}
               {content.solution2 && (
-                <p className="text-xl md:text-2xl lg:text-3xl font-primary text-white leading-[1.6] tracking-tight drop-shadow-2xl">
+                <p className="text-lg md:text-xl font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
                   {content.solution2}
                 </p>
               )}
@@ -467,6 +467,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
             setCurrentAssetIndex={setCurrentAssetIndex} 
             title={reachTitle}
             subtext={reachSubtext}
+            worldMapImage={project?.worldMapImage}
           />
         )}
 

@@ -93,12 +93,12 @@ const Cover = ({ project, navigate, SITE_SETTINGS }) => {
         transition={{ duration: 1.4, delay: 2.2, ease: [0.76, 0, 0.24, 1] }}
       >
 
-        <h1 className="leading-[0.95] text-center whitespace-nowrap font-primary">
+        <h1 className="leading-[0.95] text-center whitespace-nowrap font-primary w-full px-4 overflow-hidden text-ellipsis">
           {title.split(' ').map((word, wi, arr) => (
             <React.Fragment key={wi}>
               <span className="inline-block overflow-hidden align-bottom">
                 <motion.span className="inline-block align-bottom" style={{
-                  fontSize: 'clamp(2rem, 8vw, 9rem)', letterSpacing: '0.04em',
+                  fontSize: 'clamp(1.5rem, 6vw, 7rem)', letterSpacing: '0.02em',
                   background: `linear-gradient(120deg, ${C.cream}, ${C.terra})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                 }}
                   initial={{ y: '110%' }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.1 + wi * 0.12, ease: C.ease }}>
@@ -267,7 +267,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
               {/* Chapter Text */}
               <div className="mt-8 text-center max-w-[80%]">
                 <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
-                  {ch.label || `Chapter ${index + 1}`}
+                  {ch.label}
                 </p>
                 <h4 className="text-lg md:text-xl font-primary mb-3" style={{ color: C.cream }}>
                   {ch.t}

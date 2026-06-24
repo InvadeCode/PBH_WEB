@@ -3539,25 +3539,39 @@ const WorkDetailPage = ({ navigate, projectId }) => {
   // Pick the experience template for this client, then append the shared,
   // CMS-driven Team Credits section so it appears under EVERY case study.
   const experience = (() => {
+    if (project.template) {
+      switch (project.template) {
+        case 'arise':
+          return <AriseVenturesExperience navigate={navigate} project={project} />;
+        case 'snow-leopard':
+          return <SnowLeopardExperience navigate={navigate} project={project} />;
+        case 'param':
+          return <ParamInnovationExperience navigate={navigate} project={project} />;
+        case 'back-to-roots':
+          return <BackToRootsExperience navigate={navigate} project={project} />;
+        case 'legacy':
+          return <LegacyExperience navigate={navigate} project={project} palette={palette} />;
+        case 'storytelling':
+          return <GenericStorytellingExperience navigate={navigate} project={project} />;
+      }
+    }
+
     const ariseClients = [
     'arise ventures',
     'piston des sports',
     'hero lectro',
     'firefox bikes',
-    'veauli techniks',
-    'veauli',
     'albatross energetics',
     'albatross',
-    'leverage edu',
-    'param innovation'
+    'leverage edu'
   ];
   if (ariseClients.some(target => clientName.includes(target))) {
     return <AriseVenturesExperience navigate={navigate} project={project} />;
   }
 
-  
-
-
+  if (project?.route === 'Sci-Art Saga') {
+    return <SnowLeopardExperience navigate={navigate} project={project} />;
+  }
 
     const targetClients = [
     'snow leopard',
@@ -3566,7 +3580,10 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     'sayre therapeutics',
     'observer research',
     'best iu',
-    'india global forum'
+    'india global forum',
+    'param innovation',
+    'veauli techniks',
+    'veauli'
   ];
 
   if (targetClients.some(target => clientName.includes(target))) {
@@ -3584,7 +3601,13 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     return <LegacyExperience navigate={navigate} project={project} palette={palette} />;
   }
 
-  if (clientName.includes('back to roots')) {
+  const backToRootsClients = [
+    'back to roots',
+    'earthy souls',
+    'navankur'
+  ];
+
+  if (backToRootsClients.some(target => clientName.includes(target))) {
     return <BackToRootsExperience navigate={navigate} project={project} />;
   }
 
@@ -4196,33 +4219,60 @@ const WorkPage = ({ navigate }) => {
           <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">Storytelling Corner</button>
         </FadeUp>
 
-        <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full mb-32">
+        <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-32">
           {caseStudies.slice(1).map((cs, i) => {
             const secondaryColors = [palette.lavender, palette.medBlue, palette.lightBlue, palette.primary];
             const hexColor = secondaryColors[i % secondaryColors.length];
             return (
               <StaggerItem key={i}>
-                <div onClick={() => navigate('work/' + cs.id)} className="group relative border rounded-[24px] overflow-hidden flex flex-col transition-all duration-700 cursor-pointer text-left h-[450px] w-full" style={{ background: `linear-gradient(to bottom right, ${hexToRgba(hexColor, 0.12)}, ${hexToRgba(palette.bgDeep, 0.9)})`, borderColor: hexToRgba(hexColor, 0.2), boxShadow: `0 20px 40px ${hexToRgba(hexColor, 0.05)}` }}>
-                  <div className="h-[250px] relative overflow-hidden border-b bg-white/[0.02]" style={{ borderColor: hexToRgba(hexColor, 0.1) }}>
+                <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/10 rounded-[24px] overflow-hidden cursor-pointer w-full aspect-square bg-[#0a0a0a] shadow-2xl transition-all duration-700 hover:border-white/30">
+                  
+                  {/* Background Image & Overlays */}
+                  <div className="absolute inset-0 z-0">
                     {(cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl) ? (
-                      <CaseStudyMedia src={cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl} alt={cs.client} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" />
+                      <CaseStudyMedia 
+                        src={cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl} 
+                        alt={cs.client} 
+                        className="w-full h-full object-cover opacity-70 group-hover:scale-105 group-hover:opacity-100 transition-all duration-1000 ease-out" 
+                      />
                     ) : (
-                      <>
-                        <div className={`absolute inset-0 opacity-20 mix-blend-screen group-hover:scale-110 transition-transform duration-1000 ease-out`}  />
-                        <div className="absolute inset-0 flex items-center justify-center"><span className="font-primary italic text-white/10 group-hover:text-white/30 transition-colors duration-700 text-5xl">{cs.client ? cs.client.split(' ')[0] : 'Work'}</span></div>
-                      </>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="font-primary italic text-white/10 text-5xl">{cs.client ? cs.client.split(' ')[0] : 'Work'}</span>
+                      </div>
                     )}
+                    {/* Cinematic Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/10 group-hover:via-black/20 transition-all duration-700" />
                   </div>
-                  <div className="p-8 flex flex-col justify-between flex-1 relative z-10">
-                    <div>
-                      <span className="text-[10px] font-medium tracking-widest uppercase block mb-2 font-primary" style={{ color: hexColor }}>{cs.sector}</span>
-                      <h3 className="text-2xl font-light transition-colors font-primary group-hover:opacity-80" style={{ color: 'white' }}>{cs.client}</h3>
-                    </div>
-                    <div className="flex justify-between items-end font-secondary">
-                      <div className="flex gap-2 flex-wrap">{(cs.tags || []).map(t => <span key={t} className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] text-white/50 uppercase">{t}</span>)}</div>
-                      <ArrowUpRight className="w-5 h-5 text-white/30 group-hover:text-white transition-colors" />
+
+                  {/* Content Overlay */}
+                  <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-10 text-left">
+                    <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-[0.16,1,0.3,1]">
+                      
+                      {/* Sector */}
+                      <span className="text-[11px] font-medium tracking-[0.2em] uppercase block mb-3 font-primary" style={{ color: hexColor }}>
+                        {cs.sector}
+                      </span>
+                      
+                      {/* Title */}
+                      <h3 className="text-3xl md:text-4xl font-light font-primary text-white mb-6 drop-shadow-lg">
+                        {cs.client}
+                      </h3>
+                      
+                      {/* Tags & Action (Fade in on hover) */}
+                      <div className="flex justify-between items-end font-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+                        <div className="flex gap-2 flex-wrap">
+                          {(cs.tags || []).map(t => (
+                            <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-[10px] tracking-wider text-white/80 uppercase">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                        <ArrowUpRight className="w-8 h-8 text-white p-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20" />
+                      </div>
+
                     </div>
                   </div>
+
                 </div>
               </StaggerItem>
             )

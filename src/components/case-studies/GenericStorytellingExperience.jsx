@@ -95,12 +95,12 @@ const Cover = ({ project, navigate, SITE_SETTINGS, c }) => {
         transition={{ duration: 1.4, delay: 2.2, ease: [0.76, 0, 0.24, 1] }}
       >
 
-        <h1 className="leading-[0.95] text-center whitespace-nowrap font-primary">
+        <h1 className="leading-[0.95] text-center whitespace-nowrap font-primary w-full px-4 overflow-hidden text-ellipsis">
           {title.split(' ').map((word, wi, arr) => (
             <React.Fragment key={wi}>
               <span className="inline-block overflow-hidden align-bottom">
                 <motion.span className="inline-block align-bottom" style={{
-                  fontSize: 'clamp(2rem, 8vw, 9rem)', letterSpacing: '0.04em',
+                  fontSize: 'clamp(1.5rem, 6vw, 7rem)', letterSpacing: '0.02em',
                   background: `linear-gradient(120deg, ${c.cream}, ${c.terra})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                 }}
                   initial={{ y: '110%' }} animate={{ y: 0 }} transition={{ duration: 1.2, delay: 0.1 + wi * 0.12, ease: ease }}>
@@ -238,18 +238,18 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
             <motion.div
               key={`${img.key}-${index}`}
               className="relative shrink-0 snap-center flex flex-col items-center"
-              style={{ width: 'min(85vw, 420px)' }}
+              style={{ width: 'min(85vw, 420px)', maxHeight: '75vh' }}
               initial={{ opacity: 0, rotateY: 45, x: 100 }}
               whileInView={{ opacity: 1, rotateY: 0, x: 0 }}
               viewport={{ margin: "-10%" }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               {/* Adaptive Image Container */}
-              <div className="w-full relative p-3 bg-[#0E0805] shadow-2xl overflow-hidden z-10" 
+              <div className="w-full h-full max-h-[60vh] relative p-3 bg-[#0E0805] shadow-2xl flex flex-col z-10" 
                    style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.8)', transformStyle: 'preserve-3d' }}>
                 <Sprockets pos="top" c={c} />
                 <Sprockets pos="bottom" c={c} />
-                <div className="w-full overflow-hidden bg-white/5 flex items-center justify-center relative border border-white/5 p-2">
+                <div className="flex-1 w-full overflow-hidden bg-white/5 flex items-center justify-center relative border border-white/5 p-2 min-h-0">
                   {img ? (
                     <CaseStudyMedia
                       item={img}
@@ -269,7 +269,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
               {/* Chapter Text */}
               <div className="mt-8 text-center max-w-[80%]">
                 <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${c.cream}80` }}>
-                  {ch.label || `Chapter ${index + 1}`}
+                  {ch.label}
                 </p>
                 <h4 className="text-lg md:text-xl font-primary mb-3" style={{ color: c.cream }}>
                   {ch.t}
