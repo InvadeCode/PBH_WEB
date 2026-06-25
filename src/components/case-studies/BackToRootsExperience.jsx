@@ -112,12 +112,12 @@ const Cover = ({ project, navigate, SITE_SETTINGS }) => {
       </motion.div>
 
       {/* Top bar (fades in after curtain) */}
-      <motion.div className="absolute top-0 inset-x-0 z-30 flex items-center gap-3 px-[5%] pt-28"
+      <motion.div className="fixed top-0 inset-x-0 z-50 flex items-center gap-3 px-[5%] pt-28 pointer-events-none"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 3.2 }}>
-        <button onClick={() => navigate('home')} className="flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border" style={{ color: C.cream, borderColor: `${C.cream}33`, backgroundColor: `${C.soilDeep}33`, backdropFilter: 'blur(8px)' }}>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border" style={{ color: C.cream, borderColor: `${C.cream}33`, backgroundColor: `${C.soilDeep}33`, backdropFilter: 'blur(8px)' }}>
           <ArrowLeft className="w-4 h-4" /> Home
         </button>
-        <button onClick={() => navigate('work')} className="flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border text-white/60 hover:text-white border-white/20 bg-white/5 backdrop-blur-md">
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border text-white/60 hover:text-white border-white/20 bg-white/5 backdrop-blur-md">
           <ArrowLeft className="w-4 h-4" /> All Case Studies
         </button>
       </motion.div>

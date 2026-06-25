@@ -4969,7 +4969,7 @@ const BACK_TARGETS = { 'work-detail': 'work', 'article-detail': 'journal', 'serv
 
 const FloatingBackButton = ({ page, navigate }) => {
   if (typeof document === 'undefined') return null;
-  if (page === 'home' || page === 'admin') return null;
+  if (page === 'home' || page === 'admin' || page === 'work-detail') return null;
   const target = BACK_TARGETS[page] || 'home';
 
   return createPortal(
