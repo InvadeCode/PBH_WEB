@@ -162,7 +162,7 @@ const SolutionVisualizer = () => {
 };
 
 /* --- 6. Animated Parallax Ecosystem Image --- */
-const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
+const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
@@ -176,7 +176,7 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
       whileInView={{ clipPath: 'inset(0% 0 0 0)', scale: 1 }}
       viewport={{ once: true, margin: "-5%" }}
       transition={{ duration: 1.6, delay, ease: [0.25, 1, 0.5, 1] }}
-      className="w-full relative group overflow-hidden bg-[#0C185C] flex items-center justify-center rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10"
+      className={`w-full relative group overflow-hidden bg-[#0C185C] flex items-center justify-center rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 ${className}`}
     >
       <CaseStudyMedia
         src={src}
@@ -571,23 +571,61 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </h2>
             </ElegantFade>
 
-            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-              {cmsMedia.map((media, index) => {
-                const yOffsets = [30, 15, -20, 35, -15];
-                const parallaxY = yOffsets[index % yOffsets.length];
-                
+            {(() => {
+              const isAriseBespoke = project.client?.toLowerCase().includes('arise');
+
+              if (isAriseBespoke && cmsMedia.length >= 7) { // Requires at least 7 images to look decent, 9 is perfect
                 return (
-                  <div key={media.key} className="break-inside-avoid relative w-full mb-6">
-                    <ParallaxImage 
-                      src={media.url}
-                      alt={media.alt || `Highlight 0${index + 1}`}
-                      delay={0.1 * ((index % 3) + 1)} 
-                      yOffset={parallaxY} 
-                    />
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto w-full">
+                    {/* Left Column - Large Purple (Image 0) */}
+                    <div className="lg:col-span-5 h-full">
+                      {cmsMedia[0] && (
+                        <ParallaxImage src={cmsMedia[0].url} alt={cmsMedia[0].alt} delay={0.1} yOffset={10} className="h-full" />
+                      )}
+                    </div>
+                    
+                    {/* Middle Column (Images 1, 3, 5, 6) */}
+                    <div className="lg:col-span-3 flex flex-col gap-6">
+                      {cmsMedia[1] && <ParallaxImage src={cmsMedia[1].url} alt={cmsMedia[1].alt} delay={0.2} yOffset={15} />}
+                      {cmsMedia[3] && <ParallaxImage src={cmsMedia[3].url} alt={cmsMedia[3].alt} delay={0.3} yOffset={-10} />}
+                      {cmsMedia[5] && <ParallaxImage src={cmsMedia[5].url} alt={cmsMedia[5].alt} delay={0.4} yOffset={15} />}
+                      {cmsMedia[6] && <ParallaxImage src={cmsMedia[6].url} alt={cmsMedia[6].alt} delay={0.5} yOffset={-5} className="flex-grow" />}
+                    </div>
+
+                    {/* Right Column (Images 2, 4, 7, 8) */}
+                    <div className="lg:col-span-4 flex flex-col gap-6">
+                      {cmsMedia[2] && <ParallaxImage src={cmsMedia[2].url} alt={cmsMedia[2].alt} delay={0.3} yOffset={20} />}
+                      {cmsMedia[4] && <ParallaxImage src={cmsMedia[4].url} alt={cmsMedia[4].alt} delay={0.4} yOffset={-15} />}
+                      <div className="grid grid-cols-2 gap-6 flex-grow">
+                        {cmsMedia[7] && <ParallaxImage src={cmsMedia[7].url} alt={cmsMedia[7].alt} delay={0.5} yOffset={10} className="h-full" />}
+                        {cmsMedia[8] && <ParallaxImage src={cmsMedia[8].url} alt={cmsMedia[8].alt} delay={0.6} yOffset={25} className="h-full" />}
+                      </div>
+                    </div>
                   </div>
                 );
-              })}
-            </div>
+              }
+
+              // Fallback masonry layout for other clients or fewer images
+              return (
+                <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                  {cmsMedia.map((media, index) => {
+                    const yOffsets = [30, 15, -20, 35, -15];
+                    const parallaxY = yOffsets[index % yOffsets.length];
+                    
+                    return (
+                      <div key={media.key} className="break-inside-avoid relative w-full mb-6">
+                        <ParallaxImage 
+                          src={media.url}
+                          alt={media.alt || `Highlight 0${index + 1}`}
+                          delay={0.1 * ((index % 3) + 1)} 
+                          yOffset={parallaxY} 
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
           </div>
         </section>
       )}
