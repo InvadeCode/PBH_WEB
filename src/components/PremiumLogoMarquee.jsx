@@ -186,10 +186,9 @@ const PremiumLogoMarquee = () => {
         viewport={{ once: true, amount: 0.6 }}
         transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
       >
-        <p className="t-label text-white/40">
+        <h2 className="t-display text-white/90 mb-4">
           Our Partners
-        </p>
-        <div className="mx-auto mt-5 h-px w-16 bg-white/10" />
+        </h2>
       </motion.div>
 
       {/* Marquee — contained light panel so the logos read clearly */}
