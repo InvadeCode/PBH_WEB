@@ -240,12 +240,12 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
   const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
   const titleY = useTransform(spring, [0, 0.15], [0, -30]);
   
-  const contentOpacity = useTransform(spring, [0.05, 0.2, 0.85, 1], [0, 1, 1, 0]);
-  const contentY = useTransform(spring, [0.05, 0.2, 0.85, 1], [30, 0, 0, -30]);
+  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  const contentY = useTransform(spring, [0.05, 0.25, 0.75, 1], [30, 0, 0, -30]);
   const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
 
   return (
-    <section ref={ref} className="h-[250vh] relative w-full" style={{ backgroundColor: '#010836' }}>
+    <section ref={ref} className="h-[200vh] relative w-full" style={{ backgroundColor: '#010836' }}>
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#010836' }}>
         
         <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
