@@ -571,26 +571,81 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </h2>
             </ElegantFade>
 
-            {/* ── DYNAMIC MASONRY GALLERY (For all case studies, adapts to any image count) ── */}
-            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-              {cmsMedia.map((media, index) => {
-                // Alternating parallax offsets for a dynamic, non-rigid feel
-                const yOffsets = [30, 15, -20, 35, -15];
-                const parallaxY = yOffsets[index % yOffsets.length];
-                
+            {(() => {
+              const isAriseBespoke = project.client?.toLowerCase().includes('arise');
+
+              if (isAriseBespoke && cmsMedia.length >= 7) { 
                 return (
-                  <div key={media.key} className="break-inside-avoid relative w-full mb-6">
-                    <ParallaxImage 
-                      src={media.url}
-                      alt={media.alt || `Highlight 0${index + 1}`}
-                      delay={0.1 * ((index % 3) + 1)} 
-                      yOffset={parallaxY} 
-                      className="w-full h-auto object-cover"
-                    />
+                  <div className="grid grid-cols-1 md:grid-cols-12 md:grid-rows-[repeat(4,_minmax(150px,_auto))] gap-4 md:gap-6 w-full max-w-[1600px] mx-auto">
+                    {/* Image 0: Large Purple (Left, spans 4 rows) */}
+                    <div className="md:col-span-5 md:row-span-4 h-full min-h-[300px] md:min-h-0">
+                      {cmsMedia[0] && <ParallaxImage src={cmsMedia[0].url} alt={cmsMedia[0].alt} delay={0.1} yOffset={10} className="h-full w-full object-cover" />}
+                    </div>
+                    
+                    {/* Image 1: Top Business Cards (Middle, Row 1) */}
+                    <div className="md:col-span-3 md:row-span-1 h-full">
+                      {cmsMedia[1] && <ParallaxImage src={cmsMedia[1].url} alt={cmsMedia[1].alt} delay={0.2} yOffset={5} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 2: Orange Banner (Right, Row 1) */}
+                    <div className="md:col-span-4 md:row-span-1 h-full">
+                      {cmsMedia[2] && <ParallaxImage src={cmsMedia[2].url} alt={cmsMedia[2].alt} delay={0.3} yOffset={10} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 3: Middle Business Cards (Middle, Row 2) */}
+                    <div className="md:col-span-3 md:row-span-1 h-full">
+                      {cmsMedia[3] && <ParallaxImage src={cmsMedia[3].url} alt={cmsMedia[3].alt} delay={0.3} yOffset={-5} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 4: Brochure (Right, Row 2 & 3 - Spans 2 rows) */}
+                    <div className="md:col-span-4 md:row-span-2 h-full">
+                      {cmsMedia[4] && <ParallaxImage src={cmsMedia[4].url} alt={cmsMedia[4].alt} delay={0.4} yOffset={-10} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 5: Bottom Business Cards (Middle, Row 3) */}
+                    <div className="md:col-span-3 md:row-span-1 h-full">
+                      {cmsMedia[5] && <ParallaxImage src={cmsMedia[5].url} alt={cmsMedia[5].alt} delay={0.4} yOffset={5} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 6: Blue Icons (Middle, Row 4) */}
+                    <div className="md:col-span-3 md:row-span-1 h-full">
+                      {cmsMedia[6] && <ParallaxImage src={cmsMedia[6].url} alt={cmsMedia[6].alt} delay={0.5} yOffset={-5} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 7: Poster (Right-Left, Row 4) */}
+                    <div className="md:col-span-2 md:row-span-1 h-full">
+                      {cmsMedia[7] && <ParallaxImage src={cmsMedia[7].url} alt={cmsMedia[7].alt} delay={0.5} yOffset={10} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 8: Invite (Right-Right, Row 4) */}
+                    <div className="md:col-span-2 md:row-span-1 h-full">
+                      {cmsMedia[8] && <ParallaxImage src={cmsMedia[8].url} alt={cmsMedia[8].alt} delay={0.6} yOffset={25} className="h-full w-full object-cover" />}
+                    </div>
                   </div>
                 );
-              })}
-            </div>
+              }
+
+              // Fallback masonry layout for other clients or fewer images
+              return (
+                <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                  {cmsMedia.map((media, index) => {
+                    const yOffsets = [30, 15, -20, 35, -15];
+                    const parallaxY = yOffsets[index % yOffsets.length];
+                    
+                    return (
+                      <div key={media.key} className="break-inside-avoid relative w-full mb-6">
+                        <ParallaxImage 
+                          src={media.url}
+                          alt={media.alt || `Highlight 0${index + 1}`}
+                          delay={0.1 * ((index % 3) + 1)} 
+                          yOffset={parallaxY} 
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
           </div>
         </section>
       )}
