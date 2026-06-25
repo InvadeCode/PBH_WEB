@@ -236,16 +236,16 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const spring = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
   
-  const titleOpacity = useTransform(spring, [0, 0.1], [1, 0]);
-  const titleScale = useTransform(spring, [0, 0.1], [1, 1.2]);
-  const titleY = useTransform(spring, [0, 0.1], [0, -30]);
+  const titleOpacity = useTransform(spring, [0, 0.15], [1, 0]);
+  const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
+  const titleY = useTransform(spring, [0, 0.15], [0, -30]);
   
-  const contentOpacity = useTransform(spring, [0.1, 0.2, 0.9, 1], [0, 1, 1, 0]);
-  const contentY = useTransform(spring, [0.1, 0.2, 0.9, 1], [30, 0, 0, -30]);
+  const contentOpacity = useTransform(spring, [0.05, 0.2, 0.85, 1], [0, 1, 1, 0]);
+  const contentY = useTransform(spring, [0.05, 0.2, 0.85, 1], [30, 0, 0, -30]);
   const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
 
   return (
-    <section ref={ref} className="h-[400vh] relative w-full" style={{ backgroundColor: '#010836' }}>
+    <section ref={ref} className="h-[250vh] relative w-full" style={{ backgroundColor: '#010836' }}>
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#010836' }}>
         
         <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
