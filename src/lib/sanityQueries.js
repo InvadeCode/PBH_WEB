@@ -18,6 +18,13 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(coalesce(orde
   colors,
   order,
   "imageUrl": image.asset->url,
+  "preVideoImage": preVideoImage.asset->url,
+  "preVideoMedia": {
+    "mediaType": preVideoMedia.mediaType,
+    "imageUrl": preVideoMedia.image.asset->url,
+    "videoUrl": preVideoMedia.video.asset->url,
+    "alt": preVideoMedia.alt
+  },
   "bannerImage": bannerImage.asset->url,
   "worldMapImage": worldMapImage.asset->url,
   "bannerVideo": bannerVideo.asset->url,
@@ -59,6 +66,7 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(coalesce(orde
       }
     },
     "storyChapters": fullStory.storyChapters[] {
+      chapterLabel,
       title,
       description,
       "imageUrl": image.asset->url,
@@ -129,7 +137,9 @@ export const GET_SITE_SETTINGS = `*[_type == "siteSettings"][0] {
   workPageHeader, workPageSubtext, methodPageHeader, methodPageSubtext, teamPageHeader, teamPageSubtext,
   coreValuesHeader, ourJourneyHeader, frameworkHeader, timelineHeader,
   aboutPage, storyPage, teamPage, methodPage, serviceFaqs, footerTagline, footerCopyright,
-  csBackToWork, csSeeMoreWork, csAllProjects, csScrollStory, csTheApproach
+  csBackToWork, csSeeMoreWork, csAllProjects, csScrollStory, csTheApproach,
+  defaultStoryChapters, csCarouselFallbackTitle, csCarouselFallbackSubtitle, csOurRole, csTheProcess, csResults,
+  csAboutTheBrand, csTheProblem, csCreativeSolution, csEcosystemHighlights
 }`;
 
 export const GET_TEAM_MEMBERS = `*[_type == "teamMember"] | order(order asc) { id, name, role, bio }`;

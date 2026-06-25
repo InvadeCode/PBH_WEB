@@ -176,19 +176,19 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
       whileInView={{ clipPath: 'inset(0% 0 0 0)', scale: 1 }}
       viewport={{ once: true, margin: "-5%" }}
       transition={{ duration: 1.6, delay, ease: [0.25, 1, 0.5, 1] }}
-      className="w-full h-full relative group overflow-hidden bg-[#0C185C] flex items-center justify-center"
+      className="w-full relative group overflow-hidden bg-[#0C185C] flex items-center justify-center rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10"
     >
       <CaseStudyMedia
         src={src}
         alt={alt}
-        className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105 opacity-90 group-hover:opacity-100"
+        className="w-full h-auto object-cover transition-transform duration-[2s] opacity-90 group-hover:opacity-100 scale-[1.15] group-hover:scale-[1.2]"
         sizes="(min-width: 1024px) 50vw, 100vw"
-        motionProps={{ style: { y: useTransform(smoothProgress, [0, 1], [-yOffset/2, yOffset/2]) } }}
+        motionProps={{ style: { y: useTransform(smoothProgress, [0, 1], [-yOffset/1.5, yOffset/1.5]) } }}
       />
       
       {/* Creative Glassmorphism Overlay on Hover */}
-      <div className="absolute inset-0 bg-[#0C185C]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay" />
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]">
+      <div className="absolute inset-0 bg-[#0C185C]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay pointer-events-none" />
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] pointer-events-none">
         <div className="w-16 h-16 rounded-full backdrop-blur-xl bg-white/10 border border-white/20 flex items-center justify-center transform scale-50 group-hover:scale-100 transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_0_30px_rgba(255,255,255,0.1)]">
            <svg className="w-6 h-6 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4v16m8-8H4" />
@@ -367,7 +367,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
       {project?.overview && (
         <DramaticSection
-          title={project?.overviewHeading || "About the Brand."}
+          title={project?.overviewHeading || SITE_SETTINGS?.csAboutTheBrand || "About the Brand."}
           content={project?.overview}
           motionGraphic={<AboutGraphic />}
         />
@@ -376,7 +376,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 3. DRAMATIC: PROBLEM STATEMENT ── */}
       {project?.challenge && (
         <DramaticSection 
-          title={project?.challengeHeading || "The Problem."}
+          title={project?.challengeHeading || SITE_SETTINGS?.csTheProblem || "The Problem."}
           content={project?.challenge}
           motionGraphic={<ProblemGraphic />}
         />
@@ -418,7 +418,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
               >
-                {project?.solutionHeading?.length > 100 ? "Creative Solution" : (project?.solutionHeading || "Creative Solution")}
+                {project?.solutionHeading?.length > 100 ? (SITE_SETTINGS?.csCreativeSolution || "Creative Solution") : (project?.solutionHeading || SITE_SETTINGS?.csCreativeSolution || "Creative Solution")}
               </motion.h3>
             
               {/* Readable Text with NO box */}
@@ -488,6 +488,42 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         </section>
       )}
 
+      {/* ── 5.4 OPTIONAL HUGE PRE-VIDEO MEDIA (Image / GIF / Video) ── */}
+      {(() => {
+        const media = project?.preVideoMedia;
+        const legacyImage = project?.preVideoImage;
+        const hasMedia = media?.imageUrl || media?.videoUrl || legacyImage;
+        if (!hasMedia) return null;
+
+        const altText = media?.alt || 'Pre-video hero media';
+        const isVideo = media?.mediaType === 'video' && media?.videoUrl;
+
+        return (
+          <section className="relative w-full z-10 pb-16 pt-8">
+            <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex justify-center">
+              {isVideo ? (
+                <video
+                  src={media.videoUrl}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-auto rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
+                  aria-label={altText}
+                />
+              ) : (
+                <CaseStudyMedia
+                  src={media?.imageUrl || legacyImage}
+                  alt={altText}
+                  className="w-full h-auto rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
+                  sizes="100vw"
+                />
+              )}
+            </div>
+          </section>
+        );
+      })()}
+
       {/* ── 5.5 OPTIONAL VIDEO SECTION ── */}
       {(() => {
         const allVideos = [];
@@ -531,46 +567,17 @@ const AriseVenturesExperience = ({ navigate, project }) => {
           <div className="pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
             <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
               <h2 className="font-primary text-5xl md:text-7xl lg:text-8xl text-white tracking-tight">
-                {project?.deliverablesHeading || "Ecosystem Highlights"}
+                {project?.deliverablesHeading || SITE_SETTINGS?.csEcosystemHighlights || "Ecosystem Highlights"}
               </h2>
             </ElegantFade>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 auto-rows-[300px] md:auto-rows-[400px]">
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
               {cmsMedia.map((media, index) => {
-                const ratio = getUrlAspectRatio(media.url) || 1;
-                
-                let colSpan = 'col-span-1';
-                let rowSpan = 'row-span-1';
-
-                // Bento logic based on intrinsic aspect ratios to prevent awkward cropping
-                if (ratio > 1.5) {
-                  colSpan = 'col-span-1 md:col-span-2 lg:col-span-2';
-                  rowSpan = 'row-span-1';
-                } else if (ratio < 0.8) {
-                  colSpan = 'col-span-1';
-                  rowSpan = 'row-span-2';
-                } else if (ratio >= 0.8 && ratio <= 1.2) {
-                  colSpan = 'col-span-1';
-                  rowSpan = 'row-span-1';
-                } else {
-                  colSpan = 'col-span-1 md:col-span-2 lg:col-span-2';
-                  rowSpan = 'row-span-2';
-                }
-
-                // Aesthetic overriding for the first few items to guarantee a hero-like bento feel
-                if (index === 0) {
-                  colSpan = 'col-span-1 md:col-span-2 lg:col-span-3';
-                  rowSpan = 'row-span-2';
-                } else if (index === 1 && ratio < 1) {
-                  colSpan = 'col-span-1';
-                  rowSpan = 'row-span-2';
-                }
-
-                const yOffsets = [70, 40, -50, 60, -30];
+                const yOffsets = [30, 15, -20, 35, -15];
                 const parallaxY = yOffsets[index % yOffsets.length];
                 
                 return (
-                  <div key={media.key} className={`${colSpan} ${rowSpan} rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-[#0C185C]`}>
+                  <div key={media.key} className="break-inside-avoid relative w-full mb-6">
                     <ParallaxImage 
                       src={media.url}
                       alt={media.alt || `Highlight 0${index + 1}`}

@@ -82,10 +82,10 @@ const Logo = ({ logo, i, reduce }) => {
     if (name === 'Firefox') {
       return 'pbh-logo-vector-black-cutout';
     }
-    if (name === 'NSE') {
-      return 'pbh-logo-nse';
+    if (['NSE', 'Arise Ventures'].includes(name)) {
+      return 'pbh-logo-grayscale';
     }
-    if (['Param Science Centre', 'Arise Ventures'].includes(name)) {
+    if (['Param Science Centre'].includes(name)) {
       return 'pbh-logo-vector-white-cutout';
     }
     return 'pbh-logo';
@@ -237,12 +237,12 @@ const PremiumLogoMarquee = () => {
           opacity: 1;
         }
 
-        .pbh-logo-nse {
+        .pbh-logo-grayscale {
           filter: grayscale(100%) contrast(1.5) brightness(0.6);
           opacity: 0.8;
           transition: filter 520ms cubic-bezier(0.16,1,0.3,1), opacity 520ms cubic-bezier(0.16,1,0.3,1);
         }
-        .pbh-slot:hover .pbh-logo-nse { 
+        .pbh-slot:hover .pbh-logo-grayscale { 
           filter: grayscale(0%) contrast(1) brightness(1);
           opacity: 1;
         }

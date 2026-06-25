@@ -173,6 +173,24 @@ const Narrative = ({ project, c }) => {
 const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
   const containerRef = useRef(null);
 
+  const fallbackChapters = [
+    { t: 'The Seed', l: 'Every brand begins as a single idea, planted deep.' },
+    { t: 'The Soil', l: 'Nurtured by heritage, grounded in meaning.' },
+    { t: 'First Light', l: 'A visual language breaks through the surface.' },
+    { t: 'Taking Root', l: 'Identity spreads, steady and deliberate.' },
+    { t: 'The Bloom', l: 'Form and feeling flourish into one.' },
+    { t: 'The Harvest', l: 'A story ready to be shared with the world.' },
+    { t: 'Full Circle', l: 'Rooted in the past, reaching for tomorrow.' },
+  ];
+
+  const siteDefaultChapters = SITE_SETTINGS?.defaultStoryChapters?.map(ch => ({
+    label: ch.chapterLabel,
+    t: ch.title,
+    l: ch.description
+  }));
+  
+  const defaultChaptersArray = (siteDefaultChapters?.length > 0) ? siteDefaultChapters : fallbackChapters;
+
   // We use standard CSS horizontal scroll plus a smooth auto-scroll effect
   useEffect(() => {
     let animationFrameId;
@@ -209,8 +227,8 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.1 }} />
       
       <div className="text-center mb-16 px-[6%] relative z-10">
-        <h3 className="font-primary text-2xl md:text-4xl" style={{ color: c.terra }}>{project?.carouselTitle || 'The Unfolding Story'}</h3>
-        <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${c.cream}66` }}>{project?.carouselSubtext || 'Scroll or drag to explore'}</p>
+        <h3 className="font-primary text-2xl md:text-4xl" style={{ color: c.terra }}>{project?.carouselTitle || SITE_SETTINGS?.csCarouselFallbackTitle || 'The Unfolding Story'}</h3>
+        <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${c.cream}66` }}>{project?.carouselSubtext || SITE_SETTINGS?.csCarouselFallbackSubtitle || 'Scroll or drag to explore'}</p>
       </div>
 
       <div 
@@ -221,7 +239,12 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
         {extendedImages.map((img, index) => {
           const storyChapters = project?.fullStory?.storyChapters || [];
           const chData = storyChapters.length > 0 ? storyChapters[index % storyChapters.length] : null;
-          const ch = chData ? { label: chData.chapterLabel, t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[index % DEFAULT_CHAPTERS.length];
+          const defaultCh = defaultChaptersArray[index % defaultChaptersArray.length];
+          const ch = chData ? { 
+            label: chData.chapterLabel, // No default label, optional
+            t: chData.title || defaultCh.t, 
+            l: chData.description || defaultCh.l 
+          } : defaultCh;
 
           return (
             <motion.div
@@ -288,8 +311,12 @@ const GenericStorytellingExperience = ({ navigate, project }) => {
   const c = { terra: pColors[0] || '#6865FA', soil: pColors[1] || '#010836', soilDeep: pColors[2] || '#010D54', cream: pColors[3] || '#F4F4F5' };
 
   const { SITE_SETTINGS } = useContext(GlobalContext) || {};
-  const images = normalizeMediaItems(project.fullStory?.media || project.fullStory?.images, project.client || 'Case study media');
-
+  
+  const hasStoryChapters = project.fullStory?.storyChapters?.length > 0;
+  const mediaSource = hasStoryChapters 
+    ? project.fullStory.storyChapters 
+    : (project.fullStory?.media || project.fullStory?.images);
+  const images = normalizeMediaItems(mediaSource, project.client || 'Case study media');
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, []);
 
   return (
@@ -307,6 +334,42 @@ const GenericStorytellingExperience = ({ navigate, project }) => {
       <Cover project={project} navigate={navigate} SITE_SETTINGS={SITE_SETTINGS} c={c} />
       <Narrative project={project} c={c} />
       <StoryChapterCarousel images={images} project={project} SITE_SETTINGS={SITE_SETTINGS} c={c} />
+      {/* ── OPTIONAL HUGE PRE-VIDEO MEDIA (Image / GIF / Video) ── */}
+      {(() => {
+        const media = project?.preVideoMedia;
+        const legacyImage = project?.preVideoImage;
+        const hasMedia = media?.imageUrl || media?.videoUrl || legacyImage;
+        if (!hasMedia) return null;
+
+        const altText = media?.alt || 'Pre-video hero media';
+        const isVideo = media?.mediaType === 'video' && media?.videoUrl;
+
+        return (
+          <section className="relative w-full z-10 pb-16 pt-8">
+            <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex justify-center">
+              {isVideo ? (
+                <video
+                  src={media.videoUrl}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-auto rounded-[2rem] shadow-[0_40px_80px_rgba(0,0,0,0.8)] border border-white/5"
+                  aria-label={altText}
+                />
+              ) : (
+                <CaseStudyMedia
+                  src={media?.imageUrl || legacyImage}
+                  alt={altText}
+                  className="w-full h-auto rounded-[2rem] shadow-[0_40px_80px_rgba(0,0,0,0.8)] border border-white/5"
+                  sizes="100vw"
+                />
+              )}
+            </div>
+          </section>
+        );
+      })()}
+
       {/* ── CINEMATIC VIDEO HERO & ADDITIONAL VIDEOS ── */}
       {(() => {
         const hasVideoHero = project?.videoHero?.enabled;

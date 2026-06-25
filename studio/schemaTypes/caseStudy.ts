@@ -356,6 +356,56 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'preVideoMedia',
+      title: '🖼️ Pre-Video Hero Media (Optional)',
+      type: 'object',
+      description: 'An optional full-width media block (image, GIF, or video) that sits right above the video section.',
+      fields: [
+        defineField({
+          name: 'mediaType',
+          title: 'Media Type',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'Image / GIF', value: 'image' },
+              { title: 'Video File (MP4/WebM)', value: 'video' },
+            ],
+            layout: 'radio',
+          },
+          initialValue: 'image',
+        }),
+        defineField({
+          name: 'image',
+          title: 'Image or GIF',
+          type: 'image',
+          options: { hotspot: true, accept: 'image/*' },
+          description: 'Upload a JPG, PNG, WebP, or GIF file.',
+          hidden: ({ parent }) => parent?.mediaType === 'video',
+        }),
+        defineField({
+          name: 'video',
+          title: 'Video File',
+          type: 'file',
+          options: { accept: 'video/mp4,video/webm' },
+          description: 'Upload an MP4 or WebM video file. It will autoplay muted and loop.',
+          hidden: ({ parent }) => parent?.mediaType !== 'video',
+        }),
+        defineField({
+          name: 'alt',
+          title: 'Alt Text / Caption (Optional)',
+          type: 'string',
+        }),
+      ],
+    }),
+    // Keep old field name as hidden alias for backward compat
+    defineField({
+      name: 'preVideoImage',
+      title: 'Pre-Video Image (Legacy)',
+      type: 'image',
+      options: { hotspot: true },
+      hidden: true,
+    }),
+    defineField({
       name: 'videoSection',
       title: '📽️ Add Simple Video (Square/Rectangle)',
       type: 'object',

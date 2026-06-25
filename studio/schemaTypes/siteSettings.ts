@@ -188,6 +188,34 @@ export default defineType({
     defineField({ name: 'csAllProjects', title: 'All Projects Text', type: 'string', group: 'caseStudies' }),
     defineField({ name: 'csScrollStory', title: 'Scroll Story Text', type: 'string', group: 'caseStudies' }),
     defineField({ name: 'csTheApproach', title: 'The Approach Text', type: 'string', group: 'caseStudies' }),
+    
+    // Global Fallbacks for Storytelling Chapters
+    defineField({ 
+      name: 'defaultStoryChapters', 
+      title: 'Default Story Chapters (The Seed, The Soil, etc.)', 
+      type: 'array', 
+      group: 'caseStudies',
+      description: 'These will be used automatically as the story text if a case study does not define its own custom story chapters.',
+      of: [{
+        type: 'object',
+        fields: [
+          defineField({ name: 'chapterLabel', title: 'Chapter Label (e.g. "Phase 1", Optional)', type: 'string' }),
+          defineField({ name: 'title', title: 'Title (e.g. "The Seed")', type: 'string' }),
+          defineField({ name: 'description', title: 'Description', type: 'text' }),
+        ]
+      }]
+    }),
+    
+    // Global Fallbacks for Case Study Text
+    defineField({ name: 'csCarouselFallbackTitle', title: 'Carousel Fallback Title (e.g. "The Unfolding Story")', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csCarouselFallbackSubtitle', title: 'Carousel Fallback Subtitle (e.g. "Scroll or drag to explore")', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csOurRole', title: '"Our Role" Label', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csTheProcess', title: '"The Process" Label', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csResults', title: '"Results" Label', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csAboutTheBrand', title: '"About the Brand" Label', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csTheProblem', title: '"The Problem" Label', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csCreativeSolution', title: '"Creative Solution" Label', type: 'string', group: 'caseStudies' }),
+    defineField({ name: 'csEcosystemHighlights', title: '"Ecosystem Highlights" Label', type: 'string', group: 'caseStudies' }),
 
 
     // ── PRESERVED EXISTING FIELDS ──
