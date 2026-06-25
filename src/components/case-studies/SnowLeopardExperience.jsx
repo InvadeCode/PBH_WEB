@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform, useInView, AnimatePresence, useSpring } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import createGlobe from 'cobe';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
@@ -19,6 +19,292 @@ const getStatContent = (stat) => {
   const value = asOptionalText(stat.value || stat.val);
   if (!label && !value) return null;
   return { label, value };
+};
+
+// Split a body paragraph into two balanced halves (for the two-column editorial layout).
+// Prefers a clean break at a sentence boundary; falls back to the word midpoint.
+// Returns [left, right]; right is null when the text is too short to split gracefully.
+const splitBodyInTwo = (text) => {
+  const clean = asOptionalText(text);
+  if (!clean) return [null, null];
+  const sentences = clean.match(/[^.!?]+[.!?]+[)\]'"`’”]*\s*/g);
+  if (sentences && sentences.length >= 2) {
+    const mid = Math.ceil(sentences.length / 2);
+    return [sentences.slice(0, mid).join('').trim(), sentences.slice(mid).join('').trim()];
+  }
+  const words = clean.split(/\s+/);
+  if (words.length < 14) return [clean, null];
+  const mid = Math.ceil(words.length / 2);
+  return [words.slice(0, mid).join(' '), words.slice(mid).join(' ')];
+};
+
+// Brand accent presets for the narrative blocks (`soft` is an open rgba prefix).
+const NARRATIVE_ACCENTS = {
+  cyan:   { line: '#22D3EE', label: '#A5B4FC', soft: 'rgba(34,211,238,',  dim: 'rgba(34,211,238,0.05)' },
+  indigo: { line: '#818CF8', label: '#C4B5FD', soft: 'rgba(129,140,248,', dim: 'rgba(129,140,248,0.05)' },
+  violet: { line: '#A78BFA', label: '#DDD6FE', soft: 'rgba(167,139,250,', dim: 'rgba(167,139,250,0.05)' },
+};
+
+/* Cohesive premium narrative block — numbered index, accent bar, two-column
+   balanced body (half-left / half-right) with a glowing center divider. */
+const NarrativeBlock = ({ index, label, paragraphs, accent = 'cyan', align = 'left' }) => {
+  const a = NARRATIVE_ACCENTS[accent] || NARRATIVE_ACCENTS.cyan;
+  const ps = (paragraphs || []).filter((p) => asOptionalText(p));
+  if (ps.length === 0) return null;
+
+  let left, right;
+  if (ps.length >= 2) {
+    left = ps[0];
+    right = ps.slice(1).join('\n\n');
+  } else {
+    [left, right] = splitBodyInTwo(ps[0]);
+  }
+  const rightAlign = align === 'right';
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-12%' }}
+      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+      className="relative w-full max-w-5xl mx-auto"
+    >
+      {/* Giant index numeral bleeding behind the panel */}
+      <span
+        className={`absolute -top-12 md:-top-20 ${rightAlign ? 'right-0 md:-right-6' : 'left-0 md:-left-6'} text-[28vw] md:text-[15rem] font-primary font-bold leading-none pointer-events-none select-none`}
+        style={{ color: a.dim, zIndex: 0 }}
+      >
+        {index}
+      </span>
+
+      {/* Glass panel */}
+      <div
+        className="relative z-10 rounded-[28px] md:rounded-[36px] overflow-hidden p-8 md:p-14 lg:p-16 backdrop-blur-xl"
+        style={{
+          background: 'linear-gradient(145deg, rgba(15,10,46,0.72) 0%, rgba(21,13,58,0.6) 40%, rgba(13,20,69,0.6) 100%)',
+          boxShadow: `0 12px 70px ${a.soft}0.16), 0 0 0 1px rgba(129,140,248,0.12)`,
+        }}
+      >
+        {/* Accent top bar */}
+        <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: `linear-gradient(90deg, transparent, ${a.line}, transparent)` }} />
+
+        {/* Ambient glow orb */}
+        <motion.div
+          animate={{ scale: [1, 1.25, 1], opacity: [0.18, 0.36, 0.18] }}
+          transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+          className={`absolute -top-24 ${rightAlign ? '-left-24' : '-right-24'} w-[340px] h-[340px] rounded-full pointer-events-none`}
+          style={{ background: `radial-gradient(circle, ${a.soft}0.26) 0%, ${a.soft}0.08) 40%, transparent 70%)` }}
+        />
+
+        {/* Header: index + label */}
+        <motion.div
+          initial={{ opacity: 0, x: rightAlign ? 10 : -10 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.25 }}
+          className={`relative flex items-center gap-4 mb-10 md:mb-12 ${rightAlign ? 'flex-row-reverse text-right' : ''}`}
+        >
+          <span className="text-xs md:text-sm font-primary font-bold tabular-nums" style={{ color: a.label, opacity: 0.55 }}>{index}</span>
+          <span className="h-[2px] w-10 rounded-full" style={{ background: `linear-gradient(90deg, ${a.line}, transparent)` }} />
+          <span className="text-sm md:text-base uppercase tracking-[0.5em] font-primary" style={{ color: a.label }}>{label}</span>
+        </motion.div>
+
+        {/* Two-column balanced body */}
+        <div className="relative grid grid-cols-1 md:grid-cols-2 gap-y-7 md:gap-x-16">
+          {right && (
+            <div
+              className="hidden md:block absolute left-1/2 top-1 bottom-1 -translate-x-1/2 w-[1px] pointer-events-none"
+              style={{ background: `linear-gradient(180deg, transparent, ${a.soft}0.45) 20%, ${a.soft}0.4) 50%, ${a.soft}0.45) 80%, transparent)` }}
+            />
+          )}
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className={`whitespace-pre-line text-[17px] md:text-[19px] font-secondary leading-[1.85] text-white/95 tracking-wide md:pr-2 ${right ? '' : 'md:col-span-2 md:max-w-3xl'}`}
+          >
+            {left}
+          </motion.p>
+          {right && (
+            <motion.p
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+              className="whitespace-pre-line text-[17px] md:text-[19px] font-secondary leading-[1.85] text-white/80 tracking-wide md:pl-2"
+            >
+              {right}
+            </motion.p>
+          )}
+        </div>
+      </div>
+    </motion.section>
+  );
+};
+
+
+// ── DYNAMIC SCI-ART 2-COLUMN GRID ──
+const DynamicSciArtGrid = ({ content }) => {
+  const executionBlocks = content.solution2 ? content.solution2.split('\n\n') : [];
+  const strategicIntro = content.solution1 || (executionBlocks.length > 0 ? executionBlocks[0] : null);
+  const remainingExecution = content.solution1 ? executionBlocks : executionBlocks.slice(1);
+
+  return (
+    <section className="w-full relative bg-gradient-to-b from-[#010a40] via-[#05001a] to-black text-white overflow-hidden py-24 lg:py-32">
+      
+      {/* 1. CYBER-GRID MATRIX */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.05)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+      </div>
+
+      <div className="w-full max-w-[1800px] mx-auto px-6 md:px-12 relative z-10 flex flex-col gap-24 lg:gap-40 xl:gap-56 overflow-visible">
+         
+         {/* SECTION 1: ABOUT (Big Text Left, Box Right - No Collision) */}
+         {content.about && (
+           <div className="relative w-full flex flex-col lg:flex-row justify-start items-center py-8 gap-8 lg:gap-12">
+              {/* BIG TEXT (Left Area) */}
+              <motion.div 
+                initial={{ opacity: 0, x: -150 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                className="flex-1 flex justify-start items-center overflow-visible"
+              >
+                <span className="-ml-8 lg:-ml-16 xl:-ml-24 text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-cyan-400/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">ABOUT</span>
+              </motion.div>
+              
+              <motion.div 
+                initial={{ opacity: 0, x: 150 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                className="w-full lg:w-[700px] xl:w-[800px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-cyan-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(34,211,238,0.15)]"
+              >
+                {/* Dynamic Graphic: Floating Dot inside box */}
+                <motion.div 
+                  animate={{ y: [0, -20, 0], opacity: [0.5, 1, 0.5] }} 
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute top-8 right-8 w-3 h-3 rounded-full bg-cyan-300 shadow-[0_0_15px_rgba(103,232,249,0.8)] z-0" 
+                />
+
+                {/* Scanning Line Animation inside box */}
+                <motion.div 
+                  animate={{ top: ['-10%', '110%'] }} 
+                  transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                  className="absolute left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent z-0 pointer-events-none" 
+                />
+                
+                {/* Gradient sweep background */}
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-br from-cyan-900/40 via-purple-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" 
+                />
+                
+                <div className="relative z-10">
+                  <h3 className="text-sm uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
+                    <span className="w-8 h-[1px] bg-cyan-400" /> 
+                    About the brand 
+                  </h3>
+                  <p className="text-[14px] md:text-[15px] font-secondary leading-[1.8] text-white/70 drop-shadow-sm font-light">
+                    {content.about}
+                  </p>
+                </div>
+              </motion.div>
+           </div>
+         )}
+
+         {/* SECTION 2: PROBLEM (Box Left, Big Text Right) */}
+         {content.problem && (
+           <div className="relative w-full flex flex-col-reverse lg:flex-row justify-start items-center py-8 gap-8 lg:gap-12 mt-8 lg:mt-0">
+              
+              <motion.div 
+                initial={{ opacity: 0, x: -150 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                className="w-full lg:w-[700px] xl:w-[800px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-purple-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(168,85,247,0.15)]"
+              >
+                {/* Subtle Breathing Glow */}
+                <motion.div 
+                  animate={{ scale: [1, 1.5, 1], opacity: [0.1, 0.2, 0.1] }} 
+                  transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500 rounded-full blur-[80px] pointer-events-none z-0" 
+                />
+
+                <div className="relative z-10">
+                  <h3 className="text-sm uppercase tracking-[0.4em] text-purple-400 font-bold mb-6 flex items-center gap-4">
+                    <span className="w-8 h-[1px] bg-purple-400" /> 
+                    The Problem 
+                  </h3>
+                  <p className="text-[14px] md:text-[15px] font-secondary leading-[1.8] text-white/70 drop-shadow-sm font-light">
+                    {content.problem}
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* BIG TEXT (Right Area) */}
+              <motion.div 
+                initial={{ opacity: 0, x: 150 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                className="flex-1 flex justify-end items-center overflow-visible"
+              >
+                <span className="-mr-8 lg:-mr-16 xl:-mr-24 text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-purple-400/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">PROBLEM</span>
+              </motion.div>
+           </div>
+         )}
+         {/* SECTION 3: SOLUTION (Big Text Left, Box Right) */}
+         {(content.solution1 || remainingExecution.length > 0) && (
+           <div className="relative w-full flex flex-col lg:flex-row justify-start items-center py-8 gap-8 lg:gap-12 mt-8 lg:mt-0">
+             
+             {/* BIG TEXT (Left Area) */}
+             <motion.div 
+               initial={{ opacity: 0, x: -150 }}
+               whileInView={{ opacity: 1, x: 0 }}
+               viewport={{ once: true, amount: 0.3 }}
+               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+               className="flex-1 flex justify-start items-center overflow-visible"
+             >
+               <span className="-ml-8 lg:-ml-16 xl:-ml-24 text-[15vw] lg:text-[6vw] xl:text-[7vw] font-black text-indigo-400/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">
+                 SOLUTION
+               </span>
+             </motion.div>
+             
+             {/* CONTENT BOX (Right Area) */}
+             <motion.div 
+               initial={{ opacity: 0, x: 150 }}
+               whileInView={{ opacity: 1, x: 0 }}
+               viewport={{ once: true, amount: 0.3 }}
+               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+               className="w-full lg:w-[700px] xl:w-[800px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-indigo-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(99,102,241,0.15)]"
+             >
+               {/* Ambient Background Sweep */}
+               <motion.div 
+                 className="absolute inset-0 bg-gradient-to-br from-indigo-900/40 via-purple-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" 
+               />
+   
+               <div className="relative z-10">
+                 <h3 className="text-sm uppercase tracking-[0.4em] text-indigo-400 font-bold mb-6 flex items-center gap-4">
+                   <span className="w-8 h-[1px] bg-indigo-400" /> 
+                   Creative Solution 
+                 </h3>
+                 
+                 <div className="flex flex-col gap-5 text-[14px] md:text-[15px] font-secondary leading-[1.8] text-white/70 drop-shadow-sm font-light">
+                   {strategicIntro && <p>{strategicIntro}</p>}
+                   {remainingExecution.map((para, idx) => (
+                     <p key={idx}>{para}</p>
+                   ))}
+                 </div>
+               </div>
+             </motion.div>
+   
+           </div>
+         )}
+      </div>
+      
+    </section>
+  );
 };
 
 const PlanetarySwarm = ({ images, currentAssetIndex, setCurrentAssetIndex, title, subtext, worldMapImage }) => {
@@ -158,10 +444,6 @@ const SnowLeopardExperience = ({ navigate, project }) => {
 
   const [currentAssetIndex, setCurrentAssetIndex] = useState(0);
 
-  const { scrollYProgress } = useScroll();
-  const parallaxY1 = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const parallaxY2 = useTransform(scrollYProgress, [0, 1], [0, 400]);
-
   useEffect(() => {
     if (images.length === 0) return;
     const interval = setInterval(() => {
@@ -248,180 +530,13 @@ const SnowLeopardExperience = ({ navigate, project }) => {
           </div>
           
         </div>
+      </div>
 
-        {/* ── ABOUT THE BRAND ── Premium Editorial Card Below Hero ── */}
-        {content.about && (
-          <motion.section
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-            className="w-full mt-20 md:mt-32 px-4 md:px-0"
-          >
-            <div className="max-w-5xl mx-auto relative">
-              {/* Deep purple card with contrast */}
-              <div className="relative rounded-[28px] md:rounded-[36px] overflow-hidden shadow-[0_12px_80px_rgba(99,102,241,0.25),0_0_0_1px_rgba(129,140,248,0.15)]"
-                style={{ background: 'linear-gradient(145deg, #0f0a2e 0%, #150d3a 40%, #0d1445 100%)' }}>
+      {/* ── EXTREME SCI-ART SCROLLYTELLING SECTIONS (FULL WIDTH) ── */}
+      <DynamicSciArtGrid content={content} />
 
-                {/* Inner border glow */}
-                <div className="absolute inset-0 rounded-[28px] md:rounded-[36px] pointer-events-none"
-                  style={{ boxShadow: 'inset 0 1px 0 rgba(129,140,248,0.2), inset 0 -1px 0 rgba(34,211,238,0.1), inset 1px 0 0 rgba(129,140,248,0.1), inset -1px 0 0 rgba(129,140,248,0.1)' }}
-                />
-
-                {/* Ambient glow orbs — more vivid */}
-                <motion.div
-                  animate={{ scale: [1, 1.3, 1], opacity: [0.25, 0.45, 0.25] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -top-24 -right-24 w-[350px] h-[350px] rounded-full pointer-events-none"
-                  style={{ background: 'radial-gradient(circle, rgba(34,211,238,0.3) 0%, rgba(99,102,241,0.1) 40%, transparent 70%)' }}
-                />
-                <motion.div
-                  animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.35, 0.2] }}
-                  transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                  className="absolute -bottom-20 -left-20 w-[300px] h-[300px] rounded-full pointer-events-none"
-                  style={{ background: 'radial-gradient(circle, rgba(139,92,246,0.35) 0%, rgba(99,102,241,0.1) 40%, transparent 70%)' }}
-                />
-
-                {/* Glowing left accent bar — bolder */}
-                <motion.div
-                  initial={{ scaleY: 0 }}
-                  whileInView={{ scaleY: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute left-0 top-[10%] bottom-[10%] w-[4px] origin-top rounded-r-full"
-                  style={{ background: 'linear-gradient(180deg, rgba(139,92,246,0.3), #22D3EE, #818CF8, rgba(139,92,246,0.3))', boxShadow: '0 0 20px rgba(34,211,238,0.5), 0 0 40px rgba(99,102,241,0.2)' }}
-                />
-
-                <div className="relative z-10 p-8 md:p-14 lg:p-16 flex flex-col md:flex-row gap-8 md:gap-14 items-start">
-
-                  {/* Large decorative quote mark — more visible */}
-                  <div className="shrink-0 hidden md:flex flex-col items-center gap-6 pt-2">
-                    <svg width="52" height="44" viewBox="0 0 48 40" fill="none" className="opacity-50 drop-shadow-[0_0_15px_rgba(34,211,238,0.3)]">
-                      <path d="M0 40V24.8C0 20.267 0.8 16.133 2.4 12.4C4.133 8.533 6.533 5.333 9.6 2.8C12.8 0.133 16.533 -1.2 20.8 -1.2V6.4C18.133 6.4 15.733 7.467 13.6 9.6C11.6 11.733 10.6 14.133 10.6 16.8H20V40H0ZM28 40V24.8C28 20.267 28.8 16.133 30.4 12.4C32.133 8.533 34.533 5.333 37.6 2.8C40.8 0.133 44.533 -1.2 48.8 -1.2V6.4C46.133 6.4 43.733 7.467 41.6 9.6C39.6 11.733 38.6 14.133 38.6 16.8H48V40H28Z" fill="url(#quoteGrad)"/>
-                      <defs>
-                        <linearGradient id="quoteGrad" x1="0" y1="0" x2="48" y2="40" gradientUnits="userSpaceOnUse">
-                          <stop stopColor="#22D3EE"/>
-                          <stop offset="0.5" stopColor="#818CF8"/>
-                          <stop offset="1" stopColor="#A78BFA"/>
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                    {/* Vertical dotted line connector */}
-                    <div className="w-[1px] flex-1 min-h-[40px]" style={{ backgroundImage: 'repeating-linear-gradient(180deg, rgba(139,92,246,0.5) 0px, rgba(139,92,246,0.5) 4px, transparent 4px, transparent 10px)' }} />
-                  </div>
-
-                  {/* Content block */}
-                  <div className="flex-1 flex flex-col gap-6">
-                    {/* Label */}
-                    <motion.div
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.8, delay: 0.4 }}
-                      className="flex items-center gap-3"
-                    >
-                      <span className="w-10 h-[2px] rounded-full" style={{ background: 'linear-gradient(90deg, #22D3EE, rgba(129,140,248,0.4))' }} />
-                      <span className="text-sm md:text-base uppercase tracking-[0.5em] font-primary" style={{ color: '#A5B4FC' }}>
-                        About the Brand
-                      </span>
-                    </motion.div>
-
-                    {/* Main text */}
-                    <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed text-white/95 tracking-wide">
-                      {content.about}
-                    </p>
-
-                    {/* Client name tag */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.8, delay: 0.6 }}
-                      className="flex items-center gap-3 mt-4 pt-5"
-                      style={{ borderTop: '1px solid rgba(129,140,248,0.15)' }}
-                    >
-                      <div className="w-2.5 h-2.5 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.6)] animate-pulse" style={{ background: 'linear-gradient(135deg, #22D3EE, #818CF8)' }} />
-                      <span className="text-sm md:text-base uppercase tracking-[0.3em] font-primary" style={{ color: '#C4B5FD' }}>
-                        {project.client}
-                      </span>
-                      <span className="flex-1 h-[1px]" style={{ background: 'linear-gradient(90deg, rgba(129,140,248,0.15), transparent)' }} />
-                    </motion.div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-        )}
-
-        {/* ROW 2: CHALLENGE & STRATEGY (Cinematic Parallax Typography) */}
-        {(content.problem || content.solution1 || content.solution2) && (
-        <div className="w-full mt-32 relative z-20 flex flex-col gap-20 md:gap-32 px-4 md:px-0">
-          
-          {/* Challenge Parallax Node */}
-          {content.problem && (
-          <div className="relative w-full min-h-[50vh] flex items-center">
-            {/* Massive Parallax Watermark */}
-            <motion.div 
-               style={{ y: parallaxY1 }}
-               className="absolute left-[-5%] md:left-[-10%] top-[-20%] text-[12vw] font-primary font-bold text-white/[0.03] leading-none whitespace-nowrap pointer-events-none uppercase tracking-tighter"
-            >
-               Challenge
-            </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ margin: "-20%", once: true }}
-              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 w-full max-w-2xl pl-8 md:pl-16 border-l-[1px] border-cyan-500/50"
-            >
-              <h3 className="text-sm md:text-base font-bold uppercase tracking-[0.5em] text-cyan-400 mb-12 flex items-center gap-4 font-primary">
-                 <span className="w-8 h-[1px] bg-cyan-400/50" />
-                 Context
-              </h3>
-              <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
-                {content.problem}
-              </p>
-            </motion.div>
-          </div>
-          )}
-
-          {/* Strategic Shift Parallax Node */}
-          {(content.solution1 || content.solution2) && (
-          <div className="relative w-full min-h-[40vh] md:min-h-[50vh] flex items-center justify-end">
-            <motion.div 
-               style={{ y: parallaxY1 }}
-               className="absolute right-[-5%] md:right-[-10%] top-[-20%] text-[12vw] font-primary font-bold text-white/[0.03] leading-none whitespace-nowrap pointer-events-none uppercase tracking-tighter"
-            >
-               Evolution
-            </motion.div>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ margin: "-20%", once: true }}
-              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 w-full max-w-4xl pr-8 md:pr-16 border-r-[1px] border-indigo-500/50 text-right"
-            >
-              <h3 className="text-sm md:text-base font-bold uppercase tracking-[0.5em] text-indigo-400 mb-12 flex items-center justify-end gap-4 font-primary">
-                 Strategic Shift
-                 <span className="w-8 h-[1px] bg-indigo-400/50" />
-              </h3>
-              {content.solution1 && (
-                <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl mb-8">
-                  {content.solution1}
-                </p>
-              )}
-              {content.solution2 && (
-                <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
-                  {content.solution2}
-                </p>
-              )}
-            </motion.div>
-          </div>
-          )}
-        </div>
-        )}
+      {/* Re-open container for stats and planetary swarm */}
+      <div className="relative z-20 max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col gap-6">
 
         {/* ROW 3: SATELLITES (Editorial Grid) */}
         {stats.length > 0 && (
