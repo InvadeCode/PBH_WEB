@@ -208,11 +208,8 @@ const SnowLeopardExperience = ({ navigate, project }) => {
 
       {/* --- NAVIGATION --- */}
       <div className="fixed top-28 left-8 z-50 flex items-center gap-3">
-        <button onClick={() => navigate('home')} className="text-white/60 hover:text-white flex items-center gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary">
-          <ArrowLeft className="w-4 h-4" /> Home
-        </button>
-        <button onClick={() => navigate('work')} className="text-white/60 hover:text-white flex items-center gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary">
-          <ArrowLeft className="w-4 h-4" /> All Case Studies
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-sm md:text-base backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
       </div>
 
