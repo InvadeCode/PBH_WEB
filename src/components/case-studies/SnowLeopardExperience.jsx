@@ -29,7 +29,7 @@ const PlanetarySwarm = ({ images, currentAssetIndex, setCurrentAssetIndex, title
       
       {hasIntro && (
         <div className="text-center mb-12 px-4">
-          {title && <h2 className="text-3xl md:text-4xl font-primary text-white mb-4">{title}</h2>}
+          {title && <h2 className="text-5xl md:text-7xl lg:text-8xl font-primary text-white mb-4">{title}</h2>}
           {subtext && <p className="text-sm font-secondary uppercase tracking-[0.3em] text-white/50">{subtext}</p>}
           <div className="w-12 h-[1px] bg-white/30 mx-auto mt-5" />
         </div>
@@ -242,11 +242,11 @@ const SnowLeopardExperience = ({ navigate, project }) => {
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="flex items-center gap-3 bg-black/40 backdrop-blur-md px-5 py-2 rounded-full border border-white/10">
               <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse" />
-              <h1 className="text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-white">{project.client}</h1>
+              <h1 className="text-sm md:text-base font-bold tracking-[0.2em] uppercase text-white">{project.client}</h1>
             </motion.div>
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="bg-black/40 backdrop-blur-md px-5 py-2 rounded-full border border-white/10 hidden md:block">
-              <span className="text-xs uppercase tracking-widest text-white/70 font-secondary">{project.sector || "Conservation"}</span>
+              <span className="text-sm md:text-base uppercase tracking-widest text-white/70 font-secondary">{project.sector || "Conservation"}</span>
             </motion.div>
           </div>
           
@@ -324,13 +324,13 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                       className="flex items-center gap-3"
                     >
                       <span className="w-10 h-[2px] rounded-full" style={{ background: 'linear-gradient(90deg, #22D3EE, rgba(129,140,248,0.4))' }} />
-                      <span className="text-xs uppercase tracking-[0.5em] font-primary" style={{ color: '#A5B4FC' }}>
+                      <span className="text-sm md:text-base uppercase tracking-[0.5em] font-primary" style={{ color: '#A5B4FC' }}>
                         About the Brand
                       </span>
                     </motion.div>
 
                     {/* Main text */}
-                    <p className="text-sm md:text-base font-secondary leading-relaxed text-white/95 tracking-wide">
+                    <p className="text-xl md:text-2xl lg:text-3xl font-secondary leading-relaxed text-white/95 tracking-wide">
                       {content.about}
                     </p>
 
@@ -344,7 +344,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                       style={{ borderTop: '1px solid rgba(129,140,248,0.15)' }}
                     >
                       <div className="w-2.5 h-2.5 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.6)] animate-pulse" style={{ background: 'linear-gradient(135deg, #22D3EE, #818CF8)' }} />
-                      <span className="text-xs uppercase tracking-[0.3em] font-primary" style={{ color: '#C4B5FD' }}>
+                      <span className="text-sm md:text-base uppercase tracking-[0.3em] font-primary" style={{ color: '#C4B5FD' }}>
                         {project.client}
                       </span>
                       <span className="flex-1 h-[1px]" style={{ background: 'linear-gradient(90deg, rgba(129,140,248,0.15), transparent)' }} />
@@ -378,11 +378,11 @@ const SnowLeopardExperience = ({ navigate, project }) => {
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
               className="relative z-10 w-full max-w-2xl pl-8 md:pl-16 border-l-[1px] border-cyan-500/50"
             >
-              <h3 className="text-xs font-bold uppercase tracking-[0.5em] text-cyan-400 mb-12 flex items-center gap-4 font-primary">
+              <h3 className="text-sm md:text-base font-bold uppercase tracking-[0.5em] text-cyan-400 mb-12 flex items-center gap-4 font-primary">
                  <span className="w-8 h-[1px] bg-cyan-400/50" />
                  Context
               </h3>
-              <p className="text-sm md:text-base font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
+              <p className="text-xl md:text-2xl lg:text-3xl font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
                 {content.problem}
               </p>
             </motion.div>
@@ -406,17 +406,17 @@ const SnowLeopardExperience = ({ navigate, project }) => {
               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
               className="relative z-10 w-full max-w-4xl pr-8 md:pr-16 border-r-[1px] border-indigo-500/50 text-right"
             >
-              <h3 className="text-xs font-bold uppercase tracking-[0.5em] text-indigo-400 mb-12 flex items-center justify-end gap-4 font-primary">
+              <h3 className="text-sm md:text-base font-bold uppercase tracking-[0.5em] text-indigo-400 mb-12 flex items-center justify-end gap-4 font-primary">
                  Strategic Shift
                  <span className="w-8 h-[1px] bg-indigo-400/50" />
               </h3>
               {content.solution1 && (
-                <p className="text-sm md:text-base font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl mb-8">
+                <p className="text-xl md:text-2xl lg:text-3xl font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl mb-8">
                   {content.solution1}
                 </p>
               )}
               {content.solution2 && (
-                <p className="text-sm md:text-base font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
+                <p className="text-xl md:text-2xl lg:text-3xl font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
                   {content.solution2}
                 </p>
               )}
@@ -446,12 +446,12 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                     className={`col-span-1 ${stats.length === 1 ? 'lg:col-span-12' : 'lg:col-span-5'} flex flex-col justify-center border-t border-white/10 pt-12 ${index === 1 ? 'lg:mt-32' : ''}`}
                   >
                      <div className="flex items-baseline gap-6 mb-6">
-                        <span className={`text-4xl md:text-6xl font-primary text-transparent bg-clip-text ${index === 0 ? 'bg-gradient-to-b from-cyan-400' : 'bg-gradient-to-b from-indigo-400'} to-transparent opacity-80 drop-shadow-2xl`}>
+                        <span className={`text-5xl md:text-7xl lg:text-8xl font-primary text-transparent bg-clip-text ${index === 0 ? 'bg-gradient-to-b from-cyan-400' : 'bg-gradient-to-b from-indigo-400'} to-transparent opacity-80 drop-shadow-2xl`}>
                           {String(index + 1).padStart(2, '0')}
                         </span>
-                        {stat.label && <h4 className="text-xs md:text-sm font-bold uppercase tracking-[0.4em] text-white/80">{stat.label}</h4>}
+                        {stat.label && <h4 className="text-sm md:text-base font-bold uppercase tracking-[0.4em] text-white/80">{stat.label}</h4>}
                      </div>
-                     {stat.value && <p className="text-sm md:text-base text-white/60 font-secondary leading-relaxed font-light">{stat.value}</p>}
+                     {stat.value && <p className="text-xl md:text-2xl lg:text-3xl text-white/60 font-secondary leading-relaxed font-light">{stat.value}</p>}
                   </motion.div>
                 </React.Fragment>
               ))}
@@ -533,7 +533,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
               </h3>
             )}
             {outcomeText && (
-              <p className="text-sm md:text-base text-white/70 font-secondary max-w-3xl mx-auto leading-relaxed font-light">
+              <p className="text-xl md:text-2xl lg:text-3xl text-white/70 font-secondary max-w-3xl mx-auto leading-relaxed font-light">
                 {outcomeText}
               </p>
             )}
