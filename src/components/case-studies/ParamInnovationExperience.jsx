@@ -535,13 +535,42 @@ const ParamInnovationExperience = ({ navigate, project }) => {
               </h2>
             </ElegantFade>
 
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 auto-rows-[300px] md:auto-rows-[400px]">
               {cmsMedia.map((media, index) => {
+                const ratio = getUrlAspectRatio(media.url) || 1;
+                
+                let colSpan = 'col-span-1';
+                let rowSpan = 'row-span-1';
+
+                // Bento logic based on intrinsic aspect ratios to prevent awkward cropping
+                if (ratio > 1.5) {
+                  colSpan = 'col-span-1 md:col-span-2 lg:col-span-2';
+                  rowSpan = 'row-span-1';
+                } else if (ratio < 0.8) {
+                  colSpan = 'col-span-1';
+                  rowSpan = 'row-span-2';
+                } else if (ratio >= 0.8 && ratio <= 1.2) {
+                  colSpan = 'col-span-1';
+                  rowSpan = 'row-span-1';
+                } else {
+                  colSpan = 'col-span-1 md:col-span-2 lg:col-span-2';
+                  rowSpan = 'row-span-2';
+                }
+
+                // Aesthetic overriding for the first few items to guarantee a hero-like bento feel
+                if (index === 0) {
+                  colSpan = 'col-span-1 md:col-span-2 lg:col-span-3';
+                  rowSpan = 'row-span-2';
+                } else if (index === 1 && ratio < 1) {
+                  colSpan = 'col-span-1';
+                  rowSpan = 'row-span-2';
+                }
+
                 const yOffsets = [70, 40, -50, 60, -30];
                 const parallaxY = yOffsets[index % yOffsets.length];
                 
                 return (
-                  <div key={media.key} className="break-inside-avoid rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-gradient-to-br from-[#0C185C] to-[#010836]">
+                  <div key={media.key} className={`${colSpan} ${rowSpan} rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-[#0C185C]`}>
                     <ParallaxImage 
                       src={media.url}
                       alt={media.alt || `Highlight 0${index + 1}`}
