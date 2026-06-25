@@ -1,15 +1,54 @@
-import React, { useRef, useEffect } from 'react';
-import { motion, useInView, useMotionValue } from 'framer-motion';
+import React, { useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import CaseStudyMedia, { getMediaUrl, normalizeMediaItems } from './CaseStudyMedia';
+import { GlobalContext } from '../../App';
+import CaseStudyVideoHero from './CaseStudyVideoHero';
+import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
+import { getSafeEmbedUrl } from '../../lib/videoUtils';
 
-const CYAN = '#00E5CC';
-const AMBER = '#FFCD00';
-const LAB_DARK = '#010836';
-const DIAGRAM_WHITE = '#F4F4F5';
-const ARISE_PRIMARY = '#6865FA';
-const ARISE_SECONDARY = '#D4CEFC';
-const ARISE_PANEL = '#0C185C';
+const palette = {
+  bgDeep: '#010d54',
+  panel: '#0c185c',
+  primary: '#6865fa',
+  secondary: '#d4cefc',
+  blue: '#2a97d9',
+  accent: '#ffcd00',
+  purple: '#af73dd',
+  green: '#93d435',
+  orange: '#b9d5ff',
+  text: '#F4F4F5'
+};
+
+/* --- 1. Chic Ambient Glows --- */
+const ChicAmbientBackground = () => (
+  <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <motion.div
+      animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
+      transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute top-[-20%] left-[-10%] w-[80vw] h-[80vw] rounded-full mix-blend-screen blur-[120px]"
+      style={{ background: `radial-gradient(circle, ${palette.primary}40 0%, transparent 60%)` }}
+    />
+    <motion.div
+      animate={{ opacity: [0.2, 0.4, 0.2], scale: [1, 1.1, 1] }}
+      transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen blur-[120px]"
+      style={{ background: `radial-gradient(circle, ${palette.secondary}30 0%, transparent 60%)` }}
+    />
+  </div>
+);
+
+/* --- 2. Pleasant Elegant Fade --- */
+const ElegantFade = ({ children, delay = 0, className = "" }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-10%" }}
+    transition={{ duration: 1.2, delay, ease: [0.25, 1, 0.5, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
 
 const getUrlAspectRatio = (url) => {
   if (!url) return null;
@@ -28,450 +67,514 @@ const getDimensionsAspectRatio = (dimensions) => {
   return width > 0 && height > 0 ? width / height : null;
 };
 
-// --- RETICLE CURSOR ---
-const ReticleCursor = () => {
-  const x = useMotionValue(-100);
-  const y = useMotionValue(-100);
-  useEffect(() => {
-    const move = (e) => { x.set(e.clientX); y.set(e.clientY); };
-    window.addEventListener('mousemove', move);
-    return () => window.removeEventListener('mousemove', move);
-  }, []);
-  return (
-    <motion.div style={{ x, y, translateX: '-50%', translateY: '-50%' }} className="fixed top-0 left-0 w-6 h-6 pointer-events-none z-[9999] mix-blend-difference hidden md:block">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="10" stroke={CYAN} strokeWidth="1" opacity="0.8"/>
-        <line x1="12" y1="0" x2="12" y2="5" stroke={CYAN} strokeWidth="1" opacity="0.6"/>
-        <line x1="12" y1="19" x2="12" y2="24" stroke={CYAN} strokeWidth="1" opacity="0.6"/>
-        <line x1="0" y1="12" x2="5" y2="12" stroke={CYAN} strokeWidth="1" opacity="0.6"/>
-        <line x1="19" y1="12" x2="24" y2="12" stroke={CYAN} strokeWidth="1" opacity="0.6"/>
-      </svg>
-    </motion.div>
-  );
-};
-
-// --- SECTION 01: THE IMAGE TEMPLATE HERO ---
-const ImageTemplateHero = ({ project, navigate }) => {
-  const firstGalleryMedia = project.fullStory?.media?.[0] || project.fullStory?.images?.[0];
-  const heroImage = project.bannerVideo || project.fullStory?.heroVideo || project.bannerImage || project.fullStory?.heroImg || project.imageUrl || getMediaUrl(firstGalleryMedia);
-  const firstGalleryDimensions = firstGalleryMedia?.metadata?.dimensions || firstGalleryMedia?.asset?.metadata?.dimensions;
-  const heroAspectRatio =
-    getDimensionsAspectRatio(project.bannerImageDimensions) ||
-    getDimensionsAspectRatio(project.fullStory?.heroImgDimensions) ||
-    getDimensionsAspectRatio(firstGalleryDimensions) ||
-    getUrlAspectRatio(heroImage) ||
-    16 / 9;
-  const tags = (project.tags?.length ? project.tags : project.roles || []).filter(Boolean);
+/* --- 3. Creative Hero Entrance --- */
+const CreativeHeroReveal = ({ src, alt, aspectRatio }) => {
+  const resolvedAspectRatio = aspectRatio || getUrlAspectRatio(src) || 16 / 9;
 
   return (
-    <>
-
-
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-40 md:pb-48 pt-28 md:pt-36 px-4 md:px-8 overflow-hidden" style={{ background: LAB_DARK }}>
-        <div
-          className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5"
-          style={{ aspectRatio: heroAspectRatio }}
-        >
-          {heroImage && (
-            <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-[#0c185c]/70">
-              <CaseStudyMedia
-                src={heroImage}
-                alt={project.client ? `${project.client} hero` : ''}
-                className="w-full h-full object-contain"
-                priority
-                sizes="(min-width: 1280px) 1280px, 95vw"
-                style={{ aspectRatio: heroAspectRatio }}
-              />
-            </div>
-          )}
-          {!heroImage && <div className="w-full h-full" style={{ background: ARISE_PANEL }} />}
-        </div>
-
-        {(project.client || tags.length > 0) && (
-          <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
-            {tags.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 1, 0.5, 1] }}
-                className="mb-6 flex flex-wrap justify-center gap-4"
-              >
-                {tags.map((tag, i) => (
-                  <span key={`${tag}-${i}`} className="px-6 py-2 rounded-full border border-white/10 text-xs md:text-sm tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-secondary">
-                    {tag}
-                  </span>
-                ))}
-              </motion.div>
-            )}
-            {project.client && (
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1.2, delay: 0.2, ease: [0.25, 1, 0.5, 1] }}
-                className="font-primary text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
-                style={{
-                  backgroundImage: `linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, ${ARISE_SECONDARY} 45%, ${ARISE_PRIMARY} 50%, ${ARISE_SECONDARY} 55%, #FFFFFF 70%, #FFFFFF 100%)`,
-                  backgroundSize: '300% auto',
-                }}
-              >
-                {project.client}
-              </motion.h1>
-            )}
-          </div>
-        )}
-      </section>
-    </>
-  );
-};
-
-// --- SECTION 02: THE HYPOTHESIS ---
-const Hypothesis = ({ text }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { margin: "-30%", once: true });
-  if (!text) return null;
-  const words = text.split(' ');
-
-  return (
-    <section ref={ref} className="min-h-screen flex items-center justify-center py-32 px-[5%] relative" style={{ background: LAB_DARK }}>
-      {/* Measurement scale */}
-      <div className="absolute left-6 top-[10%] bottom-[10%] w-[1px] hidden md:block" style={{ background: `${CYAN}20` }}>
-        {[...Array(11)].map((_, i) => (
-          <div key={i} className="absolute w-3 h-[1px]" style={{ top: `${i * 10}%`, left: '-6px', background: `${CYAN}40` }}/>
-        ))}
-      </div>
-
-      <div className="max-w-4xl text-center">
-        <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 0.5 } : {}} transition={{ duration: 0.6 }}
-          className="text-xs uppercase tracking-[0.3em] mb-12 font-primary" style={{ color: CYAN }}>
-          Research Question
-        </motion.p>
-        <p className="text-2xl md:text-3xl font-primary leading-relaxed">
-          {words.map((word, i) => (
-            <motion.span key={i}
-              initial={{ opacity: 0, y: 8 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: i * 0.04, duration: 0.5 }}
-              className="inline-block mr-[0.35em]"
-              style={{ color: DIAGRAM_WHITE }}
-            >
-              {word}
-            </motion.span>
-          ))}
-        </p>
-        <motion.div initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
-          transition={{ delay: words.length * 0.04 + 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="h-[1px] mt-12 origin-left" style={{ background: `linear-gradient(90deg, ${CYAN}, transparent)` }}/>
-      </div>
-    </section>
-  );
-};
-
-// --- SECTION 03: THE METHODOLOGY DIAGRAM ---
-const NODES = [
-  { label: "Interactive Content Boards", x: 15, y: 20 },
-  { label: "Puzzle-Based Learning", x: 70, y: 15 },
-  { label: "Graphic Illustrations", x: 10, y: 65 },
-  { label: "Riddles & Engagement", x: 72, y: 60 },
-  { label: "Hands-On Science", x: 20, y: 85 },
-  { label: "Wonder at Every Interaction", x: 65, y: 88 },
-];
-const EDGES = [[0,1],[0,2],[1,3],[2,4],[3,5],[4,5],[0,3],[2,3]];
-
-const MethodologyDiagram = ({ project }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { margin: "-20%", once: true });
-  if (!project.solution) return null;
-
-  return (
-    <section ref={ref} className="min-h-screen py-32 px-[5%] relative flex flex-col items-center justify-center" style={{ background: LAB_DARK }}>
-      <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 0.5 } : {}} transition={{ duration: 0.6 }}
-        className="text-xs uppercase tracking-[0.3em] mb-16 font-primary" style={{ color: CYAN }}>
-        Methodology Map
-      </motion.p>
-
-      <div className="relative w-full max-w-5xl" style={{ height: '70vh', minHeight: 500 }}>
-        {/* SVG Connection Lines */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none">
-          {EDGES.map(([a, b], i) => {
-            const x1 = NODES[a].x + '%'; const y1 = NODES[a].y + '%';
-            const x2 = NODES[b].x + '%'; const y2 = NODES[b].y + '%';
-            const mx = ((NODES[a].x + NODES[b].x) / 2) + '%';
-            const my = ((NODES[a].y + NODES[b].y) / 2 - 8) + '%';
-            return (
-              <motion.path key={i}
-                d={`M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`}
-                fill="none" stroke={CYAN} strokeWidth="1" opacity="0.3"
-                initial={{ pathLength: 0 }} animate={isInView ? { pathLength: 1 } : {}}
-                transition={{ delay: 0.5 + i * 0.15, duration: 1.2, ease: "easeOut" }}
-              />
-            );
-          })}
-        </svg>
-
-        {/* Hub Node */}
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.8 }}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-6 py-4 rounded-xl border-2 text-center font-primary text-sm uppercase tracking-wider z-10"
-          style={{ borderColor: AMBER, background: `${LAB_DARK}ee`, color: AMBER, boxShadow: `0 0 30px ${AMBER}30` }}>
-          {project.client}
-        </motion.div>
-
-        {/* Satellite Nodes */}
-        {NODES.map((node, i) => (
-          <motion.div key={i}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ delay: 0.3 + i * 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute px-4 py-3 rounded-lg border text-xs font-primary backdrop-blur-sm z-10"
-            style={{ left: node.x + '%', top: node.y + '%', transform: 'translate(-50%, -50%)',
-              borderColor: `${CYAN}50`, background: `${LAB_DARK}cc`, color: DIAGRAM_WHITE }}>
-            {node.label}
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-// --- SECTION 04: THE OBSERVATION DECK ---
-const ObservationCard = ({ media, index }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { margin: "-15%", once: true });
-  const isLeft = index % 2 === 0;
-  const num = String(index + 1).padStart(2, '0');
-
-  return (
-    <div ref={ref} className={`w-full ${index % 3 === 0 ? 'md:row-span-2' : ''}`}>
-      <motion.div
-        initial={{ opacity: 0, rotate: isLeft ? -2 : 2 }}
-        animate={isInView ? { opacity: 1, rotate: 0 } : {}}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-        className="w-full relative"
-      >
-        {/* Border draws itself via a box-shadow trick, image fades in after */}
-        <div className="relative">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 0.01 }}
-            className="absolute inset-0 rounded-lg pointer-events-none z-20"
-          >
-            <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
-              <motion.rect x="0.5" y="0.5" width="calc(100% - 1px)" height="calc(100% - 1px)" rx="8"
-                fill="none" stroke={CYAN} strokeWidth="1"
-                initial={{ pathLength: 0 }} animate={isInView ? { pathLength: 1 } : {}}
-                transition={{ duration: 1.5, ease: "easeOut" }}
-                style={{ width: '100%', height: '100%' }}
-              />
-            </svg>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="w-full bg-[#0A1A22] rounded-lg overflow-hidden relative p-1 z-10"
-          >
-            <div className="w-full h-full relative overflow-hidden rounded-md bg-[#05111A] flex items-center justify-center min-h-[300px]">
-              <CaseStudyMedia item={media} alt={`Observation ${num}`} className="w-full h-auto max-h-[80vh] object-contain" />
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Measurement line */}
-        <motion.div initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
-          transition={{ delay: 1.5, duration: 0.8, ease: "easeOut" }}
-          className="h-[1px] mt-4 origin-left" style={{ background: `${CYAN}30` }}/>
-      </motion.div>
+    <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-[#0c185c]/70">
+      <CaseStudyMedia
+        src={src}
+        alt={alt}
+        className="w-full h-full object-contain"
+        priority
+        sizes="(min-width: 1280px) 1280px, 95vw"
+        style={{ aspectRatio: resolvedAspectRatio }}
+      />
     </div>
   );
 };
 
-const ObservationDeck = ({ images }) => {
-  if (!images || images.length === 0) return null;
+/* --- 4. Hover Float Card --- */
+const HoverFloatCard = ({ children, className }) => {
   return (
-    <section className="py-32 px-[5%] relative" style={{ background: LAB_DARK }}>
-      <div className="max-w-7xl mx-auto relative">
-        {/* Dotted research thread */}
-        <div className="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 hidden md:block"
-          style={{ borderLeft: `1px dashed ${CYAN}25` }}/>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-start">
-          {images.map((media, i) => <ObservationCard key={media.key} media={media} index={i} />)}
+    <motion.div
+      whileHover={{ y: -15, scale: 1.01 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+/* --- 5. Sophisticated Solution Visualizer --- */
+const SolutionVisualizer = () => {
+  return (
+    <div className="relative w-full h-full min-h-[400px] flex items-center justify-center pointer-events-none">
+      {/* Organic Pulsing Blobs (Mesmerizing Fluid Motion) */}
+      <motion.div 
+        animate={{ scale: [1, 1.3, 1], rotate: [0, 90, 180, 360], borderRadius: ["40% 60% 70% 30%", "60% 40% 30% 70%", "40% 60% 70% 30%"] }}
+        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute w-72 h-72 bg-gradient-to-tr from-[#6865FA] via-[#D4CEFC] to-transparent blur-[50px] opacity-30 mix-blend-screen"
+      />
+      <motion.div 
+        animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0], borderRadius: ["60% 40% 30% 70%", "40% 60% 70% 30%", "60% 40% 30% 70%"] }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute w-80 h-80 bg-gradient-to-bl from-[#6865FA] via-[#010836] to-[#D4CEFC] blur-[60px] opacity-40 mix-blend-screen"
+      />
+
+      {/* Expanding Ripple Base */}
+      {[1, 2, 3].map((i) => (
+        <motion.div
+          key={`ripple-${i}`}
+          className="absolute border border-[#D4CEFC]/20 rounded-full"
+          initial={{ width: 0, height: 0, opacity: 1 }}
+          animate={{ width: 500, height: 500, opacity: 0 }}
+          transition={{ duration: 6, repeat: Infinity, delay: i * 2, ease: 'easeOut' }}
+        />
+      ))}
+
+      {/* 3D Orbiting Constellation */}
+      <div className="relative w-64 h-64" style={{ perspective: 1200 }}>
+        <motion.div
+          animate={{ rotateY: 360, rotateX: 15 }}
+          transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-0 border border-[#D4CEFC]/30 rounded-full"
+          style={{ transformStyle: 'preserve-3d' }}
+        >
+          {/* Nodes */}
+          <div className="absolute top-0 left-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_15px_white] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(24px)' }} />
+          <div className="absolute bottom-0 left-1/2 w-2.5 h-2.5 bg-[#D4CEFC] rounded-full shadow-[0_0_15px_#D4CEFC] -translate-x-1/2 translate-y-1/2" style={{ transform: 'translateZ(-24px)' }} />
+          <div className="absolute top-1/2 left-0 w-3.5 h-3.5 bg-[#6865FA] rounded-full shadow-[0_0_20px_#6865FA] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(10px)' }} />
+          <div className="absolute top-1/2 right-0 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_white] translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(-10px)' }} />
+        </motion.div>
+
+        <motion.div
+          animate={{ rotateX: 360, rotateZ: 30 }}
+          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-5 border border-[#6865FA]/40 rounded-full"
+          style={{ transformStyle: 'preserve-3d' }}
+        >
+          {/* Nodes */}
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#D4CEFC] rounded-full shadow-[0_0_10px_#D4CEFC]" />
+          <div className="absolute bottom-1/4 right-1/4 w-2.5 h-2.5 bg-white rounded-full shadow-[0_0_15px_white]" />
+        </motion.div>
+      </div>
+
+      {/* Sophisticated Central Core */}
+      <motion.div 
+        animate={{ scale: [1, 1.2, 1], filter: ['blur(20px)', 'blur(35px)', 'blur(20px)'] }}
+        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute w-28 h-28 bg-gradient-to-tr from-[#6865FA] to-[#D4CEFC] rounded-full mix-blend-screen opacity-50"
+      />
+    </div>
+  );
+};
+
+/* --- 6. Animated Parallax Ecosystem Image --- */
+const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  
+  const y = useTransform(smoothProgress, [0, 1], [-yOffset, yOffset]);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ clipPath: 'inset(100% 0 0 0)', scale: 0.95 }}
+      whileInView={{ clipPath: 'inset(0% 0 0 0)', scale: 1 }}
+      viewport={{ once: true, margin: "-5%" }}
+      transition={{ duration: 1.6, delay, ease: [0.25, 1, 0.5, 1] }}
+      className="w-full h-full relative group overflow-hidden bg-[#0C185C] flex items-center justify-center"
+    >
+      <CaseStudyMedia
+        src={src}
+        alt={alt}
+        className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105 opacity-90 group-hover:opacity-100"
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        motionProps={{ style: { y: useTransform(smoothProgress, [0, 1], [-yOffset/2, yOffset/2]) } }}
+      />
+      
+      {/* Creative Glassmorphism Overlay on Hover */}
+      <div className="absolute inset-0 bg-[#0C185C]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay" />
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]">
+        <div className="w-16 h-16 rounded-full backdrop-blur-xl bg-white/10 border border-white/20 flex items-center justify-center transform scale-50 group-hover:scale-100 transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+           <svg className="w-6 h-6 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 4v16m8-8H4" />
+           </svg>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+/* --- 7. Dramatic Scrollytelling Sections --- */
+const AboutGraphic = () => (
+  <>
+    <motion.div 
+      animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
+      transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
+    />
+    <motion.div 
+      animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
+      transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#D4CEFC]/20 opacity-50 shadow-[0_0_80px_rgba(212,206,252,0.1)] mix-blend-screen pointer-events-none"
+    />
+  </>
+);
+
+const ProblemGraphic = () => (
+  <>
+    <motion.div 
+      animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.4, 0.1] }} 
+      transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] bg-[#D4CEFC] mix-blend-screen blur-[120px] pointer-events-none"
+    />
+    <motion.div 
+      animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }} 
+      transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] bg-[#6865FA] mix-blend-screen blur-[140px] pointer-events-none"
+    />
+  </>
+);
+
+const DramaticSection = ({ title, content, motionGraphic }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const spring = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  
+  const titleOpacity = useTransform(spring, [0, 0.15], [1, 0]);
+  const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
+  const titleY = useTransform(spring, [0, 0.15], [0, -30]);
+  
+  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  const contentY = useTransform(spring, [0.05, 0.25, 0.75, 1], [30, 0, 0, -30]);
+  const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
+
+  return (
+    <section ref={ref} className="h-[200vh] relative w-full">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        
+        <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+          {motionGraphic}
+        </motion.div>
+
+        {/* Ambient Edge Masking (Prevents graphics from hard-cutting at the top/bottom of the screen) */}
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#010d54] to-transparent z-0 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010d54] to-transparent z-0 pointer-events-none" />
+        
+        {/* Title Container */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="flex flex-col items-center justify-center w-full px-6 text-center pointer-events-auto">
+            <motion.h2 
+              animate={{ backgroundPosition: ['200% center', '-200% center'] }}
+              transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
+              style={{ 
+                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundSize: '300% auto',
+              }}
+            >
+              {title}
+            </motion.h2>
+          </motion.div>
+        </div>
+        
+        {/* Content Container */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+          <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
+            <h3 className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
+               {title}
+            </h3>
+            <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
+              {content}
+            </p>
+          </motion.div>
         </div>
       </div>
     </section>
   );
 };
 
-// --- SECTION 05: THE FINDINGS ---
-const Findings = ({ results }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { margin: "-20%", once: true });
-  if (!results || results.length === 0) return null;
 
-  return (
-    <section ref={ref} className="min-h-[60vh] flex items-center justify-center py-32 px-[5%]" style={{ background: LAB_DARK }}>
-      {/* Concentric pulse bg */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        {[...Array(4)].map((_, i) => (
-          <motion.div key={i} className="absolute rounded-full border" style={{ borderColor: `${CYAN}08`, width: 200 + i * 200, height: 200 + i * 200 }}
-            animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0, 0.3] }}
-            transition={{ duration: 4, delay: i * 0.8, repeat: Infinity, ease: "easeInOut" }}/>
-        ))}
-      </div>
-
-      <motion.div initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-        className="relative max-w-3xl w-full p-12 md:p-16 rounded-2xl z-10"
-        style={{ border: `2px solid ${CYAN}40`, boxShadow: `0 0 0 4px ${LAB_DARK}, 0 0 0 6px ${AMBER}40`, background: `${LAB_DARK}f0` }}>
-
-        <p className="text-xs uppercase tracking-[0.3em] mb-10 font-primary" style={{ color: AMBER }}>Findings</p>
-        {results.map((r, i) => (
-          <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.4 + i * 0.15, duration: 0.8 }}
-            className="flex items-start gap-4 mb-4">
-            <motion.span initial={{ scale: 0 }} animate={isInView ? { scale: [0, 1.3, 1] } : {}}
-              transition={{ delay: 0.5 + i * 0.15, duration: 0.5 }}
-              style={{ color: AMBER }} className="text-sm mt-1">◆</motion.span>
-            <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${DIAGRAM_WHITE}cc` }}>{r}</p>
-          </motion.div>
-        ))}
-      </motion.div>
-    </section>
-  );
-};
-
-// --- SECTION 06: THE APPARATUS ---
-const Apparatus = ({ roles, deliverables }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { margin: "-20%", once: true });
-  if (!roles || roles.length === 0) return null;
-
-  return (
-    <section ref={ref} className="py-32 px-[5%]" style={{ background: LAB_DARK }}>
-      <div className="max-w-3xl mx-auto space-y-8">
-        {roles.map((role, i) => (
-          <motion.div key={i} initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: i * 0.3, duration: 0.5 }}
-            className="flex items-center gap-4">
-            <p className="text-xs font-primary uppercase tracking-widest w-48 shrink-0" style={{ color: `${DIAGRAM_WHITE}60` }}>
-              Instrument {String(i + 1).padStart(2, '0')}:
-            </p>
-            <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: `${CYAN}15` }}>
-              <motion.div initial={{ width: 0 }} animate={isInView ? { width: '100%' } : {}}
-                transition={{ delay: 0.3 + i * 0.3, duration: 0.8, ease: "easeOut" }}
-                className="h-full rounded-full relative"
-                style={{ background: `linear-gradient(90deg, ${CYAN}80, ${CYAN})` }}>
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 rounded-sm" style={{ background: '#fff', boxShadow: `0 0 10px ${CYAN}` }}/>
-              </motion.div>
-            </div>
-            <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.8 + i * 0.3 }}
-              className="text-sm font-primary uppercase tracking-wider w-40 text-right" style={{ color: CYAN }}>
-              {role}
-            </motion.p>
-          </motion.div>
-        ))}
-        {deliverables && (
-          <motion.p initial={{ opacity: 0 }} animate={isInView ? { opacity: 0.4 } : {}}
-            transition={{ delay: 1.5, duration: 0.8 }}
-            className="text-xs font-primary tracking-widest uppercase pt-8 border-t" style={{ color: DIAGRAM_WHITE, borderColor: `${CYAN}15` }}>
-            Output Classification: {deliverables}
-          </motion.p>
-        )}
-      </div>
-    </section>
-  );
-};
-
-// --- SECTION 07: THE LAB NOTES ---
-const LabNotes = ({ text }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { margin: "-20%", once: true });
-  if (!text) return null;
-
-  return (
-    <section ref={ref} className="py-32 px-[5%] relative" style={{ background: LAB_DARK }}>
-      {/* Graph paper grid */}
-      <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '24px 24px' }}/>
-
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 1 }}
-        className="max-w-3xl mx-auto relative z-10">
-        <p className="text-xs uppercase tracking-[0.3em] mb-8 font-primary flex items-center gap-2" style={{ color: CYAN }}>
-          <span className="inline-block w-4 h-4 border rounded-sm text-xs flex items-center justify-center" style={{ borderColor: CYAN }}>i</span>
-          Lab Notes
-        </p>
-        <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${DIAGRAM_WHITE}bb` }}>{text}</p>
-        <motion.div initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
-          transition={{ delay: 0.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          className="h-[2px] mt-8 origin-left" style={{ background: `linear-gradient(90deg, ${CYAN}60, transparent)` }}/>
-      </motion.div>
-    </section>
-  );
-};
-
-// --- SECTION 08: THE CLASSIFICATION ---
-const Classification = ({ project }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { margin: "-20%", once: true });
-
-  return (
-    <section ref={ref} className="min-h-screen flex items-center justify-center py-32 px-[5%]" style={{ background: LAB_DARK }}>
-      <motion.div initial={{ opacity: 0 }} animate={isInView ? { opacity: 1 } : {}}
-        transition={{ duration: 1.5 }}
-        className="text-center relative">
-        <motion.div initial={{ pathLength: 0 }} animate={isInView ? { pathLength: 1 } : {}}
-          className="border rounded-2xl px-12 py-16 md:px-20 md:py-20 relative"
-          style={{ borderColor: `${CYAN}30`, background: `${LAB_DARK}f0` }}>
-
-          {/* Scanline */}
-          <motion.div initial={{ top: 0, opacity: 0 }} animate={isInView ? { top: '100%', opacity: [0, 0.4, 0] } : {}}
-            transition={{ delay: 0.5, duration: 1.5 }}
-            className="absolute left-0 right-0 h-[2px] pointer-events-none" style={{ background: CYAN }}/>
-
-          <p className="text-xs font-primary uppercase tracking-[0.3em] mb-8" style={{ color: `${DIAGRAM_WHITE}50` }}>Classified Under</p>
-          <p className="text-2xl md:text-3xl font-primary uppercase tracking-widest mb-10 flex items-center justify-center gap-3" style={{ color: AMBER }}>
-            <motion.span animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 2, repeat: Infinity }}>◆</motion.span>
-            SciArt Saga
-          </p>
-
-          <div className="space-y-3 text-sm font-primary uppercase tracking-widest" style={{ color: `${DIAGRAM_WHITE}60` }}>
-            <p>Subject: <span style={{ color: DIAGRAM_WHITE }}>{project.client}</span></p>
-            <p>Sector: <span style={{ color: DIAGRAM_WHITE }}>{project.sector}</span></p>
-            <p>Status: <span style={{ color: CYAN }}>Experience Delivered</span></p>
-          </div>
-
-          <div className="mt-10 pt-8 border-t text-xs font-primary tracking-widest uppercase" style={{ borderColor: `${CYAN}15`, color: `${DIAGRAM_WHITE}30` }}>
-            PurpleBlue House · 2026
-          </div>
-        </motion.div>
-      </motion.div>
-    </section>
-  );
-};
-
-// --- MAIN EXPERIENCE ---
 const ParamInnovationExperience = ({ navigate, project }) => {
-  const images = normalizeMediaItems(project.fullStory?.media || project.fullStory?.images, project.client || 'Case study media');
+  const { SITE_SETTINGS } = React.useContext(GlobalContext) || {};
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, []);
+
+  const heroImg = project?.bannerVideo || project?.fullStory?.heroVideo || project?.bannerImage || project?.fullStory?.heroImg || project?.imageUrl || '';
+  const heroAspectRatio = getDimensionsAspectRatio(project?.bannerImageDimensions)
+    || getDimensionsAspectRatio(project?.fullStory?.heroImgDimensions)
+    || getUrlAspectRatio(heroImg)
+    || 16 / 9;
+  const cmsMedia = normalizeMediaItems(project?.fullStory?.media || project?.fullStory?.images, project?.client || 'Case study media');
+
+  // When `videoHero` is filled in Sanity (enabled = true), the CMS data takes over automatically.
+  // We no longer use a fallback demo; it only renders if Sanity data is explicitly provided.
+  const videoHeroData = project?.videoHero?.enabled ? project.videoHero : null;
 
   return (
-    <div className="min-h-screen w-full text-white relative" style={{ background: LAB_DARK, cursor: 'none' }}>
-      
-      {/* Global Top Navigation */}
-      <div className="fixed top-0 left-0 w-full z-[100] px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex flex-wrap items-center gap-3 pointer-events-none">
+    <div className="w-full min-h-screen font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
+      <ChicAmbientBackground />
+
+      {/* Navigation */}
+      <div className="fixed top-0 left-0 w-full z-50 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex items-center gap-3 pointer-events-none">
         <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-sm md:text-base backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
       </div>
-      <ReticleCursor />
-      <ImageTemplateHero project={project} navigate={navigate} />
-      <Hypothesis text={project.challenge} />
-      <MethodologyDiagram project={project} />
-      <ObservationDeck images={images} />
-      <Findings results={project.results} />
-      <Apparatus roles={project.roles} deliverables={project.deliverablesHeading} />
-      <LabNotes text={project.fullStory?.execution || project.solutionHeading} />
-      <Classification project={project} />
+
+      {/* ── 1. CINEMATIC HERO (Boxed) ── */}
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-20 md:pb-24 pt-10 px-4 md:px-8">
+        
+        {/* Floating Box Hero Banner */}
+        <div
+          className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5"
+          style={{ aspectRatio: heroAspectRatio }}
+        >
+           {heroImg ? (
+             <CreativeHeroReveal
+               src={heroImg}
+               alt={`${project?.client || 'Case Study'} Banner`}
+               aspectRatio={heroAspectRatio}
+             />
+           ) : (
+             <div className="w-full h-full bg-[#0C185C]" />
+           )}
+        </div>
+
+        {/* Text Below the Banner Box */}
+        <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
+          <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
+            {(project?.tags || project?.roles || ['Branding', 'Visual Identity', 'Collateral']).map((tag, i) => (
+              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-sm md:text-base tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
+                {tag}
+              </span>
+            ))}
+          </ElegantFade>
+
+          <ElegantFade delay={0.2}>
+            <motion.h1 
+              animate={{ backgroundPosition: ['200% center', '-200% center'] }}
+              transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+              className="font-primary text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" 
+              style={{ 
+                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #D4CEFC 45%, #6865FA 50%, #D4CEFC 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundSize: '300% auto',
+              }}
+            >
+              {project?.client || 'Arise Ventures'}
+            </motion.h1>
+          </ElegantFade>
+        </div>
+      </section>
+
+      {/* ── 1.5 CASE STUDY VIDEO HERO (CMS-driven, reusable) ── */}
+      <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} />
+
+      {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
+      {project?.overview && (
+        <DramaticSection
+          title={project?.overviewHeading || "About the Brand."}
+          content={project?.overview}
+          motionGraphic={<AboutGraphic />}
+        />
+      )}
+
+      {/* ── 3. DRAMATIC: PROBLEM STATEMENT ── */}
+      {project?.challenge && (
+        <DramaticSection 
+          title={project?.challengeHeading || "The Problem."}
+          content={project?.challenge}
+          motionGraphic={<ProblemGraphic />}
+        />
+      )}
+
+      {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (Seamlessly Blended) ── */}
+      <section className="relative w-full z-10">
+        
+        <div className="py-16 md:py-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
+        
+          {/* Ambient Background Aura behind the whole section (blended) */}
+          <motion.div
+            className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#6865FA_0%,transparent_60%)] blur-[80px] pointer-events-none"
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 0.18, scale: 1 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
+          />
+        
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+          
+            {/* Left Side: Text (Seamlessly integrated, no boxes) */}
+            <motion.div 
+              className="lg:col-span-7 relative z-10" 
+              initial={{ opacity: 0, y: 40, filter: 'blur(15px)' }} 
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} 
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} 
+              viewport={{ once: true, margin: "-10%" }}
+            >
+              <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-sm md:text-base font-bold tracking-widest uppercase backdrop-blur-md font-primary">
+                <span className="w-2 h-2 rounded-full bg-[#D4CEFC] animate-pulse shadow-[0_0_10px_#D4CEFC]" />
+                The Solution
+              </div>
+            
+              <motion.h3
+                className="font-primary text-5xl md:text-7xl lg:text-8xl text-white mb-10 font-medium tracking-tight drop-shadow-lg"
+                initial={{ opacity: 0, y: 32, filter: 'blur(14px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {project?.solutionHeading || "Creative Solution"}
+              </motion.h3>
+            
+              {/* Readable Text with NO box */}
+              {(project?.solution || project?.fullStory?.execution) && (
+                <div className="space-y-8 text-white/95 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary">
+                  {project?.solution && <p>{project.solution}</p>}
+                
+                  {/* Highlighted text block */}
+                  {project?.fullStory?.execution && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 22 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-12%' }}
+                      transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                      className="relative overflow-hidden pt-6 pb-6 pl-8 mt-10 rounded-r-xl"
+                    >
+                      {/* Drawing accent border */}
+                      <motion.span
+                        className="absolute left-0 top-0 bottom-0 w-1 bg-[#D4CEFC] origin-top shadow-[0_0_12px_#D4CEFC]"
+                        initial={{ scaleY: 0 }}
+                        whileInView={{ scaleY: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                      />
+                      {/* Gradient fill sweep */}
+                      <motion.span
+                        className="absolute inset-0 bg-gradient-to-r from-[#6865FA]/25 to-transparent origin-left"
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.3, delay: 0.7, ease: 'easeOut' }}
+                      />
+                      <p className="relative z-10 font-primary font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
+                        {project.fullStory.execution}
+                      </p>
+                    </motion.div>
+                  )}
+                </div>
+              )}
+            </motion.div>
+
+            {/* Right Side: Visualizer (Organic & Floating) */}
+            <motion.div 
+              className="lg:col-span-5 h-[400px] lg:h-full relative flex items-center justify-center pointer-events-none"
+              initial={{ opacity: 0, scale: 0.82, rotate: -6, filter: 'blur(22px)', clipPath: 'circle(0% at 50% 50%)' }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0, filter: 'blur(0px)', clipPath: 'circle(82% at 50% 50%)' }}
+              transition={{ duration: 1.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true, margin: "-10%" }}
+            >
+                <SolutionVisualizer />
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5. STATEMENT ── */}
+      {(project?.results?.length > 0) && (
+        <section className="py-16 px-6 md:px-12 text-center relative z-10">
+          <div className="max-w-[1000px] mx-auto">
+            <ElegantFade>
+              <h2 className="font-primary text-xl md:text-2xl leading-[1.4] text-white tracking-tight">
+                "{project.results[0]}"
+              </h2>
+            </ElegantFade>
+          </div>
+        </section>
+      )}
+
+      {/* ── 5.5 OPTIONAL VIDEO SECTION ── */}
+      {(() => {
+        const allVideos = [];
+        if (project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) {
+          allVideos.push({
+            videoTitle: project.videoSection.videoTitle,
+            videoSubtitle: project.videoSection.videoSubtitle,
+            thumbnailUrl: project.videoSection.thumbnailUrl,
+            videoUrl: getSafeEmbedUrl(project.videoSection.videoUrl),
+            videoFileUrl: project.videoSection.videoFileUrl,
+            orientation: project.videoSection.orientation
+          });
+        }
+        if (project?.videoSection?.videos?.length > 0) {
+          project.videoSection.videos.forEach(v => {
+            allVideos.push({
+              videoTitle: v.videoTitle,
+              videoSubtitle: v.videoSubtitle,
+              thumbnailUrl: v.thumbnailUrl,
+              videoUrl: getSafeEmbedUrl(v.videoUrl),
+              videoFileUrl: v.videoFileUrl,
+              orientation: project.videoSection.orientation // Inherit parent orientation
+            });
+          });
+        }
+
+        if (allVideos.length === 0) return null;
+
+        return (
+          <CaseStudyVideoHero 
+            videoHero={{ enabled: true, backgroundColor: 'transparent', backgroundText: project.client || 'Case Study' }} 
+            fallbackName={project.client} 
+            allVideos={allVideos} 
+          />
+        );
+      })()}
+
+      {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
+      <section className="relative w-full z-10">
+        <div className="pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
+          <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
+            <h2 className="font-primary text-5xl md:text-7xl lg:text-8xl text-white tracking-tight">
+              {project?.deliverablesHeading || "Ecosystem Highlights"}
+            </h2>
+          </ElegantFade>
+
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            {cmsMedia.length > 0 ? (
+              cmsMedia.map((media, index) => {
+                const yOffsets = [70, 40, -50, 60, -30];
+                const parallaxY = yOffsets[index % yOffsets.length];
+                
+                return (
+                  <div key={media.key} className="break-inside-avoid rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-gradient-to-br from-[#0C185C] to-[#010836]">
+                    <ParallaxImage 
+                      src={media.url}
+                      alt={media.alt || `Highlight 0${index + 1}`}
+                      delay={0.1 * ((index % 3) + 1)} 
+                      yOffset={parallaxY} 
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <div className="w-full rounded-[2rem] min-h-[400px] bg-[#0C185C]/30 flex items-center justify-center text-white/30 tracking-widest font-light ring-1 ring-white/10 break-inside-avoid">
+                AWAITING CMS MEDIA
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 7. FOOTER ── */}
+      <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10">
+        <div className="max-w-[1200px] mx-auto">
+          <ElegantFade>
+            <p className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
+            <motion.h2 
+              onClick={() => navigate('work')} 
+              className="font-primary text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"
+            >
+              <ArrowLeft className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20" /> {SITE_SETTINGS?.csAllProjects || 'All Case Studies'}
+            </motion.h2>
+          </ElegantFade>
+        </div>
+      </section>
+      
     </div>
   );
 };
