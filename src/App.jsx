@@ -862,9 +862,9 @@ const InteractiveHowItWorks = () => {
                 <div className={`w-3 h-3 rounded-full transition-all duration-500 ${isActive ? 'scale-100' : 'bg-white/20 scale-50'}`} style={{ backgroundColor: isActive ? 'white' : '' }} />
               </div>
               <div className="w-full">
-                <h3 className={`text-2xl font-light mb-2 transition-colors duration-500 font-primary ${isActive ? 'text-white' : 'text-white/40'}`}>{s.num}. {s.title}</h3>
+                <h3 className={`t-subtitle mb-2 transition-colors duration-500 ${isActive ? 'text-white' : 'text-white/40'}`}>{s.num}. {s.title}</h3>
                 <AnimatePresence>
-                  {isActive && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="text-sm font-light text-white/50 leading-relaxed overflow-hidden font-secondary">{s.desc}</motion.p>}
+                  {isActive && <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="t-body text-white/50 overflow-hidden">{s.desc}</motion.p>}
                 </AnimatePresence>
               </div>
             </div>
@@ -3260,7 +3260,7 @@ const HomePage = ({ navigate }) => {
           <StaggerItem>
             <div className="border border-white/10 rounded-[24px] p-10 md:p-14 h-full w-full backdrop-blur-3xl" style={{ background: `linear-gradient(135deg, ${hexToRgba(palette.panel, 0.5)} 0%, ${hexToRgba(palette.bgDeep, 0.5)} 100%)`, boxShadow: `inset 0 1px 0 ${hexToRgba(palette.secondary, 0.1)}` }}>
               <h3 className="t-label text-white/40 mb-10">The Old Way</h3>
-              <ul className="space-y-8 font-secondary">
+              <ul className="space-y-8">
                 <li className="flex gap-5 t-body text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[0] || "Execution disconnected from core business objectives."}</span></li>
                 <li className="flex gap-5 t-body text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[1] || "Short-term aesthetic fixes over long-term strategic systems."}</span></li>
                 <li className="flex gap-5 t-body text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[2] || "Disjointed touchpoints that dilute the brand's potential."}</span></li>
@@ -3272,7 +3272,7 @@ const HomePage = ({ navigate }) => {
               <div className="absolute bottom-[-10%] right-[-10%] w-80 h-80 opacity-[0.35] blur-[100px] pointer-events-none" style={{ backgroundColor: palette.primary }} />
               <div className="absolute top-[-10%] left-[-10%] w-64 h-64 opacity-[0.25] blur-[80px] pointer-events-none" style={{ backgroundColor: palette.secondary }} />
               <h3 className="t-label mb-10 relative z-10" style={{ color: palette.primary }}>The PBH Way</h3>
-              <ul className="space-y-8 relative z-10 font-secondary">
+              <ul className="space-y-8 relative z-10">
                 <li className="flex gap-5 t-body text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[0] || "Mapping the root business gap before designing anything."}</span></li>
                 <li className="flex gap-5 t-body text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[1] || "Modular scoping based on exact strategic requirements."}</span></li>
                 <li className="flex gap-5 t-body text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[2] || "Building connected systems where strategy dictates execution."}</span></li>
@@ -3295,11 +3295,11 @@ const HomePage = ({ navigate }) => {
             <div className="absolute inset-0" style={{  }} />
             <div className="flex gap-6 items-center z-10">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center shadow-2xl" style={{ backgroundColor: palette.bgDeep, border: `1px solid rgba(255,255,255,0.1)`, boxShadow: `0 0 40px rgba(42,151,217,0.4)` }}>
-                <span className="font-primary text-base md:text-xl tracking-widest text-white/90">SCI</span>
+                <span className="t-subtitle tracking-widest text-white/90">SCI</span>
               </div>
               <Plus className="w-6 h-6 md:w-8 md:h-8 opacity-40" style={{ color: palette.bgDeep }} />
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center shadow-2xl" style={{ backgroundColor: palette.bgDeep, border: `1px solid rgba(255,255,255,0.1)`, boxShadow: `0 0 40px rgba(104,101,250,0.4)` }}>
-                <span className="font-primary text-base md:text-xl tracking-widest text-white/90">ART</span>
+                <span className="t-subtitle tracking-widest text-white/90">ART</span>
               </div>
             </div>
           </FadeUp>
@@ -3321,8 +3321,8 @@ const HomePage = ({ navigate }) => {
                 <SpotlightCard className="rounded-[24px] h-full w-full backdrop-blur-2xl">
                   <div className="border rounded-[24px] p-10 h-full flex flex-col hover:border-black/10 transition-all duration-500 w-full" style={{ backgroundColor: palette.secondary, borderColor: hexToRgba(palette.primary, 0.15) }}>
                     <div className="w-14 h-14 rounded-[12px] flex items-center justify-center mb-8 shadow-lg" style={{ backgroundColor: rColor, color: 'white' }}>{route.icon}</div>
-                    <h4 className="text-2xl font-light mb-4 font-primary" style={{ color: palette.bgDeep }}>{route.title}</h4>
-                    <p className="font-light leading-relaxed mb-10 flex-grow font-secondary" style={{ color: hexToRgba(palette.bgDeep, 0.7) }}>{route.desc}</p>
+                    <h4 className="t-subtitle mb-4" style={{ color: palette.bgDeep }}>{route.title}</h4>
+                    <p className="t-body mb-10 flex-grow" style={{ color: hexToRgba(palette.bgDeep, 0.7) }}>{route.desc}</p>
                     <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="self-start px-0 group hover:bg-transparent" style={{ color: palette.bgDeep }}>Explore Route <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
                   </div>
                 </SpotlightCard>
@@ -3351,8 +3351,8 @@ const HomePage = ({ navigate }) => {
         <div className="absolute top-0 right-0 w-[500px] h-[500px] opacity-[0.05] blur-[100px] pointer-events-none rounded-full" style={{ backgroundColor: palette.blue }} />
         <FadeUp>
           <Globe className="w-12 h-12 mx-auto mb-8 opacity-40" style={{ color: palette.blue }} />
-          <h2 className="text-3xl md:text-5xl font-light mb-8 font-primary max-w-4xl mx-auto leading-tight">{SITE_SETTINGS?.aboutPage?.globalTitle || "Elevating Indian Innovation to the Global Stage."}</h2>
-          <p className="text-lg md:text-xl text-white/50 font-secondary max-w-2xl mx-auto leading-relaxed">{SITE_SETTINGS?.aboutPage?.globalText || "Championing the rise of breakthrough ideas, fostering a future where creativity and ingenuity fuel human progress on a worldwide scale."}</p>
+          <h2 className="t-display mb-8 max-w-4xl mx-auto">{SITE_SETTINGS?.aboutPage?.globalTitle || "Elevating Indian Innovation to the Global Stage."}</h2>
+          <p className="t-body text-white/50 max-w-2xl mx-auto">{SITE_SETTINGS?.aboutPage?.globalText || "Championing the rise of breakthrough ideas, fostering a future where creativity and ingenuity fuel human progress on a worldwide scale."}</p>
         </FadeUp>
       </section>
 
@@ -3362,7 +3362,7 @@ const HomePage = ({ navigate }) => {
         <div className="absolute bottom-24 left-[5%] w-[60px] h-[60px] rounded-[14px] border-[3px] opacity-[0.05] pointer-events-none rotate-45" style={{ borderColor: palette.accent }} />
 
         <div className="flex flex-col sm:flex-row justify-between items-end mb-24 gap-6 w-full text-left">
-          <RevealText delay={0.1}><h2 className="text-4xl md:text-6xl font-light tracking-tight font-primary">Selected <AnimatedItalic className="text-white/50">Work.</AnimatedItalic></h2></RevealText>
+          <RevealText delay={0.1}><h2 className="t-display">Selected <AnimatedItalic className="text-white/50">Work.</AnimatedItalic></h2></RevealText>
           <PremiumButton variant="ghost" onClick={() => navigate('work')} className="px-0 py-0 group" style={{ color: palette.primary }}>View Archive <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
         </div>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full">
@@ -3373,17 +3373,17 @@ const HomePage = ({ navigate }) => {
                 <div onClick={() => navigate('work/' + cs.id)} className="group relative rounded-[24px] overflow-hidden flex flex-col transition-all duration-500 cursor-pointer text-left h-[450px] w-full hover:translate-y-[-4px]" style={{ backgroundColor: palette.panel, border: `2px solid rgba(104, 101, 250, 0.15)`, boxShadow: `6px 6px 0px 0px rgba(104, 101, 250, 0.08)` }}>
                   <div className="h-[250px] relative overflow-hidden bg-white/[0.02]" style={{ borderBottom: `3px solid ${hexColor}` }}>
                     <div className={`absolute inset-0 opacity-20 mix-blend-screen group-hover:scale-110 transition-transform duration-1000 ease-out`}  />
-                    <div className="absolute inset-0 flex items-center justify-center"><span className="font-primary italic text-white/10 group-hover:text-white/30 transition-colors duration-700 text-5xl">{cs.client.split(' ')[0]}</span></div>
+                    <div className="absolute inset-0 flex items-center justify-center"><span className="t-display italic text-white/10 group-hover:text-white/30 transition-colors duration-700">{cs.client.split(' ')[0]}</span></div>
                     {/* Hatching texture overlay */}
                     <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'repeating-linear-gradient(45deg, white 0px, white 1px, transparent 1px, transparent 8px)', mixBlendMode: 'overlay' }} />
                   </div>
                   <div className="p-8 flex flex-col justify-between flex-1 w-full" style={{ backgroundColor: palette.panel }}>
                     <div>
-                      <span className="text-[10px] font-bold tracking-widest uppercase block mb-2 font-primary px-3 py-1 rounded-full w-fit" style={{ color: hexColor, border: `2px solid ${hexColor}30`, backgroundColor: `${hexColor}10` }}>{cs.sector}</span>
-                      <h3 className="text-2xl font-light transition-colors font-primary group-hover:opacity-80 mt-3" style={{ color: 'white' }}>{cs.client}</h3>
+                      <span className="t-label block mb-2 px-3 py-1 rounded-full w-fit" style={{ color: hexColor, border: `2px solid ${hexColor}30`, backgroundColor: `${hexColor}10` }}>{cs.sector}</span>
+                      <h3 className="t-subtitle transition-colors group-hover:opacity-80 mt-3" style={{ color: 'white' }}>{cs.client}</h3>
                     </div>
-                    <div className="flex justify-between items-end font-secondary">
-                      <div className="flex gap-2 flex-wrap">{(cs.tags || []).map(t => <span key={t} className="px-3 py-1.5 rounded-full border-2 border-white/15 bg-white/5 text-[10px] text-white/60 uppercase font-bold tracking-wider">{t}</span>)}</div>
+                    <div className="flex justify-between items-end">
+                      <div className="flex gap-2 flex-wrap">{(cs.tags || []).map(t => <span key={t} className="px-3 py-1.5 rounded-full border-2 border-white/15 bg-white/5 t-label text-white/60">{t}</span>)}</div>
                       <ArrowUpRight className="w-5 h-5 text-white/30 group-hover:text-white transition-colors" />
                     </div>
                   </div>
@@ -3400,8 +3400,8 @@ const HomePage = ({ navigate }) => {
         <div className="absolute top-12 left-[6%] w-[70px] h-[70px] rounded-full border-[3px] opacity-[0.05] pointer-events-none" style={{ borderColor: palette.accent }} />
 
         <div className="flex flex-col sm:flex-row justify-between items-end mb-16 gap-6 w-full text-left">
-          <RevealText delay={0.1}><h2 className="text-4xl md:text-5xl font-light tracking-tight font-primary">From the <AnimatedItalic className="text-white/50">House.</AnimatedItalic></h2></RevealText>
-          <span onClick={() => navigate('journal')} className="text-sm font-secondary text-white/40 hover:text-white cursor-pointer transition-colors flex items-center gap-2 group">View Journal <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
+          <RevealText delay={0.1}><h2 className="t-display">From the <AnimatedItalic className="text-white/50">House.</AnimatedItalic></h2></RevealText>
+          <span onClick={() => navigate('journal')} className="t-label text-white/40 hover:text-white cursor-pointer transition-colors flex items-center gap-2 group">View Journal <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
         </div>
         <StaggerGroup className="grid md:grid-cols-3 gap-6 w-full">
           {JOURNAL_ARTICLES.slice(0, 3).map((article, i) => {
@@ -3412,9 +3412,9 @@ const HomePage = ({ navigate }) => {
                 {/* Hatching texture overlay */}
                 <div className="absolute inset-0 rounded-[24px] pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'repeating-linear-gradient(45deg, white 0px, white 1px, transparent 1px, transparent 10px)', mixBlendMode: 'overlay' }} />
                 <div className="relative z-10 flex flex-col h-full">
-                  <span className="text-[10px] tracking-widest uppercase mb-6 font-primary font-bold px-3 py-1 rounded-full w-fit" style={{ color: articleColor, border: `2px solid ${articleColor}30`, backgroundColor: `${articleColor}10` }}>{article.tag}</span>
-                  <h4 className="text-2xl font-light text-white mb-12 font-primary group-hover:text-white/80 transition-colors leading-snug">{article.title}</h4>
-                  <div className="mt-auto flex justify-between items-center text-xs text-white/40 font-secondary pt-6 w-full" style={{ borderTop: `2px solid rgba(104, 101, 250, 0.1)` }}>
+                  <span className="t-label mb-6 px-3 py-1 rounded-full w-fit" style={{ color: articleColor, border: `2px solid ${articleColor}30`, backgroundColor: `${articleColor}10` }}>{article.tag}</span>
+                  <h4 className="t-subtitle text-white mb-12 group-hover:text-white/80 transition-colors">{article.title}</h4>
+                  <div className="mt-auto flex justify-between items-center t-label text-white/40 pt-6 w-full" style={{ borderTop: `2px solid rgba(104, 101, 250, 0.1)` }}>
                     <span>{article.time}</span>
                     <div className="w-9 h-9 rounded-full flex items-center justify-center group-hover:bg-white/10 transition-all" style={{ border: `2px solid rgba(255,255,255,0.15)` }}>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:text-white transition-colors" />
@@ -3431,9 +3431,9 @@ const HomePage = ({ navigate }) => {
       <section className="py-32 px-[3%] w-full text-center flex items-center justify-center overflow-hidden relative" style={{ background: `linear-gradient(to bottom, ${palette.panel}, ${palette.primary})` }}>
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="relative z-10 w-full overflow-hidden flex whitespace-nowrap">
-          <motion.div animate={{ x: ["0%", "-50%"] }} transition={{ repeat: Infinity, ease: "linear", duration: 20 }} className="flex gap-16 opacity-90 font-primary" style={{ color: palette.bgDeep }}>
-            <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">{SITE_SETTINGS?.marqueeText || "3 Ecosystems. 1 Connected System. Infinite Breakthroughs."}</span>
-            <span className="text-6xl md:text-8xl font-light tracking-tighter uppercase">{SITE_SETTINGS?.marqueeText || "3 Ecosystems. 1 Connected System. Infinite Breakthroughs."}</span>
+          <motion.div animate={{ x: ["0%", "-50%"] }} transition={{ repeat: Infinity, ease: "linear", duration: 20 }} className="flex gap-16 opacity-90" style={{ color: palette.bgDeep }}>
+            <span className="t-display uppercase">{SITE_SETTINGS?.marqueeText || "3 Ecosystems. 1 Connected System. Infinite Breakthroughs."}</span>
+            <span className="t-display uppercase">{SITE_SETTINGS?.marqueeText || "3 Ecosystems. 1 Connected System. Infinite Breakthroughs."}</span>
           </motion.div>
         </div>
       </section>
@@ -3443,8 +3443,8 @@ const HomePage = ({ navigate }) => {
         <div className="absolute top-[-10%] left-[-5%] w-[420px] h-[420px] rounded-full blur-[160px] opacity-[0.18] pointer-events-none" style={{ backgroundColor: '#ffffff' }} />
         <FadeUp className="relative z-10 w-full flex flex-col items-center">
           <h2 className="t-label mb-6" style={{ color: '#ffcd00' }}>Start with clarity.</h2>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light mb-12 tracking-tight font-primary">Build your brand scope <br /><AnimatedItalic className="text-white/60">before the first call.</AnimatedItalic></h1>
-          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-6 text-lg w-full sm:w-auto font-secondary">Begin Brand Discovery</PremiumButton>
+          <h1 className="t-display mb-12">Build your brand scope <br /><AnimatedItalic className="text-white/60">before the first call.</AnimatedItalic></h1>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-6 t-subtitle w-full sm:w-auto">Begin Brand Discovery</PremiumButton>
         </FadeUp>
       </section>
     </motion.div>
