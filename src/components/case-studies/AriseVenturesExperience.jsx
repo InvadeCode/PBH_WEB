@@ -574,32 +574,52 @@ const AriseVenturesExperience = ({ navigate, project }) => {
             {(() => {
               const isAriseBespoke = project.client?.toLowerCase().includes('arise');
 
-              if (isAriseBespoke && cmsMedia.length >= 7) { // Requires at least 7 images to look decent, 9 is perfect
+              if (isAriseBespoke && cmsMedia.length >= 7) { 
                 return (
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto w-full">
-                    {/* Left Column - Large Purple (Image 0) */}
-                    <div className="lg:col-span-5 h-full">
-                      {cmsMedia[0] && (
-                        <ParallaxImage src={cmsMedia[0].url} alt={cmsMedia[0].alt} delay={0.1} yOffset={10} className="h-full" />
-                      )}
+                  <div className="grid grid-cols-1 md:grid-cols-12 md:grid-rows-[repeat(4,_minmax(150px,_auto))] gap-4 md:gap-6 w-full max-w-[1600px] mx-auto">
+                    {/* Image 0: Large Purple (Left, spans 4 rows) */}
+                    <div className="md:col-span-5 md:row-span-4 h-full min-h-[300px] md:min-h-0">
+                      {cmsMedia[0] && <ParallaxImage src={cmsMedia[0].url} alt={cmsMedia[0].alt} delay={0.1} yOffset={10} className="h-full w-full object-cover" />}
                     </div>
                     
-                    {/* Middle Column (Images 1, 3, 5, 6) */}
-                    <div className="lg:col-span-3 flex flex-col gap-6">
-                      {cmsMedia[1] && <ParallaxImage src={cmsMedia[1].url} alt={cmsMedia[1].alt} delay={0.2} yOffset={15} />}
-                      {cmsMedia[3] && <ParallaxImage src={cmsMedia[3].url} alt={cmsMedia[3].alt} delay={0.3} yOffset={-10} />}
-                      {cmsMedia[5] && <ParallaxImage src={cmsMedia[5].url} alt={cmsMedia[5].alt} delay={0.4} yOffset={15} />}
-                      {cmsMedia[6] && <ParallaxImage src={cmsMedia[6].url} alt={cmsMedia[6].alt} delay={0.5} yOffset={-5} className="flex-grow" />}
+                    {/* Image 1: Top Business Cards (Middle, Row 1) */}
+                    <div className="md:col-span-3 md:row-span-1 h-full">
+                      {cmsMedia[1] && <ParallaxImage src={cmsMedia[1].url} alt={cmsMedia[1].alt} delay={0.2} yOffset={5} className="h-full w-full object-cover" />}
                     </div>
 
-                    {/* Right Column (Images 2, 4, 7, 8) */}
-                    <div className="lg:col-span-4 flex flex-col gap-6">
-                      {cmsMedia[2] && <ParallaxImage src={cmsMedia[2].url} alt={cmsMedia[2].alt} delay={0.3} yOffset={20} />}
-                      {cmsMedia[4] && <ParallaxImage src={cmsMedia[4].url} alt={cmsMedia[4].alt} delay={0.4} yOffset={-15} />}
-                      <div className="grid grid-cols-2 gap-6 flex-grow">
-                        {cmsMedia[7] && <ParallaxImage src={cmsMedia[7].url} alt={cmsMedia[7].alt} delay={0.5} yOffset={10} className="h-full" />}
-                        {cmsMedia[8] && <ParallaxImage src={cmsMedia[8].url} alt={cmsMedia[8].alt} delay={0.6} yOffset={25} className="h-full" />}
-                      </div>
+                    {/* Image 2: Orange Banner (Right, Row 1) */}
+                    <div className="md:col-span-4 md:row-span-1 h-full">
+                      {cmsMedia[2] && <ParallaxImage src={cmsMedia[2].url} alt={cmsMedia[2].alt} delay={0.3} yOffset={10} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 3: Middle Business Cards (Middle, Row 2) */}
+                    <div className="md:col-span-3 md:row-span-1 h-full">
+                      {cmsMedia[3] && <ParallaxImage src={cmsMedia[3].url} alt={cmsMedia[3].alt} delay={0.3} yOffset={-5} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 4: Brochure (Right, Row 2 & 3 - Spans 2 rows) */}
+                    <div className="md:col-span-4 md:row-span-2 h-full">
+                      {cmsMedia[4] && <ParallaxImage src={cmsMedia[4].url} alt={cmsMedia[4].alt} delay={0.4} yOffset={-10} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 5: Bottom Business Cards (Middle, Row 3) */}
+                    <div className="md:col-span-3 md:row-span-1 h-full">
+                      {cmsMedia[5] && <ParallaxImage src={cmsMedia[5].url} alt={cmsMedia[5].alt} delay={0.4} yOffset={5} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 6: Blue Icons (Middle, Row 4) */}
+                    <div className="md:col-span-3 md:row-span-1 h-full">
+                      {cmsMedia[6] && <ParallaxImage src={cmsMedia[6].url} alt={cmsMedia[6].alt} delay={0.5} yOffset={-5} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 7: Poster (Right-Left, Row 4) */}
+                    <div className="md:col-span-2 md:row-span-1 h-full">
+                      {cmsMedia[7] && <ParallaxImage src={cmsMedia[7].url} alt={cmsMedia[7].alt} delay={0.5} yOffset={10} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 8: Invite (Right-Right, Row 4) */}
+                    <div className="md:col-span-2 md:row-span-1 h-full">
+                      {cmsMedia[8] && <ParallaxImage src={cmsMedia[8].url} alt={cmsMedia[8].alt} delay={0.6} yOffset={25} className="h-full w-full object-cover" />}
                     </div>
                   </div>
                 );
