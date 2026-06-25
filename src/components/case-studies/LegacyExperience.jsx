@@ -66,7 +66,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
             {project.route && (
               <div>
                 <h3 className="text-sm uppercase tracking-widest text-white/60 mb-3 font-secondary">Strategy Route</h3>
-                <p className="text-sm md:text-base font-secondary">{project.route}</p>
+                <p className="text-[17px] md:text-[19px] font-secondary">{project.route}</p>
               </div>
             )}
             {project.roles && (

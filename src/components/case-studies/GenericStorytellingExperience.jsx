@@ -158,7 +158,7 @@ const Narrative = ({ project, c }) => {
                 <span className="h-px w-10" style={{ backgroundColor: `${c.terra}88` }} />
                 <h3 className="text-xl md:text-2xl font-primary tracking-tight" style={{ color: c.terra }}>{b.k}</h3>
               </div>
-              <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-sm md:text-base" style={{ color: `${c.cream}d9` }}>
+              <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-[17px] md:text-[19px]" style={{ color: `${c.cream}d9` }}>
                 {b.v}
               </p>
             </motion.div>
@@ -274,7 +274,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
                 <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: c.cream }}>
                   {ch.t}
                 </h4>
-                <p className="text-sm font-secondary leading-relaxed" style={{ color: `${c.cream}AA` }}>
+                <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${c.cream}AA` }}>
                   {ch.l}
                 </p>
               </div>
