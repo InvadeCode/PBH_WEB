@@ -368,17 +368,19 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} />
 
       {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
-      <DramaticSection
-        title={project?.overviewHeading || "About the Brand."}
-        content={project?.overview || project?.challenge || 'A premium brand experience crafted by PurpleBlue House.'}
-        motionGraphic={<AboutGraphic />}
-      />
+      {project?.overview && (
+        <DramaticSection
+          title={project?.overviewHeading || "About the Brand."}
+          content={project?.overview}
+          motionGraphic={<AboutGraphic />}
+        />
+      )}
 
       {/* ── 3. DRAMATIC: PROBLEM STATEMENT ── */}
-      {(project?.challenge || project?.overview) && (
+      {project?.challenge && (
         <DramaticSection 
           title={project?.challengeHeading || "The Problem."}
-          content={project?.challenge || project?.overview || ''}
+          content={project?.challenge}
           motionGraphic={<ProblemGraphic />}
         />
       )}
@@ -423,40 +425,42 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </motion.h3>
             
               {/* Readable Text with NO box */}
-              <div className="space-y-8 text-white/95 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary">
-                <p>{project?.solution || 'A comprehensive brand strategy and visual identity system designed to elevate and unify the brand presence across all touchpoints.'}</p>
-              
-                {/* Highlighted text block */}
-                {(project?.fullStory?.execution || project?.solutionHeading) && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 22 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: '-12%' }}
-                    transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative overflow-hidden pt-6 pb-6 pl-8 mt-10 rounded-r-xl"
-                  >
-                    {/* Drawing accent border */}
-                    <motion.span
-                      className="absolute left-0 top-0 bottom-0 w-1 bg-[#D4CEFC] origin-top shadow-[0_0_12px_#D4CEFC]"
-                      initial={{ scaleY: 0 }}
-                      whileInView={{ scaleY: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    />
-                    {/* Gradient fill sweep */}
-                    <motion.span
-                      className="absolute inset-0 bg-gradient-to-r from-[#6865FA]/25 to-transparent origin-left"
-                      initial={{ scaleX: 0 }}
-                      whileInView={{ scaleX: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.3, delay: 0.7, ease: 'easeOut' }}
-                    />
-                    <p className="relative z-10 font-primary font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
-                      {project?.fullStory?.execution || project?.solutionHeading}
-                    </p>
-                  </motion.div>
-                )}
-              </div>
+              {(project?.solution || project?.fullStory?.execution) && (
+                <div className="space-y-8 text-white/95 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary">
+                  {project?.solution && <p>{project.solution}</p>}
+                
+                  {/* Highlighted text block */}
+                  {project?.fullStory?.execution && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 22 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-12%' }}
+                      transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                      className="relative overflow-hidden pt-6 pb-6 pl-8 mt-10 rounded-r-xl"
+                    >
+                      {/* Drawing accent border */}
+                      <motion.span
+                        className="absolute left-0 top-0 bottom-0 w-1 bg-[#D4CEFC] origin-top shadow-[0_0_12px_#D4CEFC]"
+                        initial={{ scaleY: 0 }}
+                        whileInView={{ scaleY: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                      />
+                      {/* Gradient fill sweep */}
+                      <motion.span
+                        className="absolute inset-0 bg-gradient-to-r from-[#6865FA]/25 to-transparent origin-left"
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.3, delay: 0.7, ease: 'easeOut' }}
+                      />
+                      <p className="relative z-10 font-primary font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
+                        {project.fullStory.execution}
+                      </p>
+                    </motion.div>
+                  )}
+                </div>
+              )}
             </motion.div>
 
             {/* Right Side: Visualizer (Organic & Floating) */}

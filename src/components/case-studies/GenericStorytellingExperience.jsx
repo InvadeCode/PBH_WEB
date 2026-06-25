@@ -127,7 +127,7 @@ const Cover = ({ project, navigate, SITE_SETTINGS, c }) => {
       {/* Scroll cue (fades in after curtain) */}
       <motion.div className="absolute bottom-10 inset-x-0 z-30 flex flex-col items-center gap-3"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.5, duration: 1 }}>
-        <span className="text-xs uppercase tracking-[0.4em] font-secondary" style={{ color: `${c.cream}55` }}>{SITE_SETTINGS?.csScrollStory || 'Scroll the story'}</span>
+        {/* Removed text as requested */}
         <motion.div className="w-5 h-8 rounded-full border flex justify-center pt-1.5" style={{ borderColor: `${c.cream}40` }}>
           <motion.div className="w-1 h-1.5 rounded-full" style={{ backgroundColor: c.terra }}
             animate={{ y: [0, 8, 0], opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }} />
