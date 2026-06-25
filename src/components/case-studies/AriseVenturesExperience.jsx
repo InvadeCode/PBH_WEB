@@ -232,59 +232,25 @@ const ProblemGraphic = () => (
 );
 
 const DramaticSection = ({ title, content, motionGraphic }) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const spring = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-  
-  const titleOpacity = useTransform(spring, [0, 0.15], [1, 0]);
-  const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
-  const titleY = useTransform(spring, [0, 0.15], [0, -30]);
-  
-  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.75, 1], [0, 1, 1, 0]);
-  const contentY = useTransform(spring, [0.05, 0.25, 0.75, 1], [30, 0, 0, -30]);
-  const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
-
   return (
-    <section ref={ref} className="h-[200vh] relative w-full">
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+    <section className="relative w-full py-32 flex items-center justify-center overflow-hidden">
         
-        <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
           {motionGraphic}
-        </motion.div>
+        </div>
 
         {/* Ambient Edge Masking (Prevents graphics from hard-cutting at the top/bottom of the screen) */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#010d54] to-transparent z-0 pointer-events-none" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010d54] to-transparent z-0 pointer-events-none" />
         
-        {/* Title Container */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="flex flex-col items-center justify-center w-full px-6 text-center pointer-events-auto">
-            <motion.h2 
-              animate={{ backgroundPosition: ['200% center', '-200% center'] }}
-              transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
-              style={{ 
-                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
-                backgroundSize: '300% auto',
-              }}
-            >
-              {title}
-            </motion.h2>
-          </motion.div>
-        </div>
-        
-        {/* Content Container */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-          <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
+        <ElegantFade className="relative z-20 w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
             <h3 className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
                {title}
             </h3>
             <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
               {content}
             </p>
-          </motion.div>
-        </div>
-      </div>
+        </ElegantFade>
     </section>
   );
 };
