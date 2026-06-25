@@ -244,7 +244,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
                   {img ? (
                     <CaseStudyMedia
                       item={img}
-                      alt={ch.t}
+                      alt={ch?.t || 'Case study image'}
                       className="w-full h-auto object-contain shadow-inner"
                       sizes="(min-width: 768px) 420px, 85vw"
                     />
