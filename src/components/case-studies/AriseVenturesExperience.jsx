@@ -232,25 +232,59 @@ const ProblemGraphic = () => (
 );
 
 const DramaticSection = ({ title, content, motionGraphic }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const spring = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  
+  const titleOpacity = useTransform(spring, [0, 0.15], [1, 0]);
+  const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
+  const titleY = useTransform(spring, [0, 0.15], [0, -30]);
+  
+  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.75, 1], [0, 1, 1, 0]);
+  const contentY = useTransform(spring, [0.05, 0.25, 0.75, 1], [30, 0, 0, -30]);
+  const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
+
   return (
-    <section className="relative w-full py-32 flex items-center justify-center overflow-hidden">
+    <section ref={ref} className="h-[200vh] relative w-full">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
           {motionGraphic}
-        </div>
+        </motion.div>
 
         {/* Ambient Edge Masking (Prevents graphics from hard-cutting at the top/bottom of the screen) */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#010d54] to-transparent z-0 pointer-events-none" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010d54] to-transparent z-0 pointer-events-none" />
         
-        <ElegantFade className="relative z-20 w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
+        {/* Title Container */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="flex flex-col items-center justify-center w-full px-6 text-center pointer-events-auto">
+            <motion.h2 
+              animate={{ backgroundPosition: ['200% center', '-200% center'] }}
+              transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
+              style={{ 
+                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundSize: '300% auto',
+              }}
+            >
+              {title}
+            </motion.h2>
+          </motion.div>
+        </div>
+        
+        {/* Content Container */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+          <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
             <h3 className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
                {title}
             </h3>
             <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
               {content}
             </p>
-        </ElegantFade>
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 };
@@ -492,17 +526,17 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       })()}
 
       {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
-      <section className="relative w-full z-10">
-        <div className="pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
-          <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
-            <h2 className="font-primary text-5xl md:text-7xl lg:text-8xl text-white tracking-tight">
-              {project?.deliverablesHeading || "Ecosystem Highlights"}
-            </h2>
-          </ElegantFade>
+      {cmsMedia.length > 0 && (
+        <section className="relative w-full z-10">
+          <div className="pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
+            <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
+              <h2 className="font-primary text-5xl md:text-7xl lg:text-8xl text-white tracking-tight">
+                {project?.deliverablesHeading || "Ecosystem Highlights"}
+              </h2>
+            </ElegantFade>
 
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-            {cmsMedia.length > 0 ? (
-              cmsMedia.map((media, index) => {
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+              {cmsMedia.map((media, index) => {
                 const yOffsets = [70, 40, -50, 60, -30];
                 const parallaxY = yOffsets[index % yOffsets.length];
                 
@@ -516,15 +550,11 @@ const AriseVenturesExperience = ({ navigate, project }) => {
                     />
                   </div>
                 );
-              })
-            ) : (
-              <div className="w-full rounded-[2rem] min-h-[400px] bg-[#0C185C]/30 flex items-center justify-center text-white/30 tracking-widest font-light ring-1 ring-white/10 break-inside-avoid">
-                AWAITING CMS MEDIA
-              </div>
-            )}
+              })}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ── 7. FOOTER ── */}
       <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10">
