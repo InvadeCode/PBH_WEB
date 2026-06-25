@@ -4202,9 +4202,9 @@ const WorkPage = ({ navigate }) => {
               )}
             </div>
             <div className="md:w-1/2 p-12 md:p-16 flex flex-col justify-center w-full">
-              <span className="text-[10px] font-medium tracking-widest uppercase block mb-4 font-primary" style={{ color: palette.primary }}>Featured Case Study • {caseStudies[0].sector}</span>
-              <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary">{caseStudies[0].client}</h3>
-              <p className="text-white/50 font-light mb-10 text-lg leading-relaxed font-secondary max-w-lg">{caseStudies[0].challenge}</p>
+              <span className="t-label block mb-4" style={{ color: palette.primary }}>Featured Case Study • {caseStudies[0].sector}</span>
+              <h3 className="t-display mb-6">{caseStudies[0].client}</h3>
+              <p className="t-body text-white/50 mb-10 max-w-lg">{caseStudies[0].challenge}</p>
               <div className="flex gap-4 font-secondary mb-12 flex-wrap">
                 {(caseStudies[0].tags || []).map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-white/70 uppercase tracking-widest">{t}</span>)}
               </div>
@@ -4250,12 +4250,12 @@ const WorkPage = ({ navigate }) => {
                     <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-[0.16,1,0.3,1]">
                       
                       {/* Sector */}
-                      <span className="text-[11px] font-medium tracking-[0.2em] uppercase block mb-3 font-primary" style={{ color: hexColor }}>
+                      <span className="t-label block mb-3" style={{ color: hexColor }}>
                         {cs.sector}
                       </span>
                       
                       {/* Title */}
-                      <h3 className="text-3xl md:text-4xl font-light font-primary text-white mb-6 drop-shadow-lg">
+                      <h3 className="t-subtitle font-primary text-white mb-6 drop-shadow-lg">
                         {cs.client}
                       </h3>
                       
@@ -4347,9 +4347,9 @@ const JournalPage = ({ navigate }) => {
           {filteredArticles.length > 0 ? filteredArticles.map((article, i) => (
             <StaggerItem key={i}>
               <div onClick={() => navigate('article/' + article.id)} className="border border-white/10 rounded-[24px] p-8 h-[380px] flex flex-col hover:-translate-y-2 transition-transform cursor-pointer group shadow-xl w-full" style={{ backgroundColor: palette.panel }}>
-                <div className="text-[10px] tracking-widest uppercase mb-6 font-primary font-medium" style={{ color: palette[article.type] || palette.primary }}>{article.tag}</div>
-                <h4 className="text-2xl font-light text-white mb-6 font-primary group-hover:text-white/80 transition-colors leading-snug">{article.title}</h4>
-                <p className="text-white/50 text-sm font-secondary font-light line-clamp-3 mb-8">{article.excerpt}</p>
+                <div className="t-label mb-6" style={{ color: palette[article.type] || palette.primary }}>{article.tag}</div>
+                <h4 className="t-subtitle text-white mb-6 group-hover:text-white/80 transition-colors leading-snug font-primary">{article.title}</h4>
+                <p className="t-body text-white/50 line-clamp-3 mb-8">{article.excerpt}</p>
                 <div className="mt-auto flex justify-between items-center text-xs text-white/40 font-secondary pt-6 border-t border-white/5">
                   <span>{article.time}</span>
                   <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all">
@@ -4961,30 +4961,7 @@ const renderHeroHeading = (sanityText, defaultText, animatedRenderer, plainRende
   return plainRenderer(sanityText);
 };
 
-// ── Standardized, always-following Back button ───────────────────────────────
-// Rendered via a portal to <body> so no ancestor transform/filter/overlay can
-// break its fixed positioning — it stays pinned to the screen on every page and
-// at every scroll position (incl. the very bottom). Hierarchical back targets.
-const BACK_TARGETS = { 'work-detail': 'work', 'article-detail': 'journal', 'service-detail': 'services' };
-
-const FloatingBackButton = ({ page, navigate }) => {
-  if (typeof document === 'undefined') return null;
-  if (page === 'home' || page === 'admin' || page === 'work-detail') return null;
-  const target = BACK_TARGETS[page] || 'home';
-
-  return createPortal(
-    <button
-      onClick={() => navigate(target)}
-      aria-label="Go back"
-      className="fixed bottom-6 left-6 z-[99990] flex items-center gap-2 rounded-full border border-white/20 bg-[#010836]/85 text-white px-4 py-3 text-sm font-medium shadow-[0_12px_40px_rgba(0,0,0,0.55)] backdrop-blur-xl transition-all duration-200 hover:bg-[#010836] hover:border-white/40 hover:-translate-y-0.5 active:translate-y-0"
-      style={{ fontFamily: '"Karla", sans-serif' }}
-    >
-      <ArrowLeft className="w-4 h-4 shrink-0" />
-      <span>Back</span>
-    </button>,
-    document.body
-  );
-};
+// Removed FloatingBackButton component
 
 export default function App() {
   const [routeState, setRouteState] = useState(() => {
@@ -5305,7 +5282,7 @@ export default function App() {
         <BrandAura />
         <CustomCursor />
         {routeState.page !== 'admin' && <Header navigate={navigate} current={routeState.page} />}
-        <FloatingBackButton page={routeState.page} navigate={navigate} />
+        {/* Removed FloatingBackButton */}
 
         <div id="site-blur-layer" className="transition-[filter,transform,opacity] duration-300 ease-out">
           <main className="w-full min-h-screen flex flex-col">

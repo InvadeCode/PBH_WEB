@@ -39,6 +39,9 @@
   .t-display {
     @apply font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight;
   }
+  .t-subtitle {
+    @apply font-primary text-xl md:text-2xl font-medium tracking-tight;
+  }
   .t-body {
     @apply font-secondary text-[17px] md:text-[19px] leading-relaxed font-normal;
   }
