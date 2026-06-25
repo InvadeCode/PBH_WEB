@@ -240,8 +240,9 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
   const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
   const titleY = useTransform(spring, [0, 0.15], [0, -30]);
   
-  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.75, 1], [0, 1, 1, 0]);
-  const contentY = useTransform(spring, [0.05, 0.25, 0.75, 1], [30, 0, 0, -30]);
+  // Fade content in from 0.05 to 0.25, hold until 0.9, then fade out quickly by 1.0
+  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.9, 1], [0, 1, 1, 0]);
+  const contentY = useTransform(spring, [0.05, 0.25, 0.9, 1], [30, 0, 0, -30]);
   const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
 
   return (
@@ -385,7 +386,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (Seamlessly Blended) ── */}
       <section className="relative w-full z-10">
         
-        <div className="py-16 md:py-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
+        <div className="pt-4 pb-16 md:pt-6 md:pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
         
           {/* Ambient Background Aura behind the whole section (blended) */}
           <motion.div
