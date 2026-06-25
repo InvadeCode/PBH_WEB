@@ -208,12 +208,10 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
     <section className="relative py-24 md:py-32 overflow-hidden" style={{ backgroundColor: C.soilDeep }}>
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.1 }} />
       
-      {(project?.carouselTitle || project?.carouselSubtext) && (
-        <div className="text-center mb-16 px-[6%] relative z-10">
-          {project?.carouselTitle && <h3 className="font-primary text-2xl md:text-4xl" style={{ color: C.terra }}>{project.carouselTitle}</h3>}
-          {project?.carouselSubtext && <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${C.cream}66` }}>{project.carouselSubtext}</p>}
-        </div>
-      )}
+      <div className="text-center mb-16 px-[6%] relative z-10">
+        <h3 className="font-primary text-2xl md:text-4xl" style={{ color: C.terra }}>{project?.carouselTitle || 'The Unfolding Story'}</h3>
+        <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${C.cream}66` }}>{project?.carouselSubtext || 'Scroll or drag to explore'}</p>
+      </div>
 
       <div 
         ref={containerRef}
@@ -223,7 +221,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
         {extendedImages.map((img, index) => {
           const storyChapters = project?.fullStory?.storyChapters || [];
           const chData = storyChapters.length > 0 ? storyChapters[index % storyChapters.length] : null;
-          const ch = chData ? { label: chData.chapterLabel, t: chData.title, l: chData.description } : null;
+          const ch = chData ? { label: chData.chapterLabel, t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[index % DEFAULT_CHAPTERS.length];
 
           return (
             <motion.div 
@@ -258,25 +256,17 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
               </div>
 
               {/* Chapter Text */}
-              {ch && (
-                <div className="mt-8 text-center max-w-[80%]">
-                  {ch.label && (
-                    <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
-                      {ch.label}
-                    </p>
-                  )}
-                  {ch.t && (
-                    <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: C.cream }}>
-                      {ch.t}
-                    </h4>
-                  )}
-                  {ch.l && (
-                    <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${C.cream}AA` }}>
-                      {ch.l}
-                    </p>
-                  )}
-                </div>
-              )}
+              <div className="mt-8 text-center max-w-[80%]">
+                <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
+                  {ch.label}
+                </p>
+                <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: C.cream }}>
+                  {ch.t}
+                </h4>
+                <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${C.cream}AA` }}>
+                  {ch.l}
+                </p>
+              </div>
             </motion.div>
           );
         })}
