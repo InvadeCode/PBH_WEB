@@ -3629,7 +3629,7 @@ const AboutPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
 
         {/* Section 1: Hero */}
         <FadeUp>
@@ -3719,7 +3719,7 @@ const OurStoryPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
 
         {/* Section 1: Hero */}
         <FadeUp>
@@ -3799,7 +3799,7 @@ const TeamPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
 
         {/* Section 1: Hero */}
         <FadeUp>
@@ -3896,7 +3896,7 @@ const MethodPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
 
         {/* Section 1: Hero */}
         <FadeUp>
@@ -3988,7 +3988,7 @@ const ServicesPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
         <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight max-w-4xl font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.servicesHeader || "Three strategic routes.\n*One connected brand system.*")}</h1></RevealText>
         <FadeUp><p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed font-secondary">{SITE_SETTINGS?.servicesSubtext || "PBH services are not isolated offerings. They are designed as connected routes that help brands move from clarity to communication to execution."}</p></FadeUp>
 
@@ -4184,9 +4184,9 @@ const WorkPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
-        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.workPageHeader || "Our Work.")}</h1></RevealText>
-        <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">{SITE_SETTINGS?.workPageSubtext || "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns."}</p></FadeUp>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+        <RevealText><h1 className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight mb-6 font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.workPageHeader || "Our Work.")}</h1></RevealText>
+        <FadeUp><p className="text-[17px] md:text-[19px] leading-relaxed font-normal text-white/50 mb-16 max-w-2xl font-secondary">{SITE_SETTINGS?.workPageSubtext || "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns."}</p></FadeUp>
 
         {/* Featured Case Study Hero */}
         <FadeUp delay={0.1} className="mb-24 w-full">
@@ -4308,7 +4308,7 @@ const JournalPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
         <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.journalHeader || "The Journal.")}</h1></RevealText>
         <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">{SITE_SETTINGS?.journalSubtext || "Essays, frameworks, and perspectives on building brands that matter."}</p></FadeUp>
 
@@ -4619,7 +4619,7 @@ const ContactPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Home</button>
 
         {/* Section 1: Hero */}
         <FadeUp>

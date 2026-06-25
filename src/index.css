@@ -37,25 +37,13 @@
      Display (headings) · Body (copy) · Label (eyebrows/captions)
      ═══════════════════════════════════════════════════════════════ */
   .t-display {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(2.5rem, 5.2vw, 4.75rem);
-    line-height: 1.04;
-    letter-spacing: -0.03em;
-    font-weight: 500;
+    @apply font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight;
   }
   .t-body {
-    font-family: 'Karla', 'Inter', sans-serif;
-    font-size: 1.125rem;      /* 18px */
-    line-height: 1.65;
-    font-weight: 400;
+    @apply font-secondary text-[17px] md:text-[19px] leading-relaxed font-normal;
   }
   .t-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.75rem;       /* 12px */
-    line-height: 1;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    font-weight: 600;
+    @apply font-primary text-sm md:text-base tracking-widest uppercase font-bold;
   }
 
   /* ── Hatching Texture Overlay (Selective Use) ──
