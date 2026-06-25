@@ -111,16 +111,7 @@ const Cover = ({ project, navigate, SITE_SETTINGS }) => {
         </h1>
       </motion.div>
 
-      {/* Top bar (fades in after curtain) */}
-      <motion.div className="fixed top-0 inset-x-0 z-50 flex items-center gap-3 px-[5%] pt-28 pointer-events-none"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 3.2 }}>
-        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border" style={{ color: C.cream, borderColor: `${C.cream}33`, backgroundColor: `${C.soilDeep}33`, backdropFilter: 'blur(8px)' }}>
-          <ArrowLeft className="w-4 h-4" /> Home
-        </button>
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border text-white/60 hover:text-white border-white/20 bg-white/5 backdrop-blur-md">
-          <ArrowLeft className="w-4 h-4" /> All Case Studies
-        </button>
-      </motion.div>
+
 
       {/* Scroll cue (fades in after curtain) */}
       <motion.div className="absolute bottom-10 inset-x-0 z-30 flex flex-col items-center gap-3"
@@ -217,10 +208,12 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
     <section className="relative py-24 md:py-32 overflow-hidden" style={{ backgroundColor: C.soilDeep }}>
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.1 }} />
       
-      <div className="text-center mb-16 px-[6%] relative z-10">
-        <h3 className="font-primary text-2xl md:text-4xl" style={{ color: C.terra }}>{project?.carouselTitle || 'The Unfolding Story'}</h3>
-        <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${C.cream}66` }}>{project?.carouselSubtext || 'Scroll or drag to explore'}</p>
-      </div>
+      {(project?.carouselTitle || project?.carouselSubtext) && (
+        <div className="text-center mb-16 px-[6%] relative z-10">
+          {project?.carouselTitle && <h3 className="font-primary text-2xl md:text-4xl" style={{ color: C.terra }}>{project.carouselTitle}</h3>}
+          {project?.carouselSubtext && <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${C.cream}66` }}>{project.carouselSubtext}</p>}
+        </div>
+      )}
 
       <div 
         ref={containerRef}
@@ -230,7 +223,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
         {extendedImages.map((img, index) => {
           const storyChapters = project?.fullStory?.storyChapters || [];
           const chData = storyChapters.length > 0 ? storyChapters[index % storyChapters.length] : null;
-          const ch = chData ? { label: chData.chapterLabel, t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[index % DEFAULT_CHAPTERS.length];
+          const ch = chData ? { label: chData.chapterLabel, t: chData.title, l: chData.description } : null;
 
           return (
             <motion.div 
@@ -265,17 +258,25 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
               </div>
 
               {/* Chapter Text */}
-              <div className="mt-8 text-center max-w-[80%]">
-                <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
-                  {ch.label}
-                </p>
-                <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: C.cream }}>
-                  {ch.t}
-                </h4>
-                <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${C.cream}AA` }}>
-                  {ch.l}
-                </p>
-              </div>
+              {ch && (
+                <div className="mt-8 text-center max-w-[80%]">
+                  {ch.label && (
+                    <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
+                      {ch.label}
+                    </p>
+                  )}
+                  {ch.t && (
+                    <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: C.cream }}>
+                      {ch.t}
+                    </h4>
+                  )}
+                  {ch.l && (
+                    <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${C.cream}AA` }}>
+                      {ch.l}
+                    </p>
+                  )}
+                </div>
+              )}
             </motion.div>
           );
         })}
@@ -301,6 +302,17 @@ const BackToRootsExperience = ({ navigate, project }) => {
   return (
     <div className="w-full font-secondary relative" style={{ backgroundColor: C.soil, color: C.cream }}>
       <ScrollProgress />
+      
+      {/* Global Top Navigation */}
+      <motion.div className="fixed top-0 left-0 w-full z-[100] flex items-center gap-3 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 pointer-events-none"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 3.2 }}>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border" style={{ color: C.cream, borderColor: `${C.cream}33`, backgroundColor: `${C.soilDeep}33`, backdropFilter: 'blur(8px)' }}>
+          <ArrowLeft className="w-4 h-4" /> Home
+        </button>
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border text-white/60 hover:text-white border-white/20 bg-white/5 backdrop-blur-md">
+          <ArrowLeft className="w-4 h-4" /> All Case Studies
+        </button>
+      </motion.div>
       <Cover project={project} navigate={navigate} SITE_SETTINGS={SITE_SETTINGS} />
       <Narrative project={project} />
       <StoryChapterCarousel images={images} project={project} SITE_SETTINGS={SITE_SETTINGS} />

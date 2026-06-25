@@ -65,14 +65,7 @@ const ImageTemplateHero = ({ project, navigate }) => {
 
   return (
     <>
-      <div className="relative z-50 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex flex-wrap items-center gap-3 pointer-events-none" style={{ background: LAB_DARK }}>
-        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white">
-            <ArrowLeft className="w-4 h-4" /> Home
-        </button>
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white">
-            <ArrowLeft className="w-4 h-4" /> All Case Studies
-        </button>
-      </div>
+
 
       <section className="relative w-full flex flex-col items-center justify-start z-10 pb-40 md:pb-48 pt-10 px-4 md:px-8 overflow-hidden" style={{ background: LAB_DARK }}>
         <div
@@ -462,7 +455,18 @@ const ParamInnovationExperience = ({ navigate, project }) => {
   const images = normalizeMediaItems(project.fullStory?.media || project.fullStory?.images, project.client || 'Case study media');
 
   return (
-    <div className="min-h-screen w-full text-white relative" style={{ background: LAB_DARK, cursor: 'none' }}>
+    <div className="min-h-screen w-full relative selection:bg-[#3d65ff] selection:text-white font-secondary" style={{ background: LAB_DARK, color: '#f0f2f5', cursor: 'none' }}>
+      <ScrollProgress />
+      
+      {/* Global Top Navigation */}
+      <div className="fixed top-0 left-0 w-full z-[100] px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex flex-wrap items-center gap-3 pointer-events-none">
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white">
+            <ArrowLeft className="w-4 h-4" /> Home
+        </button>
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white">
+            <ArrowLeft className="w-4 h-4" /> All Case Studies
+        </button>
+      </div>
       <ReticleCursor />
       <ImageTemplateHero project={project} navigate={navigate} />
       <Hypothesis text={project.challenge} />
