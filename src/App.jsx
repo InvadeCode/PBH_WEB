@@ -3564,7 +3564,8 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     'firefox bikes',
     'albatross energetics',
     'albatross',
-    'leverage edu'
+    'leverage edu',
+    'param innovation'
   ];
   if (ariseClients.some(target => clientName.includes(target))) {
     return <AriseVenturesExperience navigate={navigate} project={project} />;
@@ -3582,7 +3583,6 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     'observer research',
     'best iu',
     'india global forum',
-    'param innovation',
     'veauli techniks',
     'veauli'
   ];
