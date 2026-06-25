@@ -279,7 +279,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
             <h3 className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
                {title}
             </h3>
-            <p className="text-white/90 font-normal text-base md:text-lg max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
+            <p className="text-white/90 font-normal text-lg md:text-xl max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
               {content}
             </p>
           </motion.div>
@@ -423,7 +423,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </motion.h3>
             
               {/* Readable Text with NO box */}
-              <div className="space-y-8 text-white/95 font-normal text-base md:text-lg leading-relaxed font-secondary">
+              <div className="space-y-8 text-white/95 font-normal text-lg md:text-xl leading-relaxed font-secondary">
                 <p>{project?.solution || 'A comprehensive brand strategy and visual identity system designed to elevate and unify the brand presence across all touchpoints.'}</p>
               
                 {/* Highlighted text block */}
