@@ -245,12 +245,16 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
   const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
 
   return (
-    <section ref={ref} className="h-[200vh] relative w-full" style={{ backgroundColor: '#010836' }}>
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#010836' }}>
+    <section ref={ref} className="h-[200vh] relative w-full">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         
         <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
           {motionGraphic}
         </motion.div>
+
+        {/* Ambient Edge Masking (Prevents graphics from hard-cutting at the top/bottom of the screen) */}
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#010d54] to-transparent z-0 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010d54] to-transparent z-0 pointer-events-none" />
         
         {/* Title Container */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
