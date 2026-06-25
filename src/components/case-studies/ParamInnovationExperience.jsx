@@ -419,7 +419,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
               >
-                {project?.solutionHeading || "Creative Solution"}
+                {project?.solutionHeading?.length > 100 ? "Creative Solution" : (project?.solutionHeading || "Creative Solution")}
               </motion.h3>
             
               {/* Readable Text with NO box */}
