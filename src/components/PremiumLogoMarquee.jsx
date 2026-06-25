@@ -183,7 +183,7 @@ const PremiumLogoMarquee = () => {
         viewport={{ once: true, amount: 0.6 }}
         transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
       >
-        <p className="text-[10px] md:text-[11px] uppercase tracking-[0.55em] text-white/40 font-medium">
+        <p className="t-label text-white/40">
           Our Partners
         </p>
         <div className="mx-auto mt-5 h-px w-16 bg-white/10" />

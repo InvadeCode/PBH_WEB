@@ -3259,11 +3259,11 @@ const HomePage = ({ navigate }) => {
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full">
           <StaggerItem>
             <div className="border border-white/10 rounded-[24px] p-10 md:p-14 h-full w-full backdrop-blur-3xl" style={{ background: `linear-gradient(135deg, ${hexToRgba(palette.panel, 0.5)} 0%, ${hexToRgba(palette.bgDeep, 0.5)} 100%)`, boxShadow: `inset 0 1px 0 ${hexToRgba(palette.secondary, 0.1)}` }}>
-              <h3 className="text-white/40 text-sm tracking-widest uppercase mb-10 font-primary">The Old Way</h3>
+              <h3 className="t-label text-white/40 mb-10">The Old Way</h3>
               <ul className="space-y-8 font-secondary">
-                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[0] || "Execution disconnected from core business objectives."}</span></li>
-                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[1] || "Short-term aesthetic fixes over long-term strategic systems."}</span></li>
-                <li className="flex gap-5 text-white/50 font-light text-lg"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[2] || "Disjointed touchpoints that dilute the brand's potential."}</span></li>
+                <li className="flex gap-5 t-body text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[0] || "Execution disconnected from core business objectives."}</span></li>
+                <li className="flex gap-5 t-body text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[1] || "Short-term aesthetic fixes over long-term strategic systems."}</span></li>
+                <li className="flex gap-5 t-body text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[2] || "Disjointed touchpoints that dilute the brand's potential."}</span></li>
               </ul>
             </div>
           </StaggerItem>
@@ -3271,11 +3271,11 @@ const HomePage = ({ navigate }) => {
             <div className="border rounded-[24px] p-10 md:p-14 relative overflow-hidden h-full w-full backdrop-blur-3xl" style={{ background: `linear-gradient(to bottom right, rgba(${rgbPrimary},0.2), rgba(${rgbPrimary},0.05))`, borderColor: `rgba(${rgbPrimary},0.4)`, boxShadow: `0 30px 60px ${hexToRgba(palette.primary, 0.1)}, inset 0 1px 0 ${hexToRgba(palette.secondary, 0.3)}` }}>
               <div className="absolute bottom-[-10%] right-[-10%] w-80 h-80 opacity-[0.35] blur-[100px] pointer-events-none" style={{ backgroundColor: palette.primary }} />
               <div className="absolute top-[-10%] left-[-10%] w-64 h-64 opacity-[0.25] blur-[80px] pointer-events-none" style={{ backgroundColor: palette.secondary }} />
-              <h3 className="text-sm tracking-widest uppercase mb-10 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>The PBH Way</h3>
+              <h3 className="t-label mb-10 relative z-10" style={{ color: palette.primary }}>The PBH Way</h3>
               <ul className="space-y-8 relative z-10 font-secondary">
-                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[0] || "Mapping the root business gap before designing anything."}</span></li>
-                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[1] || "Modular scoping based on exact strategic requirements."}</span></li>
-                <li className="flex gap-5 text-white/90 font-light text-lg"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[2] || "Building connected systems where strategy dictates execution."}</span></li>
+                <li className="flex gap-5 t-body text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[0] || "Mapping the root business gap before designing anything."}</span></li>
+                <li className="flex gap-5 t-body text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[1] || "Modular scoping based on exact strategic requirements."}</span></li>
+                <li className="flex gap-5 t-body text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[2] || "Building connected systems where strategy dictates execution."}</span></li>
               </ul>
             </div>
           </StaggerItem>
