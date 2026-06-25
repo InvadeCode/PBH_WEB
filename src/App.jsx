@@ -2809,6 +2809,12 @@ const Header = ({ navigate, current }) => {
     }, 260);
   };
 
+  // Standardized "Back" control — always available in the fixed header (every page except Home).
+  // Hierarchical: deep pages return to their parent listing, everything else to Home.
+  const BACK_TARGETS = { 'work-detail': 'work', 'article-detail': 'journal', 'service-detail': 'services' };
+  const showBack = current !== 'home';
+  const handleBack = () => navigate(BACK_TARGETS[current] || 'home');
+
   const ServicesMegaMenu = () => (
     <div className="flex gap-12 text-left w-full">
       <div className="w-1/3 pr-12 border-r border-white/5 flex flex-col items-start">
@@ -2970,9 +2976,21 @@ const Header = ({ navigate, current }) => {
       }}
     >
       <div className="w-full px-[3%] flex justify-between items-center relative z-[10001]">
-        <div className={`font-primary font-medium tracking-wide cursor-pointer flex items-center gap-3 hover:opacity-80 transition-all duration-300 text-white ${scrolled || activeMenu ? 'text-lg' : 'text-xl'}`} onClick={() => navigate('home')}>
-          <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className={`w-auto object-contain shrink-0 transition-all duration-300 ${scrolled || activeMenu ? 'h-6' : 'h-8'}`} />
-          PurpleBlue House
+        <div className="flex items-center gap-2 md:gap-4">
+          {showBack && (
+            <button
+              onClick={handleBack}
+              aria-label="Go back"
+              className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:text-white hover:bg-white/[0.12] hover:border-white/30 backdrop-blur-xl transition-all px-3 py-2 md:px-4 md:py-2.5 shrink-0 font-secondary"
+            >
+              <ArrowLeft className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline text-sm font-medium">Back</span>
+            </button>
+          )}
+          <div className={`font-primary font-medium tracking-wide cursor-pointer flex items-center gap-3 hover:opacity-80 transition-all duration-300 text-white ${scrolled || activeMenu ? 'text-lg' : 'text-xl'}`} onClick={() => navigate('home')}>
+            <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className={`w-auto object-contain shrink-0 transition-all duration-300 ${scrolled || activeMenu ? 'h-6' : 'h-8'}`} />
+            PurpleBlue House
+          </div>
         </div>
 
         <nav className="hidden lg:flex items-center gap-2 text-base md:text-lg font-medium tracking-wide bg-white/[0.04] border border-white/10 rounded-full px-5 py-3 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_50px_rgba(0,0,0,0.35)] font-secondary">
