@@ -755,8 +755,8 @@ const ProblemHoverCard = ({ title, icon, type }) => {
     <motion.div initial="initial" whileHover="hover" className="group relative cursor-default p-6 rounded-[16px] flex flex-col justify-center h-44 overflow-hidden transition-all duration-500 shadow-lg hover:-translate-y-1 w-full" style={{ backgroundColor: palette.secondary, border: `1px solid ${hexToRgba(palette.primary, 0.1)}` }}>
       <motion.div variants={{ initial: { opacity: 0 }, hover: { opacity: 0.05 } }} transition={{ duration: 0.4 }} className="absolute inset-0 z-0 pointer-events-none" style={{ backgroundColor: palette.bgDeep }} />
       <div className="relative z-10 flex flex-col items-start gap-4">
-        <motion.div variants={{ initial: { y: 15, opacity: 0, scale: 0.5 }, hover: { y: 0, opacity: 1, scale: 1 } }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className="flex items-center justify-center w-10 h-10 rounded-[10px] shadow-sm" style={{ backgroundColor: color, color: 'white' }}>{icon}</motion.div>
-        <motion.span variants={{ initial: { y: -8 }, hover: { y: 0 } }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className="text-sm font-medium leading-snug font-primary transition-colors" style={{ color: palette.bgDeep }}>{title}</motion.span>
+        <motion.div variants={{ initial: { y: 0, opacity: 1, scale: 1 }, hover: { y: -2, scale: 1.05 } }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className="flex items-center justify-center w-10 h-10 rounded-[10px] shadow-sm" style={{ backgroundColor: color, color: 'white' }}>{icon}</motion.div>
+        <motion.span variants={{ initial: { y: 0 }, hover: { y: 0 } }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className="text-sm font-medium leading-snug font-primary transition-colors" style={{ color: palette.bgDeep }}>{title}</motion.span>
       </div>
     </motion.div>
   );
