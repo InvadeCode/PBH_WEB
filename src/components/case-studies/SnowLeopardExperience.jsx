@@ -330,7 +330,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                     </motion.div>
 
                     {/* Main text */}
-                    <p className="text-sm md:text-base font-secondary leading-relaxed text-white/95 tracking-wide">
+                    <p className="text-base md:text-lg lg:text-xl font-secondary leading-relaxed text-white/95 tracking-wide">
                       {content.about}
                     </p>
 
@@ -358,7 +358,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
 
         {/* ROW 2: CHALLENGE & STRATEGY (Cinematic Parallax Typography) */}
         {(content.problem || content.solution1 || content.solution2) && (
-        <div className="w-full mt-40 relative z-20 flex flex-col gap-40 md:gap-64 px-4 md:px-0">
+        <div className="w-full mt-32 relative z-20 flex flex-col gap-20 md:gap-32 px-4 md:px-0">
           
           {/* Challenge Parallax Node */}
           {content.problem && (
@@ -382,7 +382,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                  <span className="w-8 h-[1px] bg-cyan-400/50" />
                  Context
               </h3>
-              <p className="text-sm md:text-base font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
+              <p className="text-base md:text-lg lg:text-xl font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
                 {content.problem}
               </p>
             </motion.div>
@@ -391,9 +391,9 @@ const SnowLeopardExperience = ({ navigate, project }) => {
 
           {/* Strategic Shift Parallax Node */}
           {(content.solution1 || content.solution2) && (
-          <div className="relative w-full min-h-[50vh] flex items-center justify-end mt-16 md:mt-32">
+          <div className="relative w-full min-h-[40vh] md:min-h-[50vh] flex items-center justify-end">
             <motion.div 
-               style={{ y: parallaxY2 }}
+               style={{ y: parallaxY1 }}
                className="absolute right-[-5%] md:right-[-10%] top-[-20%] text-[12vw] font-primary font-bold text-white/[0.03] leading-none whitespace-nowrap pointer-events-none uppercase tracking-tighter"
             >
                Evolution
@@ -411,12 +411,12 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                  <span className="w-8 h-[1px] bg-indigo-400/50" />
               </h3>
               {content.solution1 && (
-                <p className="text-sm md:text-base font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl mb-8">
+                <p className="text-base md:text-lg lg:text-xl font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl mb-8">
                   {content.solution1}
                 </p>
               )}
               {content.solution2 && (
-                <p className="text-sm md:text-base font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
+                <p className="text-base md:text-lg lg:text-xl font-secondary leading-relaxed text-white/95 tracking-wide drop-shadow-2xl">
                   {content.solution2}
                 </p>
               )}
@@ -451,7 +451,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                         </span>
                         {stat.label && <h4 className="text-sm md:text-base font-bold uppercase tracking-[0.4em] text-white/80">{stat.label}</h4>}
                      </div>
-                     {stat.value && <p className="text-sm md:text-base text-white/60 font-secondary leading-relaxed font-light">{stat.value}</p>}
+                     {stat.value && <p className="text-base md:text-lg lg:text-xl text-white/60 font-secondary leading-relaxed font-light">{stat.value}</p>}
                   </motion.div>
                 </React.Fragment>
               ))}
@@ -533,7 +533,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
               </h3>
             )}
             {outcomeText && (
-              <p className="text-sm md:text-base text-white/70 font-secondary max-w-3xl mx-auto leading-relaxed font-light">
+              <p className="text-base md:text-lg lg:text-xl text-white/70 font-secondary max-w-3xl mx-auto leading-relaxed font-light">
                 {outcomeText}
               </p>
             )}
