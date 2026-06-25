@@ -205,7 +205,7 @@ const DynamicSciArtGrid = ({ content }) => {
                     <span className="w-8 h-[1px] bg-cyan-400" /> 
                     About the brand 
                   </h3>
-                  <p className="text-[14px] md:text-[15px] font-secondary leading-[1.8] text-white/70 drop-shadow-sm font-light">
+                  <p className="text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
                     {content.about}
                   </p>
                 </div>
@@ -236,7 +236,7 @@ const DynamicSciArtGrid = ({ content }) => {
                     <span className="w-8 h-[1px] bg-purple-400" /> 
                     The Problem 
                   </h3>
-                  <p className="text-[14px] md:text-[15px] font-secondary leading-[1.8] text-white/70 drop-shadow-sm font-light">
+                  <p className="text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
                     {content.problem}
                   </p>
                 </div>
@@ -290,10 +290,10 @@ const DynamicSciArtGrid = ({ content }) => {
                    Creative Solution 
                  </h3>
                  
-                 <div className="flex flex-col gap-5 text-[14px] md:text-[15px] font-secondary leading-[1.8] text-white/70 drop-shadow-sm font-light">
+                 <div className="flex flex-col gap-6 text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
                    {strategicIntro && <p>{strategicIntro}</p>}
                    {remainingExecution.map((para, idx) => (
-                     <p key={idx}>{para}</p>
+                     <p key={idx} className="text-white/70">{para}</p>
                    ))}
                  </div>
                </div>
