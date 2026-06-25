@@ -76,10 +76,9 @@ const CreativeHeroReveal = ({ src, alt, aspectRatio }) => {
       <CaseStudyMedia
         src={src}
         alt={alt}
-        className="w-full h-full object-contain"
+        className="w-full h-full object-cover"
         priority
         sizes="(min-width: 1280px) 1280px, 95vw"
-        style={{ aspectRatio: resolvedAspectRatio }}
       />
     </div>
   );
