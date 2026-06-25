@@ -67,7 +67,7 @@ const ImageTemplateHero = ({ project, navigate }) => {
     <>
 
 
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-40 md:pb-48 pt-10 px-4 md:px-8 overflow-hidden" style={{ background: LAB_DARK }}>
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-40 md:pb-48 pt-28 md:pt-36 px-4 md:px-8 overflow-hidden" style={{ background: LAB_DARK }}>
         <div
           className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5"
           style={{ aspectRatio: heroAspectRatio }}
@@ -455,8 +455,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
   const images = normalizeMediaItems(project.fullStory?.media || project.fullStory?.images, project.client || 'Case study media');
 
   return (
-    <div className="min-h-screen w-full relative selection:bg-[#3d65ff] selection:text-white font-secondary" style={{ background: LAB_DARK, color: '#f0f2f5', cursor: 'none' }}>
-      <ScrollProgress />
+    <div className="min-h-screen w-full text-white relative" style={{ background: LAB_DARK, cursor: 'none' }}>
       
       {/* Global Top Navigation */}
       <div className="fixed top-0 left-0 w-full z-[100] px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex flex-wrap items-center gap-3 pointer-events-none">
