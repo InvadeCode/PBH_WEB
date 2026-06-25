@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
+import { createPortal } from 'react-dom';
 import { jsPDF } from 'jspdf';
 import ExcelJS from 'exceljs';
 import { useSanity } from './lib/useSanity';
@@ -2809,12 +2810,6 @@ const Header = ({ navigate, current }) => {
     }, 260);
   };
 
-  // Standardized "Back" control — always available in the fixed header (every page except Home).
-  // Hierarchical: deep pages return to their parent listing, everything else to Home.
-  const BACK_TARGETS = { 'work-detail': 'work', 'article-detail': 'journal', 'service-detail': 'services' };
-  const showBack = current !== 'home';
-  const handleBack = () => navigate(BACK_TARGETS[current] || 'home');
-
   const ServicesMegaMenu = () => (
     <div className="flex gap-12 text-left w-full">
       <div className="w-1/3 pr-12 border-r border-white/5 flex flex-col items-start">
@@ -2976,21 +2971,9 @@ const Header = ({ navigate, current }) => {
       }}
     >
       <div className="w-full px-[3%] flex justify-between items-center relative z-[10001]">
-        <div className="flex items-center gap-2 md:gap-4">
-          {showBack && (
-            <button
-              onClick={handleBack}
-              aria-label="Go back"
-              className="flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] text-white/80 hover:text-white hover:bg-white/[0.12] hover:border-white/30 backdrop-blur-xl transition-all px-3 py-2 md:px-4 md:py-2.5 shrink-0 font-secondary"
-            >
-              <ArrowLeft className="w-4 h-4 shrink-0" />
-              <span className="hidden sm:inline text-sm font-medium">Back</span>
-            </button>
-          )}
-          <div className={`font-primary font-medium tracking-wide cursor-pointer flex items-center gap-3 hover:opacity-80 transition-all duration-300 text-white ${scrolled || activeMenu ? 'text-lg' : 'text-xl'}`} onClick={() => navigate('home')}>
-            <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className={`w-auto object-contain shrink-0 transition-all duration-300 ${scrolled || activeMenu ? 'h-6' : 'h-8'}`} />
-            PurpleBlue House
-          </div>
+        <div className={`font-primary font-medium tracking-wide cursor-pointer flex items-center gap-3 hover:opacity-80 transition-all duration-300 text-white ${scrolled || activeMenu ? 'text-lg' : 'text-xl'}`} onClick={() => navigate('home')}>
+          <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className={`w-auto object-contain shrink-0 transition-all duration-300 ${scrolled || activeMenu ? 'h-6' : 'h-8'}`} />
+          PurpleBlue House
         </div>
 
         <nav className="hidden lg:flex items-center gap-2 text-base md:text-lg font-medium tracking-wide bg-white/[0.04] border border-white/10 rounded-full px-5 py-3 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_50px_rgba(0,0,0,0.35)] font-secondary">
@@ -4978,6 +4961,31 @@ const renderHeroHeading = (sanityText, defaultText, animatedRenderer, plainRende
   return plainRenderer(sanityText);
 };
 
+// ── Standardized, always-following Back button ───────────────────────────────
+// Rendered via a portal to <body> so no ancestor transform/filter/overlay can
+// break its fixed positioning — it stays pinned to the screen on every page and
+// at every scroll position (incl. the very bottom). Hierarchical back targets.
+const BACK_TARGETS = { 'work-detail': 'work', 'article-detail': 'journal', 'service-detail': 'services' };
+
+const FloatingBackButton = ({ page, navigate }) => {
+  if (typeof document === 'undefined') return null;
+  if (page === 'home' || page === 'admin') return null;
+  const target = BACK_TARGETS[page] || 'home';
+
+  return createPortal(
+    <button
+      onClick={() => navigate(target)}
+      aria-label="Go back"
+      className="fixed bottom-6 left-6 z-[99990] flex items-center gap-2 rounded-full border border-white/20 bg-[#010836]/85 text-white px-4 py-3 text-sm font-medium shadow-[0_12px_40px_rgba(0,0,0,0.55)] backdrop-blur-xl transition-all duration-200 hover:bg-[#010836] hover:border-white/40 hover:-translate-y-0.5 active:translate-y-0"
+      style={{ fontFamily: '"Karla", sans-serif' }}
+    >
+      <ArrowLeft className="w-4 h-4 shrink-0" />
+      <span>Back</span>
+    </button>,
+    document.body
+  );
+};
+
 export default function App() {
   const [routeState, setRouteState] = useState(() => {
     const path = window.location.pathname.replace(/^\/|\/$/g, '');
@@ -5297,6 +5305,7 @@ export default function App() {
         <BrandAura />
         <CustomCursor />
         {routeState.page !== 'admin' && <Header navigate={navigate} current={routeState.page} />}
+        <FloatingBackButton page={routeState.page} navigate={navigate} />
 
         <div id="site-blur-layer" className="transition-[filter,transform,opacity] duration-300 ease-out">
           <main className="w-full min-h-screen flex flex-col">
