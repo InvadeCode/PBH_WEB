@@ -279,7 +279,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
             <h3 className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
                {title}
             </h3>
-            <p className="text-white/90 font-normal text-xl md:text-2xl lg:text-3xl leading-relaxed md:leading-normal font-secondary">
+            <p className="text-white/90 font-normal text-sm md:text-base max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
               {content}
             </p>
           </motion.div>
