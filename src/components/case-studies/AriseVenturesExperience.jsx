@@ -320,7 +320,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </div>
 
       {/* ── 1. CINEMATIC HERO (Boxed) ── */}
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-20 md:pb-24 pt-10 px-4 md:px-8" style={{ backgroundColor: '#010836' }}>
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-20 md:pb-24 pt-10 px-4 md:px-8">
         
         {/* Floating Box Hero Banner */}
         <div
@@ -384,10 +384,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       )}
 
       {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (Seamlessly Blended) ── */}
-      <section className="relative w-full z-10" style={{ backgroundColor: '#010836' }}>
-        
-        {/* Top gradient – blends IN from previous DramaticSection */}
-        <div className="absolute top-0 left-0 right-0 h-[120px] bg-gradient-to-b from-[#010836] to-transparent pointer-events-none z-20" />
+      <section className="relative w-full z-10">
         
         <div className="py-16 md:py-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
         
@@ -479,7 +476,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
 
       {/* ── 5. STATEMENT ── */}
       {(project?.results?.length > 0) && (
-        <section className="py-16 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
+        <section className="py-16 px-6 md:px-12 text-center relative z-10">
           <div className="max-w-[1000px] mx-auto">
             <ElegantFade>
               <h2 className="font-primary text-xl md:text-2xl leading-[1.4] text-white tracking-tight">
@@ -520,7 +517,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
 
         return (
           <CaseStudyVideoHero 
-            videoHero={{ enabled: true, backgroundColor: '#010836', backgroundText: project.client || 'Case Study' }} 
+            videoHero={{ enabled: true, backgroundColor: 'transparent', backgroundText: project.client || 'Case Study' }} 
             fallbackName={project.client} 
             allVideos={allVideos} 
           />
@@ -528,7 +525,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       })()}
 
       {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
-      <section className="relative w-full z-10" style={{ backgroundColor: '#010836' }}>
+      <section className="relative w-full z-10">
         <div className="pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
           <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
             <h2 className="font-primary text-5xl md:text-7xl lg:text-8xl text-white tracking-tight">
@@ -563,7 +560,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 7. FOOTER ── */}
-      <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
+      <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10">
         <div className="max-w-[1200px] mx-auto">
           <ElegantFade>
             <p className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
