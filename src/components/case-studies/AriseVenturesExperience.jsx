@@ -296,10 +296,10 @@ const AriseVenturesExperience = ({ navigate, project }) => {
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, []);
 
   const heroImg = project?.bannerVideo || project?.fullStory?.heroVideo || project?.bannerImage || project?.fullStory?.heroImg || project?.imageUrl || '';
-  const heroAspectRatio = getDimensionsAspectRatio(project?.bannerImageDimensions)
-    || getDimensionsAspectRatio(project?.fullStory?.heroImgDimensions)
-    || getUrlAspectRatio(heroImg)
-    || 16 / 9;
+  
+  // Standardize banner size across all case studies to prevent layout fluctuations
+  const heroAspectRatio = 16 / 9;
+  
   const cmsMedia = normalizeMediaItems(project?.fullStory?.media || project?.fullStory?.images, project?.client || 'Case study media');
 
   // When `videoHero` is filled in Sanity (enabled = true), the CMS data takes over automatically.
