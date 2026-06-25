@@ -339,7 +339,7 @@ const Findings = ({ results }) => {
             <motion.span initial={{ scale: 0 }} animate={isInView ? { scale: [0, 1.3, 1] } : {}}
               transition={{ delay: 0.5 + i * 0.15, duration: 0.5 }}
               style={{ color: AMBER }} className="text-sm mt-1">◆</motion.span>
-            <p className="text-lg font-secondary leading-relaxed" style={{ color: `${DIAGRAM_WHITE}cc` }}>{r}</p>
+            <p className="text-sm md:text-base font-secondary leading-relaxed" style={{ color: `${DIAGRAM_WHITE}cc` }}>{r}</p>
           </motion.div>
         ))}
       </motion.div>
@@ -408,7 +408,7 @@ const LabNotes = ({ text }) => {
           <span className="inline-block w-4 h-4 border rounded-sm text-xs flex items-center justify-center" style={{ borderColor: CYAN }}>i</span>
           Lab Notes
         </p>
-        <p className="text-lg md:text-xl font-secondary leading-relaxed" style={{ color: `${DIAGRAM_WHITE}bb` }}>{text}</p>
+        <p className="text-sm md:text-base font-secondary leading-relaxed" style={{ color: `${DIAGRAM_WHITE}bb` }}>{text}</p>
         <motion.div initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}}
           transition={{ delay: 0.8, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           className="h-[2px] mt-8 origin-left" style={{ background: `linear-gradient(90deg, ${CYAN}60, transparent)` }}/>

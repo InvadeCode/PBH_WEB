@@ -66,7 +66,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
             {project.route && (
               <div>
                 <h3 className="text-sm uppercase tracking-widest text-white/60 mb-3 font-secondary">Strategy Route</h3>
-                <p className="text-lg font-primary">{project.route}</p>
+                <p className="text-sm md:text-base font-secondary">{project.route}</p>
               </div>
             )}
             {project.roles && (
@@ -74,7 +74,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
                 <h3 className="text-sm uppercase tracking-widest text-white/60 mb-3 font-secondary">Capabilities</h3>
                 <ul className="flex flex-col gap-2">
                   {project.roles.map((r, i) => (
-                    <li key={i} className="text-base font-primary border-l-2 pl-3 border-white/20">{r}</li>
+                    <li key={i} className="text-sm font-secondary border-l-2 pl-3 border-white/20">{r}</li>
                   ))}
                 </ul>
               </div>
@@ -82,13 +82,13 @@ const LegacyExperience = ({ project, navigate, palette }) => {
           </div>
           
           <div className="lg:col-span-8 flex flex-col gap-16">
-            <div className="prose prose-invert prose-lg md:prose-xl font-primary leading-relaxed max-w-none text-white/90">
-              <h2 className="text-3xl md:text-4xl font-semibold mb-6">Overview</h2>
+            <div className="prose prose-invert prose-sm md:prose-base font-secondary leading-relaxed max-w-none text-white/90">
+              <h2 className="text-xl md:text-2xl font-primary font-semibold mb-6">Overview</h2>
               <p>{project.overview}</p>
               
               <div className="h-px w-24 bg-white/20 my-12" />
               
-              <h2 className="text-3xl md:text-4xl font-semibold mb-6">The Approach</h2>
+              <h2 className="text-xl md:text-2xl font-primary font-semibold mb-6">The Approach</h2>
               <p>{project.solution}</p>
             </div>
             

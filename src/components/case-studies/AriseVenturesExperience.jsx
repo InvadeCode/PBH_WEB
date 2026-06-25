@@ -177,12 +177,12 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
       whileInView={{ clipPath: 'inset(0% 0 0 0)', scale: 1 }}
       viewport={{ once: true, margin: "-5%" }}
       transition={{ duration: 1.6, delay, ease: [0.25, 1, 0.5, 1] }}
-      className="w-full h-full relative group overflow-hidden bg-black flex items-center justify-center p-6"
+      className="w-full h-full relative group overflow-hidden bg-[#0C185C] flex items-center justify-center"
     >
       <CaseStudyMedia
         src={src}
         alt={alt}
-        className="w-full h-full object-contain transition-transform duration-[2s] group-hover:scale-105 opacity-90 group-hover:opacity-100"
+        className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105 opacity-90 group-hover:opacity-100"
         sizes="(min-width: 1024px) 50vw, 100vw"
         motionProps={{ style: { y: useTransform(smoothProgress, [0, 1], [-yOffset/2, yOffset/2]) } }}
       />
@@ -236,50 +236,50 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const spring = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
   
-  const titleOpacity = useTransform(spring, [0, 0.4], [1, 0]);
-  const titleScale = useTransform(spring, [0, 0.4], [1, 1.2]);
-  const titleY = useTransform(spring, [0, 0.4], [0, -50]);
+  const titleOpacity = useTransform(spring, [0, 0.1], [1, 0]);
+  const titleScale = useTransform(spring, [0, 0.1], [1, 1.2]);
+  const titleY = useTransform(spring, [0, 0.1], [0, -30]);
   
-  const contentOpacity = useTransform(spring, [0.4, 0.6, 1], [0, 1, 1]);
-  const contentY = useTransform(spring, [0.4, 0.6], [50, 0]);
+  const contentOpacity = useTransform(spring, [0.1, 0.2, 0.9, 1], [0, 1, 1, 0]);
+  const contentY = useTransform(spring, [0.1, 0.2, 0.9, 1], [30, 0, 0, -30]);
   const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
 
   return (
-    <section ref={ref} className="h-[150vh] relative w-full" style={{ backgroundColor: '#010836' }}>
+    <section ref={ref} className="h-[400vh] relative w-full" style={{ backgroundColor: '#010836' }}>
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden" style={{ backgroundColor: '#010836' }}>
         
         <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
           {motionGraphic}
         </motion.div>
         
-        <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="absolute z-10 flex flex-col items-center justify-center w-full px-6 text-center">
-          <motion.h2 
-            animate={{ backgroundPosition: ['200% center', '-200% center'] }}
-            transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-            className="text-5xl md:text-7xl lg:text-[7rem] font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
-            style={{ 
-              fontFamily: '"Karla", sans-serif',
-              backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
-              backgroundSize: '300% auto',
-            }}
-          >
-            {title}
-          </motion.h2>
-        </motion.div>
+        {/* Title Container */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="flex flex-col items-center justify-center w-full px-6 text-center pointer-events-auto">
+            <motion.h2 
+              animate={{ backgroundPosition: ['200% center', '-200% center'] }}
+              transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
+              style={{ 
+                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundSize: '300% auto',
+              }}
+            >
+              {title}
+            </motion.h2>
+          </motion.div>
+        </div>
         
-        <motion.div style={{ opacity: contentOpacity, y: contentY }} className="absolute z-20 w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center">
-          <h3 className="text-xs tracking-[0.2em] uppercase text-[#D4CEFC] mb-8 font-bold pb-4 font-secondary">
-             {title}
-          </h3>
-          <p className="text-white/80 font-normal text-lg md:text-xl leading-relaxed md:leading-[1.6] font-secondary">
-            {content}
-          </p>
-        </motion.div>
-
-        {/* Top gradient – blends IN from previous section */}
-        <div className="absolute top-0 left-0 right-0 h-[30%] bg-gradient-to-b from-[#010836] to-transparent pointer-events-none z-30" />
-        {/* Bottom gradient – blends OUT into next section */}
-        <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-t from-[#010836] to-transparent pointer-events-none z-30" />
+        {/* Content Container */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+          <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
+            <h3 className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-8 font-bold pb-4 font-primary">
+               {title}
+            </h3>
+            <p className="text-white/80 font-normal text-sm md:text-base leading-relaxed font-secondary">
+              {content}
+            </p>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -302,15 +302,15 @@ const AriseVenturesExperience = ({ navigate, project }) => {
   const videoHeroData = project?.videoHero?.enabled ? project.videoHero : null;
 
   return (
-    <div className="w-full min-h-screen overflow-x-hidden font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
+    <div className="w-full min-h-screen font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
       <ChicAmbientBackground />
 
       {/* Navigation */}
       <div className="relative z-50 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex items-center gap-3 pointer-events-none">
-        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white">
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center gap-2 text-sm md:text-base backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white">
           <ArrowLeft className="w-4 h-4" /> Home
         </button>
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white">
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-sm md:text-base backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white">
           <ArrowLeft className="w-4 h-4" /> All Case Studies
         </button>
       </div>
@@ -338,7 +338,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {(project?.tags || project?.roles || ['Branding', 'Visual Identity', 'Collateral']).map((tag, i) => (
-              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-xs tracking-[0.2em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-secondary">
+              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-sm md:text-base tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
                 {tag}
               </span>
             ))}
@@ -406,13 +406,13 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} 
               viewport={{ once: true, margin: "-10%" }}
             >
-              <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-xs font-bold tracking-[0.2em] uppercase backdrop-blur-md">
+              <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-sm md:text-base font-bold tracking-widest uppercase backdrop-blur-md font-primary">
                 <span className="w-2 h-2 rounded-full bg-[#D4CEFC] animate-pulse shadow-[0_0_10px_#D4CEFC]" />
                 The Solution
               </div>
             
               <motion.h3
-                className="font-primary text-5xl md:text-7xl text-white mb-10 font-medium tracking-tight drop-shadow-lg"
+                className="font-primary text-5xl md:text-7xl lg:text-8xl text-white mb-10 font-medium tracking-tight drop-shadow-lg"
                 initial={{ opacity: 0, y: 32, filter: 'blur(14px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.4 }}
@@ -422,7 +422,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </motion.h3>
             
               {/* Readable Text with NO box */}
-              <div className="space-y-8 text-white/95 font-normal text-lg md:text-xl leading-relaxed font-secondary">
+              <div className="space-y-8 text-white/95 font-normal text-sm md:text-base leading-relaxed font-secondary">
                 <p>{project?.solution || 'A comprehensive brand strategy and visual identity system designed to elevate and unify the brand presence across all touchpoints.'}</p>
               
                 {/* Highlighted text block */}
@@ -450,7 +450,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
                       viewport={{ once: true }}
                       transition={{ duration: 1.3, delay: 0.7, ease: 'easeOut' }}
                     />
-                    <p className="relative z-10 font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
+                    <p className="relative z-10 font-primary font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
                       {project?.fullStory?.execution || project?.solutionHeading}
                     </p>
                   </motion.div>
@@ -478,7 +478,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         <section className="py-16 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
           <div className="max-w-[1000px] mx-auto">
             <ElegantFade>
-              <h2 className="font-primary text-2xl md:text-3xl lg:text-4xl leading-[1.4] text-white tracking-tight">
+              <h2 className="font-primary text-xl md:text-2xl leading-[1.4] text-white tracking-tight">
                 "{project.results[0]}"
               </h2>
             </ElegantFade>
@@ -527,7 +527,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       <section className="relative w-full z-10" style={{ backgroundColor: '#010836' }}>
         <div className="pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
           <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
-            <h2 className="font-primary text-3xl md:text-5xl text-white tracking-tight">
+            <h2 className="font-primary text-5xl md:text-7xl lg:text-8xl text-white tracking-tight">
               {project?.deliverablesHeading || "Ecosystem Highlights"}
             </h2>
           </ElegantFade>
@@ -562,7 +562,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10" style={{ backgroundColor: '#010836' }}>
         <div className="max-w-[1200px] mx-auto">
           <ElegantFade>
-            <p className="text-xs tracking-[0.3em] uppercase text-[#D4CEFC] mb-6 font-medium font-secondary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
+            <p className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
             <motion.h2 
               onClick={() => navigate('work')} 
               className="font-primary text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"

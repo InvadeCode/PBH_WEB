@@ -19,6 +19,22 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'template',
+      title: 'Experience Template',
+      type: 'string',
+      description: 'Choose the visual layout template for this case study. If none is selected, the system will attempt to automatically route based on the client name.',
+      options: {
+        list: [
+          { title: 'Arise Ventures (Modern & Technical)', value: 'arise' },
+          { title: 'Sci-Art Saga / Snow Leopard (Abstract & Research)', value: 'snow-leopard' },
+          { title: 'Param Innovation (Dark & Technical)', value: 'param' },
+          { title: 'Back To Roots (Earthy & Grounded)', value: 'back-to-roots' },
+          { title: 'Legacy (Classic PBH Layout)', value: 'legacy' },
+          { title: 'Storytelling Corner (Editorial)', value: 'storytelling' }
+        ],
+      }
+    }),
+    defineField({
       name: 'bannerImage',
       title: 'Work Page Banner Image (1920 x 1080 px)',
       type: 'image',
@@ -31,6 +47,13 @@ export default defineType({
       type: 'file',
       options: { accept: 'video/*' },
       description: 'Upload a video to be used as the banner. If provided, the video will take precedence over the Banner Image.'
+    }),
+    defineField({
+      name: 'worldMapImage',
+      title: 'Planetary Swarm Background Map (Sci-Art Saga Template Only)',
+      type: 'image',
+      description: 'Upload a custom world map or background image for the planetary swarm component. If left blank, it will default to the standard globe map.',
+      options: { hotspot: true }
     }),
     defineField({
       name: 'overviewHeading',

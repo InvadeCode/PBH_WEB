@@ -239,8 +239,8 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
       <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none select-none overflow-hidden">
         <motion.div
           aria-hidden="true"
-          className="font-black uppercase whitespace-nowrap leading-none text-white/[0.075]"
-          style={{ ...carla, fontSize: 'clamp(8rem, 32vw, 30rem)' }}
+          className="font-primary font-black uppercase whitespace-nowrap leading-none text-white/[0.075]"
+          style={{ fontSize: 'clamp(8rem, 32vw, 30rem)' }}
           animate={prefersReduced ? undefined : { x: ['2%', '-2%', '2%'] }}
           transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
         >
@@ -297,7 +297,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
                         />
                       ) : (
                         <div className="w-full h-full grid place-items-center bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,0.16),rgba(255,255,255,0.035)_58%,rgba(1,8,54,0.24))]">
-                          <span className="text-white/18 text-5xl md:text-6xl font-black uppercase tracking-tight" style={carla}>
+                          <span className="text-white/18 text-5xl md:text-6xl font-black uppercase tracking-tight font-primary">
                             {fallbackLabel}
                           </span>
                         </div>
@@ -343,10 +343,10 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
           </svg>
         </div>
         
-        <h2 className="text-lg md:text-2xl text-white font-medium tracking-tight mb-2" style={carla}>
+        <h2 className="text-lg md:text-2xl text-white font-primary font-medium tracking-tight mb-2">
           {heroVideos[0]?.videoTitle || 'Watch Video'}
         </h2>
-        <p className="text-sm md:text-base text-white/60 max-w-[300px]" style={carla}>
+        <p className="text-sm md:text-base text-white/60 font-secondary max-w-[300px]">
           {heroVideos[0]?.videoSubtitle || 'Experience the story in motion.'}
         </p>
       </motion.div>

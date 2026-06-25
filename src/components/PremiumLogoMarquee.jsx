@@ -41,32 +41,73 @@ const LOGOS = [
   { src: '/pbh-logos/novus.png',              name: 'IIT Delhi' },
 ];
 
-const BASE_SPEED = 48;   // px / second — slow & cinematic
-const SLOW_FACTOR = 0.7; // ~30% slower on hover (never pauses)
+const BASE_SPEED = 140;   // px / second — faster cinematic pace
+const SLOW_FACTOR = 0.4; // Slower on hover for readability
 
-const Logo = ({ logo, i, reduce }) => (
-  <motion.div
-    className="pbh-slot group relative shrink-0 mx-9 md:mx-14 flex items-center justify-center h-full"
-    animate={reduce ? undefined : { y: [0, i % 2 ? -3.5 : 3.5, 0] }}
-    transition={{ duration: 5.5 + (i % 5) * 0.6, repeat: Infinity, ease: 'easeInOut', delay: (i % 6) * 0.4 }}
-  >
-    <div className="pbh-hover relative flex items-center justify-center">
-      <span className="pbh-glow" aria-hidden="true" />
-      <img
-        src={logo.src}
-        alt={logo.name}
-        loading="lazy"
-        decoding="async"
-        draggable="false"
-        className={`pbh-logo relative z-10 w-auto max-w-none select-none object-contain ${
-          ['NSE', 'ORF', 'Arise Ventures'].includes(logo.name)
-            ? 'h-[75px] md:h-[100px]'
-            : 'h-[105px] md:h-[140px]'
-        }`}
-      />
-    </div>
-  </motion.div>
-);
+const Logo = ({ logo, i, reduce }) => {
+  const getSizeClass = (name) => {
+    const customSizes = {
+      // BUMPED UP further per request
+      'Sayre Therapeutics': 'h-[200px] md:h-[280px]',
+      'IIT Delhi': 'h-[240px] md:h-[320px]',
+      'Navankur': 'h-[160px] md:h-[220px]',
+      
+      'Kanti Sweets': 'h-[180px] md:h-[260px]',
+      'Hero Lectro': 'h-[180px] md:h-[260px]',
+      
+      'Param Science Centre': 'h-[170px] md:h-[240px]',
+      'Back To Roots': 'h-[170px] md:h-[240px]',
+      'Bella Vita': 'h-[170px] md:h-[240px]',
+
+      'Firefox': 'h-[145px] md:h-[200px]',
+      'Leverage Edu': 'h-[145px] md:h-[200px]',
+      'Veauli Techniks': 'h-[145px] md:h-[200px]',
+
+      'Snow Leopard Trust': 'h-[130px] md:h-[180px]',
+      'Earthy Souls': 'h-[130px] md:h-[180px]',
+      'India Global Forum': 'h-[130px] md:h-[180px]',
+
+      // REDUCED per request
+      'EcoBiotraps': 'h-[100px] md:h-[130px]',
+
+      'Arise Ventures': 'h-[65px] md:h-[85px]',
+      'ORF': 'h-[65px] md:h-[85px]',
+      'NSE': 'h-[50px] md:h-[70px]',
+    };
+
+    return (customSizes[name] || 'h-[75px] md:h-[100px]');
+  };
+
+  const getFilterClass = (name) => {
+    if (name === 'Firefox') {
+      return 'pbh-logo-vector-black-cutout';
+    }
+    if (['NSE', 'Param Science Centre', 'Arise Ventures'].includes(name)) {
+      return 'pbh-logo-vector-white-cutout';
+    }
+    return 'pbh-logo';
+  };
+
+  return (
+    <motion.div
+      className="pbh-slot group relative shrink-0 flex items-center justify-center h-full"
+      animate={reduce ? undefined : { y: [0, i % 2 ? -3.5 : 3.5, 0] }}
+      transition={{ duration: 5.5 + (i % 5) * 0.6, repeat: Infinity, ease: 'easeInOut', delay: (i % 6) * 0.4 }}
+    >
+      <div className="pbh-hover relative flex items-center justify-center">
+        <span className="pbh-glow" aria-hidden="true" />
+        <img
+          src={logo.src}
+          alt={logo.name}
+          loading="lazy"
+          decoding="async"
+          draggable="false"
+          className={`relative z-10 w-auto max-w-none select-none object-contain ${getSizeClass(logo.name)} ${getFilterClass(logo.name)}`}
+        />
+      </div>
+    </motion.div>
+  );
+};
 
 const PremiumLogoMarquee = () => {
   const reduce = useReducedMotion();
@@ -92,7 +133,7 @@ const PremiumLogoMarquee = () => {
     if (!w) return;
     speedCurrent.current += (speedTarget.current - speedCurrent.current) * Math.min(1, delta / 260);
     let next = x.get() - (BASE_SPEED * speedCurrent.current * delta) / 1000;
-    if (next <= -w) next += w;      // seamless wrap (second set is identical)
+    if (next <= -w) next += w;      // seamless wrap
     else if (next > 0) next -= w;
     x.set(next);
   });
@@ -105,6 +146,35 @@ const PremiumLogoMarquee = () => {
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 1.1, ease: EASE }}
     >
+      <svg className="hidden absolute w-0 h-0" aria-hidden="true">
+        <filter id="pbh-smart-white-cutout">
+          <feColorMatrix type="matrix" values="
+            0.2126 0.7152 0.0722 0 0
+            0.2126 0.7152 0.0722 0 0
+            0.2126 0.7152 0.0722 0 0
+            0 0 0 1 0
+          " />
+          <feComponentTransfer>
+            <feFuncR type="linear" slope="20" intercept="-19" />
+            <feFuncG type="linear" slope="20" intercept="-19" />
+            <feFuncB type="linear" slope="20" intercept="-19" />
+          </feComponentTransfer>
+        </filter>
+        <filter id="pbh-smart-black-cutout">
+          <feColorMatrix type="matrix" values="
+            0.2126 0.7152 0.0722 0 0
+            0.2126 0.7152 0.0722 0 0
+            0.2126 0.7152 0.0722 0 0
+            0 0 0 1 0
+          " />
+          <feComponentTransfer>
+            <feFuncR type="linear" slope="-10" intercept="1.5" />
+            <feFuncG type="linear" slope="-10" intercept="1.5" />
+            <feFuncB type="linear" slope="-10" intercept="1.5" />
+          </feComponentTransfer>
+        </filter>
+      </svg>
+
       {/* Heading */}
       <motion.div
         className="text-center mb-12 md:mb-16 px-6"
@@ -114,7 +184,7 @@ const PremiumLogoMarquee = () => {
         transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
       >
         <p className="text-[10px] md:text-[11px] uppercase tracking-[0.55em] text-white/40 font-medium">
-          Selected Collaborations
+          Our Partners
         </p>
         <div className="mx-auto mt-5 h-px w-16 bg-white/10" />
       </motion.div>
@@ -132,11 +202,11 @@ const PremiumLogoMarquee = () => {
           <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-16 md:w-40" style={{ background: 'linear-gradient(to left, #d4cefc, transparent)' }} />
 
           {/* Track — two identical sets translated by a single motion value */}
-          <motion.div className="absolute top-0 left-0 h-full flex w-max items-center will-change-transform" style={{ x }}>
-            <div ref={firstSet} className="flex items-center shrink-0">
+          <motion.div className="absolute top-0 left-0 h-full flex w-max items-center will-change-transform gap-16 md:gap-28" style={{ x }}>
+            <div ref={firstSet} className="flex items-center gap-16 md:gap-28 shrink-0 pl-16 md:pl-28">
               {LOGOS.map((logo, i) => <Logo key={`a-${i}`} logo={logo} i={i} reduce={reduce} />)}
             </div>
-            <div className="flex items-center shrink-0" aria-hidden="true">
+            <div className="flex items-center gap-16 md:gap-28 shrink-0 pl-16 md:pl-28" aria-hidden="true">
               {LOGOS.map((logo, i) => <Logo key={`b-${i}`} logo={logo} i={i} reduce={reduce} />)}
             </div>
           </motion.div>
@@ -145,18 +215,37 @@ const PremiumLogoMarquee = () => {
 
       <style>{`
         .pbh-logo {
-          filter: grayscale(100%) brightness(0);
+          filter: brightness(0);
           opacity: 0.7;
           transition: filter 520ms cubic-bezier(0.16,1,0.3,1), opacity 520ms cubic-bezier(0.16,1,0.3,1);
         }
         .pbh-slot:hover .pbh-logo { 
-          filter: grayscale(0%) brightness(1);
+          filter: brightness(1);
           opacity: 1; 
         }
 
+        .pbh-logo-vector-white-cutout {
+          filter: url(#pbh-smart-white-cutout);
+          opacity: 0.7;
+          transition: filter 520ms cubic-bezier(0.16,1,0.3,1), opacity 520ms cubic-bezier(0.16,1,0.3,1);
+        }
+        .pbh-slot:hover .pbh-logo-vector-white-cutout { 
+          filter: none;
+          opacity: 1;
+        }
+
+        .pbh-logo-vector-black-cutout {
+          filter: url(#pbh-smart-black-cutout);
+          opacity: 0.7;
+          transition: filter 520ms cubic-bezier(0.16,1,0.3,1), opacity 520ms cubic-bezier(0.16,1,0.3,1);
+        }
+        .pbh-slot:hover .pbh-logo-vector-black-cutout { 
+          filter: none;
+          opacity: 1;
+        }
+
         .pbh-hover {
-          transition: transform 520ms cubic-bezier(0.16,1,0.3,1);
-          will-change: transform;
+          transition: transform 0.3s ease;
         }
         .pbh-slot:hover .pbh-hover { transform: translateY(-5px) scale(1.06); }
 

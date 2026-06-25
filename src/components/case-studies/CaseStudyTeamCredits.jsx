@@ -71,7 +71,7 @@ const CaseStudyTeamCredits = ({ project }) => {
               ))}
             </h2>
             {subtext && (
-              <p className="mt-8 text-white/50 font-secondary text-base md:text-lg leading-relaxed max-w-sm">
+              <p className="mt-8 text-white/50 font-secondary text-sm md:text-base leading-relaxed max-w-sm">
                 {subtext}
               </p>
             )}

@@ -156,9 +156,9 @@ const Narrative = ({ project, c }) => {
               <div className="flex items-center gap-3 mb-5">
                 <span className="font-primary text-sm" style={{ color: c.terra }}>{String(i + 1).padStart(2, '0')}</span>
                 <span className="h-px w-10" style={{ backgroundColor: `${c.terra}88` }} />
-                <h3 className="text-sm md:text-base font-primary uppercase tracking-[0.2em]" style={{ color: c.terra }}>{b.k}</h3>
+                <h3 className="text-xl md:text-2xl font-primary tracking-tight" style={{ color: c.terra }}>{b.k}</h3>
               </div>
-              <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-base md:text-lg" style={{ color: `${c.cream}d9` }}>
+              <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-sm md:text-base" style={{ color: `${c.cream}d9` }}>
                 {b.v}
               </p>
             </motion.div>
@@ -271,7 +271,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
                 <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${c.cream}80` }}>
                   {ch.label}
                 </p>
-                <h4 className="text-lg md:text-xl font-primary mb-3" style={{ color: c.cream }}>
+                <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: c.cream }}>
                   {ch.t}
                 </h4>
                 <p className="text-sm font-secondary leading-relaxed" style={{ color: `${c.cream}AA` }}>

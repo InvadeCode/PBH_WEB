@@ -5244,7 +5244,7 @@ export default function App() {
         <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Space+Grotesk:wght@300..700&display=swap');
         
-        body { overflow-x: hidden; }
+        body { overflow-x: clip; }
 
         .font-primary { font-family: ${palette.fonts.primary} !important; }
         .font-secondary { font-family: ${palette.fonts.secondary} !important; }
