@@ -323,7 +323,11 @@ const PlanetarySwarm = ({ images, currentAssetIndex, setCurrentAssetIndex, title
 
       <div 
         onClick={() => setCurrentAssetIndex(prev => (prev + 1) % images.length)}
-        className="w-full h-[100vh] relative bg-[#010d54] overflow-hidden border-t border-b border-white/5 shadow-2xl flex items-center justify-center cursor-pointer group"
+        className="w-full h-[100vh] relative bg-transparent overflow-hidden flex items-center justify-center cursor-pointer group"
+        style={{ 
+          maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)', 
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)' 
+        }}
       >
         {/* SciArt HUD Architectural Grid & Radar Scanlines */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#22d3ee05_1px,transparent_1px),linear-gradient(to_bottom,#22d3ee05_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none" />
@@ -352,8 +356,8 @@ const PlanetarySwarm = ({ images, currentAssetIndex, setCurrentAssetIndex, title
           
           // Calculate elliptical orbital positions across the full width screen
           const angle = (i / images.length) * Math.PI * 2;
-          const radiusX = 35 + (i % 3) * 10; // X spread (35% to 55% from center)
-          const radiusY = 25 + (i % 3) * 10; // Y spread (25% to 45% from center)
+          const radiusX = 20 + (i % 3) * 8; // X spread (20% to 36% from center)
+          const radiusY = 15 + (i % 3) * 8; // Y spread (15% to 31% from center)
           const swarmX = `calc(50% + ${Math.cos(angle) * radiusX}%)`;
           const swarmY = `calc(50% + ${Math.sin(angle) * radiusY}%)`;
 
