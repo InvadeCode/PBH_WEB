@@ -171,11 +171,11 @@ const Narrative = ({ project, c }) => {
             
             {/* Absolute Centering */}
             <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-8 md:px-16 text-center">
-              <h2 className="text-4xl md:text-6xl font-primary tracking-tight text-[#f5f0ff] drop-shadow-lg">The Story</h2>
+              <h2 className="text-xl md:text-2xl md:text-5xl md:text-7xl lg:text-8xl font-primary tracking-tight text-[#f5f0ff] drop-shadow-lg">The Story</h2>
               <div className="w-16 h-px mx-auto mt-6 bg-[#d8cbf255]" />
             </div>
             
-            <span className="absolute bottom-10 right-10 text-[10px] md:text-xs font-secondary uppercase tracking-widest text-[#d8cbf2]/50 drop-shadow-md">
+            <span className="absolute bottom-10 right-10 text-[17px] md:text-[19px] font-secondary uppercase tracking-widest text-[#d8cbf2]/50 drop-shadow-md">
               Drag to Peel
             </span>
           </Page>
@@ -188,16 +188,16 @@ const Narrative = ({ project, c }) => {
               {/* Text Content centered perfectly inside the massive full-screen boundaries */}
               <div className="relative z-10 w-full h-full px-8 md:px-24 flex flex-col justify-center items-center text-center">
                 <div className="flex items-center justify-center gap-4 mb-10 w-full">
-                  <span className="font-primary text-sm md:text-base text-[#b091f0]">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-primary text-[17px] md:text-[19px] md:text-[17px] md:text-[19px] text-[#b091f0]">{String(i + 1).padStart(2, '0')}</span>
                   <span className="h-px w-12 bg-[#b091f0]/40" />
-                  <h3 className="text-2xl md:text-4xl font-primary tracking-tight text-[#f5f0ff] drop-shadow-md">{p.k}</h3>
+                  <h3 className="text-2xl md:text-xl md:text-2xl font-primary tracking-tight text-[#f5f0ff] drop-shadow-md">{p.k}</h3>
                 </div>
                 <p className="font-secondary font-light leading-relaxed text-[17px] md:text-[22px] text-[#d8cbf2] max-w-3xl drop-shadow-sm">
                   {p.v}
                 </p>
               </div>
 
-              <span className="absolute bottom-10 right-10 text-[10px] md:text-xs font-secondary uppercase tracking-widest text-[#d8cbf2]/40">
+              <span className="absolute bottom-10 right-10 text-[17px] md:text-[19px] font-secondary uppercase tracking-widest text-[#d8cbf2]/40">
                 Page {i + 1}
               </span>
             </Page>
@@ -214,7 +214,7 @@ const Narrative = ({ project, c }) => {
       {/* Testimonial Section sits fixed over the flip so it floats elegantly */}
       {project.fullStory?.execution && (
         <div className="absolute bottom-12 inset-x-0 z-50 text-center px-[7%] pointer-events-none mix-blend-screen opacity-70">
-          <span className="block font-primary mb-2 text-4xl drop-shadow-lg" style={{ color: '#b091f0', lineHeight: 1 }}>“</span>
+          <span className="block font-primary mb-2 text-xl md:text-2xl drop-shadow-lg" style={{ color: '#b091f0', lineHeight: 1 }}>“</span>
           <p className="font-primary font-light leading-snug mx-auto max-w-4xl text-xl md:text-2xl drop-shadow-md" style={{ color: '#f5f0ff' }}>
             {project.fullStory.execution}
           </p>
@@ -323,7 +323,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
               />
             ) : (
               <div className="w-full aspect-[3/4] flex items-center justify-center">
-                <span className="text-white/30 text-xs uppercase tracking-widest font-secondary">Media Unavailable</span>
+                <span className="text-white/30 text-[17px] md:text-[19px] uppercase tracking-widest font-secondary">Media Unavailable</span>
               </div>
             )}
           </div>
@@ -332,7 +332,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
 
         {/* Chapter Text */}
         <div className="mt-8 text-center max-w-[80%] pointer-events-none">
-          <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${c.cream}80` }}>
+          <p className="text-[17px] md:text-[19px] font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${c.cream}80` }}>
             {ch.label}
           </p>
           <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: c.cream }}>
@@ -351,8 +351,8 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.1 }} />
 
       <div className="text-center mb-16 px-[6%] relative z-10">
-        <h3 className="font-primary text-2xl md:text-4xl" style={{ color: c.terra }}>{project?.carouselTitle || SITE_SETTINGS?.csCarouselFallbackTitle || 'The Unfolding Story'}</h3>
-        <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${c.cream}66` }}>{project?.carouselSubtext || SITE_SETTINGS?.csCarouselFallbackSubtitle || 'Scroll or drag to explore'}</p>
+        <h3 className="font-primary text-2xl md:text-xl md:text-2xl" style={{ color: c.terra }}>{project?.carouselTitle || SITE_SETTINGS?.csCarouselFallbackTitle || 'The Unfolding Story'}</h3>
+        <p className="text-[17px] md:text-[19px] font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${c.cream}66` }}>{project?.carouselSubtext || SITE_SETTINGS?.csCarouselFallbackSubtitle || 'Scroll or drag to explore'}</p>
       </div>
 
       <div 
@@ -412,7 +412,7 @@ const GenericStorytellingExperience = ({ navigate, project }) => {
       {/* Global Top Navigation */}
       <motion.div className="fixed top-0 left-0 w-full z-[100] flex items-center gap-3 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 pointer-events-none"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 3.2 }}>
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-sm md:text-base backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[17px] md:text-[19px] md:text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
       </motion.div>

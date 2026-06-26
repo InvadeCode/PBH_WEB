@@ -221,7 +221,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
       );
     }
     return (
-      <div className="absolute inset-0 grid place-items-center bg-black text-white/40 text-sm tracking-widest uppercase">
+      <div className="absolute inset-0 grid place-items-center bg-black text-white/40 text-[17px] md:text-[19px] tracking-widest uppercase">
         No video source
       </div>
     );
@@ -297,7 +297,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
                         />
                       ) : (
                         <div className="w-full h-full grid place-items-center bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,0.16),rgba(255,255,255,0.035)_58%,rgba(1,8,54,0.24))]">
-                          <span className="text-white/18 text-5xl md:text-6xl font-black uppercase tracking-tight font-primary">
+                          <span className="text-white/18 text-5xl md:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight font-primary">
                             {fallbackLabel}
                           </span>
                         </div>
@@ -343,10 +343,10 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
           </svg>
         </div>
         
-        <h2 className="text-lg md:text-2xl text-white font-primary font-medium tracking-tight mb-2">
+        <h2 className="text-[17px] md:text-[19px] md:text-2xl text-white font-primary font-medium tracking-tight mb-2">
           {heroVideos[0]?.videoTitle || 'Watch Video'}
         </h2>
-        <p className="text-sm md:text-base text-white/60 font-secondary max-w-[300px]">
+        <p className="text-[17px] md:text-[19px] md:text-[17px] md:text-[19px] text-white/60 font-secondary max-w-[300px]">
           {heroVideos[0]?.videoSubtitle || 'Experience the story in motion.'}
         </p>
       </motion.div>
@@ -388,7 +388,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
                     <line x1="19" y1="12" x2="5" y2="12"></line>
                     <polyline points="12 19 5 12 12 5"></polyline>
                   </svg>
-                  <span className="text-sm font-medium tracking-wide uppercase font-secondary">Back</span>
+                  <span className="text-[17px] md:text-[19px] font-medium tracking-wide uppercase font-secondary">Back</span>
                 </button>
 
                 {/* X Button (Top Right) */}

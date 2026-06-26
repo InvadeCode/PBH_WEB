@@ -61,17 +61,17 @@ const CaseStudyTeamCredits = ({ project }) => {
           >
             <div className="inline-flex items-center gap-4 mb-8">
               <span className="h-[1px] w-12 bg-cyan-400" />
-              <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] text-cyan-400 font-secondary">
+              <span className="text-[17px] md:text-[19px] font-bold uppercase tracking-[0.4em] text-cyan-400 font-secondary">
                 Credits & Architecture
               </span>
             </div>
-            <h2 className="text-6xl md:text-7xl lg:text-8xl font-primary font-medium tracking-tighter leading-[0.9] text-transparent bg-clip-text bg-gradient-to-br from-white via-white/90 to-white/30 drop-shadow-2xl">
+            <h2 className="text-5xl md:text-7xl lg:text-8xl md:text-7xl lg:text-8xl font-primary font-medium tracking-tighter leading-[0.9] text-transparent bg-clip-text bg-gradient-to-br from-white via-white/90 to-white/30 drop-shadow-2xl">
               {heading.split(' ').map((word, i) => (
                  <span key={i} className="block">{word}</span>
               ))}
             </h2>
             {subtext && (
-              <p className="mt-8 text-white/50 font-secondary text-sm md:text-base leading-relaxed max-w-sm">
+              <p className="mt-8 text-white/50 font-secondary text-[17px] md:text-[19px] md:text-[17px] md:text-[19px] leading-relaxed max-w-sm">
                 {subtext}
               </p>
             )}
@@ -92,13 +92,13 @@ const CaseStudyTeamCredits = ({ project }) => {
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/0 via-purple-500/0 to-cyan-500/0 group-hover:from-indigo-500/10 group-hover:via-purple-500/5 group-hover:to-cyan-500/10 transition-all duration-700 pointer-events-none" />
                 
                 {m.title && (
-                  <p className="text-cyan-400/60 text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] mb-4 group-hover:text-cyan-300 transition-colors duration-300 font-secondary flex items-center gap-3">
+                  <p className="text-cyan-400/60 text-[17px] md:text-[19px] font-bold uppercase tracking-[0.2em] mb-4 group-hover:text-cyan-300 transition-colors duration-300 font-secondary flex items-center gap-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/30 group-hover:bg-cyan-400 group-hover:shadow-[0_0_10px_rgba(34,211,238,0.8)] transition-all duration-300" />
                     {m.title}
                   </p>
                 )}
                 {m.name && (
-                  <p className="text-white text-2xl md:text-3xl lg:text-4xl font-primary leading-tight mt-auto group-hover:text-white transition-colors duration-300 drop-shadow-md">
+                  <p className="text-white text-2xl md:text-xl md:text-2xl lg:text-xl md:text-2xl font-primary leading-tight mt-auto group-hover:text-white transition-colors duration-300 drop-shadow-md">
                     {m.name}
                   </p>
                 )}
