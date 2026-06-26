@@ -213,18 +213,21 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
     if (!hasImages) return;
     let animationFrameId;
     let lastTime = performance.now();
-    const speed = 0.5; // pixels per ~16ms frame
+    const speed = 0.8; // pixels per ~16ms frame
+    let currentScroll = containerRef.current?.scrollLeft || 0;
 
     const scrollLoop = (time) => {
       const delta = time - lastTime;
       lastTime = time;
       const el = containerRef.current;
       if (el && !isPaused) {
-        el.scrollLeft += speed * (delta / 16);
+        // We use a float variable because some browsers round el.scrollLeft to int
+        currentScroll += speed * (delta / 16);
         const setWidth = firstSetRef.current?.offsetWidth || 0;
-        if (setWidth > 0 && el.scrollLeft >= setWidth) {
-          el.scrollLeft -= setWidth; // identical second set → seamless wrap
+        if (setWidth > 0 && currentScroll >= setWidth) {
+          currentScroll -= setWidth; // identical second set → seamless wrap
         }
+        el.scrollLeft = currentScroll;
       }
       animationFrameId = requestAnimationFrame(scrollLoop);
     };
