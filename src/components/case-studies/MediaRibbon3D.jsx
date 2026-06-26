@@ -100,7 +100,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onClick
   );
 };
 
-// ── Lightbox Portal Component
+// ── Lightbox Portal Component — Premium floating popup card
 const LightboxPortal = ({ media, onClose }) => {
   if (!media) return null;
   const useVideoTag = media?.isVideo;
@@ -108,39 +108,51 @@ const LightboxPortal = ({ media, onClose }) => {
   return createPortal(
     <motion.div
       initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-      animate={{ opacity: 1, backdropFilter: 'blur(12px)' }}
+      animate={{ opacity: 1, backdropFilter: 'blur(24px)' }}
       exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-      transition={{ duration: 0.4 }}
-      className="fixed inset-0 z-[99999] flex items-center justify-center bg-black/80 p-4 md:p-12"
+      transition={{ duration: 0.35 }}
+      className="fixed inset-0 z-[99999] flex items-center justify-center p-6 md:p-16"
+      style={{ backgroundColor: 'rgba(5, 11, 36, 0.55)' }}
       onClick={onClose}
     >
-      <button 
-        className="absolute top-6 right-6 z-[100000] p-3 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-colors"
-        onClick={onClose}
-      >
-        <X className="w-6 h-6" />
-      </button>
-      
+      {/* Popup card */}
       <motion.div
-        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        initial={{ scale: 0.88, opacity: 0, y: 30 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.95, opacity: 0, y: 10 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="relative max-w-full max-h-full overflow-hidden rounded-[24px] shadow-2xl ring-1 ring-white/20"
+        exit={{ scale: 0.92, opacity: 0, y: 16 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 28 }}
+        className="relative max-w-[90vw] max-h-[88vh] overflow-hidden rounded-[20px]"
+        style={{
+          background: 'linear-gradient(145deg, rgba(20,26,60,0.85), rgba(10,14,40,0.92))',
+          boxShadow: '0 40px 120px -20px rgba(0,0,0,0.7), 0 0 80px rgba(100,100,255,0.12), inset 0 1px 0 rgba(255,255,255,0.12)',
+          border: '1px solid rgba(255,255,255,0.12)',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        {useVideoTag ? (
-          <video
-            src={media.url}
-            autoPlay
-            loop
-            controls
-            playsInline
-            className="w-auto h-auto max-w-full max-h-[85vh] object-contain"
-          />
-        ) : (
-          <CaseStudyMedia item={media} alt={media?.alt} className="w-auto h-auto max-w-full max-h-[85vh] object-contain" />
-        )}
+        {/* Close button inside the card */}
+        <button 
+          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/10 hover:bg-white/25 text-white/80 hover:text-white transition-all duration-200"
+          onClick={onClose}
+          style={{ backdropFilter: 'blur(8px)' }}
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {/* Inner media with padding for card feel */}
+        <div className="p-3">
+          {useVideoTag ? (
+            <video
+              src={media.url}
+              autoPlay
+              loop
+              controls
+              playsInline
+              className="w-auto h-auto max-w-full max-h-[82vh] object-contain rounded-[14px]"
+            />
+          ) : (
+            <CaseStudyMedia item={media} alt={media?.alt} className="w-auto h-auto max-w-full max-h-[82vh] object-contain rounded-[14px]" />
+          )}
+        </div>
       </motion.div>
     </motion.div>,
     document.body
