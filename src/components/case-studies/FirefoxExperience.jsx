@@ -144,18 +144,39 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
         {isVisualFirst && title && <SectionTitle label={label} className="mb-8 md:mb-10">{title}</SectionTitle>}
 
         {images.length > 0 && (
-          <div className={`grid gap-6 md:gap-8 ${images.length === 1 ? 'grid-cols-1 max-w-5xl mx-auto' : 'grid-cols-1 md:grid-cols-2'}`}>
-            {images.map((img, i) => (
-              <ElegantFade key={img?._key || img?.url || i} delay={i * 0.1}>
-                <ParallaxImage
-                  src={img?.url}
-                  item={img?.url ? img : undefined}
-                  alt={img?.alt || `Section image ${i + 1}`}
-                  yOffset={15}
-                  imageClassName={imageClassName}
-                />
-              </ElegantFade>
-            ))}
+          <div className="flex flex-col gap-16 md:gap-24 w-full">
+            {images.map((img, i) => {
+              const isReversed = i % 2 !== 0;
+              return (
+                <ElegantFade key={img?._key || img?.url || i} delay={i * 0.1}>
+                  {images.length === 1 ? (
+                    <div className="max-w-5xl mx-auto w-full">
+                      <ParallaxImage
+                        src={img?.url}
+                        item={img?.url ? img : undefined}
+                        alt={img?.alt || `Section image ${i + 1}`}
+                        yOffset={15}
+                        imageClassName={imageClassName || "object-contain max-h-[700px] w-auto mx-auto"}
+                        className="bg-transparent shadow-none ring-0"
+                      />
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
+                      <div className={`lg:col-span-9 ${isReversed ? 'lg:col-start-1' : 'lg:col-start-4'}`}>
+                        <ParallaxImage
+                          src={img?.url}
+                          item={img?.url ? img : undefined}
+                          alt={img?.alt || `Section image ${i + 1}`}
+                          yOffset={15}
+                          imageClassName={imageClassName || "object-contain max-h-[700px] w-auto mx-auto"}
+                          className="bg-transparent shadow-none ring-0"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </ElegantFade>
+              );
+            })}
           </div>
         )}
 
@@ -416,13 +437,21 @@ const FirefoxExperience = ({ navigate, project }) => {
         motionGraphic={<AboutGraphic />}
       />
       <section className="relative w-full z-10 pb-16 md:pb-24 -mt-32 md:-mt-48">
-        <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+        <div className="px-6 md:px-12 max-w-[1400px] mx-auto mt-16 md:mt-24">
+          <div className="flex flex-col gap-16 md:gap-24 w-full">
             <ElegantFade delay={0.1}>
-              <ParallaxImage src={starGazerSketch} alt="Star Gazer Sketch" yOffset={15} imageClassName="object-contain max-h-[400px]" />
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
+                <div className="lg:col-span-9 lg:col-start-4">
+                  <ParallaxImage src={starGazerSketch} alt="Star Gazer Sketch" yOffset={15} imageClassName="object-contain max-h-[700px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
+                </div>
+              </div>
             </ElegantFade>
             <ElegantFade delay={0.2}>
-              <ParallaxImage src={sketchesCollage} alt="Sketches Collage" yOffset={15} imageClassName="object-contain max-h-[400px]" />
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
+                <div className="lg:col-span-9 lg:col-start-1">
+                  <ParallaxImage src={sketchesCollage} alt="Sketches Collage" yOffset={15} imageClassName="object-contain max-h-[700px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
+                </div>
+              </div>
             </ElegantFade>
           </div>
         </div>
