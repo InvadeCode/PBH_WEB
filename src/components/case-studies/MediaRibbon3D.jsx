@@ -180,7 +180,7 @@ const MediaRibbon3D = ({ media }) => {
       
       // Dynamic radius: tighter ring for fewer items, full arc for many
       const maxRadius = clamp(w * 0.42, 320, 780);
-      const minRadius = clamp(w * 0.18, 160, 340);
+      const minRadius = clamp(w * 0.1, 100, 200);
       // Smoothly interpolate: 1-3 items → min, 8+ items → max
       const t = clamp((items.length - 1) / 7, 0, 1);
       const radius = minRadius + (maxRadius - minRadius) * t;
