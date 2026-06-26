@@ -287,7 +287,7 @@ const DynamicSciArtGrid = ({ content }) => {
                <div className="relative z-10">
                  <h3 className="text-sm uppercase tracking-[0.4em] text-indigo-400 font-bold mb-6 flex items-center gap-4">
                    <span className="w-8 h-[1px] bg-indigo-400" /> 
-                   Creative Solution 
+                   Solution 
                  </h3>
                  
                  <div className="flex flex-col gap-6 text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
