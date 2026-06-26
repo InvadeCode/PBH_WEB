@@ -178,8 +178,12 @@ const MediaRibbon3D = ({ media }) => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
       const height = clamp(w * 0.14, 150, 320);
       
-      // Classic round carousel radius based on screen width
-      const radius = clamp(w * 0.42, 320, 780);
+      // Dynamic radius: tighter ring for fewer items, full arc for many
+      const maxRadius = clamp(w * 0.42, 320, 780);
+      const minRadius = clamp(w * 0.18, 160, 340);
+      // Smoothly interpolate: 1-3 items → min, 8+ items → max
+      const t = clamp((items.length - 1) / 7, 0, 1);
+      const radius = minRadius + (maxRadius - minRadius) * t;
       
       setDims({ height, radius });
     };
@@ -191,8 +195,8 @@ const MediaRibbon3D = ({ media }) => {
   }, [items]);
 
   const rotation = useMotionValue(0);
-  // Increased base velocity from 4 to 10 for faster, more dynamic movement
-  const BASE_VEL = reduce ? 0 : 10;
+  // Fast, dynamic carousel speed
+  const BASE_VEL = reduce ? 0 : 20;
   const velocity = useRef(BASE_VEL);
   const targetVel = useRef(BASE_VEL);
 
