@@ -145,81 +145,77 @@ const Narrative = ({ project, c }) => {
   if (pages.length === 0) return null;
 
   return (
-    <section className="relative w-full py-24 md:py-32 overflow-hidden" style={{ background: `linear-gradient(135deg, ${c.soilDeep}, #3a2c4e)` }}>
-      {/* Background aesthetic to make the book pop */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(circle at 50% 50%, #b091f015 0%, transparent 60%)` }} />
+    <section className="relative w-full h-[90vh] min-h-[600px] overflow-hidden bg-[#0d0714]">
+      {/* Background aesthetic to ensure anything beyond the book is seamless */}
       <div className="absolute inset-0 pointer-events-none opacity-20 bg-repeat" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-      <div className="relative w-full max-w-7xl mx-auto flex flex-col items-center justify-center z-10 px-4 md:px-8">
-        
-        {/* Responsive Book Container */}
-        <div className="w-[90vw] max-w-[1000px] aspect-[1/1.4] md:aspect-[2/1.4] relative drop-shadow-2xl">
-          <HTMLFlipBook 
-            width={500} 
-            height={700} 
-            size="stretch" 
-            minWidth={280} 
-            maxWidth={500} 
-            minHeight={392} 
-            maxHeight={700} 
-            maxShadowOpacity={0.4} 
-            showCover={true} 
-            mobileScrollSupport={true}
-            usePortrait={true}
-            flippingTime={1000}
-          >
-            {/* COVER PAGE */}
-            <Page className="flex flex-col justify-center items-center overflow-hidden border-l relative" style={{ backgroundColor: '#faf9f5', borderColor: '#e0ded8' }}>
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_40px_rgba(0,0,0,0.03)]" />
-              {/* Subtle inner spine shadow for realism */}
-              <div className="absolute left-0 top-0 bottom-0 w-8 pointer-events-none" style={{ background: 'linear-gradient(to right, rgba(0,0,0,0.04) 0%, transparent 100%)' }} />
+      <div className="absolute inset-0 w-full h-full">
+        <HTMLFlipBook 
+          width={800} 
+          height={800} 
+          size="stretch" 
+          minWidth={300} 
+          maxWidth={3000} 
+          minHeight={400} 
+          maxHeight={2000} 
+          maxShadowOpacity={0.8} 
+          showCover={true} 
+          mobileScrollSupport={true}
+          usePortrait={true}
+          flippingTime={1200}
+        >
+          {/* COVER PAGE */}
+          <Page className="flex flex-col justify-center items-center overflow-hidden border-l relative h-full w-full" style={{ backgroundColor: '#1a1126', borderColor: '#ffffff10' }}>
+            <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(120% 120% at 50% 0%, #b091f025 0%, transparent 100%)` }} />
+            <div className="absolute inset-0 pointer-events-none opacity-10 bg-repeat" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+            
+            {/* Absolute Centering */}
+            <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-8 md:px-16 text-center">
+              <h2 className="text-4xl md:text-6xl font-primary tracking-tight text-[#f5f0ff] drop-shadow-lg">The Story</h2>
+              <div className="w-16 h-px mx-auto mt-6 bg-[#d8cbf255]" />
+            </div>
+            
+            <span className="absolute bottom-10 right-10 text-[10px] md:text-xs font-secondary uppercase tracking-widest text-[#d8cbf2]/50 drop-shadow-md">
+              Drag to Peel
+            </span>
+          </Page>
+
+          {/* INNER PAGES */}
+          {pages.map((p, i) => (
+            <Page key={i} className="flex flex-col justify-center items-center overflow-hidden border-x relative h-full w-full" style={{ backgroundColor: '#1a1126', borderColor: '#ffffff10' }}>
+              <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(120% 120% at 50% 0%, #b091f015 0%, transparent 100%)` }} />
               
-              <div className="relative z-10 w-full px-8 text-center">
-                <h2 className="text-3xl md:text-5xl font-primary tracking-tight text-[#1a1126]">The Story</h2>
-                <div className="w-16 h-px mx-auto mt-6 bg-[#1a1126]/20" />
+              {/* Text Content centered perfectly inside the massive full-screen boundaries */}
+              <div className="relative z-10 w-full h-full px-8 md:px-24 flex flex-col justify-center items-center text-center">
+                <div className="flex items-center justify-center gap-4 mb-10 w-full">
+                  <span className="font-primary text-sm md:text-base text-[#b091f0]">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="h-px w-12 bg-[#b091f0]/40" />
+                  <h3 className="text-2xl md:text-4xl font-primary tracking-tight text-[#f5f0ff] drop-shadow-md">{p.k}</h3>
+                </div>
+                <p className="font-secondary font-light leading-relaxed text-[17px] md:text-[22px] text-[#d8cbf2] max-w-3xl drop-shadow-sm">
+                  {p.v}
+                </p>
               </div>
-              <span className="absolute bottom-8 right-8 text-[10px] font-secondary uppercase tracking-widest text-[#1a1126]/30">
-                Drag to open
+
+              <span className="absolute bottom-10 right-10 text-[10px] md:text-xs font-secondary uppercase tracking-widest text-[#d8cbf2]/40">
+                Page {i + 1}
               </span>
             </Page>
-
-            {/* INNER PAGES */}
-            {pages.map((p, i) => (
-              <Page key={i} className="flex flex-col justify-center items-center overflow-hidden border-x relative" style={{ backgroundColor: '#faf9f5', borderColor: '#e0ded8' }}>
-                <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_40px_rgba(0,0,0,0.02)]" />
-                
-                {/* Text Content centered perfectly inside the physical page boundaries */}
-                <div className="relative z-10 w-full px-8 md:px-14 flex flex-col justify-center items-center text-center h-full">
-                  <div className="flex items-center justify-center gap-3 mb-8 w-full">
-                    <span className="font-primary text-sm text-[#8c74b8]">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="h-px w-10 bg-[#8c74b8]/30" />
-                    <h3 className="text-xl md:text-3xl font-primary tracking-tight text-[#1a1126]">{p.k}</h3>
-                  </div>
-                  <p className="font-secondary font-light leading-relaxed text-[16px] md:text-[18px] text-[#332b3d] max-w-[400px]">
-                    {p.v}
-                  </p>
-                </div>
-
-                <span className="absolute bottom-8 right-8 text-[10px] font-secondary uppercase tracking-widest text-[#1a1126]/20">
-                  Page {i + 1}
-                </span>
-              </Page>
-            ))}
-            
-            {/* BACK COVER / BLANK */}
-            <Page className="flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: '#faf9f5' }}>
-               <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_40px_rgba(0,0,0,0.03)]" />
-               <span className="font-primary text-4xl opacity-10 tracking-widest text-[#1a1126]">PBH</span>
-            </Page>
-          </HTMLFlipBook>
-        </div>
+          ))}
+          
+          {/* BACK COVER / BLANK */}
+          <Page className="flex items-center justify-center relative overflow-hidden h-full w-full" style={{ backgroundColor: '#0d0714' }}>
+             <div className="w-full h-full absolute inset-0 opacity-5 bg-repeat" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+             <span className="font-primary text-5xl opacity-10 tracking-widest text-[#d8cbf2]">PBH</span>
+          </Page>
+        </HTMLFlipBook>
       </div>
 
-      {/* Testimonial Section sits below the book now */}
+      {/* Testimonial Section sits fixed over the flip so it floats elegantly */}
       {project.fullStory?.execution && (
-        <div className="relative z-10 text-center px-[7%] mt-20 pointer-events-none mix-blend-screen opacity-60">
-          <span className="block font-primary mb-2 text-3xl" style={{ color: '#d8cbf2', lineHeight: 1 }}>“</span>
-          <p className="font-primary font-light leading-snug mx-auto max-w-3xl text-lg md:text-xl" style={{ color: '#f5f0ff' }}>
+        <div className="absolute bottom-12 inset-x-0 z-50 text-center px-[7%] pointer-events-none mix-blend-screen opacity-70">
+          <span className="block font-primary mb-2 text-4xl drop-shadow-lg" style={{ color: '#b091f0', lineHeight: 1 }}>“</span>
+          <p className="font-primary font-light leading-snug mx-auto max-w-4xl text-xl md:text-2xl drop-shadow-md" style={{ color: '#f5f0ff' }}>
             {project.fullStory.execution}
           </p>
         </div>
