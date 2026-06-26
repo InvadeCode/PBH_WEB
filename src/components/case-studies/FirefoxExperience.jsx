@@ -513,32 +513,35 @@ const FirefoxExperience = ({ navigate, project }) => {
       />
 
       {/* ── 4. OUR CREATIVE STRATEGY ── */}
-      <section className="relative w-full z-10 py-16 md:py-24 px-4 md:px-8 bg-[#010d54]">
-        <div className="w-full max-w-[1200px] mx-auto bg-white rounded-3xl md:rounded-[2.5rem] p-8 md:p-16 lg:p-24 shadow-2xl">
+      <section className="relative w-full z-10 py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto">
+        <div className="max-w-4xl mx-auto text-center mb-16 md:mb-20">
           <ElegantFade delay={0.1}>
-            <h2 className="text-center font-primary text-3xl md:text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-8 md:mb-10 tracking-tight">
+            <h2 className="font-primary text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 md:mb-10 tracking-tight">
               Our Creative Strategy
             </h2>
             
-            <div className="max-w-4xl mx-auto space-y-2 text-[#333333] font-secondary text-[17px] md:text-[20px] lg:text-[22px] leading-relaxed md:leading-[1.6]">
+            <div className="space-y-4 text-white/90 font-secondary text-[18px] md:text-[22px] leading-relaxed md:leading-[1.6]">
               <p>Our research revealed that bicycles play a very different role in a child's life.</p>
               <p>Children use objects as storytelling tools. They create characters, missions, rules, and entire worlds around them.</p>
               <p>The bicycle wasn't simply something they rode.</p>
               <p>It was something they imagined through.</p>
             </div>
           </ElegantFade>
+        </div>
           
-          <ElegantFade delay={0.2} className="mt-12 md:mt-16 w-full flex justify-center">
-            <div className="w-full max-w-[900px]">
+        <ElegantFade delay={0.2} className="w-full flex justify-center">
+          <div className="relative w-full max-w-[1000px] aspect-[2/1] md:aspect-[2.2/1] overflow-hidden bg-white/5 rounded-xl border border-white/10 shadow-2xl p-4 md:p-6">
+            {/* Pushing the image up to crop out the baked-in text while keeping the map visible */}
+            <div className="w-full h-full relative overflow-hidden rounded-lg">
               <img 
                 src={observationMap} 
-                alt="Observation Map" 
-                className="w-full h-auto object-contain" 
+                alt="Observation Map Diagram" 
+                className="absolute left-0 w-full h-auto -top-[25%] md:-top-[28%]" 
                 draggable="false"
               />
             </div>
-          </ElegantFade>
-        </div>
+          </div>
+        </ElegantFade>
       </section>
 
       {/* ── 5. INSIGHT MAPPING ── */}
