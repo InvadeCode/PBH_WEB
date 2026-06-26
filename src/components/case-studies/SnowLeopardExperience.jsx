@@ -609,6 +609,41 @@ const SnowLeopardExperience = ({ navigate, project }) => {
           />
         )}
 
+        {/* ── OPTIONAL HUGE PRE-VIDEO MEDIA (Image / GIF / Video) ── */}
+        {(() => {
+          const media = project?.preVideoMedia;
+          const legacyImage = project?.preVideoImage;
+          const hasMedia = media?.imageUrl || media?.videoUrl || legacyImage;
+          if (!hasMedia) return null;
+
+          const altText = media?.alt || 'Pre-video hero media';
+          const isVideo = media?.mediaType === 'video' && media?.videoUrl;
+
+          return (
+            <section className="relative w-full z-10 pb-16 pt-8">
+              <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex justify-center">
+                {isVideo ? (
+                  <video
+                    src={media.videoUrl}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-auto rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
+                    aria-label={altText}
+                  />
+                ) : (
+                  <CaseStudyMedia
+                    src={media?.imageUrl || legacyImage}
+                    alt={altText}
+                    className="w-full h-auto object-cover rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
+                  />
+                )}
+              </div>
+            </section>
+          );
+        })()}
+
         {/* ── CINEMATIC VIDEO HERO & ADDITIONAL VIDEOS ── */}
         {(() => {
           const hasVideoHero = project?.videoHero?.enabled;
