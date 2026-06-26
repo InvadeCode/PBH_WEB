@@ -11,14 +11,19 @@ import observationMap from '../../assets/firefox/observation_map.png';
 import insightMapping from '../../assets/firefox/insight_mapping.png';
 import themeMapping from '../../assets/firefox/theme_mapping.png';
 import starGazerSketch from '../../assets/firefox/star_gazer_sketch.png';
-import sketchesCollage from '../../assets/firefox/sketches_collage.png';
+import sketches1 from '../../assets/firefox/sketches_1.png';
+import sketches2 from '../../assets/firefox/sketches_2.png';
+import sketches3 from '../../assets/firefox/sketches_3.png';
+import sketches4 from '../../assets/firefox/sketches_4.png';
 import dreamerBikesLeft from '../../assets/firefox/dreamer_bikes_left.png';
 import dreamerBikesRight from '../../assets/firefox/dreamer_bikes_right.png';
 import stargazerBikesLeft from '../../assets/firefox/stargazer_bikes_left.png';
 import stargazerBikesRight from '../../assets/firefox/stargazer_bikes_right.png';
 import stellarBikesLeft from '../../assets/firefox/stellar_bikes_left.png';
 import stellarBikesRight from '../../assets/firefox/stellar_bikes_right.png';
-import ecosystemImage from '../../assets/firefox/ecosystem.png';
+import ecosystem1 from '../../assets/firefox/ecosystem_1.png';
+import ecosystem2 from '../../assets/firefox/ecosystem_2.png';
+import ecosystem3 from '../../assets/firefox/ecosystem_3.png';
 import lifestyleGrid from '../../assets/firefox/lifestyle_grid.png';
 
 /* ── Arise Visual DNA (palette, utilities) ─────────────────────────── */
@@ -456,20 +461,18 @@ const FirefoxExperience = ({ navigate, project }) => {
       <section className="relative w-full z-10 pb-16 md:pb-24 -mt-32 md:-mt-48">
         <div className="px-6 md:px-12 max-w-[1400px] mx-auto mt-16 md:mt-24">
           <div className="flex flex-col gap-16 md:gap-24 w-full">
-            <ElegantFade delay={0.1}>
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
-                <div className="lg:col-span-9 lg:col-start-4">
-                  <ParallaxImage src={starGazerSketch} alt="Star Gazer Sketch" yOffset={15} imageClassName="object-contain max-h-[700px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
-                </div>
-              </div>
-            </ElegantFade>
-            <ElegantFade delay={0.2}>
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
-                <div className="lg:col-span-9 lg:col-start-1">
-                  <ParallaxImage src={sketchesCollage} alt="Sketches Collage" yOffset={15} imageClassName="object-contain max-h-[700px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
-                </div>
-              </div>
-            </ElegantFade>
+            {[starGazerSketch, sketches1, sketches2, sketches3, sketches4].map((src, i) => {
+              const isReversed = i % 2 !== 0;
+              return (
+                <ElegantFade key={i} delay={0.1 * (i + 1)}>
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
+                    <div className={`lg:col-span-9 ${isReversed ? 'lg:col-start-1' : 'lg:col-start-4'}`}>
+                      <ParallaxImage src={src} alt={`Sketch ${i + 1}`} yOffset={15} imageClassName="object-contain max-h-[700px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
+                    </div>
+                  </div>
+                </ElegantFade>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -511,9 +514,13 @@ const FirefoxExperience = ({ navigate, project }) => {
       <EditorialSection
         title=""
         body=""
-        images={[{ url: ecosystemImage, alt: 'Ecosystem accessories and packaging' }]}
+        images={[
+          { url: ecosystem1, alt: 'Dreamy Backpack' },
+          { url: ecosystem2, alt: 'Explorer Backpack' },
+          { url: ecosystem3, alt: 'Collectible Figurines' }
+        ]}
         layoutVariant="visual-first"
-        imageClassName="object-contain max-h-[600px]"
+        imageClassName="object-contain max-h-[700px] w-auto mx-auto"
       />
 
       {/* ── 10. OUTCOME ── */}
