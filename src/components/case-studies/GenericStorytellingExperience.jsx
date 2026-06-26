@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useAnimationFrame, useMotionValue } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
@@ -195,6 +195,9 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
 
   const hasImages = images && images.length > 0;
   
+  const firstSetRef = useRef(null);
+  const x = useMotionValue(0);
+
   // To prevent the "lag" or "jumping" bug when wrapping, we must ensure a single set
   // is physically wider than the user's screen. If they only upload 1-3 images, we duplicate 
   // them in the base array until it has enough items to span a large desktop.
@@ -205,6 +208,26 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
       baseImages = [...baseImages, ...images];
     }
   }
+
+  // Pure Framer Motion auto-scroller. Immune to CSS and native scroll float bugs.
+  // Directly animates the X transform for ultra-smooth 60fps GPU acceleration.
+  useAnimationFrame((time, delta) => {
+    if (!hasImages) return;
+    if (isPaused) return;
+
+    // Adjust speed here (higher = faster)
+    let moveBy = 0.8 * (delta / 16);
+    let currentX = x.get() - moveBy;
+
+    const wrapWidth = firstSetRef.current?.offsetWidth || 0;
+    
+    // When we've scrolled exactly one set width to the left, seamlessly reset
+    if (wrapWidth > 0 && Math.abs(currentX) >= wrapWidth) {
+      currentX += wrapWidth;
+    }
+
+    x.set(currentX);
+  });
 
   if (!hasImages) return null;
 
@@ -277,31 +300,38 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
         <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${c.cream}66` }}>{project?.carouselSubtext || SITE_SETTINGS?.csCarouselFallbackSubtitle || 'Scroll or drag to explore'}</p>
       </div>
 
-      <div className="w-full overflow-hidden pb-16 pt-8">
-        <div 
-          className="flex w-max animate-marquee"
+      <div 
+        className="w-full overflow-hidden pb-16 pt-8 cursor-grab active:cursor-grabbing"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
+      >
+        <motion.div 
+          className="flex w-max"
+          style={{ x }}
+          drag="x"
+          dragConstraints={{ left: -100000, right: 100000 }} // Very large constraints to prevent drag snap-back
+          onDrag={(e, info) => {
+            // Support dragging manually and wrapping on the fly!
+            let currentX = x.get();
+            const wrapWidth = firstSetRef.current?.offsetWidth || 0;
+            if (wrapWidth > 0) {
+              if (currentX <= -wrapWidth) currentX += wrapWidth;
+              else if (currentX > 0) currentX -= wrapWidth;
+              x.set(currentX);
+            }
+          }}
         >
-          <div className="flex gap-16 md:gap-24 items-center pl-[5vw] pr-16 md:pr-24 shrink-0">
+          <div ref={firstSetRef} className="flex gap-16 md:gap-24 items-center pl-[5vw] pr-16 md:pr-24 shrink-0">
             {baseImages.map((img, i) => renderCard(img, i, 'a'))}
           </div>
           <div className="flex gap-16 md:gap-24 items-center pr-16 md:pr-24 shrink-0" aria-hidden="true">
             {baseImages.map((img, i) => renderCard(img, i, 'b'))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes marquee {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          animation: marquee ${baseImages.length * 6}s linear infinite;
-        }
-        .animate-marquee:hover, .animate-marquee:active {
-          animation-play-state: paused;
-        }
-      `}} />
     </section>
   );
 };
