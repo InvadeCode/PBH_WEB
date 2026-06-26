@@ -4,7 +4,6 @@ import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
-import CaseStudySectorPill from './CaseStudySectorPill';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 import MediaRibbon3D from './MediaRibbon3D';
 
@@ -201,6 +200,96 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) =>
   );
 };
 
+/* --- 7. Dramatic Scrollytelling Sections --- */
+const AboutGraphic = () => (
+  <>
+    <motion.div 
+      animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
+      transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
+    />
+    <motion.div 
+      animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
+      transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#D4CEFC]/20 opacity-50 shadow-[0_0_80px_rgba(212,206,252,0.1)] mix-blend-screen pointer-events-none"
+    />
+  </>
+);
+
+const ProblemGraphic = () => (
+  <>
+    <motion.div 
+      animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.4, 0.1] }} 
+      transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] bg-[#D4CEFC] mix-blend-screen blur-[120px] pointer-events-none"
+    />
+    <motion.div 
+      animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }} 
+      transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] bg-[#6865FA] mix-blend-screen blur-[140px] pointer-events-none"
+    />
+  </>
+);
+
+const DramaticSection = ({ title, content, motionGraphic }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const spring = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  
+  const titleOpacity = useTransform(spring, [0, 0.15], [1, 0]);
+  const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
+  const titleY = useTransform(spring, [0, 0.15], [0, -30]);
+  
+  // Fade content in from 0.05 to 0.25, hold until 0.9, then fade out quickly by 1.0
+  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.9, 1], [0, 1, 1, 0]);
+  const contentY = useTransform(spring, [0.05, 0.25, 0.9, 1], [30, 0, 0, -30]);
+  const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
+
+  return (
+    <section ref={ref} className="h-[200vh] relative w-full">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        
+        <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+          {motionGraphic}
+        </motion.div>
+
+        {/* Ambient Edge Masking (Prevents graphics from hard-cutting at the top/bottom of the screen) */}
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#010d54] to-transparent z-0 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010d54] to-transparent z-0 pointer-events-none" />
+        
+        {/* Title Container */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="flex flex-col items-center justify-center w-full px-6 text-center pointer-events-auto">
+            <motion.h2 
+              animate={{ backgroundPosition: ['200% center', '-200% center'] }}
+              transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
+              style={{ 
+                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundSize: '300% auto',
+              }}
+            >
+              {title}
+            </motion.h2>
+          </motion.div>
+        </div>
+        
+        {/* Content Container */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+          <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
+            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
+               {title}
+            </h3>
+            <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
+              {content}
+            </p>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 /* ── Ecosystem Highlights carousel ──────────────────────────────────────────
    Seamless infinite horizontal carousel. Each card keeps the media's EXACT
    aspect ratio from Sanity (square stays square, rectangle stays rectangle —
@@ -274,66 +363,6 @@ const EcosystemCarousel = ({ media }) => {
   );
 };
 
-/* ── Dramatic Scrollytelling Section ─────────────────────────────────────── */
-const DramaticSection = ({ title, content, motionGraphic }) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const spring = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-  
-  const titleOpacity = useTransform(spring, [0, 0.15], [1, 0]);
-  const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
-  const titleY = useTransform(spring, [0, 0.15], [0, -30]);
-  
-  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.9, 1], [0, 1, 1, 0]);
-  const contentY = useTransform(spring, [0.05, 0.25, 0.9, 1], [30, 0, 0, -30]);
-  const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
-
-  return (
-    <section ref={ref} className="h-[200vh] relative w-full z-10">
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-        
-        <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-          {motionGraphic}
-        </motion.div>
-
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#010d54] to-transparent z-0 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010d54] to-transparent z-0 pointer-events-none" />
-        
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="flex flex-col items-center justify-center w-full px-6 text-center pointer-events-auto">
-            <motion.h2 
-              animate={{ backgroundPosition: ['200% center', '-200% center'] }}
-              transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
-              style={{ 
-                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
-                backgroundSize: '300% auto',
-              }}
-            >
-              {title}
-            </motion.h2>
-          </motion.div>
-        </div>
-        
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-          <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
-            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
-               {title}
-            </h3>
-            <div className="space-y-6">
-              {content.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
-                  {para.trim()}
-                </p>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 
 const AriseVenturesExperience = ({ navigate, project }) => {
   const { SITE_SETTINGS } = React.useContext(GlobalContext) || {};
@@ -378,17 +407,19 @@ const AriseVenturesExperience = ({ navigate, project }) => {
            ) : (
              <div className="w-full h-full bg-[#0C185C]" />
            )}
-          <div className="pointer-events-none absolute left-1/2 top-5 z-20 -translate-x-1/2 px-3 md:top-6">
-            <CaseStudySectorPill
-              sector={project?.sector}
-              className="border border-white/[0.16] bg-[#010d54]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
-            />
-          </div>
         </div>
 
         {/* Text Below the Banner Box */}
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
-          <ElegantFade delay={0.2} className="mb-6">
+          <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
+            {(project?.tags || project?.roles || ['Branding', 'Visual Identity', 'Collateral']).map((tag, i) => (
+              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[17px] md:text-[19px] tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
+                {tag}
+              </span>
+            ))}
+          </ElegantFade>
+
+          <ElegantFade delay={0.2}>
             <motion.h1 
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
@@ -401,28 +432,122 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               {project?.client || 'Arise Ventures'}
             </motion.h1>
           </ElegantFade>
-
-          <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
-            {(project?.tags || project?.roles || ['Branding', 'Visual Identity', 'Collateral']).map((tag, i) => (
-              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[17px] md:text-[19px] tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
-                {tag}
-              </span>
-            ))}
-          </ElegantFade>
         </div>
       </section>
 
       {/* ── 1.5 CASE STUDY VIDEO HERO (CMS-driven, reusable) ── */}
       <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} />
 
+      {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
+      {project?.overview && (
+        <DramaticSection
+          title={project?.overviewHeading || SITE_SETTINGS?.csAboutTheBrand || "About the Brand."}
+          content={project?.overview}
+          motionGraphic={<AboutGraphic />}
+        />
+      )}
 
+      {/* ── 3. DRAMATIC: PROBLEM STATEMENT ── */}
+      {project?.challenge && (
+        <DramaticSection 
+          title={project?.challengeHeading || SITE_SETTINGS?.csTheProblem || "The Problem."}
+          content={project?.challenge}
+          motionGraphic={<ProblemGraphic />}
+        />
+      )}
 
-      {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (DramaticSection) ── */}
-      <DramaticSection
-        title={project?.solutionHeading?.length > 100 ? (SITE_SETTINGS?.csCreativeSolution || "Creative Solution") : (project?.solutionHeading || SITE_SETTINGS?.csCreativeSolution || "Creative Solution")}
-        content={[project?.solution, project?.fullStory?.execution].filter(Boolean).join('\n\n')}
-        motionGraphic={<SolutionVisualizer />}
-      />
+      {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (Seamlessly Blended) ── */}
+      <section className="relative w-full z-10">
+        
+        <div className="pt-4 pb-16 md:pt-6 md:pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
+        
+          {/* Ambient Background Aura behind the whole section (blended) */}
+          <motion.div
+            className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#6865FA_0%,transparent_60%)] blur-[80px] pointer-events-none"
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 0.18, scale: 1 }}
+            viewport={{ once: true, margin: '-10%' }}
+            transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
+          />
+        
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+          
+            {/* Left Side: Text (Seamlessly integrated, no boxes) */}
+            <motion.div 
+              className="lg:col-span-7 relative z-10" 
+              initial={{ opacity: 0, y: 40, filter: 'blur(15px)' }} 
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} 
+              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} 
+              viewport={{ once: true, margin: "-10%" }}
+            >
+              <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-[17px] md:text-[19px] font-bold tracking-widest uppercase backdrop-blur-md font-primary">
+                <span className="w-2 h-2 rounded-full bg-[#D4CEFC] animate-pulse shadow-[0_0_10px_#D4CEFC]" />
+                The Solution
+              </div>
+            
+              <motion.h3
+                className="font-primary text-5xl md:text-7xl lg:text-8xl text-white mb-10 font-medium tracking-tight drop-shadow-lg"
+                initial={{ opacity: 0, y: 32, filter: 'blur(14px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {project?.solutionHeading?.length > 100 ? (SITE_SETTINGS?.csCreativeSolution || "Creative Solution") : (project?.solutionHeading || SITE_SETTINGS?.csCreativeSolution || "Creative Solution")}
+              </motion.h3>
+            
+              {/* Readable Text with NO box */}
+              {(project?.solution || project?.fullStory?.execution) && (
+                <div className="space-y-8 text-white/95 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary">
+                  {project?.solution && <p>{project.solution}</p>}
+                
+                  {/* Highlighted text block */}
+                  {project?.fullStory?.execution && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 22 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: '-12%' }}
+                      transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                      className="relative overflow-hidden pt-6 pb-6 pl-8 mt-10 rounded-r-xl"
+                    >
+                      {/* Drawing accent border */}
+                      <motion.span
+                        className="absolute left-0 top-0 bottom-0 w-1 bg-[#D4CEFC] origin-top shadow-[0_0_12px_#D4CEFC]"
+                        initial={{ scaleY: 0 }}
+                        whileInView={{ scaleY: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                      />
+                      {/* Gradient fill sweep */}
+                      <motion.span
+                        className="absolute inset-0 bg-gradient-to-r from-[#6865FA]/25 to-transparent origin-left"
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1.3, delay: 0.7, ease: 'easeOut' }}
+                      />
+                      <p className="relative z-10 font-primary font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
+                        {project.fullStory.execution}
+                      </p>
+                    </motion.div>
+                  )}
+                </div>
+              )}
+            </motion.div>
+
+            {/* Right Side: Visualizer (Organic & Floating) */}
+            <motion.div 
+              className="lg:col-span-5 h-[400px] lg:h-full relative flex items-center justify-center pointer-events-none"
+              initial={{ opacity: 0, scale: 0.82, rotate: -6, filter: 'blur(22px)', clipPath: 'circle(0% at 50% 50%)' }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0, filter: 'blur(0px)', clipPath: 'circle(82% at 50% 50%)' }}
+              transition={{ duration: 1.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true, margin: "-10%" }}
+            >
+                <SolutionVisualizer />
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
 
       {/* ── 5. STATEMENT ── */}
       {(project?.results?.length > 0) && (
