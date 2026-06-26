@@ -561,23 +561,45 @@ const FirefoxExperience = ({ navigate, project }) => {
         imageClassName="object-contain max-h-[500px]"
       />
 
+      {/* ── SKETCHES MASONRY GRID ── */}
+      <section className="w-full relative z-10 py-16 px-6 md:px-12 max-w-[1400px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-start">
+          {/* Left Column */}
+          <div className="flex flex-col gap-6 md:gap-10">
+            <ElegantFade delay={0.1}>
+              <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
+                <img src={sketches1} alt="Sketch 1" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+              </div>
+            </ElegantFade>
+            <ElegantFade delay={0.3}>
+              <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10 scale-105 origin-top">
+                <img src={starGazerSketch} alt="Star Gazer Sketch" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+              </div>
+            </ElegantFade>
+          </div>
+          
+          {/* Right Column */}
+          <div className="flex flex-col gap-6 md:gap-10 md:pt-16">
+            <ElegantFade delay={0.2}>
+              <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
+                <img src={sketches2} alt="Sketch 2" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+              </div>
+            </ElegantFade>
+            <ElegantFade delay={0.4}>
+              <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
+                <img src={sketches4} alt="Sketch 4" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+              </div>
+            </ElegantFade>
+          </div>
+        </div>
+      </section>
+
       {/* ── 7. DESIGNING THROUGH SCI ART ── */}
       <DramaticSection 
         title="Designing through Sci Art"
         content={`At PBH, we call our approach SciArt.\n\nFor lilFox, that meant combining observation with imagination.\n\nWe studied how children interact with objects, how they create stories, how curiosity develops, and how fantasy becomes a tool for understanding the world.\n\nEvery concept had to work within real manufacturing constraints, frame geometries, production requirements, and decal placement limitations.\n\nThrough multiple iterations, we developed graphic systems that balanced storytelling with practicality.\n\nThe same thinking extended beyond the bicycle itself into accessories, packaging, manuals, merchandise, and future product concepts, creating a cohesive experience across the entire ecosystem.`}
         motionGraphic={<AboutGraphic />}
       />
-      <section className="relative w-full z-10 pb-16 md:pb-24 -mt-32 md:-mt-48 overflow-hidden">
-        <div className="w-full mt-16 md:mt-24">
-          <AestheticCarousel images={[
-            { url: starGazerSketch, alt: 'Star Gazer Sketch' },
-            { url: sketches1, alt: 'Sketches 1' },
-            { url: sketches2, alt: 'Sketches 2' },
-            { url: sketches3, alt: 'Sketches 3' },
-            { url: sketches4, alt: 'Sketches 4' }
-          ]} heightClass="h-[400px] md:h-[600px]" />
-        </div>
-      </section>
 
       {/* ── 8. UNIVERSE BREAKDOWN & ECOSYSTEM ── */}
       <section className="relative w-full z-10 py-16 md:py-24">
