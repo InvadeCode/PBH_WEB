@@ -515,12 +515,12 @@ const FirefoxExperience = ({ navigate, project }) => {
             </div>
           </ElegantFade>
           
-          <ElegantFade delay={0.2} className="mt-10 md:mt-14 w-full flex justify-center">
-            <div className="relative w-full max-w-[1100px] aspect-[1.8/1] md:aspect-[2.2/1] overflow-hidden rounded-xl">
+          <ElegantFade delay={0.2} className="mt-6 md:mt-10 w-full flex justify-center">
+            <div className="relative w-full max-w-[850px] aspect-[2.5/1] overflow-hidden rounded-xl">
               <img 
                 src={observationMap} 
                 alt="Observation Map" 
-                className="absolute inset-0 w-full h-full object-cover object-bottom" 
+                className="absolute inset-0 w-full h-full object-cover object-bottom scale-[1.02]" 
                 draggable="false"
               />
             </div>
