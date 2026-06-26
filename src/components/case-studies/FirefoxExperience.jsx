@@ -206,49 +206,68 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
   );
 };
 
-/* ── Universe Card — alternating text/image blocks ────────────────── */
-const UniverseCard = ({ title, description, images, index }) => {
-  const isReversed = index % 2 !== 0;
-
+/* ── Aesthetic Horizontal Carousel ─────────────────────────────────── */
+const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) => {
   return (
-    <div className="mb-24 md:mb-32 last:mb-0">
-      {/* First Row: Text and First Image */}
-      <ElegantFade>
-        <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center ${isReversed ? 'lg:direction-rtl' : ''}`}>
-          <div className={`lg:col-span-4 ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}>
-            <motion.h3
-              className="font-primary text-3xl md:text-5xl text-white mb-6 font-medium tracking-tight"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              {title}
-            </motion.h3>
-            {description && (
-              <p className="text-white/85 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary">
-                {description}
+    <div className="relative w-full overflow-hidden">
+      <div 
+        className="flex gap-6 md:gap-10 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-6 md:px-12 py-8 pb-12 cursor-grab active:cursor-grabbing"
+        style={{ scrollBehavior: 'smooth' }}
+      >
+        {images.map((img, idx) => (
+          <div 
+            key={idx} 
+            className="flex-none w-[85vw] md:w-[65vw] lg:w-[55vw] snap-center relative group"
+          >
+            <div className={`w-full ${heightClass} rounded-[2rem] bg-gradient-to-br from-white/5 to-transparent overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 group-hover:scale-[1.01] group-hover:border-white/20 flex items-center justify-center`}>
+              <img 
+                src={img.url || img} 
+                alt={img.alt || `Carousel item ${idx + 1}`} 
+                className="w-full h-full object-contain p-6 md:p-12 transition-transform duration-1000 group-hover:scale-105"
+              />
+            </div>
+            {img.alt && (
+              <p className="text-center mt-8 text-white/50 font-secondary text-sm md:text-base tracking-[0.25em] uppercase">
+                {img.alt}
               </p>
             )}
           </div>
-          <div className={`lg:col-span-8 ${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
-            {images && images[0] && (
-              <ParallaxImage src={images[0]} alt={`${title} 1`} yOffset={20} imageClassName="object-contain max-h-[600px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
-            )}
-          </div>
+        ))}
+      </div>
+      
+      {/* Edge Fades for elegance */}
+      <div className="absolute left-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-r from-[#030203] via-[#030203]/80 to-transparent pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-l from-[#030203] via-[#030203]/80 to-transparent pointer-events-none" />
+    </div>
+  );
+};
+
+/* ── Universe Card — text block + carousel ────────────────────────── */
+const UniverseCard = ({ title, description, images, index }) => {
+  return (
+    <div className="mb-24 md:mb-40 last:mb-0">
+      <ElegantFade>
+        <div className="px-6 md:px-12 mb-12 md:mb-16 text-center max-w-4xl mx-auto">
+          <motion.h3
+            className="font-primary text-4xl md:text-6xl text-white mb-6 font-medium tracking-tight"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            {title}
+          </motion.h3>
+          {description && (
+            <p className="text-white/70 font-normal text-[17px] md:text-[21px] leading-relaxed font-secondary">
+              {description}
+            </p>
+          )}
         </div>
       </ElegantFade>
-
-      {/* Second Row: Second Image, staggered in the opposite direction */}
-      {images && images[1] && (
-        <ElegantFade className="mt-16 md:mt-24">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className={`lg:col-span-8 ${isReversed ? 'lg:col-start-5' : 'lg:col-start-1'}`}>
-              <ParallaxImage src={images[1]} alt={`${title} 2`} yOffset={20} imageClassName="object-contain max-h-[600px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
-            </div>
-          </div>
-        </ElegantFade>
-      )}
+      
+      <ElegantFade delay={0.2}>
+        <AestheticCarousel images={images} />
+      </ElegantFade>
     </div>
   );
 };
@@ -460,13 +479,13 @@ const FirefoxExperience = ({ navigate, project }) => {
       />
       <section className="relative w-full z-10 pb-16 md:pb-24 -mt-32 md:-mt-48 overflow-hidden">
         <div className="w-full mt-16 md:mt-24">
-          <MediaRibbon3D media={[
+          <AestheticCarousel images={[
             { url: starGazerSketch, alt: 'Star Gazer Sketch' },
             { url: sketches1, alt: 'Sketches 1' },
             { url: sketches2, alt: 'Sketches 2' },
             { url: sketches3, alt: 'Sketches 3' },
             { url: sketches4, alt: 'Sketches 4' }
-          ]} />
+          ]} heightClass="h-[400px] md:h-[600px]" />
         </div>
       </section>
 
@@ -506,11 +525,11 @@ const FirefoxExperience = ({ navigate, project }) => {
       {/* ── 9. ECOSYSTEM ── */}
       <section className="relative w-full z-10 pt-12 pb-16 md:pb-24 overflow-hidden">
         <div className="w-full">
-          <MediaRibbon3D media={[
+          <AestheticCarousel images={[
             { url: ecosystem1, alt: 'Dreamy Backpack' },
             { url: ecosystem2, alt: 'Explorer Backpack' },
             { url: ecosystem3, alt: 'Collectible Figurines' }
-          ]} />
+          ]} heightClass="h-[400px] md:h-[600px]" />
         </div>
       </section>
 
