@@ -118,6 +118,13 @@ export const repeatMediaItems = (items, minimumCount) => {
   return repeated;
 };
 
+import { getSafeEmbedUrl } from '../../lib/videoUtils';
+
+const isIframeEmbedUrl = (url) => {
+  if (!url) return false;
+  return /(youtube\.com|youtu\.be|vimeo\.com|instagram\.com)/i.test(url);
+};
+
 const CaseStudyMedia = ({
   item,
   src,
@@ -142,6 +149,23 @@ const CaseStudyMedia = ({
   }
 
   if (!url) return null;
+
+  const isEmbed = isIframeEmbedUrl(url);
+
+  if (isEmbed) {
+    const Iframe = motionProps ? motion.iframe : 'iframe';
+    const safeUrl = getSafeEmbedUrl(url);
+    const iframeProps = {
+      src: safeUrl,
+      className,
+      allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen",
+      allowFullScreen: true,
+      style: { border: 'none' },
+      ...props,
+      ...(motionProps || {}),
+    };
+    return <Iframe {...iframeProps} />;
+  }
 
   if (isVideo) {
     const Video = motionProps ? motion.video : 'video';

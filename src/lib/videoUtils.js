@@ -13,6 +13,13 @@ export const getSafeEmbedUrl = (url) => {
       const videoId = url.split('vimeo.com/')[1].split('?')[0];
       return `https://player.vimeo.com/video/${videoId}`;
     }
+    if (url.includes('instagram.com/')) {
+      // Instagram embeds require /embed at the end
+      if (!url.includes('/embed')) {
+        const baseUrl = url.split('?')[0].replace(/\/+$/, '');
+        return `${baseUrl}/embed`;
+      }
+    }
   } catch (e) {
     return url;
   }
