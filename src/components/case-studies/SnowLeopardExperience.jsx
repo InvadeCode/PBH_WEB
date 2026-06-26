@@ -201,8 +201,8 @@ const DynamicSciArtGrid = ({ content }) => {
                 />
                 
                 <div className="relative z-10">
-                  <h3 className="text-sm uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
-                    <span className="w-8 h-[1px] bg-cyan-400" /> 
+                  <h3 className="text-sm uppercase tracking-[0.4em] text-[#D4CEFC] font-bold mb-6 flex items-center gap-4">
+                    <span className="w-8 h-[1px] bg-[#D4CEFC]" /> 
                     About the brand 
                   </h3>
                   <p className="text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
@@ -232,8 +232,8 @@ const DynamicSciArtGrid = ({ content }) => {
                 />
 
                 <div className="relative z-10">
-                  <h3 className="text-sm uppercase tracking-[0.4em] text-purple-400 font-bold mb-6 flex items-center gap-4">
-                    <span className="w-8 h-[1px] bg-purple-400" /> 
+                  <h3 className="text-sm uppercase tracking-[0.4em] text-[#D4CEFC] font-bold mb-6 flex items-center gap-4">
+                    <span className="w-8 h-[1px] bg-[#D4CEFC]" /> 
                     The Problem 
                   </h3>
                   <p className="text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
@@ -285,8 +285,8 @@ const DynamicSciArtGrid = ({ content }) => {
                />
    
                <div className="relative z-10">
-                 <h3 className="text-sm uppercase tracking-[0.4em] text-indigo-400 font-bold mb-6 flex items-center gap-4">
-                   <span className="w-8 h-[1px] bg-indigo-400" /> 
+                 <h3 className="text-sm uppercase tracking-[0.4em] text-[#D4CEFC] font-bold mb-6 flex items-center gap-4">
+                   <span className="w-8 h-[1px] bg-[#D4CEFC]" /> 
                    Creative Solution 
                  </h3>
                  
