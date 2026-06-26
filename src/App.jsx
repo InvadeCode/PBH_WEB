@@ -22,7 +22,6 @@ import SnowLeopardExperience from './components/case-studies/SnowLeopardExperien
 import AriseVenturesExperience from './components/case-studies/AriseVenturesExperience';
 import LegacyExperience from './components/case-studies/LegacyExperience';
 import GenericStorytellingExperience from './components/case-studies/GenericStorytellingExperience';
-import StorybookExperience from './components/case-studies/StorybookExperience';
 import CaseStudyTeamCredits from './components/case-studies/CaseStudyTeamCredits';
 import CaseStudyMedia from './components/case-studies/CaseStudyMedia';
 
@@ -3561,9 +3560,6 @@ const WorkDetailPage = ({ navigate, projectId }) => {
   const experience = (() => {
     if (projectString.includes('veauli')) {
       return <AriseVenturesExperience navigate={navigate} project={project} />;
-    }
-    if (projectString.includes('ega wellness')) {
-      return <StorybookExperience navigate={navigate} project={project} />;
     }
 
     if (project.template) {

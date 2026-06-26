@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { motion, useScroll, useTransform, useAnimationFrame, useMotionValue } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { GlobalContext } from '../../App';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
@@ -132,55 +132,73 @@ const Narrative = ({ project, c }) => {
   const problem = project.challenge && { k: project.challengeHeading || 'The Question', v: project.challenge };
   const solution = project.solution && { k: project.solutionHeading || 'The Answer', v: project.solution };
 
-  const topBeats = [about, problem].filter(Boolean);
+  const pages = [about, problem, solution].filter(Boolean);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  if (pages.length === 0) return null;
 
   return (
-    <section className="relative py-28 md:py-40 px-[7%]" style={{ background: `linear-gradient(180deg, ${c.soilDeep}, ${c.soil})` }}>
-      <div className="max-w-6xl mx-auto relative z-10 flex flex-col items-center">
+    <section className="relative py-28 md:py-40 px-[7%] overflow-hidden" style={{ background: `linear-gradient(180deg, ${c.soilDeep}, ${c.soil})` }}>
+      <div className="max-w-5xl mx-auto relative z-10 flex flex-col items-center">
         
-        {/* Parallel About & Problem */}
-        {topBeats.length > 0 && (
-          <div className={`grid ${topBeats.length === 2 ? 'md:grid-cols-2' : 'grid-cols-1'} gap-x-16 gap-y-14 md:gap-y-20 w-full mb-16 md:mb-24`}>
-            {topBeats.map((b, i) => (
-              <motion.div key={b.k}
-                initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-12%' }}
-                transition={{ duration: 1, delay: i * 0.08, ease: "easeOut" }}>
-                <div className="flex items-center gap-3 mb-5">
-                  <span className="font-primary text-sm" style={{ color: c.terra }}>{String(i + 1).padStart(2, '0')}</span>
-                  <span className="h-px w-10" style={{ backgroundColor: `${c.terra}88` }} />
-                  <h3 className="text-xl md:text-2xl font-primary tracking-tight" style={{ color: c.terra }}>{b.k}</h3>
-                </div>
-                <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-[17px] md:text-[19px]" style={{ color: `${c.cream}d9` }}>
-                  {b.v}
-                </p>
-              </motion.div>
-            ))}
+        {/* Navigation Controls */}
+        {pages.length > 1 && (
+          <div className="flex items-center gap-6 mb-12 relative z-50">
+             <button onClick={() => setCurrentPage(p => Math.max(0, p - 1))} disabled={currentPage === 0} className="w-12 h-12 rounded-full border flex items-center justify-center transition-all disabled:opacity-20 hover:bg-white/5" style={{ borderColor: `${c.cream}20`, color: c.cream }}>
+               <ChevronLeft className="w-5 h-5" />
+             </button>
+             <span className="text-xs font-secondary uppercase tracking-widest" style={{ color: `${c.cream}60` }}>
+               {String(currentPage + 1).padStart(2, '0')} / {String(pages.length).padStart(2, '0')}
+             </span>
+             <button onClick={() => setCurrentPage(p => Math.min(pages.length - 1, p + 1))} disabled={currentPage === pages.length - 1} className="w-12 h-12 rounded-full border flex items-center justify-center transition-all disabled:opacity-20 hover:bg-white/5" style={{ borderColor: `${c.cream}20`, color: c.cream }}>
+               <ChevronRight className="w-5 h-5" />
+             </button>
           </div>
         )}
 
-        {/* Centered Solution in Box */}
-        {solution && (
-          <motion.div 
-            initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-12%' }}
-            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-            className="w-full max-w-4xl border p-10 md:p-14 relative overflow-hidden shadow-2xl" 
-            style={{ borderColor: `${c.terra}30`, backgroundColor: `${c.soilDeep}99` }}
-          >
-            {/* Box Accent Glow */}
-            <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(100% 100% at 50% 0%, ${c.terra}10 0%, transparent 100%)` }} />
-            
-            <div className="relative z-10">
-              <div className="flex items-center justify-center gap-3 mb-8">
-                <span className="font-primary text-sm" style={{ color: c.terra }}>{String(topBeats.length + 1).padStart(2, '0')}</span>
-                <span className="h-px w-10" style={{ backgroundColor: `${c.terra}88` }} />
-                <h3 className="text-xl md:text-2xl font-primary tracking-tight" style={{ color: c.terra }}>{solution.k}</h3>
+        {/* 3D Flip Container */}
+        <div className="relative w-full h-[60vh] min-h-[450px] max-h-[600px] cursor-pointer" 
+             style={{ perspective: '2500px' }}
+             onClick={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                if (clickX > rect.width / 2) {
+                  setCurrentPage(p => Math.min(pages.length - 1, p + 1));
+                } else {
+                  setCurrentPage(p => Math.max(0, p - 1));
+                }
+             }}>
+          {pages.map((p, i) => (
+            <motion.div
+              key={i}
+              className="absolute inset-0 w-full h-full border p-8 md:p-16 shadow-2xl flex flex-col justify-center items-center text-center overflow-hidden"
+              style={{ 
+                backfaceVisibility: 'hidden', 
+                borderColor: `${c.terra}30`, 
+                backgroundColor: `${c.soilDeep}`
+              }}
+              initial={false}
+              animate={{
+                rotateY: (i - currentPage) * 180,
+                zIndex: i === currentPage ? 10 : 0,
+                scale: i === currentPage ? 1 : 0.95
+              }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(100% 100% at 50% 0%, ${c.terra}15 0%, transparent 100%)` }} />
+              <div className="relative z-10 w-full max-w-3xl">
+                <div className="flex items-center justify-center gap-3 mb-8">
+                  <span className="font-primary text-sm" style={{ color: c.terra }}>{String(i + 1).padStart(2, '0')}</span>
+                  <span className="h-px w-10" style={{ backgroundColor: `${c.terra}88` }} />
+                  <h3 className="text-xl md:text-3xl font-primary tracking-tight" style={{ color: c.terra }}>{p.k}</h3>
+                </div>
+                <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-[17px] md:text-[20px]" style={{ color: `${c.cream}f0` }}>
+                  {p.v}
+                </p>
               </div>
-              <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-[17px] md:text-[19px] text-center" style={{ color: `${c.cream}d9` }}>
-                {solution.v}
-              </p>
-            </div>
-          </motion.div>
-        )}
+            </motion.div>
+          ))}
+        </div>
 
         {project.fullStory?.execution && (
           <motion.blockquote className="mt-24 md:mt-32 text-center"

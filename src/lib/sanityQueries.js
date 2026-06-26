@@ -134,7 +134,7 @@ export const GET_DELIVERABLES = `*[_type == "deliverable"] { id, lineItem, name,
 export const GET_SITE_SETTINGS = `*[_type == "siteSettings"][0] { 
   homeHeroTitle, homeHeroSubtitle, servicesHeader, servicesSubtext, journalHeader, journalSubtext, footerCTA, marqueeText,
   contactEmail, contactPhone, contactAddress,
-  homeExploreButton, servicesExploreButton, assessmentButton, allProjectsButton, homeSection3Subtitle,
+  homeExploreButton, servicesExploreButton, assessmentButton, allProjectsButton, homeSection3Subtitle, homePage,
   workPageHeader, workPageSubtext, methodPageHeader, methodPageSubtext, teamPageHeader, teamPageSubtext,
   coreValuesHeader, ourJourneyHeader, frameworkHeader, timelineHeader,
   aboutPage, storyPage, teamPage, methodPage, serviceFaqs, footerTagline, footerCopyright,
