@@ -529,12 +529,13 @@ const FirefoxExperience = ({ navigate, project }) => {
             </div>
           </ElegantFade>
           
-          <ElegantFade delay={0.2} className="mt-6 md:mt-10 w-full flex justify-center">
-            <div className="relative w-full max-w-[850px] aspect-[2.5/1] overflow-hidden rounded-xl">
+          <ElegantFade delay={0.2} className="mt-8 md:mt-12 w-full flex justify-center">
+            <div className="relative w-full max-w-[900px] aspect-[2.2/1] md:aspect-[2.5/1] overflow-hidden rounded-xl">
+              {/* By making the image taller than the container (h-[130%]) and pinning it to the bottom, the top portion containing the baked text gets cropped out automatically. */}
               <img 
                 src={observationMap} 
                 alt="Observation Map" 
-                className="absolute inset-0 w-full h-full object-cover object-bottom scale-[1.02]" 
+                className="absolute bottom-0 left-0 w-full h-[135%] md:h-[150%] object-cover object-bottom" 
                 draggable="false"
               />
             </div>
