@@ -3557,6 +3557,10 @@ const WorkDetailPage = ({ navigate, projectId }) => {
   // Pick the experience template for this client, then append the shared,
   // CMS-driven Team Credits section so it appears under EVERY case study.
   const experience = (() => {
+    if (clientName.includes('veauli')) {
+      return <AriseVenturesExperience navigate={navigate} project={project} />;
+    }
+
     if (project.template) {
       switch (project.template) {
         case 'arise':
@@ -3597,9 +3601,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     'sayre therapeutics',
     'observer research',
     'best iu',
-    'india global forum',
-    'veauli techniks',
-    'veauli'
+    'india global forum'
   ];
 
   if (targetClients.some(target => clientName.includes(target))) {
