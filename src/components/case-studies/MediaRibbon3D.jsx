@@ -284,18 +284,18 @@ const MediaRibbon3D = ({ media }) => {
         onPointerLeave={handlePointerLeave}
         onDragStart={(e) => e.preventDefault()}
         className="relative w-full overflow-hidden touch-none cursor-grab active:cursor-grabbing border-y border-white/5 shadow-2xl"
-        style={{ height: 'clamp(400px, 60vh, 650px)' }}
+        style={{ height: 'clamp(500px, 75vh, 850px)' }}
       >
         {/* Ambient depth */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/2 top-1/2 h-[60vw] w-[60vw] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[150px]" style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.18), transparent 62%)' }} />
-          <div className="absolute inset-x-0 top-0 h-24" style={{ background: 'linear-gradient(to bottom, #010836, transparent)' }} />
-          <div className="absolute inset-x-0 bottom-0 h-24" style={{ background: 'linear-gradient(to top, #010836, transparent)' }} />
+          <div className="absolute left-1/2 top-[45%] h-[60vw] w-[60vw] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[150px]" style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.18), transparent 62%)' }} />
+          <div className="absolute inset-x-0 top-0 h-32" style={{ background: 'linear-gradient(to bottom, #010836, transparent)' }} />
+          <div className="absolute inset-x-0 bottom-0 h-32 z-10 pointer-events-none" style={{ background: 'linear-gradient(to top, #010836 10%, transparent)' }} />
         </div>
 
         {/* 3D scene */}
         <div className="absolute inset-0" style={{ perspective: '1700px', perspectiveOrigin: '50% 48%' }}>
-          <motion.div className="absolute left-1/2 top-1/2" style={{ transformStyle: 'preserve-3d', transform: ringTransform, willChange: 'transform' }}>
+          <motion.div className="absolute left-1/2 top-[45%]" style={{ transformStyle: 'preserve-3d', transform: ringTransform, willChange: 'transform' }}>
             <motion.div className="absolute" style={{ transformStyle: 'preserve-3d', transform: innerRotate }}>
               {items.map((m, i) => (
                 <Panel
