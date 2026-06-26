@@ -561,9 +561,9 @@ const FirefoxExperience = ({ navigate, project }) => {
         imageClassName="object-contain max-h-[500px]"
       />
 
-      {/* ── 7. THE SOLUTION APPEARS ── */}
-      <DramaticSection
-        title="The Solution Appears"
+      {/* ── 7. DESIGNING THROUGH SCI ART ── */}
+      <DramaticSection 
+        title="Designing through Sci Art"
         content={`At PBH, we call our approach SciArt.\n\nFor lilFox, that meant combining observation with imagination.\n\nWe studied how children interact with objects, how they create stories, how curiosity develops, and how fantasy becomes a tool for understanding the world.\n\nEvery concept had to work within real manufacturing constraints, frame geometries, production requirements, and decal placement limitations.\n\nThrough multiple iterations, we developed graphic systems that balanced storytelling with practicality.\n\nThe same thinking extended beyond the bicycle itself into accessories, packaging, manuals, merchandise, and future product concepts, creating a cohesive experience across the entire ecosystem.`}
         motionGraphic={<AboutGraphic />}
       />
