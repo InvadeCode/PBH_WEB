@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
@@ -208,11 +208,45 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
 
 /* ── Aesthetic Horizontal Carousel ─────────────────────────────────── */
 const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) => {
+  const scrollRef = useRef(null);
+  const [isDown, setIsDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  const handleMouseDown = (e) => {
+    setIsDown(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDown(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDown(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // scroll-fast multiplier
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollLeft - walk;
+    }
+  };
+
   return (
     <div className="relative w-full overflow-hidden">
       <div 
-        className="flex gap-6 md:gap-10 overflow-x-auto snap-x snap-mandatory scrollbar-hide px-6 md:px-12 py-8 pb-12 cursor-grab active:cursor-grabbing"
-        style={{ scrollBehavior: 'smooth' }}
+        ref={scrollRef}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeave}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseMove}
+        className={`flex gap-6 md:gap-10 overflow-x-auto scrollbar-hide px-6 md:px-12 py-8 pb-12 ${isDown ? 'cursor-grabbing snap-none' : 'cursor-grab snap-x snap-mandatory'}`}
+        style={{ scrollBehavior: isDown ? 'auto' : 'smooth' }}
       >
         {images.map((img, idx) => (
           <div 
@@ -224,10 +258,11 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
                 src={img.url || img} 
                 alt={img.alt || `Carousel item ${idx + 1}`} 
                 className="w-full h-full object-contain p-6 md:p-12 transition-transform duration-1000 group-hover:scale-105"
+                draggable="false"
               />
             </div>
             {img.alt && (
-              <p className="text-center mt-8 text-white/50 font-secondary text-sm md:text-base tracking-[0.25em] uppercase">
+              <p className="text-center mt-8 text-white/50 font-secondary text-sm md:text-base tracking-[0.25em] uppercase pointer-events-none">
                 {img.alt}
               </p>
             )}
