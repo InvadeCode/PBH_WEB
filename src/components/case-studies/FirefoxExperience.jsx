@@ -210,6 +210,96 @@ const UniverseCard = ({ title, description, imageUrl, index }) => {
   );
 };
 
+/* ── Dramatic Scrollytelling Sections ─────────────────────────────────────── */
+const AboutGraphic = () => (
+  <>
+    <motion.div 
+      animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
+      transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
+    />
+    <motion.div 
+      animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
+      transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#D4CEFC]/20 opacity-50 shadow-[0_0_80px_rgba(212,206,252,0.1)] mix-blend-screen pointer-events-none"
+    />
+  </>
+);
+
+const ProblemGraphic = () => (
+  <>
+    <motion.div 
+      animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.4, 0.1] }} 
+      transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] bg-[#D4CEFC] mix-blend-screen blur-[120px] pointer-events-none"
+    />
+    <motion.div 
+      animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }} 
+      transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] bg-[#6865FA] mix-blend-screen blur-[140px] pointer-events-none"
+    />
+  </>
+);
+
+const DramaticSection = ({ title, content, motionGraphic }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const spring = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+  
+  const titleOpacity = useTransform(spring, [0, 0.15], [1, 0]);
+  const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
+  const titleY = useTransform(spring, [0, 0.15], [0, -30]);
+  
+  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.9, 1], [0, 1, 1, 0]);
+  const contentY = useTransform(spring, [0.05, 0.25, 0.9, 1], [30, 0, 0, -30]);
+  const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
+
+  return (
+    <section ref={ref} className="h-[200vh] relative w-full z-10">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        
+        <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+          {motionGraphic}
+        </motion.div>
+
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#010d54] to-transparent z-0 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010d54] to-transparent z-0 pointer-events-none" />
+        
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="flex flex-col items-center justify-center w-full px-6 text-center pointer-events-auto">
+            <motion.h2 
+              animate={{ backgroundPosition: ['200% center', '-200% center'] }}
+              transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
+              style={{ 
+                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundSize: '300% auto',
+              }}
+            >
+              {title}
+            </motion.h2>
+          </motion.div>
+        </div>
+        
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+          <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
+            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
+               {title}
+            </h3>
+            <div className="space-y-6">
+              {content.split('\n\n').filter(Boolean).map((para, i) => (
+                <p key={i} className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
+                  {para.trim()}
+                </p>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 /* ══════════════════════════════════════════════════════════════════════
    FIREFOX EXPERIENCE — Main Component
    ══════════════════════════════════════════════════════════════════════ */
@@ -244,13 +334,16 @@ const FirefoxExperience = ({ navigate, project }) => {
           ) : (
             <div className="w-full h-full bg-[#0C185C]" />
           )}
-          <CaseStudySectorPill
-            sector={project?.sector}
-            className="absolute left-5 top-5 z-20 border border-white/15 bg-black/35 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.25)] backdrop-blur-md md:left-8 md:top-8"
-          />
         </div>
 
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
+          <ElegantFade delay={0.3} className="mb-6">
+            <CaseStudySectorPill
+              sector={project?.sector}
+              className="border border-white/[0.12] bg-white/[0.07] text-white/75 shadow-[0_14px_40px_rgba(0,0,0,0.18)] backdrop-blur-md"
+            />
+          </ElegantFade>
+
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {(project?.tags || ['Product Graphics', 'Illustration', 'Visual Strategy']).map((tag, i) => (
               <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[17px] md:text-[19px] tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
@@ -276,17 +369,17 @@ const FirefoxExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 2. INTRO ── */}
-      <EditorialSection
+      <DramaticSection
         title="Designing for Untamed Imaginations"
-        body={`Firefox approached us to design graphics for a new range of children's bicycles. The brief sounded simple. The opportunity wasn't.\n\nAs we explored the category, we realised children don't experience bicycles the way adults do. Adults see products. Children see possibilities. A bicycle can become a spaceship, a dragon rider, a superhero vehicle, or a ticket to another world.\n\nThat insight transformed the project.\n\nWhat began as a graphics assignment evolved into the creation of lilFox, a children's brand built around imagination, storytelling, and adventure.`}
-        images={[]}
+        content={`Firefox approached us to design graphics for a new range of children's bicycles. The brief sounded simple. The opportunity wasn't.\n\nAs we explored the category, we realised children don't experience bicycles the way adults do. Adults see products. Children see possibilities. A bicycle can become a spaceship, a dragon rider, a superhero vehicle, or a ticket to another world.\n\nThat insight transformed the project.\n\nWhat began as a graphics assignment evolved into the creation of lilFox, a children's brand built around imagination, storytelling, and adventure.`}
+        motionGraphic={<AboutGraphic />}
       />
 
       {/* ── 3. CHALLENGE ── */}
-      <EditorialSection
+      <DramaticSection
         title="Creating the lilFox Universe"
-        body={`Rather than designing a product range under Firefox, we set out to create a world with its own personality, language, and visual identity.\n\nThis led to the creation of lilFox as a standalone children's brand where imagination became the organising principle behind every touchpoint.\n\nFrom bicycles to accessories, packaging, and future products, every element belonged to the same universe.\n\nThe goal wasn't to sell bicycles.\n\nIt was to create a platform for adventure.`}
-        images={[]}
+        content={`Rather than designing a product range under Firefox, we set out to create a world with its own personality, language, and visual identity.\n\nThis led to the creation of lilFox as a standalone children's brand where imagination became the organising principle behind every touchpoint.\n\nFrom bicycles to accessories, packaging, and future products, every element belonged to the same universe.\n\nThe goal wasn't to sell bicycles.\n\nIt was to create a platform for adventure.`}
+        motionGraphic={<ProblemGraphic />}
       />
 
       {/* ── 4. STRATEGY ── */}
@@ -413,4 +506,3 @@ const FirefoxExperience = ({ navigate, project }) => {
 };
 
 export default FirefoxExperience;
-
