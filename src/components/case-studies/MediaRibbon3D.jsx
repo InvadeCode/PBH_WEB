@@ -168,9 +168,8 @@ const MediaRibbon3D = ({ media }) => {
       const baseH = clamp(w * 0.15, 180, 360);
       const baseArea = baseH * baseH;
       
-      // Dynamic radius based on N so fewer items don't have massive gaps
-      const calculatedRadius = (items.length * 480) / (2 * Math.PI);
-      const radius = clamp(calculatedRadius, 280, clamp(w * 0.5, 500, 1000));
+      // Classic round carousel radius based on screen width
+      const radius = clamp(w * 0.42, 320, 780);
       
       let maxH = baseH;
       if (items.length > 0) {
