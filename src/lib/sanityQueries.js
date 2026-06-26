@@ -118,7 +118,30 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(coalesce(orde
   seoTitle,
   metaDescription,
   focusKeyword,
-  "pageFaqs": pageFaqs[]->{id, question, answer, category}
+  "firefoxSections": firefoxSections[] {
+    _key,
+    sectionType,
+    title,
+    body,
+    layoutVariant,
+    "images": images[] {
+      _key,
+      alt,
+      caption,
+      "url": asset->url,
+      "metadata": asset->metadata {
+        lqip,
+        "dimensions": dimensions { width, height, aspectRatio }
+      }
+    }
+  },
+  "universeCards": universeCards[] {
+    _key,
+    title,
+    description,
+    "imageUrl": image.asset->url
+  },
+  "pageFaqs": pageFaqs[]->{ id, question, answer, category }
 }`;
 
 export const GET_JOURNAL_ARTICLES = `*[_type == "journalArticle"] | order(date desc) { id, tag, title, time, type, excerpt, author, date, seoTitle, metaDescription, focusKeyword, "pageFaqs": pageFaqs[]->{id, question, answer, category} }`;

@@ -20,6 +20,7 @@ import BackToRootsExperience from './components/case-studies/BackToRootsExperien
 import ParamInnovationExperience from './components/case-studies/ParamInnovationExperience';
 import SnowLeopardExperience from './components/case-studies/SnowLeopardExperience';
 import AriseVenturesExperience from './components/case-studies/AriseVenturesExperience';
+import FirefoxExperience from './components/case-studies/FirefoxExperience';
 import LegacyExperience from './components/case-studies/LegacyExperience';
 import GenericStorytellingExperience from './components/case-studies/GenericStorytellingExperience';
 import CaseStudyTeamCredits from './components/case-studies/CaseStudyTeamCredits';
@@ -3561,6 +3562,11 @@ const WorkDetailPage = ({ navigate, projectId }) => {
   const experience = (() => {
     if (projectString.includes('veauli')) {
       return <AriseVenturesExperience navigate={navigate} project={project} />;
+    }
+
+    // Firefox-specific experience — dedicated template before ariseClients fallback
+    if (clientName.includes('firefox')) {
+      return <FirefoxExperience navigate={navigate} project={project} />;
     }
 
     const ariseClients = [

@@ -201,6 +201,13 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'customSector',
+      title: 'Custom Sector',
+      type: 'string',
+      description: 'Please specify the sector.',
+      hidden: ({document}) => document?.sector !== 'Other',
+    }),
+    defineField({
       name: 'teamCredits',
       title: 'Team Credits',
       type: 'object',
@@ -552,6 +559,51 @@ export default defineType({
       title: 'Primary Keyword',
       type: 'string',
       description: 'The single phrase this page must rank for.'
+    }),
+    defineField({
+      name: 'firefoxSections',
+      title: '🦊 Firefox Editorial Sections (Firefox Only)',
+      type: 'array',
+      description: 'Optional content blocks for the Firefox case study. Each section has a title, body, images, layout variant, and section type. Only used by the Firefox experience template.',
+      of: [
+        {
+          type: 'object',
+          name: 'firefoxSection',
+          title: 'Section',
+          fields: [
+            defineField({ name: 'sectionType', title: 'Section Type', type: 'string', options: { list: ['intro', 'challenge', 'outcome', 'strategy', 'insightMapping', 'themeMapping', 'sciart', 'closing', 'finalOutcome'] } }),
+            defineField({ name: 'title', title: 'Section Title', type: 'string' }),
+            defineField({ name: 'body', title: 'Section Body', type: 'text' }),
+            defineField({ name: 'layoutVariant', title: 'Layout Variant', type: 'string', options: { list: ['text-first', 'visual-first', 'text-left-image-right', 'text-right-image-left', 'full-width-visual'] }, initialValue: 'text-first' }),
+            defineField({
+              name: 'images',
+              title: 'Section Images',
+              type: 'array',
+              of: [{ type: 'image', options: { hotspot: true }, fields: [defineField({ name: 'alt', title: 'Alt Text', type: 'string' }), defineField({ name: 'caption', title: 'Caption', type: 'string' })] }]
+            }),
+          ],
+          preview: { select: { title: 'title', subtitle: 'sectionType' } }
+        }
+      ],
+    }),
+    defineField({
+      name: 'universeCards',
+      title: '🦊 Universe Breakdown Cards (Firefox Only)',
+      type: 'array',
+      description: 'Three product cards for the Firefox universe breakdown (e.g. Dreamer, Stargazer, Stellar). Only used by the Firefox experience template.',
+      of: [
+        {
+          type: 'object',
+          name: 'universeCard',
+          title: 'Universe Card',
+          fields: [
+            defineField({ name: 'title', title: 'Card Title', type: 'string' }),
+            defineField({ name: 'description', title: 'Card Description', type: 'text' }),
+            defineField({ name: 'image', title: 'Card Image', type: 'image', options: { hotspot: true } }),
+          ],
+          preview: { select: { title: 'title', media: 'image' } }
+        }
+      ],
     }),
     defineField({
       name: 'pageFaqs',

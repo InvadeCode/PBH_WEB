@@ -176,11 +176,12 @@ const MediaRibbon3D = ({ media }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.14, 150, 320);
+      // Reduced card size based on feedback
+      const height = clamp(w * 0.12, 140, 260); 
       
-      // Dynamic radius: tighter ring for fewer items, full arc for many
-      const maxRadius = clamp(w * 0.42, 320, 780);
-      const minRadius = clamp(w * 0.1, 100, 200);
+      // Dynamic radius: wide enough to stop overlap, but not so big it breaks perspective
+      const maxRadius = clamp(w * 0.45, 400, 950); 
+      const minRadius = clamp(w * 0.20, 200, 350);  
       // Smoothly interpolate: 1-3 items → min, 8+ items → max
       const t = clamp((items.length - 1) / 7, 0, 1);
       const radius = minRadius + (maxRadius - minRadius) * t;
@@ -196,7 +197,7 @@ const MediaRibbon3D = ({ media }) => {
 
   const rotation = useMotionValue(0);
   // Fast, dynamic carousel speed
-  const BASE_VEL = reduce ? 0 : 35;
+  const BASE_VEL = reduce ? 0 : 18; // Decreased speed from 35 to 18
   const velocity = useRef(BASE_VEL);
   const targetVel = useRef(BASE_VEL);
 
@@ -282,8 +283,8 @@ const MediaRibbon3D = ({ media }) => {
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerLeave}
         onDragStart={(e) => e.preventDefault()}
-        className="relative w-full overflow-hidden rounded-[28px] touch-none cursor-grab active:cursor-grabbing"
-        style={{ height: 'clamp(440px, 64vh, 720px)' }}
+        className="relative w-full overflow-hidden touch-none cursor-grab active:cursor-grabbing border-y border-white/5 shadow-2xl"
+        style={{ height: 'clamp(400px, 60vh, 650px)' }}
       >
         {/* Ambient depth */}
         <div className="pointer-events-none absolute inset-0">

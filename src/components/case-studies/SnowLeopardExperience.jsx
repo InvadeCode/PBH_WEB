@@ -543,18 +543,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
               <div className="absolute inset-0 bg-gradient-to-t from-[#010d54] via-[#010d54]/40 to-transparent" />
             </div>
           )}
-          <div className="relative z-10 w-full p-6 md:p-10 flex justify-between items-start">
-            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="flex items-center gap-3 bg-black/40 backdrop-blur-md px-5 py-2 rounded-full border border-white/10">
-              <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse" />
-              <h1 className="text-[17px] md:text-[19px] font-bold tracking-[0.2em] uppercase text-white">{project.client}</h1>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="bg-black/40 backdrop-blur-md px-5 py-2 rounded-full border border-white/10 hidden md:block">
-              <span className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/70 font-secondary">{project.sector || "Conservation"}</span>
-            </motion.div>
-          </div>
-          
+          {/* Removed client and sector pills from hero overlay per user request */}
         </div>
       </div>
 
