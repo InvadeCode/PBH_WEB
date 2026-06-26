@@ -215,7 +215,7 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
   useEffect(() => {
     let raf;
     let last = performance.now();
-    const speed = 0.45; // px per ~16ms frame
+    const speed = 0.25; // Slower, more elegant speed
     const loop = (time) => {
       const dt = time - last;
       last = time;
@@ -234,7 +234,7 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
   const renderCard = (img, idx, prefix) => (
     <div 
       key={`${prefix}-${idx}`} 
-      className="flex-none w-[70vw] max-w-[280px] md:max-w-[340px] relative group shrink-0 px-4 py-16"
+      className="flex-none w-[60vw] max-w-[220px] md:max-w-[260px] relative group shrink-0 px-4 py-16"
     >
       {/* 
         Hover wrapper:
