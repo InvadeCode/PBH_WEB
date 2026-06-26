@@ -66,7 +66,7 @@ const Cover = ({ project, navigate, SITE_SETTINGS, c }) => {
   const imgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
   const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
   const heroImage = project.bannerVideo || project.fullStory?.heroVideo || project.bannerImage || project.fullStory?.heroImg || project.imageUrl;
-  const title = (project.client || 'Back To Roots').toUpperCase();
+  const title = (project.client || project.title || 'Case Study').toUpperCase();
 
   return (
     <section ref={ref} className="relative h-screen overflow-hidden" style={{ backgroundColor: c.soil }}>

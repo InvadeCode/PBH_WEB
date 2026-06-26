@@ -3552,7 +3552,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [projectId]);
 
-  const clientName = (project.client || '').toLowerCase();
+  const clientName = (project.client || project.title || projectId || '').toLowerCase();
 
   // Pick the experience template for this client, then append the shared,
   // CMS-driven Team Credits section so it appears under EVERY case study.
