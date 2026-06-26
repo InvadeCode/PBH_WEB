@@ -567,47 +567,97 @@ const FirefoxExperience = ({ navigate, project }) => {
         </div>
       </section>
 
-      {/* ── 8. UNIVERSE BREAKDOWN ── */}
-      <section className="relative w-full z-10">
-        <div className="py-12 md:py-20 px-6 md:px-12 max-w-[1400px] mx-auto">
-          <SectionTitle label="The Universe" className="mb-8 md:mb-10">Dreamer, Stargazer & Stellar</SectionTitle>
-          <div className="mb-16">
-            <p className="text-white/90 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary max-w-4xl">
-              To translate the strategy into products, we created three distinct worlds within the lilFox universe.
-            </p>
-          </div>
+      {/* ── 8. UNIVERSE BREAKDOWN & ECOSYSTEM ── */}
+      <section className="relative w-full z-10 bg-[#F8F9FA] py-16 md:py-24">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-8">
           
-          <div className="space-y-12">
-            <UniverseCard
-              title="Dreamer"
-              description="A world of wonder, optimism, stars, clouds, and limitless imagination."
-              images={[dreamerBikesLeft, dreamerBikesRight]}
-              index={0}
-            />
-            <UniverseCard
-              title="Stargazer"
-              description="A world inspired by curiosity, celestial discovery, and exploration."
-              images={[stargazerBikesLeft, stargazerBikesRight]}
-              index={1}
-            />
-            <UniverseCard
-              title="Stellar"
-              description="A vibrant universe built around movement, adventure, and big dreams."
-              images={[stellarBikesLeft, stellarBikesRight]}
-              index={2}
-            />
+          {/* Dreamer */}
+          <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
+            <ElegantFade className="z-20 w-full max-w-[800px] mx-auto -mb-16 md:-mb-24">
+              <div className="bg-white border border-[#D1D1D1] px-6 py-10 md:px-12 md:py-16 text-center shadow-sm">
+                <h2 className="text-[#1A1A1A] font-primary text-2xl md:text-3xl font-bold mb-6">Dreamer, Stargazer & Stellar</h2>
+                <p className="text-[#333333] font-secondary text-[17px] md:text-[19px] leading-relaxed mb-8 md:mb-12">
+                  To translate the strategy into products, we created three distinct worlds within the lilFox universe.
+                </p>
+                <h3 className="text-[#1A1A1A] font-primary text-xl md:text-2xl font-bold mb-4">Dreamer</h3>
+                <p className="text-[#333333] font-secondary text-[17px] md:text-[19px] leading-relaxed">
+                  A world of wonder, optimism, stars, clouds, and limitless imagination.
+                </p>
+              </div>
+            </ElegantFade>
+            
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+              <ElegantFade delay={0.1}>
+                <img src={dreamerBikesLeft} alt="Dreamer visual 1" className="w-full h-auto object-cover shadow-[0_10px_30px_rgba(0,0,0,0.1)]" draggable="false" />
+              </ElegantFade>
+              <ElegantFade delay={0.2}>
+                <img src={dreamerBikesRight} alt="Dreamer visual 2" className="w-full h-auto object-cover shadow-[0_10px_30px_rgba(0,0,0,0.1)]" draggable="false" />
+              </ElegantFade>
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* ── 9. ECOSYSTEM ── */}
-      <section className="relative w-full z-10 pt-12 pb-16 md:pb-24 overflow-hidden">
-        <div className="w-full">
-          <AestheticCarousel images={[
-            { url: ecosystem1, alt: 'Dreamy Backpack' },
-            { url: ecosystem2, alt: 'Explorer Backpack' },
-            { url: ecosystem3, alt: 'Collectible Figurines' }
-          ]} heightClass="h-[400px] md:h-[600px]" />
+          {/* Stargazer */}
+          <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
+            <ElegantFade className="w-full max-w-[800px] mx-auto text-center mb-10 md:mb-14">
+              <h3 className="text-[#1A1A1A] font-primary text-xl md:text-2xl font-bold mb-4">Stargazer</h3>
+              <p className="text-[#333333] font-secondary text-[17px] md:text-[19px] leading-relaxed">
+                A world inspired by curiosity, celestial discovery, and exploration.
+              </p>
+            </ElegantFade>
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+              <ElegantFade delay={0.1}>
+                <img src={stargazerBikesLeft} alt="Stargazer visual 1" className="w-full h-auto object-cover shadow-[0_10px_30px_rgba(0,0,0,0.1)]" draggable="false" />
+              </ElegantFade>
+              <ElegantFade delay={0.2}>
+                <img src={stargazerBikesRight} alt="Stargazer visual 2" className="w-full h-auto object-cover shadow-[0_10px_30px_rgba(0,0,0,0.1)]" draggable="false" />
+              </ElegantFade>
+            </div>
+          </div>
+
+          {/* Stellar */}
+          <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
+            <ElegantFade className="w-full max-w-[800px] mx-auto text-center mb-10 md:mb-14">
+              <h3 className="text-[#1A1A1A] font-primary text-xl md:text-2xl font-bold mb-4">Stellar</h3>
+              <p className="text-[#333333] font-secondary text-[17px] md:text-[19px] leading-relaxed">
+                A vibrant universe built around movement, adventure, and big dreams.
+              </p>
+            </ElegantFade>
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+              <ElegantFade delay={0.1}>
+                <img src={stellarBikesLeft} alt="Stellar visual 1" className="w-full h-auto object-cover shadow-[0_10px_30px_rgba(0,0,0,0.1)]" draggable="false" />
+              </ElegantFade>
+              <ElegantFade delay={0.2}>
+                <img src={stellarBikesRight} alt="Stellar visual 2" className="w-full h-auto object-cover shadow-[0_10px_30px_rgba(0,0,0,0.1)]" draggable="false" />
+              </ElegantFade>
+            </div>
+          </div>
+
+          {/* Ecosystem */}
+          <div className="relative w-full flex flex-col items-center">
+            <ElegantFade className="w-full mb-10 md:mb-14">
+              <div className="text-[#333333] font-secondary text-[17px] md:text-[19px] leading-relaxed space-y-6 max-w-5xl">
+                <p>From bicycles to accessories, packaging, and future products, every element belonged to the same universe.</p>
+                <p>The goal wasn't to sell bicycles.</p>
+                <p>It was to create a platform for adventure.</p>
+              </div>
+            </ElegantFade>
+            <div className="w-full flex flex-col items-center gap-4">
+              <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ElegantFade delay={0.1}>
+                  <img src={ecosystem1} alt="Ecosystem visual 1" className="w-full h-auto object-cover shadow-[0_10px_30px_rgba(0,0,0,0.1)]" draggable="false" />
+                </ElegantFade>
+                <ElegantFade delay={0.2}>
+                  <img src={ecosystem2} alt="Ecosystem visual 2" className="w-full h-auto object-cover shadow-[0_10px_30px_rgba(0,0,0,0.1)]" draggable="false" />
+                </ElegantFade>
+              </div>
+              <ElegantFade delay={0.3} className="w-full flex justify-center">
+                <div className="w-full md:w-1/2">
+                  <img src={ecosystem3} alt="Ecosystem visual 3" className="w-full h-auto object-cover shadow-[0_10px_30px_rgba(0,0,0,0.1)]" draggable="false" />
+                </div>
+              </ElegantFade>
+            </div>
+          </div>
+
         </div>
       </section>
 
