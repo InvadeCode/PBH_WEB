@@ -165,13 +165,13 @@ const DynamicSciArtGrid = ({ content }) => {
            <div className="relative w-full flex flex-col lg:flex-row justify-start items-center py-8 gap-8 lg:gap-12">
               {/* BIG TEXT (Left Area) */}
               <motion.div 
-                initial={{ opacity: 0, x: -100 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: -100, filter: 'blur(10px)' }}
+                whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="flex-1 flex justify-center items-center overflow-visible"
               >
-                <span className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC] leading-none select-none tracking-tighter whitespace-nowrap">ABOUT</span>
+                <span className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_15px_rgba(212,206,252,0.1)]">ABOUT</span>
               </motion.div>
               
               <motion.div 
@@ -232,8 +232,8 @@ const DynamicSciArtGrid = ({ content }) => {
                 />
 
                 <div className="relative z-10">
-                  <h3 className="text-sm uppercase tracking-[0.4em] text-purple-400 font-bold mb-6 flex items-center gap-4">
-                    <span className="w-8 h-[1px] bg-purple-400" /> 
+                  <h3 className="text-sm uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
+                    <span className="w-8 h-[1px] bg-cyan-400" /> 
                     The Problem 
                   </h3>
                   <p className="text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
@@ -244,13 +244,13 @@ const DynamicSciArtGrid = ({ content }) => {
 
               {/* BIG TEXT (Right Area) */}
               <motion.div 
-                initial={{ opacity: 0, x: 100 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, x: 100, filter: 'blur(10px)' }}
+                whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="flex-1 flex justify-center items-center overflow-visible"
               >
-                <span className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC] leading-none select-none tracking-tighter whitespace-nowrap">PROBLEM</span>
+                <span className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_15px_rgba(212,206,252,0.1)]">PROBLEM</span>
               </motion.div>
            </div>
          )}
@@ -260,13 +260,13 @@ const DynamicSciArtGrid = ({ content }) => {
              
              {/* BIG TEXT (Left Area) */}
              <motion.div 
-               initial={{ opacity: 0, x: -100 }}
-               whileInView={{ opacity: 1, x: 0 }}
+               initial={{ opacity: 0, x: -100, filter: 'blur(10px)' }}
+               whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                viewport={{ once: true, amount: 0.2 }}
-               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                className="flex-1 flex justify-center items-center overflow-visible"
              >
-               <span className="text-[15vw] lg:text-[6vw] xl:text-[7vw] font-black text-[#D4CEFC] leading-none select-none tracking-tighter whitespace-nowrap">
+               <span className="text-[15vw] lg:text-[6vw] xl:text-[7vw] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_15px_rgba(212,206,252,0.1)]">
                  SOLUTION
                </span>
              </motion.div>
@@ -285,8 +285,8 @@ const DynamicSciArtGrid = ({ content }) => {
                />
    
                <div className="relative z-10">
-                 <h3 className="text-sm uppercase tracking-[0.4em] text-indigo-400 font-bold mb-6 flex items-center gap-4">
-                   <span className="w-8 h-[1px] bg-indigo-400" /> 
+                 <h3 className="text-sm uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
+                   <span className="w-8 h-[1px] bg-cyan-400" /> 
                    Solution 
                  </h3>
                  
