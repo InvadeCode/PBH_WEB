@@ -3581,55 +3581,64 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     }
 
     const ariseClients = [
-    'arise ventures',
-    'piston des sports',
-    'hero lectro',
-    'firefox bikes',
-    'leverage edu',
-    'param innovation'
-  ];
-  if (ariseClients.some(target => clientName.includes(target))) {
-    return <AriseVenturesExperience navigate={navigate} project={project} />;
-  }
+      'ega wellness',
+      'arise ventures',
+      'bellavita',
+      'chien de luxe',
+      'earthy souls',
+      'firefox',
+      'hero lectro',
+      'leverage edu',
+      'param innovation',
+      'piston des sports',
+      'sayre therapeutics',
+      'veauli',
+      'world forum',
+      'best iu',
+      'best innovation university'
+    ];
 
-  if (project?.route === 'Sci-Art Saga') {
-    return <SnowLeopardExperience navigate={navigate} project={project} />;
-  }
+    if (ariseClients.some(target => clientName.includes(target))) {
+      return <AriseVenturesExperience navigate={navigate} project={project} />;
+    }
 
-    const targetClients = [
-    'snow leopard',
-    'fermentech',
-    'american chemical',
-    'sayre therapeutics',
-    'observer research',
-    'best iu',
-    'india global forum'
-  ];
+    const snowLeopardClients = [
+      'snow leopard',
+      'albatross energetics',
+      'american chemical',
+      'hale',
+      'india global forum',
+      'observation research',
+      'observer research'
+    ];
 
-  if (targetClients.some(target => clientName.includes(target))) {
-    return <SnowLeopardExperience navigate={navigate} project={project} />;
-  }
+    if (snowLeopardClients.some(target => clientName.includes(target)) || project?.route === 'Sci-Art Saga') {
+      return <SnowLeopardExperience navigate={navigate} project={project} />;
+    }
 
-  const legacyClients = [
-    'aura skincare',
-    'lumina tech',
-    'novus fin',
-    'aero dynamics'
-  ];
+    const backToRootsClients = [
+      'back to roots',
+      'kafe 57',
+      'fermentech',
+      'kanti sweets',
+      'navankur',
+      'sunburst'
+    ];
 
-  if (legacyClients.some(target => clientName.includes(target))) {
-    return <LegacyExperience navigate={navigate} project={project} palette={palette} />;
-  }
+    if (backToRootsClients.some(target => clientName.includes(target))) {
+      return <BackToRootsExperience navigate={navigate} project={project} />;
+    }
 
-  const backToRootsClients = [
-    'back to roots',
-    'earthy souls',
-    'navankur'
-  ];
+    const legacyClients = [
+      'aura skincare',
+      'lumina tech',
+      'novus fin',
+      'aero dynamics'
+    ];
 
-  if (backToRootsClients.some(target => clientName.includes(target))) {
-    return <BackToRootsExperience navigate={navigate} project={project} />;
-  }
+    if (legacyClients.some(target => clientName.includes(target))) {
+      return <LegacyExperience navigate={navigate} project={project} palette={palette} />;
+    }
 
     return <BackToRootsExperience navigate={navigate} project={project} />;
   })();
