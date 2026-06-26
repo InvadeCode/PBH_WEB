@@ -561,8 +561,17 @@ const FirefoxExperience = ({ navigate, project }) => {
         imageClassName="object-contain max-h-[500px]"
       />
 
-      {/* ── SKETCHES MASONRY GRID ── */}
-      <section className="w-full relative z-10 py-16 px-6 md:px-12 max-w-[1400px] mx-auto">
+      {/* ── 7. DESIGNING THROUGH SCI ART ── */}
+      <section className="w-full relative z-10 py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto">
+        
+        <div className="max-w-4xl mx-auto text-center mb-16 md:mb-24">
+          <ElegantFade>
+            <p className="text-white font-secondary text-[18px] md:text-[24px] leading-relaxed md:leading-[1.6]">
+              Using our SciArt approach, we combined behavioural observations with creative exploration to understand how imagination shapes childhood experiences.
+            </p>
+          </ElegantFade>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-start">
           {/* Left Column */}
           <div className="flex flex-col gap-6 md:gap-10">
@@ -593,13 +602,6 @@ const FirefoxExperience = ({ navigate, project }) => {
           </div>
         </div>
       </section>
-
-      {/* ── 7. DESIGNING THROUGH SCI ART ── */}
-      <DramaticSection 
-        title="Designing through Sci Art"
-        content={`At PBH, we call our approach SciArt.\n\nFor lilFox, that meant combining observation with imagination.\n\nWe studied how children interact with objects, how they create stories, how curiosity develops, and how fantasy becomes a tool for understanding the world.\n\nEvery concept had to work within real manufacturing constraints, frame geometries, production requirements, and decal placement limitations.\n\nThrough multiple iterations, we developed graphic systems that balanced storytelling with practicality.\n\nThe same thinking extended beyond the bicycle itself into accessories, packaging, manuals, merchandise, and future product concepts, creating a cohesive experience across the entire ecosystem.`}
-        motionGraphic={<AboutGraphic />}
-      />
 
       {/* ── 8. UNIVERSE BREAKDOWN & ECOSYSTEM ── */}
       <section className="relative w-full z-10 py-16 md:py-24">
