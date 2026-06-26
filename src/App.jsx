@@ -3563,23 +3563,6 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       return <AriseVenturesExperience navigate={navigate} project={project} />;
     }
 
-    if (project.template) {
-      switch (project.template) {
-        case 'arise':
-          return <AriseVenturesExperience navigate={navigate} project={project} />;
-        case 'snow-leopard':
-          return <SnowLeopardExperience navigate={navigate} project={project} />;
-        case 'param':
-          return <ParamInnovationExperience navigate={navigate} project={project} />;
-        case 'back-to-roots':
-          return <BackToRootsExperience navigate={navigate} project={project} />;
-        case 'legacy':
-          return <LegacyExperience navigate={navigate} project={project} palette={palette} />;
-        case 'storytelling':
-          return <BackToRootsExperience navigate={navigate} project={project} />;
-      }
-    }
-
     const ariseClients = [
       'ega wellness',
       'arise ventures',
@@ -3638,6 +3621,23 @@ const WorkDetailPage = ({ navigate, projectId }) => {
 
     if (legacyClients.some(target => clientName.includes(target))) {
       return <LegacyExperience navigate={navigate} project={project} palette={palette} />;
+    }
+
+    if (project.template) {
+      switch (project.template) {
+        case 'arise':
+          return <AriseVenturesExperience navigate={navigate} project={project} />;
+        case 'snow-leopard':
+          return <SnowLeopardExperience navigate={navigate} project={project} />;
+        case 'param':
+          return <ParamInnovationExperience navigate={navigate} project={project} />;
+        case 'back-to-roots':
+          return <BackToRootsExperience navigate={navigate} project={project} />;
+        case 'legacy':
+          return <LegacyExperience navigate={navigate} project={project} palette={palette} />;
+        case 'storytelling':
+          return <BackToRootsExperience navigate={navigate} project={project} />;
+      }
     }
 
     return <BackToRootsExperience navigate={navigate} project={project} />;
