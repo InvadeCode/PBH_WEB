@@ -206,36 +206,6 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
     }
   }
 
-  // Seamless infinite auto-scroll (native scroll, so touch swipe still works).
-  // We duplicate the set and wrap by the measured width of ONE set, so the loop
-  // never visibly jumps. Pauses while hovering / touching so users can browse.
-  useEffect(() => {
-    if (!hasImages) return;
-    let animationFrameId;
-    let lastTime = performance.now();
-    const speed = 0.8; // pixels per ~16ms frame
-    let currentScroll = containerRef.current?.scrollLeft || 0;
-
-    const scrollLoop = (time) => {
-      const delta = time - lastTime;
-      lastTime = time;
-      const el = containerRef.current;
-      if (el && !isPaused) {
-        // We use a float variable because some browsers round el.scrollLeft to int
-        currentScroll += speed * (delta / 16);
-        const setWidth = firstSetRef.current?.offsetWidth || 0;
-        if (setWidth > 0 && currentScroll >= setWidth) {
-          currentScroll -= setWidth; // identical second set → seamless wrap
-        }
-        el.scrollLeft = currentScroll;
-      }
-      animationFrameId = requestAnimationFrame(scrollLoop);
-    };
-
-    animationFrameId = requestAnimationFrame(scrollLoop);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [hasImages, isPaused]);
-
   if (!hasImages) return null;
 
   const renderCard = (img, index, prefix) => {
@@ -307,27 +277,29 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
         <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${c.cream}66` }}>{project?.carouselSubtext || SITE_SETTINGS?.csCarouselFallbackSubtitle || 'Scroll or drag to explore'}</p>
       </div>
 
-      <div
-        ref={containerRef}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onTouchStart={() => setIsPaused(true)}
-        onTouchEnd={() => setIsPaused(false)}
-        className="flex overflow-x-auto hide-scrollbar px-[10vw] pb-16 pt-8 items-center"
-        style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
-      >
-        <div ref={firstSetRef} className="flex gap-16 md:gap-24 items-center pr-16 md:pr-24 shrink-0">
-          {baseImages.map((img, i) => renderCard(img, i, 'a'))}
-        </div>
-        <div className="flex gap-16 md:gap-24 items-center pr-16 md:pr-24 shrink-0" aria-hidden="true">
-          {baseImages.map((img, i) => renderCard(img, i, 'b'))}
+      <div className="w-full overflow-hidden pb-16 pt-8">
+        <div 
+          className="flex w-max animate-marquee"
+        >
+          <div className="flex gap-16 md:gap-24 items-center pl-[5vw] pr-16 md:pr-24 shrink-0">
+            {baseImages.map((img, i) => renderCard(img, i, 'a'))}
+          </div>
+          <div className="flex gap-16 md:gap-24 items-center pr-16 md:pr-24 shrink-0" aria-hidden="true">
+            {baseImages.map((img, i) => renderCard(img, i, 'b'))}
+          </div>
         </div>
       </div>
 
-      {/* CSS to hide scrollbar for webkit browsers */}
       <style dangerouslySetInnerHTML={{__html: `
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
+        @keyframes marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee ${baseImages.length * 6}s linear infinite;
+        }
+        .animate-marquee:hover, .animate-marquee:active {
+          animation-play-state: paused;
         }
       `}} />
     </section>
