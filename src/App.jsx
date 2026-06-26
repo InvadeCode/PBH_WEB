@@ -3223,7 +3223,7 @@ const HomePage = ({ navigate }) => {
             <span className="t-label text-white/70">{SITE_SETTINGS?.homePage?.heroEyebrow || "Strategy · Story · Systems"}</span>
           </motion.div>
           <RevealText delay={0.1}>
-            <h1 className="t-display text-white drop-shadow-lg pb-2 whitespace-pre-wrap">
+            <h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 font-primary whitespace-pre-wrap">
               {renderWithItalics(SITE_SETTINGS?.homeHeroTitle || "Breakthroughs happen when strategy and execution *move as one.*", "text-white/60 mx-2 whitespace-nowrap")}
             </h1>
           </RevealText>
