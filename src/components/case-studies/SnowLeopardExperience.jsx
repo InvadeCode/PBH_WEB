@@ -151,7 +151,7 @@ const DynamicSciArtGrid = ({ content }) => {
   const remainingExecution = content.solution1 ? executionBlocks : executionBlocks.slice(1);
 
   return (
-    <section className="w-full relative bg-gradient-to-b from-[#010a40] via-[#05001a] to-black text-white overflow-hidden py-24 lg:py-32">
+    <section className="w-full relative bg-gradient-to-b from-[#010d54] via-[#05001a] to-[#010d54] text-white overflow-hidden py-24 lg:py-32">
       
       {/* 1. CYBER-GRID MATRIX */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
