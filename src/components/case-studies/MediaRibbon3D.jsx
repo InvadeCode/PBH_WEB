@@ -149,19 +149,7 @@ const LightboxPortal = ({ media, onClose }) => {
 };
 
 const MediaRibbon3D = ({ media }) => {
-  // If the user only uploads 1-5 images, duplicate them to ensure the ring always looks lush and fully populated.
-  const originalItems = Array.isArray(media) ? media.filter((m) => m && m.url) : [];
-  let items = [...originalItems];
-  if (originalItems.length > 0 && originalItems.length < 8) {
-    const multiplier = Math.ceil(8 / originalItems.length);
-    items = [];
-    for (let i = 0; i < multiplier; i++) {
-      items = items.concat(originalItems.map((item, idx) => ({ ...item, _uniqueId: `${i}-${idx}` })));
-    }
-  } else {
-    items = items.map((item, idx) => ({ ...item, _uniqueId: `0-${idx}` }));
-  }
-
+  const items = Array.isArray(media) ? media.filter((m) => m && m.url) : [];
   const N = items.length;
 
   const reduce = useReducedMotion();
@@ -199,7 +187,7 @@ const MediaRibbon3D = ({ media }) => {
     if (sceneRef.current) ro.observe(sceneRef.current);
     window.addEventListener('resize', measure);
     return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
-  }, [items.length]);
+  }, [items]);
 
   const rotation = useMotionValue(0);
   // Increased base velocity from 4 to 10 for faster, more dynamic movement
@@ -295,8 +283,8 @@ const MediaRibbon3D = ({ media }) => {
         {/* Ambient depth */}
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-1/2 top-1/2 h-[60vw] w-[60vw] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[150px]" style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.18), transparent 62%)' }} />
-          <div className="absolute inset-x-0 top-0 h-24" style={{ background: ' linear-gradient(to bottom, var(--background, #010836), transparent)' }} />
-          <div className="absolute inset-x-0 bottom-0 h-24" style={{ background: ' linear-gradient(to top, var(--background, #010836), transparent)' }} />
+          <div className="absolute inset-x-0 top-0 h-24" style={{ background: 'linear-gradient(to bottom, #010836, transparent)' }} />
+          <div className="absolute inset-x-0 bottom-0 h-24" style={{ background: 'linear-gradient(to top, #010836, transparent)' }} />
         </div>
 
         {/* 3D scene */}
@@ -305,7 +293,7 @@ const MediaRibbon3D = ({ media }) => {
             <motion.div className="absolute" style={{ transformStyle: 'preserve-3d', transform: innerRotate }}>
               {items.map((m, i) => (
                 <div 
-                  key={m._uniqueId}
+                  key={m.key || i}
                   onClickCapture={(e) => {
                     // Prevent opening lightbox if this was a drag gesture
                     if (dragDistance.current > 10) {
