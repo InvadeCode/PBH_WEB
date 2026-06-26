@@ -3579,8 +3579,6 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     'piston des sports',
     'hero lectro',
     'firefox bikes',
-    'albatross energetics',
-    'albatross',
     'leverage edu',
     'param innovation'
   ];
