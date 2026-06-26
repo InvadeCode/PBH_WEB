@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useContext } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useRef, useState, useEffect, useContext } from 'react';
+import { motion, useScroll, useTransform, useAnimationFrame, useMotionValue } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
@@ -199,38 +199,96 @@ const Narrative = ({ project }) => {
 
 // ── SCENE 3 · STORYTELLING CAROUSEL ──────────────────────────────────────────
 const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
-  const containerRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const firstSetRef = useRef(null);
+  const x = useMotionValue(0);
 
-  // We use standard CSS horizontal scroll plus a smooth auto-scroll effect
-  useEffect(() => {
-    let animationFrameId;
-    let lastTime = performance.now();
-    let speed = 0.6; // pixels per frame
+  const hasImages = images && images.length > 0;
+  
+  // To prevent the "lag" or "jumping" bug when wrapping, we must ensure a single set
+  // is physically wider than the user's screen. If they only upload 1-3 images, we duplicate 
+  // them in the base array until it has enough items to span a large desktop.
+  let baseImages = [];
+  if (hasImages) {
+    baseImages = [...images];
+    while (baseImages.length < 6) {
+      baseImages = [...baseImages, ...images];
+    }
+  }
 
-    const scrollLoop = (time) => {
-      const delta = time - lastTime;
-      lastTime = time;
-      
-      if (containerRef.current) {
-        // Auto-scroll runs continuously
-        containerRef.current.scrollLeft += speed * (delta / 16);
-        
-        // Soft loop
-        if (containerRef.current.scrollLeft >= containerRef.current.scrollWidth - containerRef.current.clientWidth - 5) {
-            containerRef.current.scrollLeft = 0;
-        }
-      }
-      animationFrameId = requestAnimationFrame(scrollLoop);
-    };
+  useAnimationFrame((time, delta) => {
+    if (!hasImages) return;
+    if (isPaused) return;
 
-    animationFrameId = requestAnimationFrame(scrollLoop);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, []);
+    // Adjust speed here (higher = faster)
+    let moveBy = 0.8 * (delta / 16);
+    let currentX = x.get() - moveBy;
 
-  if (!images || images.length === 0) return null;
+    const wrapWidth = firstSetRef.current?.offsetWidth || 0;
+    
+    // When we've scrolled exactly one set width to the left, seamlessly reset
+    if (wrapWidth > 0 && Math.abs(currentX) >= wrapWidth) {
+      currentX += wrapWidth;
+    }
 
-  // Duplicate images for infinite scroll effect
-  const extendedImages = [...images, ...images, ...images];
+    x.set(currentX);
+  });
+
+  if (!hasImages) return null;
+
+  const renderCard = (img, index, prefix) => {
+    const originalIndex = index % images.length;
+    const storyChapters = project?.fullStory?.storyChapters || [];
+    const chData = storyChapters.length > 0 ? storyChapters[originalIndex % storyChapters.length] : null;
+    const ch = chData ? { label: chData.chapterLabel, t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[originalIndex % DEFAULT_CHAPTERS.length];
+
+    return (
+      <motion.div 
+        key={`${prefix}-${img.key}-${index}`} 
+        className="relative shrink-0 flex flex-col items-center"
+        style={{ width: 'min(85vw, 420px)' }}
+        initial={{ opacity: 0, rotateY: 45, x: 100 }}
+        whileInView={{ opacity: 1, rotateY: 0, x: 0 }}
+        viewport={{ once: true, margin: "-10%" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        {/* Adaptive Image Container */}
+        <div className="w-full relative p-3 bg-[#0E0805] shadow-2xl overflow-hidden z-10 hover:scale-[1.02] transition-transform duration-500 cursor-grab active:cursor-grabbing" 
+             style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.8)', transformStyle: 'preserve-3d' }}>
+          <Sprockets pos="top" />
+          <Sprockets pos="bottom" />
+          <div className="w-full overflow-hidden bg-white/5 flex items-center justify-center relative border border-white/5 p-2 pointer-events-none">
+            {img ? (
+              <CaseStudyMedia
+                item={img}
+                alt={ch?.t || 'Case study image'}
+                className="w-full h-auto object-contain shadow-inner"
+                sizes="(min-width: 768px) 420px, 85vw"
+              />
+            ) : (
+              <div className="w-full aspect-[3/4] flex items-center justify-center">
+                <span className="text-white/30 text-xs uppercase tracking-widest font-secondary">Media Unavailable</span>
+              </div>
+            )}
+          </div>
+          <RegMarks />
+        </div>
+
+        {/* Chapter Text */}
+        <div className="mt-8 text-center max-w-[80%] pointer-events-none">
+          <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
+            {ch.label}
+          </p>
+          <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: C.cream }}>
+            {ch.t}
+          </h4>
+          <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${C.cream}AA` }}>
+            {ch.l}
+          </p>
+        </div>
+      </motion.div>
+    );
+  };
 
   return (
     <section className="relative py-24 md:py-32 overflow-hidden" style={{ backgroundColor: C.soilDeep }}>
@@ -242,70 +300,36 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
       </div>
 
       <div 
-        ref={containerRef}
-        className="flex gap-16 md:gap-24 overflow-x-auto snap-x snap-mandatory hide-scrollbar px-[10vw] pb-16 pt-8 items-center"
-        style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+        className="w-full overflow-hidden pb-16 pt-8 cursor-grab active:cursor-grabbing"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
       >
-        {extendedImages.map((img, index) => {
-          const storyChapters = project?.fullStory?.storyChapters || [];
-          const chData = storyChapters.length > 0 ? storyChapters[index % storyChapters.length] : null;
-          const ch = chData ? { label: chData.chapterLabel, t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[index % DEFAULT_CHAPTERS.length];
-
-          return (
-            <motion.div 
-              key={`${img.key}-${index}`} 
-              className="relative shrink-0 snap-center flex flex-col items-center"
-              style={{ width: 'min(85vw, 420px)' }}
-              initial={{ opacity: 0, rotateY: 45, x: 100 }}
-              whileInView={{ opacity: 1, rotateY: 0, x: 0 }}
-              viewport={{ margin: "-10%" }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              {/* Adaptive Image Container */}
-              <div className="w-full relative p-3 bg-[#0E0805] shadow-2xl overflow-hidden z-10" 
-                   style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.8)', transformStyle: 'preserve-3d' }}>
-                <Sprockets pos="top" />
-                <Sprockets pos="bottom" />
-                <div className="w-full overflow-hidden bg-white/5 flex items-center justify-center relative border border-white/5 p-2">
-                  {img ? (
-                    <CaseStudyMedia
-                      item={img}
-                      alt={ch?.t || 'Case study image'}
-                      className="w-full h-auto object-contain shadow-inner"
-                      sizes="(min-width: 768px) 420px, 85vw"
-                    />
-                  ) : (
-                    <div className="w-full aspect-[3/4] flex items-center justify-center">
-                      <span className="text-white/30 text-xs uppercase tracking-widest font-secondary">Media Unavailable</span>
-                    </div>
-                  )}
-                </div>
-                <RegMarks />
-              </div>
-
-              {/* Chapter Text */}
-              <div className="mt-8 text-center max-w-[80%]">
-                <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
-                  {ch.label}
-                </p>
-                <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: C.cream }}>
-                  {ch.t}
-                </h4>
-                <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${C.cream}AA` }}>
-                  {ch.l}
-                </p>
-              </div>
-            </motion.div>
-          );
-        })}
+        <motion.div 
+          className="flex w-max"
+          style={{ x }}
+          drag="x"
+          dragConstraints={{ left: -100000, right: 100000 }} // Very large constraints to prevent drag snap-back
+          onDrag={(e, info) => {
+            // Support dragging manually and wrapping on the fly!
+            let currentX = x.get();
+            const wrapWidth = firstSetRef.current?.offsetWidth || 0;
+            if (wrapWidth > 0) {
+              if (currentX <= -wrapWidth) currentX += wrapWidth;
+              else if (currentX > 0) currentX -= wrapWidth;
+              x.set(currentX);
+            }
+          }}
+        >
+          <div ref={firstSetRef} className="flex gap-16 md:gap-24 items-center pl-[5vw] pr-16 md:pr-24 shrink-0">
+            {baseImages.map((img, i) => renderCard(img, i, 'a'))}
+          </div>
+          <div className="flex gap-16 md:gap-24 items-center pr-16 md:pr-24 shrink-0" aria-hidden="true">
+            {baseImages.map((img, i) => renderCard(img, i, 'b'))}
+          </div>
+        </motion.div>
       </div>
-      
-      {/* CSS to hide scrollbar for webkit browsers */}
-      <style dangerouslySetInnerHTML={{__html: `
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-      `}} />
     </section>
   );
 };

@@ -128,35 +128,63 @@ const Cover = ({ project, navigate, SITE_SETTINGS, c }) => {
 
 // ── SCENE 2 · NARRATIVE (words chunked together) ────────────────────────────
 const Narrative = ({ project, c }) => {
-  const beats = [
-    project.overview && { k: project.overviewHeading || 'The Brand', v: project.overview },
-    project.challenge && { k: project.challengeHeading || 'The Question', v: project.challenge },
-    project.solution && { k: project.solutionHeading || 'The Answer', v: project.solution },
-  ].filter(Boolean);
+  const about = project.overview && { k: project.overviewHeading || 'The Brand', v: project.overview };
+  const problem = project.challenge && { k: project.challengeHeading || 'The Question', v: project.challenge };
+  const solution = project.solution && { k: project.solutionHeading || 'The Answer', v: project.solution };
+
+  const topBeats = [about, problem].filter(Boolean);
 
   return (
     <section className="relative py-28 md:py-40 px-[7%]" style={{ background: `linear-gradient(180deg, ${c.soilDeep}, ${c.soil})` }}>
-      <div className="max-w-5xl mx-auto relative z-10">
-        <div className="grid md:grid-cols-2 gap-x-16 gap-y-14 md:gap-y-20">
-          {beats.map((b, i) => (
-            <motion.div key={b.k} className={i === beats.length - 1 && beats.length % 2 !== 0 ? 'md:col-span-2 md:max-w-2xl' : ''}
-              initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-12%' }}
-              transition={{ duration: 1, delay: i * 0.08, ease: ease }}>
-              <div className="flex items-center gap-3 mb-5">
-                <span className="font-primary text-sm" style={{ color: c.terra }}>{String(i + 1).padStart(2, '0')}</span>
+      <div className="max-w-6xl mx-auto relative z-10 flex flex-col items-center">
+        
+        {/* Parallel About & Problem */}
+        {topBeats.length > 0 && (
+          <div className={`grid ${topBeats.length === 2 ? 'md:grid-cols-2' : 'grid-cols-1'} gap-x-16 gap-y-14 md:gap-y-20 w-full mb-16 md:mb-24`}>
+            {topBeats.map((b, i) => (
+              <motion.div key={b.k}
+                initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-12%' }}
+                transition={{ duration: 1, delay: i * 0.08, ease: "easeOut" }}>
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="font-primary text-sm" style={{ color: c.terra }}>{String(i + 1).padStart(2, '0')}</span>
+                  <span className="h-px w-10" style={{ backgroundColor: `${c.terra}88` }} />
+                  <h3 className="text-xl md:text-2xl font-primary tracking-tight" style={{ color: c.terra }}>{b.k}</h3>
+                </div>
+                <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-[17px] md:text-[19px]" style={{ color: `${c.cream}d9` }}>
+                  {b.v}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        )}
+
+        {/* Centered Solution in Box */}
+        {solution && (
+          <motion.div 
+            initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-12%' }}
+            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+            className="w-full max-w-4xl border p-10 md:p-14 relative overflow-hidden shadow-2xl" 
+            style={{ borderColor: `${c.terra}30`, backgroundColor: `${c.soilDeep}99` }}
+          >
+            {/* Box Accent Glow */}
+            <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(100% 100% at 50% 0%, ${c.terra}10 0%, transparent 100%)` }} />
+            
+            <div className="relative z-10">
+              <div className="flex items-center justify-center gap-3 mb-8">
+                <span className="font-primary text-sm" style={{ color: c.terra }}>{String(topBeats.length + 1).padStart(2, '0')}</span>
                 <span className="h-px w-10" style={{ backgroundColor: `${c.terra}88` }} />
-                <h3 className="text-xl md:text-2xl font-primary tracking-tight" style={{ color: c.terra }}>{b.k}</h3>
+                <h3 className="text-xl md:text-2xl font-primary tracking-tight" style={{ color: c.terra }}>{solution.k}</h3>
               </div>
-              <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-[17px] md:text-[19px]" style={{ color: `${c.cream}d9` }}>
-                {b.v}
+              <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-[17px] md:text-[19px] text-center" style={{ color: `${c.cream}d9` }}>
+                {solution.v}
               </p>
-            </motion.div>
-          ))}
-        </div>
+            </div>
+          </motion.div>
+        )}
 
         {project.fullStory?.execution && (
           <motion.blockquote className="mt-24 md:mt-32 text-center"
-            initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-12%' }} transition={{ duration: 1.1, ease: ease }}>
+            initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-12%' }} transition={{ duration: 1.1, ease: "easeOut" }}>
             <span className="block font-primary mb-4 text-4xl" style={{ color: c.terra, lineHeight: 1 }}>“</span>
             <p className="font-primary font-light leading-snug mx-auto max-w-3xl text-2xl md:text-3xl" style={{ color: c.cream }}>
               {project.fullStory.execution}
