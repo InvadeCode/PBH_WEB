@@ -36,22 +36,25 @@ const getMediaAspect = (m) => {
 };
 
 // ── A single media panel: places itself on the ring, derives depth looks from `rotation`.
-const Panel = ({ media, index, step, radius, height, rotation, isActive }) => {
+const Panel = ({ media, index, step, radius, baseArea, rotation, isActive }) => {
   const aspect = getMediaAspect(media);
+  // Constant Area Scaling: ensures portraits and landscapes have equal visual weight
+  const height = Math.sqrt(baseArea / aspect);
   const width = height * aspect;
+  
   const baseAngle = index * step;
 
   const front = useTransform(rotation, (r) => Math.cos(((baseAngle + r) * Math.PI) / 180));
 
-  const scale = useTransform(front, [-1, 0.5, 1], [0.8, 1.0, 1.12]);
-  const opacity = useTransform(front, [-1, -0.35, 0.15, 1], [0.05, 0.3, 0.82, 1]);
+  const scale = useTransform(front, [-1, 0.5, 1], [0.8, 1.0, 1.25]);
+  const opacity = useTransform(front, [-1, -0.35, 0.15, 1], [0.05, 0.35, 0.88, 1]);
   const blurPx = useTransform(front, (f) => ((1 - (f + 1) / 2) * 6).toFixed(2));
-  const brightness = useTransform(front, [-1, 0.4, 1], [0.5, 0.92, 1.12]);
-  const saturate = useTransform(front, [-1, 1], [0.7, 1.12]);
+  const brightness = useTransform(front, [-1, 0.4, 1], [0.5, 0.95, 1.15]);
+  const saturate = useTransform(front, [-1, 1], [0.7, 1.15]);
   const filter = useMotionTemplate`blur(${blurPx}px) brightness(${brightness}) saturate(${saturate})`;
   const glow = useTransform(front, [0.55, 1], [0, 1]);
-  const glowBlur = useTransform(glow, [0, 1], [0, 54]);
-  const glowAlpha = useTransform(glow, [0, 1], [0, 0.5]);
+  const glowBlur = useTransform(glow, [0, 1], [0, 60]);
+  const glowAlpha = useTransform(glow, [0, 1], [0, 0.6]);
   const boxShadow = useMotionTemplate`0 34px 80px -26px rgba(0,0,0,0.8), 0 0 ${glowBlur}px rgba(150,150,255,${glowAlpha})`;
 
   const videoRef = useRef(null);
@@ -108,25 +111,35 @@ const MediaRibbon3D = ({ media }) => {
 
   const reduce = useReducedMotion();
   const sceneRef = useRef(null);
-  const [dims, setDims] = useState({ height: 230, radius: 540 });
+  const [dims, setDims] = useState({ baseArea: 90000, radius: 540, maxPanelHeight: 300 });
 
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.14, 150, 320);
-      const radius = clamp(w * 0.4, 300, 760);
-      setDims({ height, radius });
+      const baseH = clamp(w * 0.15, 180, 360);
+      const baseArea = baseH * baseH;
+      const radius = clamp(w * 0.42, 320, 780);
+      
+      let maxH = baseH;
+      if (items.length > 0) {
+        maxH = Math.max(...items.map(m => {
+          const aspect = getMediaAspect(m);
+          return Math.sqrt(baseArea / aspect);
+        }));
+      }
+
+      setDims({ baseArea, radius, maxPanelHeight: maxH });
     };
     measure();
     const ro = new ResizeObserver(measure);
     if (sceneRef.current) ro.observe(sceneRef.current);
     window.addEventListener('resize', measure);
     return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
-  }, []);
+  }, [items]);
 
   const rotation = useMotionValue(0);
-  const velocity = useRef(reduce ? 0 : 6);
-  const BASE_VEL = reduce ? 0 : 6;
+  const BASE_VEL = reduce ? 0 : 4;
+  const velocity = useRef(BASE_VEL);
   const targetVel = useRef(BASE_VEL);
 
   const tiltX = useSpring(-6, { stiffness: 60, damping: 18 });
@@ -150,9 +163,9 @@ const MediaRibbon3D = ({ media }) => {
     if (!rect) return;
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
-    tiltX.set(-6 - py * 9);
-    tiltY.set(px * 7);
-    targetVel.current = BASE_VEL + px * 9;
+    tiltX.set(-6 - py * 10);
+    tiltY.set(px * 8);
+    targetVel.current = BASE_VEL + px * 10;
   };
   const handleLeave = () => { tiltX.set(-6); tiltY.set(0); targetVel.current = BASE_VEL; };
 
@@ -167,7 +180,7 @@ const MediaRibbon3D = ({ media }) => {
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       className="relative w-full overflow-hidden rounded-[28px]"
-      style={{ height: 'clamp(440px, 64vh, 720px)' }}
+      style={{ height: Math.max(dims.maxPanelHeight + 240, 500) }}
     >
       {/* Ambient depth */}
       <div className="pointer-events-none absolute inset-0">
@@ -187,7 +200,7 @@ const MediaRibbon3D = ({ media }) => {
                 index={i}
                 step={step}
                 radius={dims.radius}
-                height={dims.height}
+                baseArea={dims.baseArea}
                 rotation={rotation}
                 isActive={i === activeIndex}
               />
