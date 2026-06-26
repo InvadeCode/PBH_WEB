@@ -674,44 +674,11 @@ const FirefoxExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 10. OUTCOME ── */}
-      <section className="relative w-full min-h-screen flex items-center justify-center py-20 px-6 z-10 overflow-hidden">
-        {/* Background Animation */}
-        <div className="absolute inset-0 z-0">
-          <motion.div 
-            animate={{ 
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.5, 0.3]
-            }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-white/5 bg-gradient-to-b from-white/5 to-transparent blur-3xl"
-          />
-        </div>
-
-        <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center text-center">
-          <ElegantFade delay={0.1}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 mb-8">
-              <div className="w-1.5 h-1.5 rounded-full bg-white/60" />
-              <span className="text-white/60 text-xs font-medium tracking-wider uppercase">Impact</span>
-            </div>
-          </ElegantFade>
-          
-          <ElegantFade delay={0.2}>
-            <h2 className="font-primary text-4xl md:text-5xl lg:text-6xl text-white font-bold tracking-tight mb-12">
-              Outcome: More Than a Bicycle
-            </h2>
-          </ElegantFade>
-
-          <ElegantFade delay={0.3} className="w-full">
-            <div className="text-white/80 font-secondary text-[17px] md:text-[21px] leading-relaxed space-y-6 md:space-y-8 max-w-3xl mx-auto">
-              <p>What started as a graphics project became a scalable children's brand.</p>
-              <p>A visual language.<br/>A storytelling framework.<br/>An expandable ecosystem of products and experiences.</p>
-              <p>Most importantly, it transformed the bicycle from a mobility product into a catalyst for imagination.</p>
-              <p>Firefox came to us to design bicycles.</p>
-              <p className="text-white font-medium">We helped create a world where imagination could ride along.</p>
-            </div>
-          </ElegantFade>
-        </div>
-      </section>
+      <DramaticSection 
+        title="Outcome: More Than a Bicycle"
+        content={`What started as a graphics project became a scalable children's brand.\n\nA visual language.\n\nA storytelling framework.\n\nAn expandable ecosystem of products and experiences.\n\nMost importantly, it transformed the bicycle from a mobility product into a catalyst for imagination.\n\nFirefox came to us to design bicycles.\n\nWe helped create a world where imagination could ride along.`}
+        motionGraphic={<ProblemGraphic />}
+      />
 
       {/* ── GALLERY CAROUSEL ── */}
       {cmsMedia.length > 0 && (
