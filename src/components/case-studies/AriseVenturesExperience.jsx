@@ -199,248 +199,6 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) =>
   );
 };
 
-const AriseMosaicTile = ({ media, className = '', style, delay = 0, sizes = '50vw', fit = 'cover', objectPosition = 'center' }) => (
-  <motion.div
-    className={`relative overflow-hidden bg-transparent ${className}`}
-    style={style}
-    initial={{ opacity: 0, y: 18 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: '-8%' }}
-    transition={{ duration: 0.75, delay, ease: [0.16, 1, 0.3, 1] }}
-  >
-    {media ? (
-      <CaseStudyMedia
-        src={media.url}
-        alt={media.alt}
-        className={`absolute inset-0 h-full w-full ${fit === 'cover' ? 'object-cover' : 'object-contain'}`}
-        style={{ objectPosition }}
-        sizes={sizes}
-      />
-    ) : (
-      <div className="absolute inset-0 bg-transparent" />
-    )}
-  </motion.div>
-);
-
-const isAriseCompositeBoard = (item) => {
-  const filename = item?.source?.originalFilename || item?.originalFilename || '';
-  return filename === 'Arise.mp4';
-};
-
-const getSanityFilename = (item) => (
-  item?.source?.originalFilename ||
-  item?.source?.asset?.originalFilename ||
-  item?.originalFilename ||
-  ''
-);
-
-const getMediaByFilename = (items, filename) => {
-  const target = filename.toLowerCase();
-  return items.find((item) => getSanityFilename(item).toLowerCase() === target);
-};
-
-const createImageMedia = (url, alt, key) => (
-  url ? { key, url, alt, source: { originalFilename: key } } : null
-);
-
-const PistonGalleryTile = ({ media, style, delay = 0, fit = 'cover', sizes = '50vw', objectPosition = 'center' }) => (
-  <AriseMosaicTile
-    media={media}
-    style={{
-      position: 'absolute',
-      backgroundColor: '#ffffff',
-      ...style,
-    }}
-    delay={delay}
-    fit={fit}
-    sizes={sizes}
-    objectPosition={objectPosition}
-  />
-);
-
-const PistonGalleryMosaic = ({ mediaItems, logoMedia }) => {
-  const logo = getMediaByFilename(mediaItems, 'Piston.jpg') || logoMedia || mediaItems[0];
-  const phone = getMediaByFilename(mediaItems, 'Current (6).jpg') || mediaItems[4];
-  const shirts = getMediaByFilename(mediaItems, 'T-shirts.jpg') || mediaItems[2];
-  const brochure = getMediaByFilename(mediaItems, 'Brochure.jpg') || mediaItems[3];
-  const businessCard = getMediaByFilename(mediaItems, 'Business card.jpg') || mediaItems[0];
-
-  return (
-    <div data-piston-gallery className="relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden bg-white py-0">
-      <div className="relative mx-auto hidden w-full max-w-[1766px] bg-white md:block md:aspect-[1766/918]">
-        <div className="absolute right-[3.4%] top-[3.3%] h-[54%] w-[41%] bg-[#c5e7da]" />
-        <div className="absolute bottom-[2.7%] left-[4.7%] h-[34%] w-[91.8%] bg-[#c5e7da]" />
-
-        <PistonGalleryTile
-          media={logo}
-          style={{ left: '7.8%', top: '12.5%', width: '32%', height: '25%' }}
-          delay={0.05}
-          fit="cover"
-          objectPosition="center top"
-          sizes="(min-width: 1280px) 600px, 36vw"
-        />
-
-        <PistonGalleryTile
-          media={businessCard}
-          style={{ left: '42.7%', top: '15%', width: '12.2%', height: '25%', transform: 'rotate(-9deg)', backgroundColor: 'transparent' }}
-          delay={0.1}
-          fit="contain"
-          sizes="(min-width: 1280px) 260px, 16vw"
-        />
-
-        <PistonGalleryTile
-          media={brochure}
-          style={{ right: '4.2%', top: '5.9%', width: '39%', height: '49%' }}
-          delay={0.15}
-          fit="cover"
-          sizes="(min-width: 1280px) 720px, 42vw"
-        />
-
-        <PistonGalleryTile
-          media={phone}
-          style={{ left: '9.8%', bottom: '0%', width: '30%', height: '58.5%' }}
-          delay={0.2}
-          fit="cover"
-          sizes="(min-width: 1280px) 560px, 34vw"
-        />
-
-        <PistonGalleryTile
-          media={shirts}
-          style={{ left: '39.1%', bottom: '1.8%', width: '33.5%', height: '47.5%', backgroundColor: 'transparent' }}
-          delay={0.25}
-          fit="cover"
-          sizes="(min-width: 1280px) 640px, 36vw"
-        />
-
-        <PistonGalleryTile
-          media={businessCard}
-          style={{ right: '7.2%', bottom: '11%', width: '23.8%', height: '25.6%', backgroundColor: 'transparent' }}
-          delay={0.3}
-          fit="cover"
-          sizes="(min-width: 1280px) 460px, 27vw"
-        />
-      </div>
-
-      <div className="grid w-full grid-cols-1 bg-white md:hidden">
-        {[logo, brochure, phone, shirts, businessCard].filter(Boolean).map((item, index) => (
-          <AriseMosaicTile
-            key={`${item.key || item.url}-${index}`}
-            media={item}
-            className={index === 0 ? 'aspect-[16/7]' : 'aspect-[16/10]'}
-            delay={0.05 * index}
-            fit={index === 0 ? 'contain' : 'cover'}
-            sizes="100vw"
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const AriseReferenceMosaic = ({ mediaItems }) => {
-  const media = mediaItems.filter((item) => !isAriseCompositeBoard(item)).slice(0, 8);
-  const gap = '0px';
-
-  const getDesktopTiles = () => {
-    if (media.length >= 8) {
-      return [
-        { media: media[1], style: { gridColumn: '1 / span 7', gridRow: '1 / span 3' }, sizes: '26vw' },
-        { media: media[2], style: { gridColumn: '8 / span 7', gridRow: '1 / span 3' }, sizes: '27vw' },
-        { media: media[3], style: { gridColumn: '1 / span 5', gridRow: '4 / span 6' }, sizes: '20vw' },
-        { media: media[4], style: { gridColumn: '6 / span 9', gridRow: '4 / span 5' }, sizes: '34vw' },
-        { media: media[5], style: { gridColumn: '1 / span 5', gridRow: '10 / span 3' }, sizes: '20vw' },
-        { media: media[6], style: { gridColumn: '6 / span 5', gridRow: '9 / span 4' }, sizes: '20vw' },
-        { media: media[7], style: { gridColumn: '11 / span 4', gridRow: '9 / span 4' }, sizes: '18vw' },
-      ];
-    }
-
-    if (media.length === 7) {
-      return [
-        { media: media[1], style: { gridColumn: '1 / span 7', gridRow: '1 / span 3' }, sizes: '26vw' },
-        { media: media[2], style: { gridColumn: '8 / span 7', gridRow: '1 / span 3' }, sizes: '27vw' },
-        { media: media[3], style: { gridColumn: '1 / span 5', gridRow: '4 / span 9' }, sizes: '20vw' },
-        { media: media[4], style: { gridColumn: '6 / span 9', gridRow: '4 / span 5' }, sizes: '34vw' },
-        { media: media[5], style: { gridColumn: '6 / span 5', gridRow: '9 / span 4' }, sizes: '20vw' },
-        { media: media[6], style: { gridColumn: '11 / span 4', gridRow: '9 / span 4' }, sizes: '18vw' },
-      ];
-    }
-
-    if (media.length === 6) {
-      return [
-        { media: media[1], style: { gridColumn: '1 / span 7', gridRow: '1 / span 3' }, sizes: '26vw' },
-        { media: media[2], style: { gridColumn: '8 / span 7', gridRow: '1 / span 3' }, sizes: '27vw' },
-        { media: media[3], style: { gridColumn: '1 / span 5', gridRow: '4 / span 9' }, sizes: '20vw' },
-        { media: media[4], style: { gridColumn: '6 / span 9', gridRow: '4 / span 5' }, sizes: '34vw' },
-        { media: media[5], style: { gridColumn: '6 / span 9', gridRow: '9 / span 4' }, sizes: '34vw' },
-      ];
-    }
-
-    if (media.length === 5) {
-      return [
-        { media: media[1], style: { gridColumn: '1 / span 7', gridRow: '1 / span 3' }, sizes: '26vw' },
-        { media: media[2], style: { gridColumn: '8 / span 7', gridRow: '1 / span 3' }, sizes: '27vw' },
-        { media: media[3], style: { gridColumn: '1 / span 5', gridRow: '4 / span 9' }, sizes: '20vw' },
-        { media: media[4], style: { gridColumn: '6 / span 9', gridRow: '4 / span 9' }, sizes: '34vw' },
-      ];
-    }
-
-    return media.slice(1).map((item, index) => ({
-      media: item,
-      style: {
-        gridColumn: index % 2 === 0 ? '1 / span 7' : '8 / span 7',
-        gridRow: `${1 + Math.floor(index / 2) * 6} / span 6`,
-      },
-      sizes: '27vw',
-    }));
-  };
-
-  const desktopTiles = getDesktopTiles();
-
-  return (
-    <div data-arise-mosaic className="relative left-1/2 right-1/2 -mx-[50vw] w-screen bg-transparent py-0">
-      <div className="mx-auto hidden w-full max-w-[1686px] md:grid md:h-[min(54vw,912px)] md:min-h-[640px] md:grid-cols-[43.35%_1fr]" style={{ gap }}>
-        <AriseMosaicTile
-          media={media[0]}
-          className="h-full w-full"
-          delay={0.05}
-          sizes="43vw"
-        />
-
-        <div
-          className="grid h-full w-full"
-          style={{
-            gap,
-            gridTemplateColumns: 'repeat(14, minmax(0, 1fr))',
-            gridTemplateRows: 'repeat(12, minmax(0, 1fr))',
-          }}
-        >
-          {desktopTiles.map((tile, index) => (
-            <AriseMosaicTile
-              key={`${tile.media?.key || 'arise-tile'}-${index}`}
-              media={tile.media}
-              style={tile.style}
-              delay={0.1 + index * 0.04}
-              sizes={tile.sizes}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="grid w-full grid-cols-1 gap-0 md:hidden">
-        {media.map((item, index) => (
-          <AriseMosaicTile
-            key={item.key || `${item.url}-${index}`}
-            media={item}
-            className={index === 0 ? 'aspect-[4/5]' : index === 4 ? 'aspect-[16/10]' : 'aspect-[4/3]'}
-            delay={0.05 * index}
-            sizes="100vw"
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
-
 /* --- 7. Dramatic Scrollytelling Sections --- */
 const AboutGraphic = () => (
   <>
@@ -518,6 +276,9 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         {/* Content Container */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
+            <h3 className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
+               {title}
+            </h3>
             <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
               {content}
             </p>
@@ -539,14 +300,6 @@ const AriseVenturesExperience = ({ navigate, project }) => {
   const heroAspectRatio = 16 / 9;
   
   const cmsMedia = normalizeMediaItems(project?.fullStory?.media || project?.fullStory?.images, project?.client || 'Case study media');
-  const normalizedClientName = project?.client?.toLowerCase() || '';
-  const isPistonBespoke = normalizedClientName.includes('piston');
-  const isAriseBespoke = !isPistonBespoke && (project?.template === 'arise' || normalizedClientName.includes('arise'));
-  const pistonLogoMedia = createImageMedia(
-    project?.fullStory?.heroImg || project?.bannerImage || project?.imageUrl,
-    `${project?.client || 'Piston'} logo`,
-    'piston-logo'
-  );
 
   // When `videoHero` is filled in Sanity (enabled = true), the CMS data takes over automatically.
   // We no longer use a fallback demo; it only renders if Sanity data is explicitly provided.
@@ -810,43 +563,86 @@ const AriseVenturesExperience = ({ navigate, project }) => {
 
       {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
       {cmsMedia.length > 0 && (
-        isPistonBespoke ? (
-          <section className="relative w-full z-10 py-0">
-            <PistonGalleryMosaic mediaItems={cmsMedia} logoMedia={pistonLogoMedia} />
-          </section>
-        ) : isAriseBespoke ? (
-          <section className="relative w-full z-10 py-0">
-            <AriseReferenceMosaic mediaItems={cmsMedia} />
-          </section>
-        ) : (
-          <section className="relative w-full z-10">
-            <div className="pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
-              <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
-                <h2 className="font-primary text-5xl md:text-7xl lg:text-8xl text-white tracking-tight">
-                  {project?.deliverablesHeading || SITE_SETTINGS?.csEcosystemHighlights || "Ecosystem Highlights"}
-                </h2>
-              </ElegantFade>
+        <section className="relative w-full z-10">
+          <div className="pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
+            <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
+              <h2 className="font-primary text-5xl md:text-7xl lg:text-8xl text-white tracking-tight">
+                {project?.deliverablesHeading || SITE_SETTINGS?.csEcosystemHighlights || "Ecosystem Highlights"}
+              </h2>
+            </ElegantFade>
 
-              <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-                {cmsMedia.map((media, index) => {
-                  const yOffsets = [30, 15, -20, 35, -15];
-                  const parallaxY = yOffsets[index % yOffsets.length];
-                  
-                  return (
-                    <div key={media.key} className="break-inside-avoid relative w-full mb-6">
-                      <ParallaxImage 
-                        src={media.url}
-                        alt={media.alt || `Highlight 0${index + 1}`}
-                        delay={0.1 * ((index % 3) + 1)} 
-                        yOffset={parallaxY} 
-                      />
+            {(() => {
+              const isAriseBespoke = project.client?.toLowerCase().includes('arise');
+
+              if (isAriseBespoke) { 
+                return (
+                  <div className="grid grid-cols-1 md:grid-cols-12 md:grid-rows-[repeat(4,_minmax(150px,_auto))] gap-4 md:gap-6 w-full max-w-[1600px] mx-auto">
+                    {/* Image 0: Large Left Block (Row 1-4) */}
+                    <div className="md:col-start-1 md:col-span-5 md:row-start-1 md:row-span-4 h-full min-h-[300px] md:min-h-0">
+                      {cmsMedia[0] && <ParallaxImage src={cmsMedia[0].url} alt={cmsMedia[0].alt} delay={0.1} yOffset={10} className="h-full w-full object-cover" />}
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
-        )
+                    
+                    {/* Image 1: Middle Top (Row 1) */}
+                    <div className="md:col-start-6 md:col-span-3 md:row-start-1 md:row-span-1 h-full">
+                      {cmsMedia[1] && <ParallaxImage src={cmsMedia[1].url} alt={cmsMedia[1].alt} delay={0.2} yOffset={5} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 2: Middle Center (Row 2-3) */}
+                    <div className="md:col-start-6 md:col-span-3 md:row-start-2 md:row-span-2 h-full">
+                      {cmsMedia[2] && <ParallaxImage src={cmsMedia[2].url} alt={cmsMedia[2].alt} delay={0.3} yOffset={-5} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 3: Middle Bottom (Row 4) */}
+                    <div className="md:col-start-6 md:col-span-3 md:row-start-4 md:row-span-1 h-full">
+                      {cmsMedia[3] && <ParallaxImage src={cmsMedia[3].url} alt={cmsMedia[3].alt} delay={0.4} yOffset={-10} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 4: Right Top (Row 1) */}
+                    <div className="md:col-start-9 md:col-span-4 md:row-start-1 md:row-span-1 h-full">
+                      {cmsMedia[4] && <ParallaxImage src={cmsMedia[4].url} alt={cmsMedia[4].alt} delay={0.3} yOffset={10} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 5: Right Center (Row 2-3) */}
+                    <div className="md:col-start-9 md:col-span-4 md:row-start-2 md:row-span-2 h-full">
+                      {cmsMedia[5] && <ParallaxImage src={cmsMedia[5].url} alt={cmsMedia[5].alt} delay={0.4} yOffset={-10} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 6: Right Bottom-Left (Row 4) */}
+                    <div className="md:col-start-9 md:col-span-2 md:row-start-4 md:row-span-1 h-full">
+                      {cmsMedia[6] && <ParallaxImage src={cmsMedia[6].url} alt={cmsMedia[6].alt} delay={0.5} yOffset={10} className="h-full w-full object-cover" />}
+                    </div>
+
+                    {/* Image 7: Right Bottom-Right (Row 4) */}
+                    <div className="md:col-start-11 md:col-span-2 md:row-start-4 md:row-span-1 h-full">
+                      {cmsMedia[7] && <ParallaxImage src={cmsMedia[7].url} alt={cmsMedia[7].alt} delay={0.6} yOffset={25} className="h-full w-full object-cover" />}
+                    </div>
+                  </div>
+                );
+              }
+
+              // Fallback masonry layout for other clients or fewer images
+              return (
+                <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                  {cmsMedia.map((media, index) => {
+                    const yOffsets = [30, 15, -20, 35, -15];
+                    const parallaxY = yOffsets[index % yOffsets.length];
+                    
+                    return (
+                      <div key={media.key} className="break-inside-avoid relative w-full mb-6">
+                        <ParallaxImage 
+                          src={media.url}
+                          alt={media.alt || `Highlight 0${index + 1}`}
+                          delay={0.1 * ((index % 3) + 1)} 
+                          yOffset={parallaxY} 
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
+          </div>
+        </section>
       )}
 
       {/* ── 7. FOOTER ── */}
