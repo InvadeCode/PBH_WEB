@@ -31,7 +31,7 @@ const getMediaAspect = (m) => {
 };
 
 // ── A single media panel: places itself on the ring, derives depth looks from `rotation`.
-const Panel = ({ media, index, step, radius, baseArea, rotation, isActive, onClick }) => {
+const Panel = ({ media, index, step, radius, baseArea, rotation, isActive }) => {
   const aspect = getMediaAspect(media);
   // Constant Area Scaling: ensures portraits and landscapes have equal visual weight
   const height = Math.sqrt(baseArea / aspect);
@@ -64,8 +64,7 @@ const Panel = ({ media, index, step, radius, baseArea, rotation, isActive, onCli
 
   return (
     <div
-      className="absolute top-1/2 left-1/2 cursor-pointer"
-      onClick={() => onClick(media)}
+      className="absolute top-1/2 left-1/2 cursor-pointer select-none"
       style={{
         width,
         height,
@@ -87,10 +86,11 @@ const Panel = ({ media, index, step, radius, baseArea, rotation, isActive, onCli
             loop
             playsInline
             preload="metadata"
-            className="absolute inset-0 h-full w-full object-cover"
+            draggable="false"
+            className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none"
           />
         ) : (
-          <CaseStudyMedia item={media} alt={media?.alt} className="absolute inset-0 h-full w-full object-cover" sizes="(min-width: 768px) 40vw, 80vw" />
+          <CaseStudyMedia item={media} alt={media?.alt} className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none" sizes="(min-width: 768px) 40vw, 80vw" draggable="false" />
         )}
         {/* Soft top sheen + bottom depth — flat panel volume, no hard edge */}
         <div className="pointer-events-none absolute inset-0 rounded-[16px]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.16) 0%, transparent 22%, transparent 70%, rgba(0,0,0,0.35) 100%)' }} />
@@ -157,6 +157,11 @@ const MediaRibbon3D = ({ media }) => {
   const [dims, setDims] = useState({ baseArea: 90000, radius: 540, maxPanelHeight: 300 });
   const [selectedMedia, setSelectedMedia] = useState(null);
 
+  // Drag state
+  const isDragging = useRef(false);
+  const dragDistance = useRef(0);
+  const lastX = useRef(0);
+
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
@@ -207,18 +212,52 @@ const MediaRibbon3D = ({ media }) => {
     setActiveIndex((prev) => (prev === idx ? prev : idx));
   });
 
-  const handleMove = (e) => {
+  const handlePointerDown = (e) => {
+    isDragging.current = true;
+    dragDistance.current = 0;
+    lastX.current = e.clientX;
+    targetVel.current = 0; // Pause auto-rotation temporarily
+    e.target.setPointerCapture?.(e.pointerId);
+  };
+
+  const handlePointerMove = (e) => {
+    // Always compute tilt for parallax effect
     const rect = sceneRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    tiltX.set(-6 - py * 10);
-    tiltY.set(px * 8);
-    // Move faster when hovering to the sides, but maintain solid minimum speed
-    targetVel.current = BASE_VEL + px * 15;
+    if (rect) {
+      const px = (e.clientX - rect.left) / rect.width - 0.5;
+      const py = (e.clientY - rect.top) / rect.height - 0.5;
+      tiltX.set(-6 - py * 10);
+      tiltY.set(px * 8);
+      
+      if (!isDragging.current) {
+        // Adjust speed slightly based on mouse position horizontally
+        targetVel.current = BASE_VEL + px * 15;
+      }
+    }
+
+    if (isDragging.current) {
+      const deltaX = e.clientX - lastX.current;
+      dragDistance.current += Math.abs(deltaX);
+      lastX.current = e.clientX;
+
+      // Physically drag the rotation. Subtracting deltaX makes it feel like you are grabbing and pulling it.
+      rotation.set(rotation.get() - deltaX * 0.4);
+      
+      // Inject momentum into the velocity so when released, it keeps spinning
+      velocity.current = -deltaX * 25;
+    }
+  };
+
+  const handlePointerUp = (e) => {
+    if (isDragging.current) {
+      isDragging.current = false;
+      targetVel.current = BASE_VEL; // Resume base auto-rotation
+      e.target.releasePointerCapture?.(e.pointerId);
+    }
   };
   
-  const handleLeave = () => { 
+  const handlePointerLeave = () => { 
+    if (isDragging.current) return; // Keep dragging if mouse leaves momentarily
     tiltX.set(-6); 
     tiltY.set(0); 
     targetVel.current = BASE_VEL; 
@@ -233,9 +272,12 @@ const MediaRibbon3D = ({ media }) => {
     <>
       <div
         ref={sceneRef}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-        className="relative w-full overflow-hidden rounded-[28px]"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerLeave}
+        onDragStart={(e) => e.preventDefault()}
+        className="relative w-full overflow-hidden rounded-[28px] touch-none cursor-grab active:cursor-grabbing"
         style={{ height: Math.max(dims.maxPanelHeight + 240, 500) }}
       >
         {/* Ambient depth */}
@@ -250,17 +292,27 @@ const MediaRibbon3D = ({ media }) => {
           <motion.div className="absolute left-1/2 top-1/2" style={{ transformStyle: 'preserve-3d', transform: ringTransform, willChange: 'transform' }}>
             <motion.div className="absolute" style={{ transformStyle: 'preserve-3d', transform: innerRotate }}>
               {items.map((m, i) => (
-                <Panel
+                <div 
                   key={m.key || i}
-                  media={m}
-                  index={i}
-                  step={step}
-                  radius={dims.radius}
-                  baseArea={dims.baseArea}
-                  rotation={rotation}
-                  isActive={i === activeIndex}
-                  onClick={(clickedMedia) => setSelectedMedia(clickedMedia)}
-                />
+                  onClickCapture={(e) => {
+                    // Prevent opening lightbox if this was a drag gesture
+                    if (dragDistance.current > 10) {
+                      e.stopPropagation();
+                    } else {
+                      setSelectedMedia(m);
+                    }
+                  }}
+                >
+                  <Panel
+                    media={m}
+                    index={i}
+                    step={step}
+                    radius={dims.radius}
+                    baseArea={dims.baseArea}
+                    rotation={rotation}
+                    isActive={i === activeIndex}
+                  />
+                </div>
               ))}
             </motion.div>
           </motion.div>
