@@ -5,6 +5,7 @@ import createGlobe from 'cobe';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
+import CaseStudySectorPill from './CaseStudySectorPill';
 
 // --- PLANETARY SWARM COMPONENT (World Map Background, Full Screen, Tap to cycle) ---
 const asOptionalText = (value) => {
@@ -543,7 +544,24 @@ const SnowLeopardExperience = ({ navigate, project }) => {
               <div className="absolute inset-0 bg-gradient-to-t from-[#010d54] via-[#010d54]/40 to-transparent" />
             </div>
           )}
-          {/* Removed client and sector pills from hero overlay per user request */}
+          <div className="pointer-events-none absolute left-1/2 top-5 z-20 -translate-x-1/2 px-3 md:top-6">
+            <CaseStudySectorPill
+              sector={project?.sector}
+              className="border border-white/15 bg-[#010d54]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center px-4 py-8 text-center md:py-10">
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            data-case-study-title
+            className="mb-6 max-w-[1200px] font-primary text-5xl font-medium leading-[0.9] tracking-tight text-white drop-shadow-[0_24px_60px_rgba(0,0,0,0.35)] md:text-7xl lg:text-8xl"
+          >
+            {project?.client || project?.title || 'Case Study'}
+          </motion.h1>
         </div>
       </div>
 

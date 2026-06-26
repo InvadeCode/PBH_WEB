@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
+import CaseStudySectorPill from './CaseStudySectorPill';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 
 const LegacyExperience = ({ project, navigate, palette }) => {
@@ -31,9 +32,22 @@ const LegacyExperience = ({ project, navigate, palette }) => {
               priority
               sizes="(min-width: 1280px) 1280px, 100vw"
             />
+            <div className="pointer-events-none absolute left-1/2 top-5 z-20 -translate-x-1/2 px-3 md:top-6">
+              <CaseStudySectorPill
+                sector={project?.sector}
+                className="border border-white/15 bg-black/35 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
+              />
+            </div>
           </div>
         ) : (
-          <div className="w-full h-24 md:h-32 mb-8"></div>
+          <div className="relative w-full h-24 md:h-32 mb-8">
+            <div className="pointer-events-none absolute left-1/2 top-5 z-20 -translate-x-1/2 px-3 md:top-6">
+              <CaseStudySectorPill
+                sector={project?.sector}
+                className="border border-white/15 bg-black/35 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
+              />
+            </div>
+          </div>
         )}
 
         <div className="text-center max-w-5xl mx-auto mt-4 px-4">

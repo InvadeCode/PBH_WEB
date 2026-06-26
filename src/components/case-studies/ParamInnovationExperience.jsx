@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
+import CaseStudySectorPill from './CaseStudySectorPill';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 
 const palette = {
@@ -279,9 +280,15 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
             <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
                {title}
             </h3>
-            <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
-              {content}
-            </p>
+            <div className="space-y-6">
+              {typeof content === 'string' 
+                ? content.split('\n\n').filter(Boolean).map((para, i) => (
+                    <p key={i} className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
+                      {para.trim()}
+                    </p>
+                  ))
+                : <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">{content}</p>}
+            </div>
           </motion.div>
         </div>
       </div>
@@ -333,6 +340,12 @@ const ParamInnovationExperience = ({ navigate, project }) => {
            ) : (
              <div className="w-full h-full bg-[#0C185C]" />
            )}
+          <div className="pointer-events-none absolute left-1/2 top-5 z-20 -translate-x-1/2 px-3 md:top-6">
+            <CaseStudySectorPill
+              sector={project?.sector}
+              className="border border-white/[0.16] bg-[#010d54]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
+            />
+          </div>
         </div>
 
         {/* Text Below the Banner Box */}
@@ -417,98 +430,12 @@ const ParamInnovationExperience = ({ navigate, project }) => {
         />
       )}
 
-      {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (Seamlessly Blended) ── */}
-      <section className="relative w-full z-10">
-        
-        <div className="pt-4 pb-16 md:pt-6 md:pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
-        
-          {/* Ambient Background Aura behind the whole section (blended) */}
-          <motion.div
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#6865FA_0%,transparent_60%)] blur-[80px] pointer-events-none"
-            initial={{ opacity: 0, scale: 0.5 }}
-            whileInView={{ opacity: 0.18, scale: 1 }}
-            viewport={{ once: true, margin: '-10%' }}
-            transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
-          />
-        
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-          
-            {/* Left Side: Text (Seamlessly integrated, no boxes) */}
-            <motion.div 
-              className="lg:col-span-7 relative z-10" 
-              initial={{ opacity: 0, y: 40, filter: 'blur(15px)' }} 
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} 
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} 
-              viewport={{ once: true, margin: "-10%" }}
-            >
-              <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-[17px] md:text-[19px] font-bold tracking-widest uppercase backdrop-blur-md font-primary">
-                <span className="w-2 h-2 rounded-full bg-[#D4CEFC] animate-pulse shadow-[0_0_10px_#D4CEFC]" />
-                The Solution
-              </div>
-            
-              <motion.h3
-                className="font-primary text-5xl md:text-7xl lg:text-8xl text-white mb-10 font-medium tracking-tight drop-shadow-lg"
-                initial={{ opacity: 0, y: 32, filter: 'blur(14px)' }}
-                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {project?.solutionHeading?.length > 100 ? "Creative Solution" : (project?.solutionHeading || "Creative Solution")}
-              </motion.h3>
-            
-              {/* Readable Text with NO box */}
-              {(project?.solution || project?.fullStory?.execution) && (
-                <div className="space-y-8 text-white/95 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary">
-                  {project?.solution && <p>{project.solution}</p>}
-                
-                  {/* Highlighted text block */}
-                  {project?.fullStory?.execution && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 22 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '-12%' }}
-                      transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                      className="relative overflow-hidden pt-6 pb-6 pl-8 mt-10 rounded-r-xl"
-                    >
-                      {/* Drawing accent border */}
-                      <motion.span
-                        className="absolute left-0 top-0 bottom-0 w-1 bg-[#D4CEFC] origin-top shadow-[0_0_12px_#D4CEFC]"
-                        initial={{ scaleY: 0 }}
-                        whileInView={{ scaleY: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      />
-                      {/* Gradient fill sweep */}
-                      <motion.span
-                        className="absolute inset-0 bg-gradient-to-r from-[#6865FA]/25 to-transparent origin-left"
-                        initial={{ scaleX: 0 }}
-                        whileInView={{ scaleX: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.3, delay: 0.7, ease: 'easeOut' }}
-                      />
-                      <p className="relative z-10 font-primary font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
-                        {project.fullStory.execution}
-                      </p>
-                    </motion.div>
-                  )}
-                </div>
-              )}
-            </motion.div>
-
-            {/* Right Side: Visualizer (Organic & Floating) */}
-            <motion.div 
-              className="lg:col-span-5 h-[400px] lg:h-full relative flex items-center justify-center pointer-events-none"
-              initial={{ opacity: 0, scale: 0.82, rotate: -6, filter: 'blur(22px)', clipPath: 'circle(0% at 50% 50%)' }}
-              whileInView={{ opacity: 1, scale: 1, rotate: 0, filter: 'blur(0px)', clipPath: 'circle(82% at 50% 50%)' }}
-              transition={{ duration: 1.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: true, margin: "-10%" }}
-            >
-                <SolutionVisualizer />
-            </motion.div>
-
-          </div>
-        </div>
-      </section>
+      {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (DramaticSection) ── */}
+      <DramaticSection
+        title={project?.solutionHeading?.length > 100 ? (SITE_SETTINGS?.csCreativeSolution || "Creative Solution") : (project?.solutionHeading || SITE_SETTINGS?.csCreativeSolution || "Creative Solution")}
+        content={[project?.solution, project?.fullStory?.execution].filter(Boolean).join('\n\n')}
+        motionGraphic={<SolutionVisualizer />}
+      />
 
       {/* ── 5. STATEMENT ── */}
       {(project?.results?.length > 0) && (

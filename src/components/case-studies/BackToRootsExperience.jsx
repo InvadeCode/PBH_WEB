@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
+import CaseStudySectorPill from './CaseStudySectorPill';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 
 // ── Palette ───────────────────────────────────────────────────────────────
@@ -83,6 +84,13 @@ const Cover = ({ project, navigate, SITE_SETTINGS }) => {
         {/* We keep a subtle gradient so it blends into the rest of the site */}
         <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, ${C.soil}cc 0%, ${C.soil}22 40%, ${C.soilDeep}f2 100%)` }} />
       </motion.div>
+      <div className="pointer-events-none absolute left-1/2 top-36 z-10 -translate-x-1/2 px-4 md:top-40">
+        <CaseStudySectorPill
+          sector={project?.sector}
+          className="border bg-[#6f6a62]/55 text-[#fff6e5] shadow-[0_16px_42px_rgba(0,0,0,0.24)] backdrop-blur-md"
+          style={{ borderColor: `${C.cream}24` }}
+        />
+      </div>
 
       {/* The Opening Brown Interface Curtain */}
       <motion.div 

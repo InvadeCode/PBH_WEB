@@ -208,107 +208,75 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
 
 /* ── Aesthetic Horizontal Carousel ─────────────────────────────────── */
 const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) => {
-  const scrollRef = useRef(null);
-  const [isDown, setIsDown] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  const containerRef = useRef(null);
+  const firstSetRef = useRef(null);
+  const [paused, setPaused] = useState(false);
 
-  const handleMouseDown = (e) => {
-    setIsDown(true);
-    setStartX(e.pageX - scrollRef.current.offsetLeft);
-    setScrollLeft(scrollRef.current.scrollLeft);
-  };
-
-  const handleMouseLeave = () => {
-    setIsDown(false);
-    setIsHovered(false);
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseUp = () => {
-    setIsDown(false);
-  };
-
-  const handleMouseMove = (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // scroll-fast multiplier
-    if (scrollRef.current) {
-      scrollRef.current.scrollLeft = scrollLeft - walk;
-    }
-  };
-
-  // Auto-advance logic
   useEffect(() => {
-    if (isDown || isHovered) return;
-
-    const interval = setInterval(() => {
-      if (!scrollRef.current) return;
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      
-      const itemWidth = scrollRef.current.children[0]?.offsetWidth || clientWidth / 2;
-      const gap = window.innerWidth >= 768 ? 40 : 24; 
-      
-      let nextScroll = scrollLeft + itemWidth + gap;
-      
-      // If we reach the end, loop back to start
-      if (scrollLeft + clientWidth >= scrollWidth - 10) {
-        nextScroll = 0;
+    let raf;
+    let last = performance.now();
+    const speed = 0.45; // px per ~16ms frame
+    const loop = (time) => {
+      const dt = time - last;
+      last = time;
+      const el = containerRef.current;
+      if (el && !paused) {
+        el.scrollLeft += speed * (dt / 16);
+        const w = firstSetRef.current?.offsetWidth || 0;
+        if (w > 0 && el.scrollLeft >= w) el.scrollLeft -= w; // seamless wrap
       }
-      
-      scrollRef.current.scrollTo({
-        left: nextScroll,
-        behavior: 'smooth'
-      });
-    }, 3500);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [paused]);
 
-    return () => clearInterval(interval);
-  }, [isDown, isHovered]);
+  const renderCard = (img, idx, prefix) => (
+    <div 
+      key={`${prefix}-${idx}`} 
+      className="flex-none w-[85vw] md:w-[65vw] lg:w-[55vw] relative group shrink-0"
+    >
+      <div className={`w-full ${heightClass} rounded-[2rem] bg-gradient-to-br from-white/5 to-transparent overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 group-hover:scale-[1.01] group-hover:border-white/20 flex items-center justify-center`}>
+        <img 
+          src={img.url || img} 
+          alt={img.alt || `Carousel item ${idx + 1}`} 
+          className="w-full h-full object-contain p-6 md:p-12 transition-transform duration-1000 group-hover:scale-105"
+          draggable="false"
+        />
+      </div>
+      {img.alt && (
+        <p className="text-center mt-8 text-white/50 font-secondary text-sm md:text-base tracking-[0.25em] uppercase pointer-events-none">
+          {img.alt}
+        </p>
+      )}
+    </div>
+  );
 
   return (
     <div 
       className="relative w-full overflow-hidden"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={() => setPaused(true)}
+      onTouchEnd={() => setPaused(false)}
     >
       <div 
-        ref={scrollRef}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-        className={`flex gap-6 md:gap-10 overflow-x-auto scrollbar-hide px-6 md:px-12 py-8 pb-12 ${isDown ? 'cursor-grabbing snap-none' : 'cursor-grab snap-x snap-mandatory'}`}
-        style={{ scrollBehavior: isDown ? 'auto' : 'smooth' }}
+        ref={containerRef}
+        className="flex overflow-x-auto pb-12 eco-hide-scrollbar"
+        style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
       >
-        {images.map((img, idx) => (
-          <div 
-            key={idx} 
-            className="flex-none w-[85vw] md:w-[65vw] lg:w-[55vw] snap-center relative group"
-          >
-            <div className={`w-full ${heightClass} rounded-[2rem] bg-gradient-to-br from-white/5 to-transparent overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 group-hover:scale-[1.01] group-hover:border-white/20 flex items-center justify-center`}>
-              <img 
-                src={img.url || img} 
-                alt={img.alt || `Carousel item ${idx + 1}`} 
-                className="w-full h-full object-contain p-6 md:p-12 transition-transform duration-1000 group-hover:scale-105"
-                draggable="false"
-              />
-            </div>
-            {img.alt && (
-              <p className="text-center mt-8 text-white/50 font-secondary text-sm md:text-base tracking-[0.25em] uppercase pointer-events-none">
-                {img.alt}
-              </p>
-            )}
-          </div>
-        ))}
+        <div ref={firstSetRef} className="flex gap-6 md:gap-10 pr-6 md:pr-10 shrink-0">
+          {images.map((img, idx) => renderCard(img, idx, 'a'))}
+        </div>
+        <div className="flex gap-6 md:gap-10 pr-6 md:pr-10 shrink-0" aria-hidden="true">
+          {images.map((img, idx) => renderCard(img, idx, 'b'))}
+        </div>
       </div>
       
       {/* Edge Fades for elegance */}
       <div className="absolute left-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-r from-[#030203] via-[#030203]/80 to-transparent pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-l from-[#030203] via-[#030203]/80 to-transparent pointer-events-none" />
+      <style dangerouslySetInnerHTML={{ __html: '.eco-hide-scrollbar::-webkit-scrollbar{display:none}' }} />
     </div>
   );
 };
@@ -337,7 +305,23 @@ const UniverseCard = ({ title, description, images, index }) => {
       </ElegantFade>
       
       <ElegantFade delay={0.2}>
-        <AestheticCarousel images={images} />
+        <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
+          <div className={`grid grid-cols-1 ${images.length > 1 ? 'md:grid-cols-2' : ''} gap-8 md:gap-12`}>
+            {images.map((img, idx) => (
+              <div 
+                key={idx} 
+                className="w-full rounded-[2rem] bg-gradient-to-br from-white/5 to-transparent overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 hover:scale-[1.01] hover:border-white/20 flex items-center justify-center relative group"
+              >
+                <img 
+                  src={img.url || img} 
+                  alt={img.alt || `${title} view ${idx + 1}`} 
+                  className="w-full h-auto object-contain p-6 md:p-12 transition-transform duration-1000 group-hover:scale-105"
+                  draggable="false"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </ElegantFade>
     </div>
   );
@@ -467,16 +451,15 @@ const FirefoxExperience = ({ navigate, project }) => {
           ) : (
             <div className="w-full h-full bg-[#0C185C]" />
           )}
+          <div className="pointer-events-none absolute left-1/2 top-5 z-20 -translate-x-1/2 px-3 md:top-6">
+            <CaseStudySectorPill
+              sector={project?.sector}
+              className="border border-white/[0.16] bg-[#010d54]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
+            />
+          </div>
         </div>
 
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
-          <ElegantFade delay={0.3} className="mb-6">
-            <CaseStudySectorPill
-              sector={project?.sector}
-              className="border border-white/[0.12] bg-white/[0.07] text-white/75 shadow-[0_14px_40px_rgba(0,0,0,0.18)] backdrop-blur-md"
-            />
-          </ElegantFade>
-
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {(project?.tags || ['Product Graphics', 'Illustration', 'Visual Strategy']).map((tag, i) => (
               <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[17px] md:text-[19px] tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
@@ -515,19 +498,36 @@ const FirefoxExperience = ({ navigate, project }) => {
         motionGraphic={<ProblemGraphic />}
       />
 
-      {/* ── 4. CREATIVE SOLUTION ── */}
-      <DramaticSection
-        title="Creative Solution"
-        content={`Our research revealed that bicycles play a very different role in a child's life.\n\nIt wasn't just a vehicle to get from point A to B.\n\nIt was something they imagined through.`}
-        motionGraphic={<ProblemGraphic />}
-      />
-
-      <EditorialSection
-        body=""
-        images={[{ url: observationMap, alt: 'Observation Map' }]}
-        layoutVariant="visual-first"
-        imageClassName="object-contain max-h-[500px]"
-      />
+      {/* ── 4. CREATIVE STRATEGY (Custom White Card) ── */}
+      <section className="relative w-full z-10 py-16 px-4 md:px-12 flex justify-center">
+        <div className="w-full max-w-[1400px] bg-[#F8F9FA] rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden">
+          
+          <ElegantFade>
+            <h2 className="text-center font-primary text-3xl md:text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-8 md:mb-10 tracking-tight">
+              Our Creative Strategy
+            </h2>
+            
+            <div className="max-w-4xl mx-auto space-y-2 text-[#333333] font-secondary text-[17px] md:text-[20px] lg:text-[22px] leading-relaxed md:leading-[1.6]">
+              <p>Our research revealed that bicycles play a very different role in a child's life.</p>
+              <p>Children use objects as storytelling tools. They create characters, missions, rules, and entire worlds around them.</p>
+              <p>The bicycle wasn't simply something they rode.</p>
+              <p>It was something they imagined through.</p>
+            </div>
+          </ElegantFade>
+          
+          <ElegantFade delay={0.2} className="mt-10 md:mt-14 w-full flex justify-center">
+            <div className="relative w-full max-w-[1100px] aspect-[1.8/1] md:aspect-[2.2/1] overflow-hidden rounded-xl">
+              <img 
+                src={observationMap} 
+                alt="Observation Map" 
+                className="absolute inset-0 w-full h-full object-cover object-bottom" 
+                draggable="false"
+              />
+            </div>
+          </ElegantFade>
+          
+        </div>
+      </section>
 
       {/* ── 5. INSIGHT MAPPING ── */}
       <EditorialSection
