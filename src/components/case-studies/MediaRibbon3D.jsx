@@ -196,7 +196,7 @@ const MediaRibbon3D = ({ media }) => {
 
   const rotation = useMotionValue(0);
   // Fast, dynamic carousel speed
-  const BASE_VEL = reduce ? 0 : 20;
+  const BASE_VEL = reduce ? 0 : 35;
   const velocity = useRef(BASE_VEL);
   const targetVel = useRef(BASE_VEL);
 
