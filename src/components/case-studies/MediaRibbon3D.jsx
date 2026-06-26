@@ -31,7 +31,7 @@ const getMediaAspect = (m) => {
 };
 
 // ── A single media panel: places itself on the ring, derives depth looks from `rotation`.
-const Panel = ({ media, index, step, radius, height, rotation, isActive }) => {
+const Panel = ({ media, index, step, radius, height, rotation, isActive, onClickCapture }) => {
   const aspect = getMediaAspect(media);
   const width = height * aspect;
   
@@ -63,6 +63,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive }) => {
   return (
     <div
       className="absolute top-1/2 left-1/2 cursor-pointer select-none"
+      onClickCapture={onClickCapture}
       style={{
         width,
         height,
@@ -280,8 +281,15 @@ const MediaRibbon3D = ({ media }) => {
           <motion.div className="absolute left-1/2 top-1/2" style={{ transformStyle: 'preserve-3d', transform: ringTransform, willChange: 'transform' }}>
             <motion.div className="absolute" style={{ transformStyle: 'preserve-3d', transform: innerRotate }}>
               {items.map((m, i) => (
-                <div 
+                <Panel
                   key={m.key || i}
+                  media={m}
+                  index={i}
+                  step={step}
+                  radius={dims.radius}
+                  height={dims.height}
+                  rotation={rotation}
+                  isActive={i === activeIndex}
                   onClickCapture={(e) => {
                     // Prevent opening lightbox if this was a drag gesture
                     if (dragDistance.current > 10) {
@@ -290,17 +298,7 @@ const MediaRibbon3D = ({ media }) => {
                       setSelectedMedia(m);
                     }
                   }}
-                >
-                  <Panel
-                    media={m}
-                    index={i}
-                    step={step}
-                    radius={dims.radius}
-                    height={dims.height}
-                    rotation={rotation}
-                    isActive={i === activeIndex}
-                  />
-                </div>
+                />
               ))}
             </motion.div>
           </motion.div>
