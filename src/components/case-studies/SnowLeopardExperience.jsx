@@ -169,9 +169,9 @@ const DynamicSciArtGrid = ({ content }) => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="flex-1 flex justify-start items-center overflow-visible"
+                className="flex-1 flex justify-center items-center overflow-visible"
               >
-                <span className="-ml-8 lg:-ml-16 xl:-ml-24 text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">ABOUT</span>
+                <span className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">ABOUT</span>
               </motion.div>
               
               <motion.div 
@@ -248,9 +248,9 @@ const DynamicSciArtGrid = ({ content }) => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="flex-1 flex justify-end items-center overflow-visible"
+                className="flex-1 flex justify-center items-center overflow-visible"
               >
-                <span className="-mr-8 lg:-mr-16 xl:-mr-24 text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">PROBLEM</span>
+                <span className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">PROBLEM</span>
               </motion.div>
            </div>
          )}
@@ -264,9 +264,9 @@ const DynamicSciArtGrid = ({ content }) => {
                whileInView={{ opacity: 1, x: 0 }}
                viewport={{ once: true, amount: 0.2 }}
                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-               className="flex-1 flex justify-start items-center overflow-visible"
+               className="flex-1 flex justify-center items-center overflow-visible"
              >
-               <span className="-ml-8 lg:-ml-16 xl:-ml-24 text-[15vw] lg:text-[6vw] xl:text-[7vw] font-black text-[#D4CEFC]/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">
+               <span className="text-[15vw] lg:text-[6vw] xl:text-[7vw] font-black text-[#D4CEFC]/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">
                  SOLUTION
                </span>
              </motion.div>
