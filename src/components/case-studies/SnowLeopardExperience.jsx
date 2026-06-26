@@ -151,10 +151,16 @@ const DynamicSciArtGrid = ({ content }) => {
   const remainingExecution = content.solution1 ? executionBlocks : executionBlocks.slice(1);
 
   return (
-    <section className="w-full relative bg-gradient-to-b from-[#010d54] via-[#05001a] to-[#010d54] text-white overflow-hidden py-24 lg:py-32">
+    <section className="w-full relative bg-gradient-to-b from-transparent via-[#05001a] to-transparent text-white overflow-hidden py-24 lg:py-32">
       
       {/* 1. CYBER-GRID MATRIX */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none opacity-40"
+        style={{ 
+          maskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)', 
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%, black 85%, transparent)' 
+        }}
+      >
         <div className="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(34,211,238,0.05)_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
