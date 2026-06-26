@@ -165,20 +165,20 @@ const DynamicSciArtGrid = ({ content }) => {
            <div className="relative w-full flex flex-col lg:flex-row justify-start items-center py-8 gap-8 lg:gap-12">
               {/* BIG TEXT (Left Area) */}
               <motion.div 
-                initial={{ opacity: 0, x: -150 }}
+                initial={{ opacity: 0, x: -100 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 className="flex-1 flex justify-start items-center overflow-visible"
               >
-                <span className="-ml-8 lg:-ml-16 xl:-ml-24 text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-cyan-400/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">ABOUT</span>
+                <span className="-ml-8 lg:-ml-16 xl:-ml-24 text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">ABOUT</span>
               </motion.div>
               
               <motion.div 
-                initial={{ opacity: 0, x: 150 }}
+                initial={{ opacity: 0, x: 100 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
                 className="w-full lg:w-[700px] xl:w-[800px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-cyan-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(34,211,238,0.15)]"
               >
                 {/* Dynamic Graphic: Floating Dot inside box */}
@@ -218,10 +218,10 @@ const DynamicSciArtGrid = ({ content }) => {
            <div className="relative w-full flex flex-col-reverse lg:flex-row justify-start items-center py-8 gap-8 lg:gap-12 mt-8 lg:mt-0">
               
               <motion.div 
-                initial={{ opacity: 0, x: -150 }}
+                initial={{ opacity: 0, x: -100 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
                 className="w-full lg:w-[700px] xl:w-[800px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-purple-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(168,85,247,0.15)]"
               >
                 {/* Subtle Breathing Glow */}
@@ -244,13 +244,13 @@ const DynamicSciArtGrid = ({ content }) => {
 
               {/* BIG TEXT (Right Area) */}
               <motion.div 
-                initial={{ opacity: 0, x: 150 }}
+                initial={{ opacity: 0, x: 100 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 className="flex-1 flex justify-end items-center overflow-visible"
               >
-                <span className="-mr-8 lg:-mr-16 xl:-mr-24 text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-purple-400/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">PROBLEM</span>
+                <span className="-mr-8 lg:-mr-16 xl:-mr-24 text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">PROBLEM</span>
               </motion.div>
            </div>
          )}
@@ -260,23 +260,23 @@ const DynamicSciArtGrid = ({ content }) => {
              
              {/* BIG TEXT (Left Area) */}
              <motion.div 
-               initial={{ opacity: 0, x: -150 }}
+               initial={{ opacity: 0, x: -100 }}
                whileInView={{ opacity: 1, x: 0 }}
-               viewport={{ once: true, amount: 0.3 }}
-               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+               viewport={{ once: true, amount: 0.2 }}
+               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                className="flex-1 flex justify-start items-center overflow-visible"
              >
-               <span className="-ml-8 lg:-ml-16 xl:-ml-24 text-[15vw] lg:text-[6vw] xl:text-[7vw] font-black text-indigo-400/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">
+               <span className="-ml-8 lg:-ml-16 xl:-ml-24 text-[15vw] lg:text-[6vw] xl:text-[7vw] font-black text-[#D4CEFC]/[0.08] leading-none select-none tracking-tighter whitespace-nowrap">
                  SOLUTION
                </span>
              </motion.div>
              
              {/* CONTENT BOX (Right Area) */}
              <motion.div 
-               initial={{ opacity: 0, x: 150 }}
+               initial={{ opacity: 0, x: 100 }}
                whileInView={{ opacity: 1, x: 0 }}
-               viewport={{ once: true, amount: 0.3 }}
-               transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+               viewport={{ once: true, amount: 0.2 }}
+               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
                className="w-full lg:w-[700px] xl:w-[800px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-indigo-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(99,102,241,0.15)]"
              >
                {/* Ambient Background Sweep */}
