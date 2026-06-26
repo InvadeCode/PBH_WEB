@@ -458,22 +458,15 @@ const FirefoxExperience = ({ navigate, project }) => {
         content={`At PBH, we call our approach SciArt.\n\nFor lilFox, that meant combining observation with imagination.\n\nWe studied how children interact with objects, how they create stories, how curiosity develops, and how fantasy becomes a tool for understanding the world.\n\nEvery concept had to work within real manufacturing constraints, frame geometries, production requirements, and decal placement limitations.\n\nThrough multiple iterations, we developed graphic systems that balanced storytelling with practicality.\n\nThe same thinking extended beyond the bicycle itself into accessories, packaging, manuals, merchandise, and future product concepts, creating a cohesive experience across the entire ecosystem.`}
         motionGraphic={<AboutGraphic />}
       />
-      <section className="relative w-full z-10 pb-16 md:pb-24 -mt-32 md:-mt-48">
-        <div className="px-6 md:px-12 max-w-[1400px] mx-auto mt-16 md:mt-24">
-          <div className="flex flex-col gap-16 md:gap-24 w-full">
-            {[starGazerSketch, sketches1, sketches2, sketches3, sketches4].map((src, i) => {
-              const isReversed = i % 2 !== 0;
-              return (
-                <ElegantFade key={i} delay={0.1 * (i + 1)}>
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
-                    <div className={`lg:col-span-9 ${isReversed ? 'lg:col-start-1' : 'lg:col-start-4'}`}>
-                      <ParallaxImage src={src} alt={`Sketch ${i + 1}`} yOffset={15} imageClassName="object-contain max-h-[700px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
-                    </div>
-                  </div>
-                </ElegantFade>
-              );
-            })}
-          </div>
+      <section className="relative w-full z-10 pb-16 md:pb-24 -mt-32 md:-mt-48 overflow-hidden">
+        <div className="w-full mt-16 md:mt-24">
+          <MediaRibbon3D media={[
+            { url: starGazerSketch, alt: 'Star Gazer Sketch' },
+            { url: sketches1, alt: 'Sketches 1' },
+            { url: sketches2, alt: 'Sketches 2' },
+            { url: sketches3, alt: 'Sketches 3' },
+            { url: sketches4, alt: 'Sketches 4' }
+          ]} />
         </div>
       </section>
 
@@ -511,17 +504,15 @@ const FirefoxExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 9. ECOSYSTEM ── */}
-      <EditorialSection
-        title=""
-        body=""
-        images={[
-          { url: ecosystem1, alt: 'Dreamy Backpack' },
-          { url: ecosystem2, alt: 'Explorer Backpack' },
-          { url: ecosystem3, alt: 'Collectible Figurines' }
-        ]}
-        layoutVariant="visual-first"
-        imageClassName="object-contain max-h-[700px] w-auto mx-auto"
-      />
+      <section className="relative w-full z-10 pt-12 pb-16 md:pb-24 overflow-hidden">
+        <div className="w-full">
+          <MediaRibbon3D media={[
+            { url: ecosystem1, alt: 'Dreamy Backpack' },
+            { url: ecosystem2, alt: 'Explorer Backpack' },
+            { url: ecosystem3, alt: 'Collectible Figurines' }
+          ]} />
+        </div>
+      </section>
 
       {/* ── 10. OUTCOME ── */}
       <EditorialSection
