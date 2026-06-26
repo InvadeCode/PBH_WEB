@@ -177,7 +177,13 @@ const DynamicSciArtGrid = ({ content }) => {
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="flex-1 flex justify-center items-center overflow-visible"
               >
-                <span className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_15px_rgba(212,206,252,0.1)]">ABOUT</span>
+                <motion.span 
+                  animate={{ y: [-15, 15, -15], scale: [1, 1.03, 1], rotateZ: [-1, 1, -1] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                  className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
+                >
+                  ABOUT
+                </motion.span>
               </motion.div>
               
               <motion.div 
@@ -256,7 +262,13 @@ const DynamicSciArtGrid = ({ content }) => {
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="flex-1 flex justify-center items-center overflow-visible"
               >
-                <span className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_15px_rgba(212,206,252,0.1)]">PROBLEM</span>
+                <motion.span 
+                  animate={{ y: [-15, 15, -15], scale: [1, 1.03, 1], rotateZ: [1, -1, 1] }}
+                  transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                  className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
+                >
+                  PROBLEM
+                </motion.span>
               </motion.div>
            </div>
          )}
@@ -272,9 +284,13 @@ const DynamicSciArtGrid = ({ content }) => {
                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                className="flex-1 flex justify-center items-center overflow-visible"
              >
-               <span className="text-[15vw] lg:text-[6vw] xl:text-[7vw] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_15px_rgba(212,206,252,0.1)]">
+               <motion.span 
+                 animate={{ y: [-15, 15, -15], scale: [1, 1.03, 1], rotateZ: [-1, 1, -1] }}
+                 transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                 className="text-[15vw] lg:text-[6vw] xl:text-[7vw] font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
+               >
                  SOLUTION
-               </span>
+               </motion.span>
              </motion.div>
              
              {/* CONTENT BOX (Right Area) */}
