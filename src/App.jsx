@@ -3219,7 +3219,7 @@ const HomePage = ({ navigate }) => {
             className="mb-7 inline-flex w-fit items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-md"
           >
             <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: '#ffcd00', boxShadow: '0 0 10px #ffcd00' }} />
-            <span className="t-label text-white/70">Strategy · Story · Systems</span>
+            <span className="t-label text-white/70">{SITE_SETTINGS?.homePage?.heroEyebrow || "Strategy · Story · Systems"}</span>
           </motion.div>
           <RevealText delay={0.1}>
             <h1 className="t-display text-white drop-shadow-lg pb-2 whitespace-pre-wrap">
@@ -3241,8 +3241,8 @@ const HomePage = ({ navigate }) => {
         </div>
         <div className="relative z-10 w-full">
         <div className="geo-diamond hidden md:block" style={{ top: '12%', right: '8%' }} />
-        <RevealText><h2 className="t-display mb-16">Scaling a breakthrough <br /><AnimatedItalic className="text-white/50">requires deep alignment.</AnimatedItalic></h2></RevealText>
-        <FadeUp><p className="t-body text-white/50 max-w-3xl mb-16">Low engagement, inconsistent visuals, and scattered teams aren't just creative issues—they are strategic bottlenecks. We align your brand thinking with execution to drive sustainable, long-term growth.</p></FadeUp>
+        <RevealText><h2 className="t-display mb-16">{SITE_SETTINGS?.homePage?.problemTitle || "Scaling a breakthrough"} <br /><AnimatedItalic className="text-white/50">{SITE_SETTINGS?.homePage?.problemTitleItalic || "requires deep alignment."}</AnimatedItalic></h2></RevealText>
+        <FadeUp><p className="t-body text-white/50 max-w-3xl mb-16">{SITE_SETTINGS?.homePage?.problemBody || "Low engagement, inconsistent visuals, and scattered teams aren't just creative issues—they are strategic bottlenecks. We align your brand thinking with execution to drive sustainable, long-term growth."}</p></FadeUp>
         <StaggerGroup className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full">
           {PROBLEM_DATA.map((prob, i) => (
             <StaggerItem key={i}><ProblemHoverCard title={prob.title} icon={prob.icon} type={prob.type} /></StaggerItem>
@@ -3253,13 +3253,13 @@ const HomePage = ({ navigate }) => {
 
       <section className="py-32 px-[3%] w-full text-left" style={{ background: `linear-gradient(to bottom, ${SURFACE.purpleDeep}, ${palette.bgDeep})` }}>
         <div className="max-w-4xl mb-24">
-          <RevealText><h2 className="t-display mb-6">Breakthrough innovation <br /><AnimatedItalic className="text-white/50">demands a new model.</AnimatedItalic></h2></RevealText>
+          <RevealText><h2 className="t-display mb-6">{SITE_SETTINGS?.homePage?.modelTitle || "Breakthrough innovation"} <br /><AnimatedItalic className="text-white/50">{SITE_SETTINGS?.homePage?.modelTitleItalic || "demands a new model."}</AnimatedItalic></h2></RevealText>
           <FadeUp><p className="t-body text-white/50">{SITE_SETTINGS?.homeSection3Subtitle || "Traditional execution models struggle to translate complex ideas into scalable systems. We build a strategic foundation first, ensuring every asset accelerates your 5-year vision and market impact."}</p></FadeUp>
         </div>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full">
           <StaggerItem>
             <div className="border border-white/10 rounded-[24px] p-10 md:p-14 h-full w-full backdrop-blur-3xl" style={{ background: `linear-gradient(135deg, ${hexToRgba(palette.panel, 0.5)} 0%, ${hexToRgba(palette.bgDeep, 0.5)} 100%)`, boxShadow: `inset 0 1px 0 ${hexToRgba(palette.secondary, 0.1)}` }}>
-              <h3 className="t-label text-white/40 mb-10">The Old Way</h3>
+              <h3 className="t-label text-white/40 mb-10">{SITE_SETTINGS?.homePage?.oldWayLabel || "The Old Way"}</h3>
               <ul className="space-y-8">
                 <li className="flex gap-5 t-body text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[0] || "Execution disconnected from core business objectives."}</span></li>
                 <li className="flex gap-5 t-body text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[1] || "Short-term aesthetic fixes over long-term strategic systems."}</span></li>
@@ -3271,7 +3271,7 @@ const HomePage = ({ navigate }) => {
             <div className="border rounded-[24px] p-10 md:p-14 relative overflow-hidden h-full w-full backdrop-blur-3xl" style={{ background: `linear-gradient(to bottom right, rgba(${rgbPrimary},0.2), rgba(${rgbPrimary},0.05))`, borderColor: `rgba(${rgbPrimary},0.4)`, boxShadow: `0 30px 60px ${hexToRgba(palette.primary, 0.1)}, inset 0 1px 0 ${hexToRgba(palette.secondary, 0.3)}` }}>
               <div className="absolute bottom-[-10%] right-[-10%] w-80 h-80 opacity-[0.35] blur-[100px] pointer-events-none" style={{ backgroundColor: palette.primary }} />
               <div className="absolute top-[-10%] left-[-10%] w-64 h-64 opacity-[0.25] blur-[80px] pointer-events-none" style={{ backgroundColor: palette.secondary }} />
-              <h3 className="t-label mb-10 relative z-10" style={{ color: palette.primary }}>The PBH Way</h3>
+              <h3 className="t-label mb-10 relative z-10" style={{ color: palette.primary }}>{SITE_SETTINGS?.homePage?.pbhWayLabel || "The PBH Way"}</h3>
               <ul className="space-y-8 relative z-10">
                 <li className="flex gap-5 t-body text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[0] || "Mapping the root business gap before designing anything."}</span></li>
                 <li className="flex gap-5 t-body text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[1] || "Modular scoping based on exact strategic requirements."}</span></li>
@@ -3323,7 +3323,7 @@ const HomePage = ({ navigate }) => {
                     <div className="w-14 h-14 rounded-[12px] flex items-center justify-center mb-8 shadow-lg" style={{ backgroundColor: rColor, color: 'white' }}>{route.icon}</div>
                     <h4 className="t-subtitle mb-4" style={{ color: palette.bgDeep }}>{route.title}</h4>
                     <p className="t-body mb-10 flex-grow" style={{ color: hexToRgba(palette.bgDeep, 0.7) }}>{route.desc}</p>
-                    <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="self-start px-0 group hover:bg-transparent" style={{ color: palette.bgDeep }}>Explore Route <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
+                    <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="self-start px-0 group hover:bg-transparent" style={{ color: palette.bgDeep }}>{SITE_SETTINGS?.homePage?.exploreRouteLabel || "Explore Route"} <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
                   </div>
                 </SpotlightCard>
               </StaggerItem>
@@ -3339,7 +3339,7 @@ const HomePage = ({ navigate }) => {
           <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }} className="absolute top-[20%] left-[30%] w-[40vw] h-[40vh] rounded-full blur-[140px] opacity-20 mix-blend-screen" style={{ backgroundColor: palette.secondary }} />
         </div>
         <div className="relative z-10 w-full">
-          <RevealText><h2 className="t-display mb-20">How It <AnimatedItalic>Works.</AnimatedItalic></h2></RevealText>
+          <RevealText><h2 className="t-display mb-20">{SITE_SETTINGS?.homePage?.howItWorksTitle || "How It"} <AnimatedItalic>{SITE_SETTINGS?.homePage?.howItWorksTitleItalic || "Works."}</AnimatedItalic></h2></RevealText>
           <InteractiveHowItWorks />
         </div>
       </section>
@@ -3362,8 +3362,8 @@ const HomePage = ({ navigate }) => {
         <div className="absolute bottom-24 left-[5%] w-[60px] h-[60px] rounded-[14px] border-[3px] opacity-[0.05] pointer-events-none rotate-45" style={{ borderColor: palette.accent }} />
 
         <div className="flex flex-col sm:flex-row justify-between items-end mb-24 gap-6 w-full text-left">
-          <RevealText delay={0.1}><h2 className="t-display">Selected <AnimatedItalic className="text-white/50">Work.</AnimatedItalic></h2></RevealText>
-          <PremiumButton variant="ghost" onClick={() => navigate('work')} className="px-0 py-0 group" style={{ color: palette.primary }}>View Archive <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
+          <RevealText delay={0.1}><h2 className="t-display">{SITE_SETTINGS?.homePage?.selectedWorkTitle || "Selected"} <AnimatedItalic className="text-white/50">{SITE_SETTINGS?.homePage?.selectedWorkTitleItalic || "Work."}</AnimatedItalic></h2></RevealText>
+          <PremiumButton variant="ghost" onClick={() => navigate('work')} className="px-0 py-0 group" style={{ color: palette.primary }}>{SITE_SETTINGS?.homePage?.selectedWorkCta || "View Archive"} <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
         </div>
         <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
           {CASE_STUDIES.slice(0, 4).map((cs, i) => {
@@ -3417,8 +3417,8 @@ const HomePage = ({ navigate }) => {
         <div className="absolute top-12 left-[6%] w-[70px] h-[70px] rounded-full border-[3px] opacity-[0.05] pointer-events-none" style={{ borderColor: palette.accent }} />
 
         <div className="flex flex-col sm:flex-row justify-between items-end mb-16 gap-6 w-full text-left">
-          <RevealText delay={0.1}><h2 className="t-display">From the <AnimatedItalic className="text-white/50">House.</AnimatedItalic></h2></RevealText>
-          <span onClick={() => navigate('journal')} className="t-label text-white/40 hover:text-white cursor-pointer transition-colors flex items-center gap-2 group">View Journal <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
+          <RevealText delay={0.1}><h2 className="t-display">{SITE_SETTINGS?.homePage?.journalTitle || "From the"} <AnimatedItalic className="text-white/50">{SITE_SETTINGS?.homePage?.journalTitleItalic || "House."}</AnimatedItalic></h2></RevealText>
+          <span onClick={() => navigate('journal')} className="t-label text-white/40 hover:text-white cursor-pointer transition-colors flex items-center gap-2 group">{SITE_SETTINGS?.homePage?.journalCta || "View Journal"} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></span>
         </div>
         <StaggerGroup className="grid md:grid-cols-3 gap-6 w-full">
           {JOURNAL_ARTICLES.slice(0, 3).map((article, i) => {
@@ -3459,9 +3459,9 @@ const HomePage = ({ navigate }) => {
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-[100%] blur-[200px] opacity-[0.22] pointer-events-none" style={{ backgroundColor: SURFACE.lavender }} />
         <div className="absolute top-[-10%] left-[-5%] w-[420px] h-[420px] rounded-full blur-[160px] opacity-[0.18] pointer-events-none" style={{ backgroundColor: '#ffffff' }} />
         <FadeUp className="relative z-10 w-full flex flex-col items-center">
-          <h2 className="t-label mb-6" style={{ color: '#ffcd00' }}>Start with clarity.</h2>
-          <h1 className="t-display mb-12">Build your brand scope <br /><AnimatedItalic className="text-white/60">before the first call.</AnimatedItalic></h1>
-          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-6 t-subtitle w-full sm:w-auto">Begin Brand Discovery</PremiumButton>
+          <h2 className="t-label mb-6" style={{ color: '#ffcd00' }}>{SITE_SETTINGS?.homePage?.finalCtaEyebrow || "Start with clarity."}</h2>
+          <h1 className="t-display mb-12">{SITE_SETTINGS?.homePage?.finalCtaTitle || "Build your brand scope"} <br /><AnimatedItalic className="text-white/60">{SITE_SETTINGS?.homePage?.finalCtaTitleItalic || "before the first call."}</AnimatedItalic></h1>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-6 t-subtitle w-full sm:w-auto">{SITE_SETTINGS?.homePage?.finalCtaButton || "Begin Brand Discovery"}</PremiumButton>
         </FadeUp>
       </section>
     </motion.div>
@@ -3553,11 +3553,12 @@ const WorkDetailPage = ({ navigate, projectId }) => {
   }, [projectId]);
 
   const clientName = (project.client || project.title || projectId || '').toLowerCase();
+  const projectString = JSON.stringify(project).toLowerCase();
 
   // Pick the experience template for this client, then append the shared,
   // CMS-driven Team Credits section so it appears under EVERY case study.
   const experience = (() => {
-    if (clientName.includes('veauli')) {
+    if (projectString.includes('veauli')) {
       return <AriseVenturesExperience navigate={navigate} project={project} />;
     }
 
