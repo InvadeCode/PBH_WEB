@@ -233,7 +233,7 @@ const DynamicSciArtGrid = ({ content }) => {
                 initial={{ opacity: 0, x: -100 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.55 }}
                 className="w-full lg:w-[850px] xl:w-[1000px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-purple-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(168,85,247,0.15)]"
               >
                 {/* Subtle Breathing Glow */}
@@ -259,7 +259,7 @@ const DynamicSciArtGrid = ({ content }) => {
                 initial={{ opacity: 0, x: 100, filter: 'blur(10px)' }}
                 whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
                 className="flex-1 flex justify-center items-center overflow-visible"
               >
                 <motion.span 
@@ -281,7 +281,7 @@ const DynamicSciArtGrid = ({ content }) => {
                initial={{ opacity: 0, x: -100, filter: 'blur(10px)' }}
                whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                viewport={{ once: true, amount: 0.2 }}
-               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
                className="flex-1 flex justify-center items-center overflow-visible"
              >
                <motion.span 
@@ -298,8 +298,8 @@ const DynamicSciArtGrid = ({ content }) => {
                initial={{ opacity: 0, x: 100 }}
                whileInView={{ opacity: 1, x: 0 }}
                viewport={{ once: true, amount: 0.2 }}
-               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-               className="w-full lg:w-[950px] xl:w-[1100px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-indigo-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(99,102,241,0.15)]"
+               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.95 }}
+               className="w-full lg:w-[900px] xl:w-[1100px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-blue-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(59,130,246,0.15)]"
              >
                {/* Ambient Background Sweep */}
                <motion.div 
