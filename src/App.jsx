@@ -3370,21 +3370,38 @@ const HomePage = ({ navigate }) => {
             const hexColor = palette[cs.type] || palette.primary;
             return (
               <StaggerItem key={i}>
-                <div onClick={() => navigate('work/' + cs.id)} className="group relative rounded-[24px] overflow-hidden flex flex-col transition-all duration-500 cursor-pointer text-left h-[450px] w-full hover:translate-y-[-4px]" style={{ backgroundColor: palette.panel, border: `2px solid rgba(104, 101, 250, 0.15)`, boxShadow: `6px 6px 0px 0px rgba(104, 101, 250, 0.08)` }}>
-                  <div className="h-[250px] relative overflow-hidden bg-white/[0.02]" style={{ borderBottom: `3px solid ${hexColor}` }}>
-                    <div className={`absolute inset-0 opacity-20 mix-blend-screen group-hover:scale-110 transition-transform duration-1000 ease-out`}  />
-                    <div className="absolute inset-0 flex items-center justify-center"><span className="t-display italic text-white/10 group-hover:text-white/30 transition-colors duration-700">{cs.client.split(' ')[0]}</span></div>
-                    {/* Hatching texture overlay */}
-                    <div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'repeating-linear-gradient(45deg, white 0px, white 1px, transparent 1px, transparent 8px)', mixBlendMode: 'overlay' }} />
+                <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/10 rounded-[24px] overflow-hidden cursor-pointer w-full aspect-square bg-[#0a0a0a] shadow-2xl transition-all duration-700 hover:border-white/30 hover:translate-y-[-4px]">
+
+                  {/* Background Thumbnail & Overlays */}
+                  <div className="absolute inset-0 z-0">
+                    {(cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl) ? (
+                      <CaseStudyMedia
+                        src={cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl}
+                        alt={cs.client}
+                        className="w-full h-full object-cover opacity-70 group-hover:scale-105 group-hover:opacity-100 transition-all duration-1000 ease-out"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="font-primary italic text-white/10 text-5xl">{cs.client ? cs.client.split(' ')[0] : 'Work'}</span>
+                      </div>
+                    )}
+                    {/* Cinematic Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/10 group-hover:via-black/20 transition-all duration-700" />
                   </div>
-                  <div className="p-8 flex flex-col justify-between flex-1 w-full" style={{ backgroundColor: palette.panel }}>
-                    <div>
-                      <span className="t-label block mb-2 px-3 py-1 rounded-full w-fit" style={{ color: hexColor, border: `2px solid ${hexColor}30`, backgroundColor: `${hexColor}10` }}>{cs.sector}</span>
-                      <h3 className="t-subtitle transition-colors group-hover:opacity-80 mt-3" style={{ color: 'white' }}>{cs.client}</h3>
-                    </div>
-                    <div className="flex justify-between items-end">
-                      <div className="flex gap-2 flex-wrap">{(cs.tags || []).map(t => <span key={t} className="px-3 py-1.5 rounded-full border-2 border-white/15 bg-white/5 t-label text-white/60">{t}</span>)}</div>
-                      <ArrowUpRight className="w-5 h-5 text-white/30 group-hover:text-white transition-colors" />
+
+                  {/* Content Overlay */}
+                  <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-10 text-left">
+                    <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-[0.16,1,0.3,1]">
+                      <span className="t-label block mb-3" style={{ color: hexColor }}>{cs.sector}</span>
+                      <h3 className="t-subtitle font-primary text-white mb-6 drop-shadow-lg">{cs.client}</h3>
+                      <div className="flex justify-between items-end font-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+                        <div className="flex gap-2 flex-wrap">
+                          {(cs.tags || []).map(t => (
+                            <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-[10px] tracking-wider text-white/80 uppercase">{t}</span>
+                          ))}
+                        </div>
+                        <ArrowUpRight className="w-8 h-8 text-white p-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20" />
+                      </div>
                     </div>
                   </div>
                 </div>
