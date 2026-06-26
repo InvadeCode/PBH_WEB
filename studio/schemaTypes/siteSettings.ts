@@ -55,6 +55,7 @@ export default defineType({
         defineField({ name: 'finalCtaButton', title: 'Final CTA — Button', type: 'string' }),
       ],
     }),
+    defineField({ name: 'backToHomeLabel', title: 'Back-to-Home Button Label (all pages)', type: 'string', group: 'footer' }),
     // ── ABOUT US PAGE ──
     defineField({
       name: 'aboutPage',

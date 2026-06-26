@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { motion, useScroll, useTransform, useAnimationFrame, useMotionValue } from 'framer-motion';
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import HTMLFlipBook from 'react-pageflip';
 import { GlobalContext } from '../../App';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
@@ -126,14 +127,15 @@ const Cover = ({ project, navigate, SITE_SETTINGS, c }) => {
   );
 };
 
-// ── SCENE 2 · NARRATIVE (words chunked together) ────────────────────────────
-const Narrative = ({ project, c }) => {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+const Page = React.forwardRef((props, ref) => {
+  return (
+    <div className={`page ${props.className || ''}`} ref={ref} style={props.style}>
+      {props.children}
+    </div>
+  );
+});
 
+const Narrative = ({ project, c }) => {
   const about = project.overview && { k: project.overviewHeading || 'The Brand', v: project.overview };
   const problem = project.challenge && { k: project.challengeHeading || 'The Question', v: project.challenge };
   const solution = project.solution && { k: project.solutionHeading || 'The Answer', v: project.solution };
@@ -142,96 +144,75 @@ const Narrative = ({ project, c }) => {
 
   if (pages.length === 0) return null;
 
-  // Calculate dynamic scroll ranges so pages sit flat for a moment before turning
-  const getTransformRange = (index, total) => {
-    if (index === total - 1) return { input: [0, 1], output: [0, 0] }; // Last page never turns
-    const zones = total * 2 - 1;
-    const zoneSize = 1 / zones;
-    const turnStart = (index * 2 + 1) * zoneSize;
-    const turnEnd = turnStart + zoneSize;
-    return { input: [turnStart, turnEnd], output: [0, -180] };
-  };
-
   return (
-    <section ref={containerRef} className="relative w-full" style={{ height: `${pages.length * 100}vh`, background: `linear-gradient(180deg, ${c.soilDeep}, ${c.soil})` }}>
-      
-      {/* Sticky Scroll Container */}
-      <div className="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden px-[7%]">
-        
-        {/* 3D Flip Container */}
-        <div className="relative w-full h-[60vh] min-h-[450px] max-h-[600px] max-w-5xl" style={{ perspective: '2500px' }}>
-          
-          {pages.map((p, i) => {
-            const range = getTransformRange(i, pages.length);
-            const rotateY = useTransform(scrollYProgress, range.input, range.output);
-            
-            // Subtle lighting effect as the page turns
-            const brightness = useTransform(scrollYProgress, range.input, [1, 0.4]);
+    <section className="relative w-full h-[90vh] min-h-[600px] overflow-hidden bg-[#1e1529]">
+      <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+        <HTMLFlipBook 
+          width={800} 
+          height={800} 
+          size="stretch" 
+          minWidth={300} 
+          maxWidth={3000} 
+          minHeight={400} 
+          maxHeight={2000} 
+          maxShadowOpacity={0.6} 
+          showCover={true} 
+          mobileScrollSupport={true}
+          usePortrait={true}
+          flippingTime={1200}
+        >
+          {/* COVER PAGE */}
+          <Page className="flex flex-col justify-center items-center overflow-hidden border-l border-white/5 relative" style={{ backgroundColor: '#261b36' }}>
+            <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(100% 100% at 50% 0%, #b091f015 0%, transparent 100%)` }} />
+            <div className="w-full h-full absolute inset-0 opacity-10 bg-repeat" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+            <div className="relative z-10 w-full px-10 text-center">
+              <h2 className="text-3xl md:text-5xl font-primary tracking-tight" style={{ color: '#d8cbf2' }}>The Story</h2>
+              <div className="w-16 h-px mx-auto mt-6" style={{ backgroundColor: '#d8cbf255' }} />
+            </div>
+            <span className="absolute bottom-10 right-10 text-[10px] font-secondary uppercase tracking-widest text-[#d8cbf2]/40">
+              Drag to open
+            </span>
+          </Page>
 
-            return (
-              <motion.div
-                key={i}
-                className="absolute inset-0 w-full h-full origin-left"
-                style={{ 
-                  rotateY,
-                  transformStyle: 'preserve-3d',
-                  zIndex: pages.length - i
-                }}
-              >
-                {/* FRONT OF PAGE */}
-                <motion.div 
-                  className="absolute inset-0 w-full h-full border p-8 md:p-16 shadow-2xl flex flex-col justify-center items-center text-center"
-                  style={{ 
-                    backfaceVisibility: 'hidden', 
-                    borderColor: `${c.terra}30`, 
-                    backgroundColor: c.soilDeep,
-                    filter: `brightness(${brightness})`
-                  }}
-                >
-                  <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(100% 100% at 50% 0%, ${c.terra}15 0%, transparent 100%)` }} />
-                  <div className="relative z-10 w-full max-w-3xl">
-                    <div className="flex items-center justify-center gap-3 mb-8">
-                      <span className="font-primary text-sm" style={{ color: c.terra }}>{String(i + 1).padStart(2, '0')}</span>
-                      <span className="h-px w-10" style={{ backgroundColor: `${c.terra}88` }} />
-                      <h3 className="text-xl md:text-3xl font-primary tracking-tight" style={{ color: c.terra }}>{p.k}</h3>
-                    </div>
-                    <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-[17px] md:text-[20px]" style={{ color: `${c.cream}f0` }}>
-                      {p.v}
-                    </p>
-                  </div>
-                </motion.div>
-
-                {/* BACK OF PAGE (Light Purple / Lavender) */}
-                <div 
-                  className="absolute inset-0 w-full h-full border p-8 md:p-16 shadow-2xl flex flex-col justify-center items-center overflow-hidden"
-                  style={{ 
-                    backfaceVisibility: 'hidden', 
-                    transform: 'rotateY(180deg)',
-                    borderColor: '#cbbdeb30', 
-                    backgroundColor: '#261b36', // Deep elegant purple
-                  }}
-                >
-                  <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(100% 100% at 50% 0%, #b091f015 0%, transparent 100%)` }} />
-                  <div className="w-full h-full border border-white/5 opacity-20 bg-repeat" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
-                  <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-primary text-3xl opacity-10 tracking-widest text-[#d8cbf2]">
-                    PBH
-                  </span>
+          {/* INNER PAGES */}
+          {pages.map((p, i) => (
+            <Page key={i} className="flex flex-col justify-center items-center overflow-hidden border-x border-white/5 relative" style={{ backgroundColor: '#261b36' }}>
+              <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(100% 100% at 50% 0%, #b091f015 0%, transparent 100%)` }} />
+              
+              <div className="relative z-10 w-full max-w-2xl px-10 md:px-20 text-center">
+                <div className="flex items-center justify-center gap-3 mb-8">
+                  <span className="font-primary text-sm" style={{ color: '#d8cbf2' }}>{String(i + 1).padStart(2, '0')}</span>
+                  <span className="h-px w-10" style={{ backgroundColor: '#d8cbf255' }} />
+                  <h3 className="text-xl md:text-3xl font-primary tracking-tight" style={{ color: '#d8cbf2' }}>{p.k}</h3>
                 </div>
-              </motion.div>
-            );
-          })}
-        </div>
+                <p className="font-secondary font-light leading-relaxed whitespace-pre-line text-[17px] md:text-[20px]" style={{ color: '#f5f0ff' }}>
+                  {p.v}
+                </p>
+              </div>
 
-        {project.fullStory?.execution && (
-          <motion.blockquote className="absolute bottom-10 inset-x-0 text-center px-[7%]"
-            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-12%' }} transition={{ duration: 1.1, ease: "easeOut" }}>
-            <span className="block font-primary mb-2 text-4xl" style={{ color: c.terra, lineHeight: 1 }}>“</span>
-            <p className="font-primary font-light leading-snug mx-auto max-w-3xl text-xl md:text-2xl" style={{ color: c.cream }}>
-              {project.fullStory.execution}
-            </p>
-          </motion.blockquote>
-        )}
+              <span className="absolute bottom-8 right-8 text-[10px] font-secondary uppercase tracking-widest text-[#d8cbf2]/30">
+                Page {i + 1}
+              </span>
+            </Page>
+          ))}
+          
+          {/* BACK COVER / BLANK */}
+          <Page className="flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: '#1e1529' }}>
+             <div className="w-full h-full absolute inset-0 opacity-5 bg-repeat" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+             <span className="font-primary text-4xl opacity-10 tracking-widest text-[#d8cbf2]">PBH</span>
+          </Page>
+        </HTMLFlipBook>
       </div>
+
+      {/* Testimonial Overlay if exists (pointer-events-none so it doesn't block flipping) */}
+      {project.fullStory?.execution && (
+        <div className="absolute bottom-10 inset-x-0 text-center px-[7%] pointer-events-none z-50 mix-blend-screen opacity-50">
+          <span className="block font-primary mb-2 text-3xl" style={{ color: '#d8cbf2', lineHeight: 1 }}>“</span>
+          <p className="font-primary font-light leading-snug mx-auto max-w-3xl text-lg md:text-xl" style={{ color: '#f5f0ff' }}>
+            {project.fullStory.execution}
+          </p>
+        </div>
+      )}
     </section>
   );
 };
