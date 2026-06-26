@@ -31,17 +31,15 @@ const getMediaAspect = (m) => {
 };
 
 // ── A single media panel: places itself on the ring, derives depth looks from `rotation`.
-const Panel = ({ media, index, step, radius, baseArea, rotation, isActive }) => {
+const Panel = ({ media, index, step, radius, height, rotation, isActive }) => {
   const aspect = getMediaAspect(media);
-  // Constant Area Scaling: ensures portraits and landscapes have equal visual weight
-  const height = Math.sqrt(baseArea / aspect);
   const width = height * aspect;
   
   const baseAngle = index * step;
 
   const front = useTransform(rotation, (r) => Math.cos(((baseAngle + r) * Math.PI) / 180));
 
-  const scale = useTransform(front, [-1, 0.5, 1], [0.8, 1.0, 1.25]);
+  const scale = useTransform(front, [-1, 0.5, 1], [0.8, 1.0, 1.12]);
   const opacity = useTransform(front, [-1, -0.35, 0.15, 1], [0.05, 0.35, 0.88, 1]);
   const blurPx = useTransform(front, (f) => ((1 - (f + 1) / 2) * 6).toFixed(2));
   const brightness = useTransform(front, [-1, 0.4, 1], [0.5, 0.95, 1.15]);
@@ -154,7 +152,7 @@ const MediaRibbon3D = ({ media }) => {
 
   const reduce = useReducedMotion();
   const sceneRef = useRef(null);
-  const [dims, setDims] = useState({ baseArea: 90000, radius: 540, maxPanelHeight: 300 });
+  const [dims, setDims] = useState({ height: 230, radius: 540 });
   const [selectedMedia, setSelectedMedia] = useState(null);
 
   // Drag state
@@ -165,21 +163,12 @@ const MediaRibbon3D = ({ media }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const baseH = clamp(w * 0.15, 180, 360);
-      const baseArea = baseH * baseH;
+      const height = clamp(w * 0.14, 150, 320);
       
       // Classic round carousel radius based on screen width
       const radius = clamp(w * 0.42, 320, 780);
       
-      let maxH = baseH;
-      if (items.length > 0) {
-        maxH = Math.max(...items.map(m => {
-          const aspect = getMediaAspect(m);
-          return Math.sqrt(baseArea / aspect);
-        }));
-      }
-
-      setDims({ baseArea, radius, maxPanelHeight: maxH });
+      setDims({ height, radius });
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -277,7 +266,7 @@ const MediaRibbon3D = ({ media }) => {
         onPointerLeave={handlePointerLeave}
         onDragStart={(e) => e.preventDefault()}
         className="relative w-full overflow-hidden rounded-[28px] touch-none cursor-grab active:cursor-grabbing"
-        style={{ height: Math.max(dims.maxPanelHeight + 240, 500) }}
+        style={{ height: 'clamp(440px, 64vh, 720px)' }}
       >
         {/* Ambient depth */}
         <div className="pointer-events-none absolute inset-0">
@@ -307,7 +296,7 @@ const MediaRibbon3D = ({ media }) => {
                     index={i}
                     step={step}
                     radius={dims.radius}
-                    baseArea={dims.baseArea}
+                    height={dims.height}
                     rotation={rotation}
                     isActive={i === activeIndex}
                   />
