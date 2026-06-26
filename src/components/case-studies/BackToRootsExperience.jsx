@@ -146,7 +146,7 @@ const Narrative = ({ project }) => {
                 initial={{ opacity: 0, y: 36 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-12%' }}
                 transition={{ duration: 1, delay: i * 0.08, ease: C.ease }}>
                 <div className="flex items-center gap-3 mb-5">
-                  <span className="font-primary text-sm" style={{ color: C.terra }}>{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-primary text-[17px] md:text-[19px]" style={{ color: C.terra }}>{String(i + 1).padStart(2, '0')}</span>
                   <span className="h-px w-10" style={{ backgroundColor: `${C.terra}88` }} />
                   <h3 className="text-xl md:text-2xl font-primary tracking-tight" style={{ color: C.terra }}>{b.k}</h3>
                 </div>
@@ -171,7 +171,7 @@ const Narrative = ({ project }) => {
             
             <div className="relative z-10">
               <div className="flex items-center justify-center gap-3 mb-8">
-                <span className="font-primary text-sm" style={{ color: C.terra }}>{String(topBeats.length + 1).padStart(2, '0')}</span>
+                <span className="font-primary text-[17px] md:text-[19px]" style={{ color: C.terra }}>{String(topBeats.length + 1).padStart(2, '0')}</span>
                 <span className="h-px w-10" style={{ backgroundColor: `${C.terra}88` }} />
                 <h3 className="text-xl md:text-2xl font-primary tracking-tight" style={{ color: C.terra }}>{solution.k}</h3>
               </div>
@@ -185,8 +185,8 @@ const Narrative = ({ project }) => {
         {project.fullStory?.execution && (
           <motion.blockquote className="mt-24 md:mt-32 text-center"
             initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '-12%' }} transition={{ duration: 1.1, ease: C.ease }}>
-            <span className="block font-primary mb-4 text-4xl" style={{ color: C.terra, lineHeight: 1 }}>“</span>
-            <p className="font-primary font-light leading-snug mx-auto max-w-3xl text-2xl md:text-3xl" style={{ color: C.cream }}>
+            <span className="block font-primary mb-4 text-xl md:text-2xl" style={{ color: C.terra, lineHeight: 1 }}>“</span>
+            <p className="font-primary font-light leading-snug mx-auto max-w-3xl text-xl md:text-2xl" style={{ color: C.cream }}>
               {project.fullStory.execution}
             </p>
             <div className="w-16 h-px mx-auto mt-10" style={{ backgroundColor: C.terra }} />
@@ -267,7 +267,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
               />
             ) : (
               <div className="w-full aspect-[3/4] flex items-center justify-center">
-                <span className="text-white/30 text-xs uppercase tracking-widest font-secondary">Media Unavailable</span>
+                <span className="text-white/30 text-[17px] md:text-[19px] uppercase tracking-widest font-secondary">Media Unavailable</span>
               </div>
             )}
           </div>
@@ -276,7 +276,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
 
         {/* Chapter Text */}
         <div className="mt-8 text-center max-w-[80%] pointer-events-none">
-          <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
+          <p className="text-[17px] md:text-[19px] font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
             {ch.label}
           </p>
           <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: C.cream }}>
@@ -295,8 +295,8 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.1 }} />
       
       <div className="text-center mb-16 px-[6%] relative z-10">
-        <h3 className="font-primary text-2xl md:text-4xl" style={{ color: C.terra }}>{project?.carouselTitle || 'The Unfolding Story'}</h3>
-        <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${C.cream}66` }}>{project?.carouselSubtext || 'Scroll or drag to explore'}</p>
+        <h3 className="font-primary text-5xl md:text-7xl lg:text-8xl" style={{ color: C.terra }}>{project?.carouselTitle || 'The Unfolding Story'}</h3>
+        <p className="text-[17px] md:text-[19px] font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${C.cream}66` }}>{project?.carouselSubtext || 'Scroll or drag to explore'}</p>
       </div>
 
       <div 
@@ -348,7 +348,7 @@ const BackToRootsExperience = ({ navigate, project }) => {
       {/* Global Top Navigation */}
       <motion.div className="fixed top-0 left-0 w-full z-[100] flex items-center gap-3 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 pointer-events-none"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 3.2 }}>
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-sm md:text-base backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
       </motion.div>

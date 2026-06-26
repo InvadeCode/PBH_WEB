@@ -26,6 +26,7 @@ import CaseStudyTeamCredits from './components/case-studies/CaseStudyTeamCredits
 import CaseStudyMedia from './components/case-studies/CaseStudyMedia';
 
 import PremiumLogoMarquee from './components/PremiumLogoMarquee';
+import PremiumThreadHero from './components/PremiumThreadHero';
 
 export const GlobalContext = createContext(null);
 
@@ -150,23 +151,23 @@ const CareersModal = ({ onClose }) => {
           <X size={20} />
         </button>
 
-        <h3 className="text-3xl font-light mb-2 text-white font-primary">Want to work with us?</h3>
-        <p className="text-white/50 mb-8 font-secondary text-sm leading-relaxed">
+        <h3 className="text-xl md:text-2xl font-light mb-2 text-white font-primary">Want to work with us?</h3>
+        <p className="text-white/50 mb-8 font-secondary text-[17px] md:text-[19px] leading-relaxed">
           We are always looking for visionary strategists and artists. Send us your profile below.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input required name="name" value={formData.name} onChange={handleInputChange} type="text" placeholder="Full Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
-            <input required name="phone" value={formData.phone} onChange={handleInputChange} type="tel" placeholder="Phone Number" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+            <input required name="name" value={formData.name} onChange={handleInputChange} type="text" placeholder="Full Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+            <input required name="phone" value={formData.phone} onChange={handleInputChange} type="tel" placeholder="Phone Number" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input required name="email" value={formData.email} onChange={handleInputChange} type="email" placeholder="Email Address" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
-            <input required name="linkedin" value={formData.linkedin} onChange={handleInputChange} type="url" placeholder="LinkedIn Profile URL" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+            <input required name="email" value={formData.email} onChange={handleInputChange} type="email" placeholder="Email Address" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+            <input required name="linkedin" value={formData.linkedin} onChange={handleInputChange} type="url" placeholder="LinkedIn Profile URL" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
           </div>
 
-          <textarea required name="summary" value={formData.summary} onChange={handleInputChange} placeholder="Tell us about yourself and what you do best..." rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-sm focus:outline-none transition-colors focus:border-white/30 font-secondary resize-none custom-scrollbar" />
+          <textarea required name="summary" value={formData.summary} onChange={handleInputChange} placeholder="Tell us about yourself and what you do best..." rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary resize-none custom-scrollbar" />
 
           <div className="border border-white/10 bg-white/[0.02] rounded-[16px] p-2 overflow-hidden focus-within:border-white/30 transition-colors mt-2">
             <input
@@ -174,24 +175,24 @@ const CareersModal = ({ onClose }) => {
               accept="application/pdf"
               onChange={handleFileChange}
               required
-              className="w-full text-sm text-white/60 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:bg-white/10 file:text-white hover:file:bg-white/20 file:cursor-pointer font-secondary cursor-pointer"
+              className="w-full text-[17px] md:text-[19px] text-white/60 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:bg-white/10 file:text-white hover:file:bg-white/20 file:cursor-pointer font-secondary cursor-pointer"
             />
           </div>
 
           <div className="pt-4">
             {status === 'success' ? (
-              <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-[12px] text-center font-secondary text-sm">
+              <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-[12px] text-center font-secondary text-[17px] md:text-[19px]">
                 Profile sent successfully!
               </div>
             ) : status === 'error' ? (
-              <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-[12px] text-center font-secondary text-sm">
+              <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-[12px] text-center font-secondary text-[17px] md:text-[19px]">
                 Failed to send. Please try again or email us directly.
               </div>
             ) : (
               <button
                 disabled={!file || isSubmitting}
                 type="submit"
-                className="w-full py-4 rounded-[12px] bg-white text-black font-medium text-sm font-secondary hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                className="w-full py-4 rounded-[12px] bg-white text-black font-medium text-[17px] md:text-[19px] font-secondary hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
                 {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</> : 'Send Profile'}
               </button>
@@ -756,7 +757,7 @@ const ProblemHoverCard = ({ title, icon, type }) => {
       <motion.div variants={{ initial: { opacity: 0 }, hover: { opacity: 0.05 } }} transition={{ duration: 0.4 }} className="absolute inset-0 z-0 pointer-events-none" style={{ backgroundColor: palette.bgDeep }} />
       <div className="relative z-10 flex flex-col items-start gap-4">
         <motion.div variants={{ initial: { y: 0, opacity: 1, scale: 1 }, hover: { y: -2, scale: 1.05 } }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className="flex items-center justify-center w-10 h-10 rounded-[10px] shadow-sm" style={{ backgroundColor: color, color: 'white' }}>{icon}</motion.div>
-        <motion.span variants={{ initial: { y: 0 }, hover: { y: 0 } }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className="text-sm font-medium leading-snug font-primary transition-colors" style={{ color: palette.bgDeep }}>{title}</motion.span>
+        <motion.span variants={{ initial: { y: 0 }, hover: { y: 0 } }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className="text-[17px] md:text-[19px] font-medium leading-snug font-primary transition-colors" style={{ color: palette.bgDeep }}>{title}</motion.span>
       </div>
     </motion.div>
   );
@@ -786,13 +787,13 @@ const MapVisual = () => {
       <div className="absolute inset-0" style={{  }} />
       <div className="flex items-center gap-6 relative z-10 w-full max-w-md">
         <div className="flex flex-col gap-4 flex-1">
-          <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="px-4 py-3 bg-white/5 border border-white/10 rounded-[8px] text-[10px] text-white/50 text-center uppercase tracking-widest font-primary">Inconsistent Identity</motion.div>
-          <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="px-4 py-3 bg-white/5 border border-white/10 rounded-[8px] text-[10px] text-white/50 text-center uppercase tracking-widest font-primary">Weak Narrative</motion.div>
+          <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="px-4 py-3 bg-white/5 border border-white/10 rounded-[8px] text-[17px] md:text-[19px] text-white/50 text-center uppercase tracking-widest font-primary">Inconsistent Identity</motion.div>
+          <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="px-4 py-3 bg-white/5 border border-white/10 rounded-[8px] text-[17px] md:text-[19px] text-white/50 text-center uppercase tracking-widest font-primary">Weak Narrative</motion.div>
         </div>
         <div className="flex-1 flex flex-col items-center"><motion.div className="h-[2px] w-full"  animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} /></div>
         <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.4 }} className="flex-1 border p-6 rounded-[16px] text-center flex flex-col items-center justify-center aspect-square shadow-2xl" style={{ background: `linear-gradient(to bottom right, rgba(${rgbBlue},0.2), transparent)`, borderColor: `rgba(${rgbBlue},0.3)` }}>
           <Layers className="w-8 h-8 mb-3" style={{ color: palette.blue }} />
-          <div className="text-xs text-white font-medium tracking-wide font-primary">Brand<br />Boulevard</div>
+          <div className="text-[17px] md:text-[19px] text-white font-medium tracking-wide font-primary">Brand<br />Boulevard</div>
         </motion.div>
       </div>
     </motion.div>
@@ -805,7 +806,7 @@ const BuildVisual = () => {
     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.05 }} className="absolute inset-0 flex items-center justify-center p-8">
       <div className="absolute inset-0" style={{  }} />
       <div className="border border-white/10 rounded-[16px] p-8 w-full max-w-sm shadow-2xl relative z-10" style={{ backgroundColor: palette.bgDeep }}>
-        <h4 className="text-[10px] uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><PenTool className="w-4 h-4" /> Scope Blueprint</h4>
+        <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><PenTool className="w-4 h-4" /> Scope Blueprint</h4>
         <div className="space-y-4">
           {[1, 2, 3, 4].map(i => (
             <motion.div key={i} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.15 }} className="flex items-center gap-4">
@@ -828,8 +829,8 @@ const StartVisual = () => {
       <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="w-24 h-24 border rounded-full flex items-center justify-center mb-6 relative z-10 shadow-lg" style={{ backgroundColor: `${palette.green}1A`, borderColor: `${palette.green}4D` }}>
         <CheckCircle2 className="w-12 h-12" style={{ color: palette.green }} />
       </motion.div>
-      <motion.h4 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="text-2xl font-light text-white mb-2 relative z-10 font-primary">Brief Generated</motion.h4>
-      <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="px-8 py-3 bg-white text-black text-xs font-medium uppercase tracking-widest rounded-full relative z-10 mt-6 cursor-pointer hover:scale-105 transition-transform font-primary">Schedule Discovery</motion.div>
+      <motion.h4 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} className="text-xl md:text-2xl font-light text-white mb-2 relative z-10 font-primary">Brief Generated</motion.h4>
+      <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="px-8 py-3 bg-white text-black text-[17px] md:text-[19px] font-medium uppercase tracking-widest rounded-full relative z-10 mt-6 cursor-pointer hover:scale-105 transition-transform font-primary">Schedule Discovery</motion.div>
     </motion.div>
   );
 };
@@ -933,7 +934,7 @@ const PremiumButton = ({ children, onClick, variant = "primary", className = "",
   const baseClasses = isPrimary ? `hover:brightness-110 font-bold border border-white/20` : (variant === "secondary" ? "bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20" : "text-white/70 hover:text-white hover:bg-white/5");
 
   return (
-    <motion.button ref={buttonRef} type={type} onClick={onClick} disabled={disabled} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={btnStyle} className={`group relative inline-flex items-center justify-center px-8 py-4 tracking-wide transition-all duration-500 overflow-hidden rounded-[9px] text-sm hover:scale-[1.02] w-auto ${baseClasses} ${className} ${disabled ? 'opacity-50 cursor-not-allowed hover:scale-100' : ''} font-primary`}>
+    <motion.button ref={buttonRef} type={type} onClick={onClick} disabled={disabled} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={btnStyle} className={`group relative inline-flex items-center justify-center px-8 py-4 tracking-wide transition-all duration-500 overflow-hidden rounded-[9px] text-[17px] md:text-[19px] hover:scale-[1.02] w-auto ${baseClasses} ${className} ${disabled ? 'opacity-50 cursor-not-allowed hover:scale-100' : ''} font-primary`}>
       <span className="relative z-10 flex items-center gap-2 w-full justify-center">{children}</span>
       {isPrimary && !disabled && <span className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out skew-x-12 w-full" />}
     </motion.button>
@@ -2020,7 +2021,7 @@ const StrategicEngine = ({ navigate }) => {
                       className="relative z-10"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <div className="text-[10px] text-white/70 font-bold uppercase tracking-widest font-secondary">Active Profile</div>
+                        <div className="text-[17px] md:text-[19px] text-white/70 font-bold uppercase tracking-widest font-secondary">Active Profile</div>
                         <div className="text-[9px] font-secondary text-white/40 tracking-wider">ID: {(Array.isArray(answers.stage) && answers.stage.length > 0) ? answers.stage[0].id : 'SYS-001'}</div>
                       </div>
                       <div className="text-[14px] font-semibold text-white font-secondary tracking-wide leading-snug drop-shadow-sm">{(Array.isArray(answers.stage) && answers.stage.length > 0) ? answers.stage.map(s => s.label).join(', ') : 'Evaluating profile metrics...'}</div>
@@ -2032,7 +2033,7 @@ const StrategicEngine = ({ navigate }) => {
                       className="flex items-center gap-3 relative z-10"
                     >
                       <Loader2 className="w-5 h-5 animate-spin" style={{ color: palette.primary }} />
-                      <div className="text-sm font-semibold text-white/70 tracking-widest uppercase font-secondary">Awaiting Initialization...</div>
+                      <div className="text-[17px] md:text-[19px] font-semibold text-white/70 tracking-widest uppercase font-secondary">Awaiting Initialization...</div>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -2123,7 +2124,7 @@ const StrategicEngine = ({ navigate }) => {
                           </div>
                           <div>
                             <div className="text-[15px] font-bold text-white tracking-wide font-secondary drop-shadow-sm">{d.name}</div>
-                            <div className="text-[10px] font-bold uppercase tracking-[0.2em] mt-1.5 flex items-center gap-1.5" style={{ color: palette.blue }}>
+                            <div className="text-[17px] md:text-[19px] font-bold uppercase tracking-[0.2em] mt-1.5 flex items-center gap-1.5" style={{ color: palette.blue }}>
                               <div className="w-1 h-1 rounded-full" style={{ backgroundColor: palette.blue }} />
                               Directive Verified
                             </div>
@@ -2181,7 +2182,7 @@ const StrategicEngine = ({ navigate }) => {
                       key={completeness}
                       initial={{ scale: 0.5, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      className="text-2xl font-bold text-white font-secondary drop-shadow-md"
+                      className="text-xl md:text-2xl font-bold text-white font-secondary drop-shadow-md"
                     >
                       {completeness}%
                     </motion.span>
@@ -2201,13 +2202,13 @@ const StrategicEngine = ({ navigate }) => {
     // 0: Opening Question (Replacing Welcome Splash)
     <div key="s0" className="flex flex-col justify-center h-full text-left w-full mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery (0/${N_QUIZ})</div>
-        <h2 className="text-3xl md:text-4xl font-light mb-4 font-primary">Let's start with the basics.</h2>
-        <p className="text-sm md:text-base text-white/50 mb-10 font-secondary max-w-2xl">Before we map your strategic gaps, please tell us who we are building this scope for.</p>
+        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery (0/${N_QUIZ})</div>
+        <h2 className="text-xl md:text-2xl font-light mb-4 font-primary">Let's start with the basics.</h2>
+        <p className="text-[17px] md:text-[19px] text-white/50 mb-10 font-secondary max-w-2xl">Before we map your strategic gaps, please tell us who we are building this scope for.</p>
         
         <div className="space-y-6 max-w-xl">
           <div>
-            <label className="block text-xs font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">Brand / Business Name</label>
+            <label className="block text-[17px] md:text-[19px] font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">Brand / Business Name</label>
             <input 
               type="text" 
               value={leadForm.company}
@@ -2217,7 +2218,7 @@ const StrategicEngine = ({ navigate }) => {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">Industry / Sector</label>
+            <label className="block text-[17px] md:text-[19px] font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">Industry / Sector</label>
             <input 
               type="text" 
               value={leadForm.industry || ''}
@@ -2248,10 +2249,10 @@ const StrategicEngine = ({ navigate }) => {
       return (
       <div key={`q${i}`} className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
         <FadeUp>
-          <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery ({i + 1}/${N_QUIZ})</div>
-          <h2 className="text-3xl md:text-4xl font-light mb-4 font-primary">{q.title}</h2>
-          {isMultiSelect && <p className="text-sm text-cyan-400 mb-8 font-secondary">Select all that apply.</p>}
-          {!isMultiSelect && <p className="text-sm text-white/40 mb-8 font-secondary">Select the most accurate statement.</p>}
+          <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery ({i + 1}/${N_QUIZ})</div>
+          <h2 className="text-xl md:text-2xl font-light mb-4 font-primary">{q.title}</h2>
+          {isMultiSelect && <p className="text-[17px] md:text-[19px] text-cyan-400 mb-8 font-secondary">Select all that apply.</p>}
+          {!isMultiSelect && <p className="text-[17px] md:text-[19px] text-white/40 mb-8 font-secondary">Select the most accurate statement.</p>}
           
           <StaggerGroup className="space-y-3 w-full max-w-3xl">
             {q.options.map((opt, j) => {
@@ -2266,8 +2267,8 @@ const StrategicEngine = ({ navigate }) => {
                     className="w-full text-left p-5 rounded-[12px] border transition-all duration-300 flex items-center gap-4 font-secondary hover:translate-x-1"
                     style={{ borderColor: isSelected ? palette.primary : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.primary, 0.1) : 'rgba(255,255,255,0.02)', color: isSelected ? 'white' : 'rgba(255,255,255,0.6)' }}
                   >
-                    <span className="font-secondary italic opacity-40 text-lg w-6 shrink-0">0{j + 1}</span>
-                    <span className="text-lg font-light flex-1">{opt.label}</span>
+                    <span className="font-secondary italic opacity-40 text-xl md:text-xl md:text-2xl w-6 shrink-0">0{j + 1}</span>
+                    <span className="text-xl md:text-xl md:text-2xl font-light flex-1">{opt.label}</span>
                     {isMultiSelect && isSelected && <Check className="w-5 h-5 shrink-0" style={{ color: palette.primary }} />}
                   </button>
                 </StaggerItem>
@@ -2281,7 +2282,7 @@ const StrategicEngine = ({ navigate }) => {
                 placeholder="Add any additional context or comments (optional)..."
                 value={comments[q.id] || ''}
                 onChange={(e) => setComments(prev => ({ ...prev, [q.id]: e.target.value }))}
-                className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] p-4 text-white/80 font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all text-sm resize-none"
+                className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] p-4 text-white/80 font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all text-[17px] md:text-[19px] resize-none"
                 rows={2}
               />
             </StaggerItem>
@@ -2300,7 +2301,7 @@ const StrategicEngine = ({ navigate }) => {
                   const allValidOptions = q.options.filter(o => !o.id.startsWith('none'));
                   setAnswers(prev => ({ ...prev, [q.id]: allValidOptions }));
                 }}
-                className="px-6 py-4 border border-white/20 rounded-[12px] text-white/60 hover:text-white hover:bg-white/5 transition-colors font-secondary text-sm font-medium"
+                className="px-6 py-4 border border-white/20 rounded-[12px] text-white/60 hover:text-white hover:bg-white/5 transition-colors font-secondary text-[17px] md:text-[19px] font-medium"
               >
                 Select All
               </button>
@@ -2314,9 +2315,9 @@ const StrategicEngine = ({ navigate }) => {
     // N+1: Diagnosis Result
     <div key="diag" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-xs font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4" /> Discovery Insights</div>
-        <h2 className="text-3xl md:text-4xl font-light mb-6 font-primary">Your brand opportunity areas.</h2>
-        <p className="text-white/50 font-light mb-12 text-lg font-secondary max-w-3xl">Based on your answers, your communication is currently breaking due to <strong className="text-white">{clusters.join(' & ')}</strong>. We recommend structuring your project around these core ecosystems:</p>
+        <div className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4" /> Discovery Insights</div>
+        <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">Your brand opportunity areas.</h2>
+        <p className="text-white/50 font-light mb-12 text-xl md:text-xl md:text-2xl font-secondary max-w-3xl">Based on your answers, your communication is currently breaking due to <strong className="text-white">{clusters.join(' & ')}</strong>. We recommend structuring your project around these core ecosystems:</p>
         <StaggerGroup className="grid sm:grid-cols-2 gap-4 mb-12 w-full max-w-4xl">
           {routes.map(r => {
             const rColor = palette[ROUTES_INFO[r].type] || palette.primary;
@@ -2325,14 +2326,14 @@ const StrategicEngine = ({ navigate }) => {
                 <div className="border border-white/10 rounded-[16px] p-6 text-left flex flex-col h-full w-full" style={{ backgroundColor: palette.panel }}>
                   <div className={`w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 shadow-sm`} style={{ backgroundColor: rColor, color: palette.bgDeep }}>{ROUTES_INFO[r].icon}</div>
                   <h4 className="text-xl font-medium mb-2 font-primary">{ROUTES_INFO[r].title}</h4>
-                  <p className="text-sm text-white/40 font-light leading-relaxed font-secondary">{ROUTES_INFO[r].desc}</p>
+                  <p className="text-[17px] md:text-[19px] text-white/40 font-light leading-relaxed font-secondary">{ROUTES_INFO[r].desc}</p>
                   
                   <button 
                     onClick={(e) => {
                       e.stopPropagation();
                       setReadMorePopup(ROUTES_INFO[r]);
                     }}
-                    className="text-xs uppercase tracking-wider font-medium text-cyan-400 hover:text-cyan-300 transition-colors mt-4 self-start"
+                    className="text-[17px] md:text-[19px] uppercase tracking-wider font-medium text-cyan-400 hover:text-cyan-300 transition-colors mt-4 self-start"
                   >
                     Read More
                   </button>
@@ -2343,7 +2344,7 @@ const StrategicEngine = ({ navigate }) => {
         </StaggerGroup>
         <div className="flex gap-6 items-center">
           <PremiumButton onClick={() => setStep(N_QUIZ + 2)}>Select Deliverables</PremiumButton>
-          <button onClick={() => setStep(N_QUIZ)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
+          <button onClick={() => setStep(N_QUIZ)} className="text-white/40 hover:text-white text-[17px] md:text-[19px] transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
     </div>,
@@ -2351,8 +2352,8 @@ const StrategicEngine = ({ navigate }) => {
     // N+3: Deliverables Selection
     <div key="delivSel" className="flex flex-col h-full w-full py-10 text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 3 / Details</div>
-        <h2 className="text-3xl md:text-4xl font-light mb-2 font-primary">Build Your Scope</h2>
+        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 3 / Details</div>
+        <h2 className="text-xl md:text-2xl font-light mb-2 font-primary">Build Your Scope</h2>
         <p className="text-white/50 font-light mb-10 font-secondary">Select the specific deliverables you need across your chosen routes.</p>
         <StaggerGroup className="space-y-10 w-full pb-10">
           {selectedRoutes.map(rId => {
@@ -2360,7 +2361,7 @@ const StrategicEngine = ({ navigate }) => {
             const rColor = palette[route.type] || palette.primary;
             return (
               <StaggerItem key={rId}>
-                <h4 className="text-sm font-medium tracking-widest uppercase mb-4 pb-2 border-b border-white/5 flex items-center gap-2 font-primary" style={{ color: rColor }}>{route.icon} {route.title}</h4>
+                <h4 className="text-[17px] md:text-[19px] font-medium tracking-widest uppercase mb-4 pb-2 border-b border-white/5 flex items-center gap-2 font-primary" style={{ color: rColor }}>{route.icon} {route.title}</h4>
                 <div className="space-y-6 w-full max-w-4xl">
                   {route.lineItems.map(li => {
                     const delivs = DELIVERABLES_MASTER.filter(d => d.lineItem === li.id);
@@ -2369,8 +2370,8 @@ const StrategicEngine = ({ navigate }) => {
                       <div key={li.id} className="bg-white/[0.01] border border-white/5 rounded-[12px] w-full overflow-hidden">
                         <div className="bg-[#010D54] py-4 px-6 border-b border-white/10 mb-6 flex justify-between items-center gap-4">
                           <div>
-                            <h5 className="font-medium text-white text-lg font-primary">{li.name}</h5>
-                            {li.desc && <p className="text-white/50 text-sm font-secondary mt-1 font-light">{li.desc}</p>}
+                            <h5 className="font-medium text-white text-xl md:text-xl md:text-2xl font-primary">{li.name}</h5>
+                            {li.desc && <p className="text-white/50 text-[17px] md:text-[19px] font-secondary mt-1 font-light">{li.desc}</p>}
                           </div>
                           <button 
                             onClick={(e) => {
@@ -2382,7 +2383,7 @@ const StrategicEngine = ({ navigate }) => {
                                 return Array.from(newSet);
                               });
                             }}
-                            className="text-[10px] uppercase tracking-widest text-white/50 hover:text-white transition-colors border border-white/20 px-3 py-1.5 rounded shrink-0"
+                            className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/50 hover:text-white transition-colors border border-white/20 px-3 py-1.5 rounded shrink-0"
                           >
                             Select All
                           </button>
@@ -2397,16 +2398,16 @@ const StrategicEngine = ({ navigate }) => {
                                 <div className="flex items-start gap-4 cursor-pointer" onClick={() => handleDeliverableToggle(d.id)}>
                                   <div className={`w-4 h-4 rounded-sm border mt-1 flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#2A97D9] border-[#2A97D9]' : 'border-white/30'}`}>{isSelected && <Check className="w-3 h-3 text-white" />}</div>
                                   <div className="flex-1 text-left">
-                                    <div className={`font-medium text-sm mb-1 ${isSelected ? 'text-white' : 'text-white/70'}`}>{d.name} {isWarning && <span className="ml-2 text-[10px] bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded border border-yellow-500/30">Missing Prereqs</span>}</div>
+                                    <div className={`font-medium text-[17px] md:text-[19px] mb-1 ${isSelected ? 'text-white' : 'text-white/70'}`}>{d.name} {isWarning && <span className="ml-2 text-[17px] md:text-[19px] bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded border border-yellow-500/30">Missing Prereqs</span>}</div>
                                     {d.interdependence !== 'None' && (
-                                      <div className="text-xs text-white/40 mt-1">Requires: {formatInterdependence(d.interdependence)}</div>
+                                      <div className="text-[17px] md:text-[19px] text-white/40 mt-1">Requires: {formatInterdependence(d.interdependence)}</div>
                                     )}
                                   </div>
                                 </div>
                                 {isSelected && (
                                   <div className="pl-8 flex items-center gap-3 mt-2 border-t border-white/5 pt-3">
-                                    <span className="text-[10px] uppercase tracking-widest text-white/40">Priority:</span>
-                                    <select value={priorities[d.id] || 'Standard'} onChange={e => setPriorities(p => ({ ...p, [d.id]: e.target.value }))} className="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white outline-none">
+                                    <span className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40">Priority:</span>
+                                    <select value={priorities[d.id] || 'Standard'} onChange={e => setPriorities(p => ({ ...p, [d.id]: e.target.value }))} className="bg-white/5 border border-white/10 rounded px-2 py-1 text-[17px] md:text-[19px] text-white outline-none">
                                       <option value="Standard">Standard</option>
                                       <option value="High">High</option>
                                       <option value="Critical">Critical</option>
@@ -2428,7 +2429,7 @@ const StrategicEngine = ({ navigate }) => {
         </StaggerGroup>
         <div className="pt-8 border-t border-white/10 mt-auto flex gap-6 items-center">
           <PremiumButton disabled={selectedDeliverables.length === 0} onClick={() => setStep(N_QUIZ + 3)}>Next: Project Context</PremiumButton>
-          <button onClick={() => setStep(N_QUIZ + 1)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
+          <button onClick={() => setStep(N_QUIZ + 1)} className="text-white/40 hover:text-white text-[17px] md:text-[19px] transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
     </div>,
@@ -2436,11 +2437,11 @@ const StrategicEngine = ({ navigate }) => {
     // N+4: Context
     <div key="ctxSel" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-xs font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 4 / Execution</div>
-        <h2 className="text-3xl md:text-4xl font-light mb-10 font-primary">Project Context.</h2>
+        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 4 / Execution</div>
+        <h2 className="text-xl md:text-2xl font-light mb-10 font-primary">Project Context.</h2>
         <div className="space-y-6 w-full mb-12 max-w-3xl">
           <div className="w-full">
-            <label className="block text-2xl md:text-3xl font-medium text-white mb-6 font-secondary">what is your expected commencement date?</label>
+            <label className="block text-xl md:text-2xl font-medium text-white mb-6 font-secondary">what is your expected commencement date?</label>
             <select value={context.duration} onChange={e => setContext({ ...context, duration: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
               <option value="Short term (minimum 3 months)" style={{ backgroundColor: palette.bgDeep }}>Short term (minimum 3 months)</option>
               <option value="Deep Dive- Branding (minimum 6 months)" style={{ backgroundColor: palette.bgDeep }}>Deep Dive- Branding (minimum 6 months)</option>
@@ -2450,7 +2451,7 @@ const StrategicEngine = ({ navigate }) => {
         </div>
         <div className="flex gap-6 items-center">
           <PremiumButton disabled={!context.duration} onClick={() => setStep(N_QUIZ + 4)}>Finalize Blueprint</PremiumButton>
-          <button onClick={() => setStep(N_QUIZ + 2)} className="text-white/40 hover:text-white text-sm transition-colors font-secondary">Back</button>
+          <button onClick={() => setStep(N_QUIZ + 2)} className="text-white/40 hover:text-white text-[17px] md:text-[19px] transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
     </div>,
@@ -2458,9 +2459,9 @@ const StrategicEngine = ({ navigate }) => {
     // N+5: Lead Capture
     <div key="leadCap" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.blue }}>Final Step</div>
-        <h2 className="text-3xl md:text-4xl font-light mb-6 font-primary">Where should we send your Scope Snapshot?</h2>
-        <p className="text-white/50 font-light mb-10 text-lg font-secondary max-w-3xl">Enter your details below to instantly generate your strategy report and brief our consulting team.</p>
+        <div className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.blue }}>Final Step</div>
+        <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">Where should we send your Scope Snapshot?</h2>
+        <p className="text-white/50 font-light mb-10 text-xl md:text-xl md:text-2xl font-secondary max-w-3xl">Enter your details below to instantly generate your strategy report and brief our consulting team.</p>
         <form onSubmit={submitLead} className="space-y-4 w-full font-secondary max-w-3xl">
           <input required type="text" placeholder="Full Name" value={leadForm.name} onChange={e => setLeadForm({ ...leadForm, name: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <input required type="email" placeholder="Work Email" value={leadForm.email} onChange={e => setLeadForm({ ...leadForm, email: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
@@ -2469,7 +2470,7 @@ const StrategicEngine = ({ navigate }) => {
             <PremiumButton type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-10">
               {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing...</> : 'Generate Report & Send Brief'}
             </PremiumButton>
-            <button type="button" onClick={() => setStep(N_QUIZ + 3)} disabled={isSubmitting} className="text-white/40 hover:text-white text-sm transition-colors disabled:opacity-50">Back</button>
+            <button type="button" onClick={() => setStep(N_QUIZ + 3)} disabled={isSubmitting} className="text-white/40 hover:text-white text-[17px] md:text-[19px] transition-colors disabled:opacity-50">Back</button>
           </div>
         </form>
       </FadeUp>
@@ -2481,33 +2482,33 @@ const StrategicEngine = ({ navigate }) => {
         <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)] print:p-0 print:shadow-none print:rounded-none print:overflow-visible print-blueprint-container" style={{ backgroundColor: palette.bgDeep }}>
           <div className="flex flex-col md:flex-row justify-between items-start border-b border-white/10 pb-8 mb-10 relative z-10 gap-6 w-full">
             <div>
-              <div className="text-xs uppercase tracking-widest mb-3 font-medium flex items-center gap-2 font-primary" style={{ color: palette.primary }}><FileText className="w-4 h-4" /> Official Scope Snapshot</div>
-              <h2 className="text-4xl font-light text-white mb-2 font-primary">{leadForm.company || 'Your Brand'}</h2>
-              <p className="text-white/50 text-sm font-secondary">Prepared for {leadForm.name || 'Client'}</p>
+              <div className="text-[17px] md:text-[19px] uppercase tracking-widest mb-3 font-medium flex items-center gap-2 font-primary" style={{ color: palette.primary }}><FileText className="w-4 h-4" /> Official Scope Snapshot</div>
+              <h2 className="text-xl md:text-2xl font-light text-white mb-2 font-primary">{leadForm.company || 'Your Brand'}</h2>
+              <p className="text-white/50 text-[17px] md:text-[19px] font-secondary">Prepared for {leadForm.name || 'Client'}</p>
             </div>
             <div className="md:text-right">
-              <div className="text-[10px] text-white/30 uppercase tracking-widest mb-1 font-primary">Date Generated</div>
-              <div className="text-sm font-medium text-white/70 font-secondary">{new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+              <div className="text-[17px] md:text-[19px] text-white/30 uppercase tracking-widest mb-1 font-primary">Date Generated</div>
+              <div className="text-[17px] md:text-[19px] font-medium text-white/70 font-secondary">{new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-16 relative z-10 w-full print:grid-cols-1 print:gap-8">
             <div className="space-y-10 w-full">
               <div className="bg-white/[0.02] border border-white/5 rounded-[16px] p-8 mb-8 relative overflow-hidden w-full">
-                <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-8 font-primary">Brand Alignment Profile</h4>
+                <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-8 font-primary">Brand Alignment Profile</h4>
                 <BrandHealthRadar clusters={clusters} />
               </div>
 
               <div className="w-full">
-                <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Recommended Ecosystems</h4>
+                <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Recommended Ecosystems</h4>
                 <div className="flex flex-wrap gap-2 w-full">
-                  {selectedRoutes.map(r => <span key={r} className="px-3 py-1.5 bg-white/5 text-white/70 text-xs border border-white/10 rounded-full flex items-center gap-2 font-secondary">{ROUTES_INFO[r]?.icon} {ROUTES_INFO[r]?.title}</span>)}
+                  {selectedRoutes.map(r => <span key={r} className="px-3 py-1.5 bg-white/5 text-white/70 text-[17px] md:text-[19px] border border-white/10 rounded-full flex items-center gap-2 font-secondary">{ROUTES_INFO[r]?.icon} {ROUTES_INFO[r]?.title}</span>)}
                 </div>
               </div>
 
               <div className="w-full">
-                <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Execution Context</h4>
-                <div className="text-sm text-white/70 font-light space-y-3 bg-white/[0.02] p-6 rounded-[12px] border border-white/5 font-secondary w-full">
+                <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Execution Context</h4>
+                <div className="text-[17px] md:text-[19px] text-white/70 font-light space-y-3 bg-white/[0.02] p-6 rounded-[12px] border border-white/5 font-secondary w-full">
                   <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Brand Stage</span> <span className="text-right">{(Array.isArray(answers.stage) && answers.stage.length > 0) ? answers.stage.map(s => s.label).join(', ') : 'Not Selected'}</span></p>
                   <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Expected Commencement Date</span> <span className="text-right">{context.duration}</span></p>
                   <p className="flex justify-between"><span className="text-white/40 text-left">Suggested Starting Point</span> <span className="text-right text-[#6865FA]">{computeSuggestedStartingPoint(selectedDeliverables, priorities)}</span></p>
@@ -2516,17 +2517,17 @@ const StrategicEngine = ({ navigate }) => {
             </div>
 
             <div className="w-full">
-              <h4 className="text-[10px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Selected Deliverables Blueprint</h4>
+              <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Selected Deliverables Blueprint</h4>
               <ul className="space-y-4 w-full">
                 {DELIVERABLES_MASTER.filter(d => selectedDeliverables.includes(d.id)).map(d => (
                   <li key={d.id} className="flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full print:break-inside-avoid">
                     <div className="p-1.5 rounded-md shrink-0 mt-0.5" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4" style={{ color: palette.blue }} /></div>
                     <div className="w-full">
-                      <div className="text-sm font-medium text-white mb-1 font-secondary flex items-center justify-between">
+                      <div className="text-[17px] md:text-[19px] font-medium text-white mb-1 font-secondary flex items-center justify-between">
                         <span>{d.name} {warnings.includes(d.id) && <AlertCircle className="w-3 h-3 inline text-yellow-400 ml-1" />}</span>
-                        <span className="text-[10px] uppercase tracking-widest text-white/40">{priorities[d.id] || 'Standard'}</span>
+                        <span className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40">{priorities[d.id] || 'Standard'}</span>
                       </div>
-                      <div className="text-xs text-white/40 leading-relaxed font-secondary">ID: {d.id}</div>
+                      <div className="text-[17px] md:text-[19px] text-white/40 leading-relaxed font-secondary">ID: {d.id}</div>
                     </div>
                   </li>
                 ))}
@@ -2535,7 +2536,7 @@ const StrategicEngine = ({ navigate }) => {
           </div>
 
           <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-10 w-full">
-            <p className="text-xs text-white/40 max-w-md leading-relaxed font-secondary">This snapshot has been securely routed to our partners. We will review your requirements and reach out within 24 hours to schedule a discovery alignment.</p>
+            <p className="text-[17px] md:text-[19px] text-white/40 max-w-md leading-relaxed font-secondary">This snapshot has been securely routed to our partners. We will review your requirements and reach out within 24 hours to schedule a discovery alignment.</p>
             <div className="flex gap-4 w-full sm:w-auto">
               <PremiumButton onClick={() => window.print()} variant="secondary" className="w-full sm:w-auto px-6 py-3"><Printer className="w-4 h-4 mr-2" /> Print</PremiumButton>
               <PremiumButton onClick={() => navigate('home')} className="w-full sm:w-auto px-6 py-3">Return to Website</PremiumButton>
@@ -2555,8 +2556,8 @@ const StrategicEngine = ({ navigate }) => {
               <X className="w-5 h-5" />
             </button>
             <div className={`w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 shadow-sm`} style={{ backgroundColor: palette[readMorePopup.type] || palette.primary, color: palette.bgDeep }}>{readMorePopup.icon}</div>
-            <h3 className="text-2xl font-light mb-4 text-white font-primary">{readMorePopup.title}</h3>
-            <div className="mt-6 text-sm text-white/60 font-secondary font-light leading-relaxed flex flex-col gap-4 max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
+            <h3 className="text-xl md:text-2xl font-light mb-4 text-white font-primary">{readMorePopup.title}</h3>
+            <div className="mt-6 text-[17px] md:text-[19px] text-white/60 font-secondary font-light leading-relaxed flex flex-col gap-4 max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
               {(readMorePopup.expandedDesc || readMorePopup.desc).split('\n').map((paragraph, idx) => (
                 paragraph.trim() ? <p key={idx}>{paragraph}</p> : null
               ))}
@@ -2573,35 +2574,35 @@ const StrategicEngine = ({ navigate }) => {
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#0C185C] border border-white/10 p-8 rounded-[24px] max-w-lg w-full shadow-2xl">
             {dependencyModal.type === 'add' ? (
               <>
-                <h3 className="text-2xl font-light mb-4 text-white font-primary">Missing Prerequisites</h3>
+                <h3 className="text-xl md:text-2xl font-light mb-4 text-white font-primary">Missing Prerequisites</h3>
                 <p className="text-white/60 mb-6 font-secondary">This deliverable requires {dependencyModal.related.length} other foundation(s) to be executed properly:</p>
                 <ul className="mb-8 space-y-2 max-h-40 overflow-y-auto custom-scrollbar font-secondary border border-white/5 bg-white/[0.02] p-4 rounded-lg">
                   {dependencyModal.related.map(id => {
                     const d = DELIVERABLES_MASTER.find(x => x.id === id);
-                    return <li key={id} className="text-sm text-white/80 flex items-center gap-2"><ArrowRight className="w-3 h-3 text-[#6865FA] shrink-0" /> {d?.name || id}</li>;
+                    return <li key={id} className="text-[17px] md:text-[19px] text-white/80 flex items-center gap-2"><ArrowRight className="w-3 h-3 text-[#6865FA] shrink-0" /> {d?.name || id}</li>;
                   })}
                 </ul>
                 <div className="flex flex-col gap-3 font-secondary">
                   <button onClick={() => {
                     setSelectedDeliverables(prev => [...new Set([...prev, dependencyModal.deliverable, ...dependencyModal.related])]);
                     setDependencyModal(null);
-                  }} className="bg-[#6865FA] text-white py-3 rounded-[8px] font-medium text-sm hover:brightness-110">Add all required prerequisites</button>
+                  }} className="bg-[#6865FA] text-white py-3 rounded-[8px] font-medium text-[17px] md:text-[19px] hover:brightness-110">Add all required prerequisites</button>
                   <button onClick={() => {
                     setSelectedDeliverables(prev => [...prev, dependencyModal.deliverable]);
                     setWarnings(prev => [...prev, dependencyModal.deliverable]);
                     setDependencyModal(null);
-                  }} className="bg-white/5 border border-white/10 text-white py-3 rounded-[8px] font-medium text-sm hover:bg-white/10">Keep this deliverable with a warning</button>
-                  <button onClick={() => setDependencyModal(null)} className="text-white/50 py-2 text-sm hover:text-white">Cancel</button>
+                  }} className="bg-white/5 border border-white/10 text-white py-3 rounded-[8px] font-medium text-[17px] md:text-[19px] hover:bg-white/10">Keep this deliverable with a warning</button>
+                  <button onClick={() => setDependencyModal(null)} className="text-white/50 py-2 text-[17px] md:text-[19px] hover:text-white">Cancel</button>
                 </div>
               </>
             ) : (
               <>
-                <h3 className="text-2xl font-light mb-4 text-white font-primary">Warning: Breaking Dependencies</h3>
+                <h3 className="text-xl md:text-2xl font-light mb-4 text-white font-primary">Warning: Breaking Dependencies</h3>
                 <p className="text-white/60 mb-6 font-secondary">Removing this will also break the foundation for {dependencyModal.related.length} dependent deliverable(s):</p>
                 <ul className="mb-8 space-y-2 max-h-40 overflow-y-auto custom-scrollbar font-secondary border border-white/5 bg-white/[0.02] p-4 rounded-lg">
                   {dependencyModal.related.map(id => {
                     const d = DELIVERABLES_MASTER.find(x => x.id === id);
-                    return <li key={id} className="text-sm text-white/80 flex items-center gap-2"><X className="w-3 h-3 text-red-400 shrink-0" /> {d?.name || id}</li>;
+                    return <li key={id} className="text-[17px] md:text-[19px] text-white/80 flex items-center gap-2"><X className="w-3 h-3 text-red-400 shrink-0" /> {d?.name || id}</li>;
                   })}
                 </ul>
                 <div className="flex flex-col gap-3 font-secondary">
@@ -2609,8 +2610,8 @@ const StrategicEngine = ({ navigate }) => {
                     setSelectedDeliverables(prev => prev.filter(x => x !== dependencyModal.deliverable && !dependencyModal.related.includes(x)));
                     setWarnings(prev => prev.filter(x => x !== dependencyModal.deliverable && !dependencyModal.related.includes(x)));
                     setDependencyModal(null);
-                  }} className="bg-red-500/20 border border-red-500/30 text-red-400 py-3 rounded-[8px] font-medium text-sm hover:bg-red-500/30">Remove this and all dependents</button>
-                  <button onClick={() => setDependencyModal(null)} className="text-white/50 py-2 text-sm hover:text-white">Cancel (Keep in scope)</button>
+                  }} className="bg-red-500/20 border border-red-500/30 text-red-400 py-3 rounded-[8px] font-medium text-[17px] md:text-[19px] hover:bg-red-500/30">Remove this and all dependents</button>
+                  <button onClick={() => setDependencyModal(null)} className="text-white/50 py-2 text-[17px] md:text-[19px] hover:text-white">Cancel (Keep in scope)</button>
                 </div>
               </>
             )}
@@ -2620,7 +2621,7 @@ const StrategicEngine = ({ navigate }) => {
 
       {step === 0 && (
         <div className="fixed top-28 left-[3%] z-50 flex items-center gap-3 print:hidden">
-          <button onClick={() => navigate('home')} className="flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border text-white/60 hover:text-white border-white/20 bg-white/5 backdrop-blur-md">
+          <button onClick={() => navigate('home')} className="flex items-center gap-2.5 text-[17px] md:text-[19px] uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border text-white/60 hover:text-white border-white/20 bg-white/5 backdrop-blur-md">
             <ArrowLeft className="w-4 h-4" /> Home
           </button>
         </div>
@@ -2630,17 +2631,17 @@ const StrategicEngine = ({ navigate }) => {
         <div className="fixed top-[72px] md:top-[88px] left-0 w-full z-30 print:hidden flex items-center bg-black/40 backdrop-blur-xl border-b border-white/10 px-4 md:px-8 py-4 shadow-lg shadow-black/20">
           <button 
             onClick={() => setStep(step - 1)} 
-            className="flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border text-white/60 hover:text-white border-white/20 bg-white/5 backdrop-blur-md shrink-0"
+            className="flex items-center gap-2.5 text-[17px] md:text-[19px] uppercase tracking-[0.25em] font-secondary transition-colors hover:opacity-70 px-4 py-2 rounded-full border text-white/60 hover:text-white border-white/20 bg-white/5 backdrop-blur-md shrink-0"
           >
             <ArrowLeft className="w-4 h-4" /> Back
           </button>
           
           <div className="flex-1 ml-6 md:ml-10 flex flex-col gap-2 relative max-w-4xl">
             <div className="flex justify-between items-end px-1">
-              <span className="text-[10px] uppercase tracking-[0.2em] font-bold font-secondary text-white/90 drop-shadow-md">
+              <span className="text-[17px] md:text-[19px] uppercase tracking-[0.2em] font-bold font-secondary text-white/90 drop-shadow-md">
                 {step <= N_QUIZ ? 'Phase 1 // Diagnosis' : step <= N_QUIZ + 1 ? 'Phase 2 // Scope Architecture' : step <= N_QUIZ + 3 ? 'Phase 3 // Details & Context' : 'Final Verification'}
               </span>
-              <span className="text-[10px] font-bold text-white/50 font-secondary tracking-wider">
+              <span className="text-[17px] md:text-[19px] font-bold text-white/50 font-secondary tracking-wider">
                 {Math.round((step / (N_QUIZ + 4)) * 100)}%
               </span>
             </div>
@@ -2703,7 +2704,7 @@ const StrategicEngine = ({ navigate }) => {
       </div>
       {step > 0 && step < (N_QUIZ + 5) && (
         <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 w-full">
-          <button onClick={() => setIsMobilePreviewOpen(!isMobilePreviewOpen)} className="w-full border-t border-white/10 p-4 flex items-center justify-between text-sm font-medium backdrop-blur-xl font-secondary" style={{ backgroundColor: palette.panel }}>
+          <button onClick={() => setIsMobilePreviewOpen(!isMobilePreviewOpen)} className="w-full border-t border-white/10 p-4 flex items-center justify-between text-[17px] md:text-[19px] font-medium backdrop-blur-xl font-secondary" style={{ backgroundColor: palette.panel }}>
             <span className="flex items-center gap-2"><FileText className="w-4 h-4" style={{ color: palette.primary }} /> View Live Scope {selectedDeliverables.length > 0 && `(${selectedDeliverables.length})`}</span>
             {isMobilePreviewOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronUp className="w-4 h-4" />}
           </button>
@@ -2814,9 +2815,9 @@ const Header = ({ navigate, current }) => {
     <div className="flex gap-12 text-left w-full">
       <div className="w-1/3 pr-12 border-r border-white/5 flex flex-col items-start">
         <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 border" style={{ backgroundColor: palette.primary, borderColor: hexToRgba(palette.primary, 0.2), color: palette.bgDeep }}><Layers className="w-6 h-6" /></div>
-        <h3 className="text-2xl font-light mb-4 text-white font-primary">Consulting Ecosystems</h3>
-        <p className="text-white/50 text-sm leading-relaxed mb-8 font-secondary">We deliver across three distinct pillars depending on your growth stage and communication gaps.</p>
-        <button onClick={() => { navigate('services'); setActiveMenu(null); }} className="text-sm text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">View All Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></button>
+        <h3 className="text-xl md:text-2xl font-light mb-4 text-white font-primary">Consulting Ecosystems</h3>
+        <p className="text-white/50 text-[17px] md:text-[19px] leading-relaxed mb-8 font-secondary">We deliver across three distinct pillars depending on your growth stage and communication gaps.</p>
+        <button onClick={() => { navigate('services'); setActiveMenu(null); }} className="text-[17px] md:text-[19px] text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">View All Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></button>
       </div>
       <div className="w-2/3 grid grid-cols-3 gap-6">
         {Object.values(ROUTES_INFO).map(route => {
@@ -2824,8 +2825,8 @@ const Header = ({ navigate, current }) => {
           return (
             <MenuHoverCard key={route.id} color={rColor} onClick={() => { navigate(`service-detail/${route.id.toLowerCase()}`); setActiveMenu(null); }}>
               <motion.div variants={{ initial: { y: 0, scale: 1 }, hover: { y: -4, scale: 1.05 } }} transition={{ type: "spring", stiffness: 400, damping: 15 }} className="w-12 h-12 rounded-[12px] border border-white/10 flex items-center justify-center mb-5 shadow-inner" style={{ backgroundColor: rColor, color: palette.bgDeep, border: 'none' }}>{route.icon}</motion.div>
-              <h4 className="text-lg font-medium text-white mb-2 font-primary">{route.title}</h4>
-              <p className="text-xs text-white/40 leading-relaxed font-light font-secondary">{route.desc}</p>
+              <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-2 font-primary">{route.title}</h4>
+              <p className="text-[17px] md:text-[19px] text-white/40 leading-relaxed font-light font-secondary">{route.desc}</p>
             </MenuHoverCard>
           )
         })}
@@ -2877,8 +2878,8 @@ const Header = ({ navigate, current }) => {
               )}
               
               <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/40 to-transparent flex flex-col justify-end p-5">
-                 <span className="text-[10px] tracking-widest uppercase mb-1 block font-medium font-primary" style={{ color: hexColor }}>{cs.sector}</span>
-                 <h4 className="text-white font-medium text-base font-secondary leading-tight">{cs.client}</h4>
+                 <span className="text-[17px] md:text-[19px] tracking-widest uppercase mb-1 block font-medium font-primary" style={{ color: hexColor }}>{cs.sector}</span>
+                 <h4 className="text-white font-medium text-[17px] md:text-[19px] font-secondary leading-tight">{cs.client}</h4>
               </div>
               
               {isActive && (
@@ -2913,9 +2914,9 @@ const Header = ({ navigate, current }) => {
     <div className="flex gap-12 text-left w-full">
       <div className="w-1/3 pr-12 border-r border-white/5 flex flex-col items-start">
         <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 border" style={{ backgroundColor: palette.blue, borderColor: hexToRgba(palette.blue, 0.2), color: palette.bgDeep }}><Briefcase className="w-6 h-6" /></div>
-        <h3 className="text-2xl font-light mb-4 text-white font-primary">Selected Work</h3>
-        <p className="text-white/50 text-sm leading-relaxed mb-8 font-secondary">Case studies and full visual archive proving our thinking across strategy, identity, and campaigns.</p>
-        <button onClick={() => { navigate('work'); setActiveMenu(null); }} className="text-sm text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">View Full Archive <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></button>
+        <h3 className="text-xl md:text-2xl font-light mb-4 text-white font-primary">Selected Work</h3>
+        <p className="text-white/50 text-[17px] md:text-[19px] leading-relaxed mb-8 font-secondary">Case studies and full visual archive proving our thinking across strategy, identity, and campaigns.</p>
+        <button onClick={() => { navigate('work'); setActiveMenu(null); }} className="text-[17px] md:text-[19px] text-white/70 hover:text-white flex items-center gap-2 group mt-auto font-medium font-secondary">View Full Archive <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" /></button>
       </div>
       <div className="w-2/3">
         <WorkMegaMenuCarousel 
@@ -2930,25 +2931,25 @@ const Header = ({ navigate, current }) => {
     <div className="flex gap-12 text-left w-full">
       <div className="w-1/3 pr-12 border-r border-white/5 flex flex-col items-start">
         <div className="w-12 h-12 rounded-[12px] flex items-center justify-center mb-6 border" style={{ backgroundColor: palette.primary, borderColor: hexToRgba(palette.primary, 0.2), color: palette.bgDeep }}><Dna className="w-6 h-6" /></div>
-        <h3 className="text-2xl font-light mb-4 text-white font-primary">Who We Are</h3>
-        <p className="text-white/50 text-sm leading-relaxed mb-8 font-secondary">A Brand Communication Studio which co-creates brands backed by cutting-edge innovation; with a SciArt-Driven Approach.</p>
+        <h3 className="text-xl md:text-2xl font-light mb-4 text-white font-primary">Who We Are</h3>
+        <p className="text-white/50 text-[17px] md:text-[19px] leading-relaxed mb-8 font-secondary">A Brand Communication Studio which co-creates brands backed by cutting-edge innovation; with a SciArt-Driven Approach.</p>
       </div>
       <div className="w-2/3 grid grid-cols-2 gap-6 w-full">
         <MenuHoverCard color={palette.primary} onClick={() => { navigate('about'); setActiveMenu(null); }}>
-          <h4 className="text-lg font-medium text-white mb-2 font-primary">About PBH</h4>
-          <p className="text-xs text-white/40 font-secondary">Our Vision, Mission, and Core Values.</p>
+          <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-2 font-primary">About PBH</h4>
+          <p className="text-[17px] md:text-[19px] text-white/40 font-secondary">Our Vision, Mission, and Core Values.</p>
         </MenuHoverCard>
         <MenuHoverCard color={palette.blue} onClick={() => { navigate('method'); setActiveMenu(null); }}>
-          <h4 className="text-lg font-medium text-white mb-2 font-primary">The PBH Method</h4>
-          <p className="text-xs text-white/40 font-secondary">Our step-by-step strategic process.</p>
+          <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-2 font-primary">The PBH Method</h4>
+          <p className="text-[17px] md:text-[19px] text-white/40 font-secondary">Our step-by-step strategic process.</p>
         </MenuHoverCard>
         <MenuHoverCard color={palette.accent} onClick={() => { navigate('story'); setActiveMenu(null); }}>
-          <h4 className="text-lg font-medium text-white mb-2 font-primary">Our Story</h4>
-          <p className="text-xs text-white/40 font-secondary">How art and science collided.</p>
+          <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-2 font-primary">Our Story</h4>
+          <p className="text-[17px] md:text-[19px] text-white/40 font-secondary">How art and science collided.</p>
         </MenuHoverCard>
         <MenuHoverCard color={palette.purple} onClick={() => { navigate('team'); setActiveMenu(null); }}>
-          <h4 className="text-lg font-medium text-white mb-2 font-primary">The Team</h4>
-          <p className="text-xs text-white/40 font-secondary">The innovators behind the curtain.</p>
+          <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-2 font-primary">The Team</h4>
+          <p className="text-[17px] md:text-[19px] text-white/40 font-secondary">The innovators behind the curtain.</p>
         </MenuHoverCard>
       </div>
     </div>
@@ -2971,12 +2972,12 @@ const Header = ({ navigate, current }) => {
       }}
     >
       <div className="w-full px-[3%] flex justify-between items-center relative z-[10001]">
-        <div className={`font-primary font-medium tracking-wide cursor-pointer flex items-center gap-3 hover:opacity-80 transition-all duration-300 text-white ${scrolled || activeMenu ? 'text-lg' : 'text-xl'}`} onClick={() => navigate('home')}>
+        <div className={`font-primary font-medium tracking-wide cursor-pointer flex items-center gap-3 hover:opacity-80 transition-all duration-300 text-white ${scrolled || activeMenu ? 'text-xl md:text-xl md:text-2xl' : 'text-xl'}`} onClick={() => navigate('home')}>
           <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className={`w-auto object-contain shrink-0 transition-all duration-300 ${scrolled || activeMenu ? 'h-6' : 'h-8'}`} />
           PurpleBlue House
         </div>
 
-        <nav className="hidden lg:flex items-center gap-2 text-base md:text-lg font-medium tracking-wide bg-white/[0.04] border border-white/10 rounded-full px-5 py-3 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_50px_rgba(0,0,0,0.35)] font-secondary">
+        <nav className="hidden lg:flex items-center gap-2 text-[17px] md:text-[19px] font-medium tracking-wide bg-white/[0.04] border border-white/10 rounded-full px-5 py-3 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_50px_rgba(0,0,0,0.35)] font-secondary">
           <NavLink onClick={() => { navigate('work'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('work')} active={current.startsWith('work') || activeMenu === 'work'}>Work</NavLink>
           <NavLink onClick={() => { navigate('services'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('services')} active={current.startsWith('services') || activeMenu === 'services'}>Services</NavLink>
           <NavLink onClick={() => { navigate('about'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('about')} active={['about', 'method', 'story', 'team'].includes(current) || activeMenu === 'about'}>About Us</NavLink>
@@ -2985,11 +2986,11 @@ const Header = ({ navigate, current }) => {
         </nav>
 
         <div className="hidden lg:flex items-center">
-          <PremiumButton onClick={() => { navigate('assessment'); setActiveMenu(null); }} className="px-6 py-2.5 rounded-[9px] text-xs font-secondary shadow-lg">Build My Brand Scope</PremiumButton>
+          <PremiumButton onClick={() => { navigate('assessment'); setActiveMenu(null); }} className="px-6 py-2.5 rounded-[9px] text-[17px] md:text-[19px] font-secondary shadow-lg">Build My Brand Scope</PremiumButton>
         </div>
 
         <div className="lg:hidden flex items-center">
-          <button onClick={() => navigate('assessment')} className="text-[10px] font-medium text-white px-4 py-2 rounded-[6px] uppercase tracking-widest shadow-md font-secondary" style={{ backgroundColor: '#6865fa' }}>Build Scope</button>
+          <button onClick={() => navigate('assessment')} className="text-[17px] md:text-[19px] font-medium text-white px-4 py-2 rounded-[6px] uppercase tracking-widest shadow-md font-secondary" style={{ backgroundColor: '#6865fa' }}>Build Scope</button>
         </div>
       </div>
 
@@ -3127,7 +3128,7 @@ const SelectedCollaboratorsSection = () => {
       <div className="w-full h-px mb-20 md:mb-28" style={{ background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent)' }} />
 
       <div className="w-full max-w-[90rem] mx-auto px-[5%] mb-16 md:mb-24 flex items-center gap-6">
-        <h3 className="text-xs md:text-sm uppercase tracking-[0.35em] font-primary text-white/25 font-medium shrink-0">
+        <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.35em] font-primary text-white/25 font-medium shrink-0">
           Selected Collaborations
         </h3>
         <div className="flex-1 h-px" style={{ background: 'linear-gradient(to right, rgba(255,255,255,0.08), transparent)' }} />
@@ -3197,6 +3198,7 @@ const HomePage = ({ navigate }) => {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="min-h-screen text-[#F4F4F5] w-full relative" style={{ backgroundColor: palette.bgDeep }}>
+
       <section ref={heroRef} onMouseMove={handleMouseMove} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} className="relative h-screen flex flex-col overflow-hidden w-full pt-28 pb-8 px-[3%]">
         <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute inset-0 overflow-hidden" style={{ backgroundColor: '#100e46' }}></div>
@@ -3344,7 +3346,7 @@ const HomePage = ({ navigate }) => {
         </div>
       </section>
 
-      <PremiumLogoMarquee />
+      <PremiumLogoMarquee navigate={navigate} caseStudies={CASE_STUDIES} />
 
       {/* Global Mission */}
       <section className="py-32 px-[3%] text-center relative overflow-hidden w-full" style={{ backgroundColor: palette.bgDeep }}>
@@ -3397,7 +3399,7 @@ const HomePage = ({ navigate }) => {
                       <div className="flex justify-between items-end font-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
                         <div className="flex gap-2 flex-wrap">
                           {(cs.tags || []).map(t => (
-                            <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-[10px] tracking-wider text-white/80 uppercase">{t}</span>
+                            <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-[17px] md:text-[19px] tracking-wider text-white/80 uppercase">{t}</span>
                           ))}
                         </div>
                         <ArrowUpRight className="w-8 h-8 text-white p-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20" />
@@ -3647,22 +3649,22 @@ const AboutPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
 
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.aboutPage?.pageLabel || "About PurpleBlue House"}</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-12 tracking-tight max-w-5xl font-primary">{renderWithItalics(SITE_SETTINGS?.aboutPage?.heroTitle || "We build breakthrough brands backed by cutting-edge innovation, powered by a *SciArt approach.*")}</h1>
+          <h2 className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.aboutPage?.pageLabel || "About PurpleBlue House"}</h2>
+          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-12 tracking-tight max-w-5xl font-primary">{renderWithItalics(SITE_SETTINGS?.aboutPage?.heroTitle || "We build breakthrough brands backed by cutting-edge innovation, powered by a *SciArt approach.*")}</h1>
         </FadeUp>
 
         {/* Section 2: Vision & Mission */}
         <FadeUp delay={0.2} className="grid md:grid-cols-2 gap-16 border-t border-white/10 pt-24 mb-24 w-full">
           <div>
-            <h3 className="text-sm tracking-widest uppercase mb-6 font-primary text-white/40">{SITE_SETTINGS?.aboutPage?.visionLabel || "Our Vision"}</h3>
-            <h2 className="text-3xl font-light font-primary leading-tight text-white/90">{SITE_SETTINGS?.aboutPage?.visionText || "To be the defining strategic partner for the world's most ambitious breakthrough innovations, shaping the next era of global progress."}</h2>
+            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-primary text-white/40">{SITE_SETTINGS?.aboutPage?.visionLabel || "Our Vision"}</h3>
+            <h2 className="text-xl md:text-2xl font-light font-primary leading-tight text-white/90">{SITE_SETTINGS?.aboutPage?.visionText || "To be the defining strategic partner for the world's most ambitious breakthrough innovations, shaping the next era of global progress."}</h2>
           </div>
           <div>
-            <h3 className="text-sm tracking-widest uppercase mb-6 font-primary text-white/40">{SITE_SETTINGS?.aboutPage?.missionLabel || "Our Mission"}</h3>
+            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-primary text-white/40">{SITE_SETTINGS?.aboutPage?.missionLabel || "Our Mission"}</h3>
             <p className="text-xl text-white/60 font-light font-secondary leading-relaxed">{SITE_SETTINGS?.aboutPage?.missionText || "We empower forward-thinking organizations globally, translating complex capabilities into compelling narratives. By championing breakthrough ideas, we build resilient brand systems that scale across the next decade and beyond."}</p>
           </div>
         </FadeUp>
@@ -3670,12 +3672,12 @@ const AboutPage = ({ navigate }) => {
         {/* Section 3: Purpose */}
         <FadeUp className="border border-white/10 rounded-[24px] p-12 md:p-16 mb-24 text-center relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
           <div className="absolute inset-0 opacity-10 mix-blend-screen pointer-events-none w-full" style={{  }} />
-          <h3 className="text-sm tracking-widest uppercase mb-6 font-primary" style={{ color: palette.blue }}>{SITE_SETTINGS?.aboutPage?.purposeLabel || "Our Purpose"}</h3>
-          <h2 className="text-3xl md:text-5xl font-light font-primary leading-tight max-w-4xl mx-auto text-white/90">{renderWithItalics(SITE_SETTINGS?.aboutPage?.purposeText || "We exist to turn complex innovations into undeniable *market breakthroughs.*")}</h2>
+          <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-primary" style={{ color: palette.blue }}>{SITE_SETTINGS?.aboutPage?.purposeLabel || "Our Purpose"}</h3>
+          <h2 className="text-xl md:text-2xl md:text-5xl font-light font-primary leading-tight max-w-4xl mx-auto text-white/90">{renderWithItalics(SITE_SETTINGS?.aboutPage?.purposeText || "We exist to turn complex innovations into undeniable *market breakthroughs.*")}</h2>
         </FadeUp>
 
         {/* Section 4: Core Values */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary border-b border-white/10 pb-6">{SITE_SETTINGS?.coreValuesHeader || "Our Core Values"}</h3></FadeUp>
+        <FadeUp><h3 className="text-xl md:text-2xl font-light mb-12 font-primary border-b border-white/10 pb-6">{SITE_SETTINGS?.coreValuesHeader || "Our Core Values"}</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32 w-full">
           {CORE_VALUES.map((v, i) => {
             const Icon = i === 0 ? <Users /> : i === 1 ? <Dna /> : i === 2 ? <Zap /> : <Globe />;
@@ -3694,9 +3696,9 @@ const AboutPage = ({ navigate }) => {
         {/* Section 5: The SciArt Philosophy */}
         <FadeUp className="border border-white/5 rounded-[32px] overflow-hidden grid md:grid-cols-2 mb-32 bg-[#050B2E] w-full">
           <div className="p-12 md:p-16 flex flex-col justify-center w-full">
-            <h3 className="text-sm tracking-widest uppercase mb-6 font-primary" style={{ color: palette.accent }}>{SITE_SETTINGS?.aboutPage?.philosophyLabel || "Our Philosophy"}</h3>
-            <h2 className="text-4xl font-light mb-6 font-primary">{SITE_SETTINGS?.aboutPage?.philosophyTitle || "The Fusion of Logic and Aesthetics."}</h2>
-            <p className="text-lg text-white/60 font-light font-secondary leading-relaxed mb-8">
+            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-primary" style={{ color: palette.accent }}>{SITE_SETTINGS?.aboutPage?.philosophyLabel || "Our Philosophy"}</h3>
+            <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">{SITE_SETTINGS?.aboutPage?.philosophyTitle || "The Fusion of Logic and Aesthetics."}</h2>
+            <p className="text-xl md:text-xl md:text-2xl text-white/60 font-light font-secondary leading-relaxed mb-8">
               {SITE_SETTINGS?.aboutPage?.philosophyText || "True innovation requires more than a beautiful facade. It demands rigorous strategic thinking coupled with compelling emotional resonance. Science gives us the framework, the data, and the logic. Art gives us the empathy, the visual impact, and the connection. Together, they create brands that are unbreakable."}
             </p>
           </div>
@@ -3717,7 +3719,7 @@ const AboutPage = ({ navigate }) => {
         {/* Section 6: Indian Heritage on a Global Stage */}
         <FadeUp className="text-center w-full mb-32">
           <Globe className="w-12 h-12 mx-auto mb-8 opacity-40" style={{ color: palette.blue }} />
-          <h2 className="text-3xl md:text-5xl font-light mb-8 font-primary leading-tight max-w-4xl mx-auto">{SITE_SETTINGS?.aboutPage?.globalTitle || "Elevating Indian Innovation to the Global Stage."}</h2>
+          <h2 className="text-xl md:text-2xl md:text-5xl font-light mb-8 font-primary leading-tight max-w-4xl mx-auto">{SITE_SETTINGS?.aboutPage?.globalTitle || "Elevating Indian Innovation to the Global Stage."}</h2>
           <p className="text-xl text-white/50 font-secondary font-light leading-relaxed max-w-3xl mx-auto">
             {SITE_SETTINGS?.aboutPage?.globalText || "We are rooted in the rich scientific and artistic heritage of India. Our ambition is to help local breakthrough innovators communicate with the precision and premium aesthetic required to compete and lead globally."}
           </p>
@@ -3725,7 +3727,7 @@ const AboutPage = ({ navigate }) => {
 
         {/* Section 7: Final CTA */}
         <FadeUp className="text-center pt-16 border-t border-white/10 w-full">
-          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-lg">{SITE_SETTINGS?.aboutPage?.ctaButton || "Co-create your brand scope"}</PremiumButton>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-xl md:text-xl md:text-2xl">{SITE_SETTINGS?.aboutPage?.ctaButton || "Co-create your brand scope"}</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -3737,17 +3739,17 @@ const OurStoryPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
 
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.storyPage?.pageLabel || "Our Story"}</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">{SITE_SETTINGS?.storyPage?.heroTitle || "Where Science Meets Art."}</h1>
+          <h2 className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.storyPage?.pageLabel || "Our Story"}</h2>
+          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-16 tracking-tight font-primary">{SITE_SETTINGS?.storyPage?.heroTitle || "Where Science Meets Art."}</h1>
         </FadeUp>
 
         {/* Section 2: The Spark */}
-        <StaggerGroup className="space-y-8 text-lg font-light text-white/70 font-secondary leading-relaxed mb-32 w-full">
-          <StaggerItem><p className="text-2xl text-white mb-10 leading-tight max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara1 || "PurpleBlue House was founded to solve a critical bottleneck: breakthrough innovations were failing to reach their market potential due to fragmented communication."}</p></StaggerItem>
+        <StaggerGroup className="space-y-8 text-xl md:text-xl md:text-2xl font-light text-white/70 font-secondary leading-relaxed mb-32 w-full">
+          <StaggerItem><p className="text-xl md:text-2xl text-white mb-10 leading-tight max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara1 || "PurpleBlue House was founded to solve a critical bottleneck: breakthrough innovations were failing to reach their market potential due to fragmented communication."}</p></StaggerItem>
           <StaggerItem><p className="max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara2 || "We observed that visionary teams often struggle to translate complex, cutting-edge technology into clear, scalable narratives. They engineer incredible products, but the strategic story gets lost in execution."}</p></StaggerItem>
           <StaggerItem><p className="max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara3 || "Meanwhile, standard creative approaches focus heavily on surface-level aesthetics without grasping the underlying functional truths. This disconnect limits long-term growth and dilutes the breakthrough."}</p></StaggerItem>
           <StaggerItem><p className="max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara4 || "We built a collaborative ecosystem where rigorous logic and strategic imagination drive every decision, ensuring tomorrow's breakthroughs communicate with clarity today."}</p></StaggerItem>
@@ -3760,7 +3762,7 @@ const OurStoryPage = ({ navigate }) => {
             <div className="w-16 h-32 rounded-full" style={{ backgroundColor: palette.blue }} />
           </div>
           <div className="md:w-2/3">
-            <h3 className="text-3xl font-light mb-6 font-primary">{SITE_SETTINGS?.storyPage?.nameSectionTitle || "Why Purple and Blue?"}</h3>
+            <h3 className="text-xl md:text-2xl font-light mb-6 font-primary">{SITE_SETTINGS?.storyPage?.nameSectionTitle || "Why Purple and Blue?"}</h3>
             <p className="font-secondary font-light text-white/70 leading-relaxed mb-4">
               <strong className="text-white">Purple</strong> {SITE_SETTINGS?.storyPage?.purpleDesc || "represents Art. It is the color of imagination, creativity, emotion, and the boundless creator spirit."}
             </p>
@@ -3775,7 +3777,7 @@ const OurStoryPage = ({ navigate }) => {
 
         {/* Section 4: The Timeline */}
         <div className="mb-32 w-full">
-          <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">{SITE_SETTINGS?.ourJourneyHeader || "Our Journey"}</h3></FadeUp>
+          <FadeUp><h3 className="text-xl md:text-2xl font-light mb-16 font-primary text-center">{SITE_SETTINGS?.ourJourneyHeader || "Our Journey"}</h3></FadeUp>
           <StaggerGroup className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/10 before:to-transparent w-full">
             {TIMELINE.map((milestone, idx) => (
               <StaggerItem key={idx} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active w-full">
@@ -3784,10 +3786,10 @@ const OurStoryPage = ({ navigate }) => {
                 </div>
                 <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-[16px] border border-white/5 bg-white/[0.02]">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-primary text-sm tracking-widest uppercase" style={{ color: palette.primary }}>{milestone.year}</span>
+                    <span className="font-primary text-[17px] md:text-[19px] tracking-widest uppercase" style={{ color: palette.primary }}>{milestone.year}</span>
                   </div>
                   <h4 className="text-xl font-medium text-white mb-2 font-primary">{milestone.title}</h4>
-                  <p className="text-white/50 text-sm font-secondary font-light leading-relaxed">{milestone.description}</p>
+                  <p className="text-white/50 text-[17px] md:text-[19px] font-secondary font-light leading-relaxed">{milestone.description}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -3796,15 +3798,15 @@ const OurStoryPage = ({ navigate }) => {
 
         {/* Section 5: The Future */}
         <FadeUp className="text-center mb-24 w-full">
-          <h3 className="text-3xl font-light mb-8 font-primary">{SITE_SETTINGS?.storyPage?.lookingAheadTitle || "Looking Ahead"}</h3>
-          <p className="text-lg text-white/60 font-secondary font-light leading-relaxed max-w-3xl mx-auto">
+          <h3 className="text-xl md:text-2xl font-light mb-8 font-primary">{SITE_SETTINGS?.storyPage?.lookingAheadTitle || "Looking Ahead"}</h3>
+          <p className="text-xl md:text-xl md:text-2xl text-white/60 font-secondary font-light leading-relaxed max-w-3xl mx-auto">
             {SITE_SETTINGS?.storyPage?.lookingAheadText || "Our story is just beginning. We will continue to champion creators, disrupt traditional agency models, and build visual expressions that bridge the past and the future."}
           </p>
         </FadeUp>
 
         {/* Section 6: CTA */}
         <FadeUp className="text-center pt-16 border-t border-white/10 w-full">
-          <PremiumButton onClick={() => navigate('contact')} className="px-12 py-5 text-lg">{SITE_SETTINGS?.storyPage?.ctaButton || "Be part of our story"}</PremiumButton>
+          <PremiumButton onClick={() => navigate('contact')} className="px-12 py-5 text-xl md:text-xl md:text-2xl">{SITE_SETTINGS?.storyPage?.ctaButton || "Be part of our story"}</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -3817,16 +3819,16 @@ const TeamPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
 
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.teamPage?.pageLabel || "The Team"}</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-16 tracking-tight font-primary">{renderWithItalics(SITE_SETTINGS?.teamPage?.heroTitle || "The minds behind the magic.")}</h1>
+          <h2 className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.teamPage?.pageLabel || "The Team"}</h2>
+          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-16 tracking-tight font-primary">{renderWithItalics(SITE_SETTINGS?.teamPage?.heroTitle || "The minds behind the magic.")}</h1>
         </FadeUp>
 
         {/* Section 2: Leadership */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">{SITE_SETTINGS?.teamPage?.leadershipLabel || "Leadership"}</h3></FadeUp>
+        <FadeUp><h3 className="text-xl md:text-2xl font-light mb-12 font-primary">{SITE_SETTINGS?.teamPage?.leadershipLabel || "Leadership"}</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 mb-32 w-full">
           {TEAM_MEMBERS.filter(m => m.id && m.id.startsWith('leader')).map((leader, i) => (
             <StaggerItem key={i}>
@@ -3835,9 +3837,9 @@ const TeamPage = ({ navigate }) => {
                   {leader.image ? <img src={leader.image} alt={leader.name} className="w-full h-full object-cover" /> : <User className="w-16 h-16 text-white/10" />}
                 </div>
                 <div className="p-8 sm:w-1/2 flex flex-col justify-center">
-                  <h3 className="text-2xl font-medium text-white mb-2 font-primary">{leader.name}</h3>
-                  <p className="text-sm tracking-widest uppercase mb-4 font-primary" style={{ color: palette.blue }}>{leader.role}</p>
-                  <p className="text-sm text-white/50 font-secondary leading-relaxed">{leader.bio || leader.desc}</p>
+                  <h3 className="text-xl md:text-2xl font-medium text-white mb-2 font-primary">{leader.name}</h3>
+                  <p className="text-[17px] md:text-[19px] tracking-widest uppercase mb-4 font-primary" style={{ color: palette.blue }}>{leader.role}</p>
+                  <p className="text-[17px] md:text-[19px] text-white/50 font-secondary leading-relaxed">{leader.bio || leader.desc}</p>
                 </div>
               </div>
             </StaggerItem>
@@ -3845,7 +3847,7 @@ const TeamPage = ({ navigate }) => {
         </StaggerGroup>
 
         {/* Section 3: The Innovators (Grid) */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary">{SITE_SETTINGS?.teamPage?.coreHouseLabel || "The Core House"}</h3></FadeUp>
+        <FadeUp><h3 className="text-xl md:text-2xl font-light mb-12 font-primary">{SITE_SETTINGS?.teamPage?.coreHouseLabel || "The Core House"}</h3></FadeUp>
         <StaggerGroup className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-32 w-full">
           {TEAM_MEMBERS.filter(m => m.id && m.id.startsWith('creator')).map((member, idx) => (
             <StaggerItem key={idx}>
@@ -3854,8 +3856,8 @@ const TeamPage = ({ navigate }) => {
                   {member.image ? <img src={member.image} alt={member.name} className="w-full h-full object-cover" /> : <User className="w-12 h-12 text-white/10" />}
                 </div>
                 <div className="p-5">
-                  <h3 className="text-lg font-medium text-white mb-1 font-primary">{member.name}</h3>
-                  <p className="text-xs text-white/50 font-secondary">{member.role}</p>
+                  <h3 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-1 font-primary">{member.name}</h3>
+                  <p className="text-[17px] md:text-[19px] text-white/50 font-secondary">{member.role}</p>
                 </div>
               </div>
             </StaggerItem>
@@ -3864,22 +3866,22 @@ const TeamPage = ({ navigate }) => {
 
         {/* Section 4: Our Culture */}
         <FadeUp className="border border-white/10 rounded-[32px] p-12 md:p-16 mb-32 w-full" >
-          <h3 className="text-3xl font-light mb-10 font-primary text-center">{SITE_SETTINGS?.teamPage?.cultureTitle || "Our Culture"}</h3>
+          <h3 className="text-xl md:text-2xl font-light mb-10 font-primary text-center">{SITE_SETTINGS?.teamPage?.cultureTitle || "Our Culture"}</h3>
           <StaggerGroup className="grid md:grid-cols-3 gap-8 w-full">
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Globe className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[0]?.title || "No Silos"}</h4>
-              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[0]?.description || "Strategy, design, and execution sit at the same table. We believe in cross-pollination of ideas."}</p>
+              <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[0]?.title || "No Silos"}</h4>
+              <p className="text-[17px] md:text-[19px] text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[0]?.description || "Strategy, design, and execution sit at the same table. We believe in cross-pollination of ideas."}</p>
             </StaggerItem>
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Zap className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[1]?.title || "Creator-First"}</h4>
-              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[1]?.description || "We empower our team to take ownership, innovate fearlessly, and challenge the status quo."}</p>
+              <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[1]?.title || "Creator-First"}</h4>
+              <p className="text-[17px] md:text-[19px] text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[1]?.description || "We empower our team to take ownership, innovate fearlessly, and challenge the status quo."}</p>
             </StaggerItem>
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><BookOpen className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-lg font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[2]?.title || "Continuous Learning"}</h4>
-              <p className="text-sm text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[2]?.description || "In a world driven by rapid innovation, we are perpetual students of science, art, and human behavior."}</p>
+              <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[2]?.title || "Continuous Learning"}</h4>
+              <p className="text-[17px] md:text-[19px] text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[2]?.description || "In a world driven by rapid innovation, we are perpetual students of science, art, and human behavior."}</p>
             </StaggerItem>
           </StaggerGroup>
         </FadeUp>
@@ -3890,12 +3892,12 @@ const TeamPage = ({ navigate }) => {
           {/* Little glowing dot from the design */}
           <div className="w-3 h-3 rounded-full bg-[#FDE68A] mb-8 shadow-[0_0_20px_#FDE68A]" />
 
-          <h3 className="text-4xl md:text-5xl font-light mb-6 font-primary text-white">{SITE_SETTINGS?.teamPage?.joinTitle || "Want to join the House?"}</h3>
-          <p className="text-lg text-white/50 font-secondary mb-10 max-w-2xl mx-auto">{SITE_SETTINGS?.teamPage?.joinSubtext || "We are always looking for visionary strategists and artists."}</p>
+          <h3 className="text-xl md:text-2xl font-light mb-6 font-primary text-white">{SITE_SETTINGS?.teamPage?.joinTitle || "Want to join the House?"}</h3>
+          <p className="text-xl md:text-xl md:text-2xl text-white/50 font-secondary mb-10 max-w-2xl mx-auto">{SITE_SETTINGS?.teamPage?.joinSubtext || "We are always looking for visionary strategists and artists."}</p>
 
           <button
             onClick={() => setShowCareers(true)}
-            className="px-8 py-3 rounded-[12px] border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] transition-all text-white text-sm font-medium font-secondary"
+            className="px-8 py-3 rounded-[12px] border border-white/10 bg-white/[0.02] hover:bg-white/[0.08] transition-all text-white text-[17px] md:text-[19px] font-medium font-secondary"
           >
             {SITE_SETTINGS?.teamPage?.joinButton || "View Open Roles"}
           </button>
@@ -3914,50 +3916,50 @@ const MethodPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
 
         {/* Section 1: Hero */}
         <FadeUp>
-          <h2 className="text-xs font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.methodPage?.pageLabel || "The PBH Method"}</h2>
-          <h1 className="text-5xl md:text-7xl font-light mb-24 tracking-tight font-primary max-w-4xl">{renderWithItalics(SITE_SETTINGS?.methodPage?.heroTitle || "The blueprint for *breakthrough brands.*")}</h1>
+          <h2 className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.methodPage?.pageLabel || "The PBH Method"}</h2>
+          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-24 tracking-tight font-primary max-w-4xl">{renderWithItalics(SITE_SETTINGS?.methodPage?.heroTitle || "The blueprint for *breakthrough brands.*")}</h1>
         </FadeUp>
 
         {/* Section 2: Traditional vs PBH */}
         <FadeUp className="grid md:grid-cols-2 gap-8 w-full mb-32">
           <div className="border border-white/5 rounded-[24px] p-10 relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
-            <h3 className="text-white/40 text-sm tracking-widest uppercase mb-8 font-primary">{SITE_SETTINGS?.methodPage?.traditionalTitle || "The Traditional Model"}</h3>
+            <h3 className="text-white/40 text-[17px] md:text-[19px] tracking-widest uppercase mb-8 font-primary">{SITE_SETTINGS?.methodPage?.traditionalTitle || "The Traditional Model"}</h3>
             <ul className="space-y-6 font-secondary">
-              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[0] || "Execution disconnected from core business objectives."}</span></li>
-              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[1] || "Short-term aesthetic fixes over long-term systems."}</span></li>
-              <li className="flex gap-4 text-white/50 font-light text-base"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[2] || "Disjointed touchpoints that dilute brand potential."}</span></li>
+              <li className="flex gap-4 text-white/50 font-light text-[17px] md:text-[19px]"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[0] || "Execution disconnected from core business objectives."}</span></li>
+              <li className="flex gap-4 text-white/50 font-light text-[17px] md:text-[19px]"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[1] || "Short-term aesthetic fixes over long-term systems."}</span></li>
+              <li className="flex gap-4 text-white/50 font-light text-[17px] md:text-[19px]"><X className="w-5 h-5 shrink-0 text-red-500/50 mt-0.5" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[2] || "Disjointed touchpoints that dilute brand potential."}</span></li>
             </ul>
           </div>
           <div className="border rounded-[24px] p-10 relative overflow-hidden w-full" style={{ background: `linear-gradient(to bottom right, ${hexToRgba(palette.primary, 0.1)}, transparent)`, borderColor: hexToRgba(palette.primary, 0.2) }}>
-            <h3 className="text-sm tracking-widest uppercase mb-8 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.methodPage?.pbhMethodTitle || "The PBH Method"}</h3>
+            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-8 font-medium relative z-10 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.methodPage?.pbhMethodTitle || "The PBH Method"}</h3>
             <ul className="space-y-6 relative z-10 font-secondary">
-              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[0] || "Mapping the root business gap before designing anything."}</span></li>
-              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[1] || "Modular scoping based on exact strategic requirements."}</span></li>
-              <li className="flex gap-4 text-white/90 font-light text-base"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[2] || "Building connected systems where strategy dictates execution."}</span></li>
+              <li className="flex gap-4 text-white/90 font-light text-[17px] md:text-[19px]"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[0] || "Mapping the root business gap before designing anything."}</span></li>
+              <li className="flex gap-4 text-white/90 font-light text-[17px] md:text-[19px]"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[1] || "Modular scoping based on exact strategic requirements."}</span></li>
+              <li className="flex gap-4 text-white/90 font-light text-[17px] md:text-[19px]"><Check className="w-5 h-5 shrink-0 mt-0.5" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[2] || "Building connected systems where strategy dictates execution."}</span></li>
             </ul>
           </div>
         </FadeUp>
 
         {/* Section 3: The 4 Steps */}
-        <FadeUp><h3 className="text-3xl font-light mb-16 font-primary text-center">{SITE_SETTINGS?.frameworkHeader || "Our 4-Step Framework"}</h3></FadeUp>
+        <FadeUp><h3 className="text-xl md:text-2xl font-light mb-16 font-primary text-center">{SITE_SETTINGS?.frameworkHeader || "Our 4-Step Framework"}</h3></FadeUp>
         <StaggerGroup className="space-y-24 mb-32 w-full">
           {FRAMEWORK.map((s, i) => (
             <StaggerItem key={i}>
               <div className="grid md:grid-cols-12 gap-8 border-t border-white/5 pt-12 relative w-full">
                 <div className="absolute top-0 left-0 w-1/4 h-[1px]"  />
-                <div className="md:col-span-1 text-4xl font-primary italic text-white/30">0{s.stepNumber}</div>
+                <div className="md:col-span-1 text-xl md:text-2xl font-primary italic text-white/30">0{s.stepNumber}</div>
                 <div className="md:col-span-6 pr-8">
-                  <h3 className="text-3xl font-light mb-4 font-primary">{s.title}</h3>
-                  <p className="text-white/50 font-light text-lg leading-relaxed font-secondary max-w-2xl">{s.description}</p>
+                  <h3 className="text-xl md:text-2xl font-light mb-4 font-primary">{s.title}</h3>
+                  <p className="text-white/50 font-light text-xl md:text-xl md:text-2xl leading-relaxed font-secondary max-w-2xl">{s.description}</p>
                 </div>
                 <div className="md:col-span-5 md:pl-12 border-l border-white/5">
-                  <h4 className="text-xs font-medium text-white/30 uppercase tracking-widest mb-6 font-primary">Key Outputs</h4>
+                  <h4 className="text-[17px] md:text-[19px] font-medium text-white/30 uppercase tracking-widest mb-6 font-primary">Key Outputs</h4>
                   <ul className="space-y-3 font-secondary">
-                    {s.outputs?.map((out, j) => <li key={j} className="flex items-center gap-3 text-white/70 font-light text-sm bg-white/[0.02] border border-white/5 px-4 py-3 rounded-[8px]"><Check className="w-4 h-4 shrink-0" style={{ color: palette.accent }} /> {out}</li>)}
+                    {s.outputs?.map((out, j) => <li key={j} className="flex items-center gap-3 text-white/70 font-light text-[17px] md:text-[19px] bg-white/[0.02] border border-white/5 px-4 py-3 rounded-[8px]"><Check className="w-4 h-4 shrink-0" style={{ color: palette.accent }} /> {out}</li>)}
                   </ul>
                 </div>
               </div>
@@ -3967,14 +3969,14 @@ const MethodPage = ({ navigate }) => {
 
         {/* Section 4: The SciArt Application */}
         <FadeUp className="border border-white/10 rounded-[24px] p-12 mb-32 text-center w-full" style={{ backgroundColor: palette.panel }}>
-          <h3 className="text-2xl font-light mb-6 font-primary">{SITE_SETTINGS?.methodPage?.appliedSciArtTitle || "Applied SciArt"}</h3>
-          <p className="text-lg text-white/60 leading-relaxed font-secondary">
+          <h3 className="text-xl md:text-2xl font-light mb-6 font-primary">{SITE_SETTINGS?.methodPage?.appliedSciArtTitle || "Applied SciArt"}</h3>
+          <p className="text-xl md:text-xl md:text-2xl text-white/60 leading-relaxed font-secondary">
             {SITE_SETTINGS?.methodPage?.appliedSciArtText || "Throughout every step of this method, we apply the SciArt filter. Does the strategy hold up to logical scrutiny (Science)? Does the execution evoke the right human emotion (Art)? If an output fails either test, it does not leave the House."}
           </p>
         </FadeUp>
 
         {/* Section 5: Timeline Overview */}
-        <FadeUp><h3 className="text-3xl font-light mb-12 font-primary text-center">{SITE_SETTINGS?.timelineHeader || "Typical Engagement Timeline"}</h3></FadeUp>
+        <FadeUp><h3 className="text-xl md:text-2xl font-light mb-12 font-primary text-center">{SITE_SETTINGS?.timelineHeader || "Typical Engagement Timeline"}</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-4 gap-4 mb-32 w-full">
           {[
             { phase: "Weeks 1-2", focus: "Discovery & Alignment", color: palette.primary },
@@ -3984,7 +3986,7 @@ const MethodPage = ({ navigate }) => {
           ].map((t, idx) => (
             <StaggerItem key={idx}>
               <div className="p-6 border border-white/5 rounded-[16px] text-center h-full w-full" style={{ backgroundColor: palette.bgDeep }}>
-                <div className="text-[10px] uppercase tracking-widest mb-3 font-primary font-medium" style={{ color: t.color }}>{t.phase}</div>
+                <div className="text-[17px] md:text-[19px] uppercase tracking-widest mb-3 font-primary font-medium" style={{ color: t.color }}>{t.phase}</div>
                 <div className="text-white font-secondary font-light">{t.focus}</div>
               </div>
             </StaggerItem>
@@ -3993,7 +3995,7 @@ const MethodPage = ({ navigate }) => {
 
         {/* Section 6: Final CTA */}
         <FadeUp className="pt-16 border-t border-white/10 text-center w-full">
-          <h2 className="text-4xl font-light mb-8 font-primary">{SITE_SETTINGS?.methodPage?.finalCTA || "Experience the method yourself."}</h2>
+          <h2 className="text-xl md:text-2xl font-light mb-8 font-primary">{SITE_SETTINGS?.methodPage?.finalCTA || "Experience the method yourself."}</h2>
           <PremiumButton onClick={() => navigate('assessment')}>Build My Brand Scope</PremiumButton>
         </FadeUp>
       </div>
@@ -4006,8 +4008,8 @@ const ServicesPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
-        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight max-w-4xl font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.servicesHeader || "Three strategic routes.\n*One connected brand system.*")}</h1></RevealText>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
+        <RevealText><h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight max-w-4xl font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.servicesHeader || "Three strategic routes.\n*One connected brand system.*")}</h1></RevealText>
         <FadeUp><p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed font-secondary">{SITE_SETTINGS?.servicesSubtext || "PBH services are not isolated offerings. They are designed as connected routes that help brands move from clarity to communication to execution."}</p></FadeUp>
 
         <StaggerGroup className="grid gap-12 mb-32 w-full">
@@ -4019,20 +4021,20 @@ const ServicesPage = ({ navigate }) => {
                   <div className="border rounded-[32px] p-10 md:p-16 flex flex-col lg:flex-row gap-12 lg:gap-16 transition-colors w-full relative overflow-hidden" style={{ backgroundColor: palette.lightBlue, borderColor: hexToRgba(palette.primary, 0.15) }}>
                     <div className="lg:w-5/12 flex flex-col">
                       <div className="w-20 h-20 rounded-[20px] flex items-center justify-center mb-8 lg:mb-10 shadow-lg shrink-0" style={{ backgroundColor: rColor, color: 'white' }}>{route.icon}</div>
-                      <h3 className="text-3xl md:text-4xl font-light mb-4 lg:mb-6 font-primary" style={{ color: palette.bgDeep }}>{route.title}</h3>
-                      <p className="font-light leading-relaxed mb-8 lg:mb-10 font-secondary text-base md:text-lg max-w-md" style={{ color: hexToRgba(palette.bgDeep, 0.7) }}>{route.desc}</p>
+                      <h3 className="text-xl md:text-2xl font-light mb-4 lg:mb-6 font-primary" style={{ color: palette.bgDeep }}>{route.title}</h3>
+                      <p className="font-light leading-relaxed mb-8 lg:mb-10 font-secondary text-[17px] md:text-[19px] max-w-md" style={{ color: hexToRgba(palette.bgDeep, 0.7) }}>{route.desc}</p>
 
                       <div className="mt-auto pt-4 border-t border-black/10 lg:border-none lg:pt-0">
-                        <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent group font-secondary text-base" style={{ color: palette.bgDeep }}>{SITE_SETTINGS?.servicesExploreButton || "Explore Route Details"} <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform" /></PremiumButton>
+                        <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="px-0 py-0 hover:bg-transparent group font-secondary text-[17px] md:text-[19px]" style={{ color: palette.bgDeep }}>{SITE_SETTINGS?.servicesExploreButton || "Explore Route Details"} <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-2 transition-transform" /></PremiumButton>
                       </div>
                     </div>
 
                     <div className="lg:w-7/12 flex flex-col gap-10 font-secondary">
                       <div>
-                        <h4 className="text-xs md:text-sm font-medium uppercase tracking-widest mb-6 font-primary flex items-center gap-3" style={{ color: hexToRgba(palette.bgDeep, 0.6) }}><Layers className="w-4 h-4" /> Core Line Items</h4>
+                        <h4 className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary flex items-center gap-3" style={{ color: hexToRgba(palette.bgDeep, 0.6) }}><Layers className="w-4 h-4" /> Core Line Items</h4>
                         <ul className="grid sm:grid-cols-2 gap-4">
                           {route.lineItems.map(li => (
-                            <li key={li.id} className="text-base md:text-lg font-medium flex items-start gap-3 border p-5 rounded-[16px] shadow-sm" style={{ backgroundColor: hexToRgba(palette.bgDeep, 0.02), borderColor: hexToRgba(palette.bgDeep, 0.05), color: palette.bgDeep }}>
+                            <li key={li.id} className="text-[17px] md:text-[19px] font-medium flex items-start gap-3 border p-5 rounded-[16px] shadow-sm" style={{ backgroundColor: hexToRgba(palette.bgDeep, 0.02), borderColor: hexToRgba(palette.bgDeep, 0.05), color: palette.bgDeep }}>
                               <Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }} />
                               <span className="leading-snug">{li.name}</span>
                             </li>
@@ -4041,8 +4043,8 @@ const ServicesPage = ({ navigate }) => {
                       </div>
 
                       <div className="border rounded-[24px] p-8 flex flex-col h-full relative overflow-hidden mt-auto shadow-inner" style={{ backgroundColor: hexToRgba(palette.bgDeep, 0.03), borderColor: hexToRgba(palette.bgDeep, 0.05) }}>
-                        <h4 className="text-xs md:text-sm font-medium uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10" style={{ color: hexToRgba(palette.bgDeep, 0.6) }}><Target className="w-4 h-4" /> Best For</h4>
-                        <p className="text-base md:text-lg font-light leading-relaxed relative z-10" style={{ color: hexToRgba(palette.bgDeep, 0.8) }}>{route.bestFor}</p>
+                        <h4 className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10" style={{ color: hexToRgba(palette.bgDeep, 0.6) }}><Target className="w-4 h-4" /> Best For</h4>
+                        <p className="text-[17px] md:text-[19px] font-light leading-relaxed relative z-10" style={{ color: hexToRgba(palette.bgDeep, 0.8) }}>{route.bestFor}</p>
                       </div>
                     </div>
                   </div>
@@ -4054,19 +4056,19 @@ const ServicesPage = ({ navigate }) => {
 
         {/* FAQ for Services */}
         <div className="w-full border-t border-white/10 pt-16 mb-24">
-          <FadeUp><h3 className="text-3xl font-light mb-8 font-primary text-center">{SITE_SETTINGS?.serviceFaqs?.title || "Service FAQs"}</h3></FadeUp>
+          <FadeUp><h3 className="text-xl md:text-2xl font-light mb-8 font-primary text-center">{SITE_SETTINGS?.serviceFaqs?.title || "Service FAQs"}</h3></FadeUp>
           <StaggerGroup className="space-y-4 font-secondary max-w-4xl mx-auto">
             <StaggerItem>
               <div className="p-8 rounded-[24px] border border-white/5 relative group overflow-hidden" style={{ backgroundColor: palette.panel }}>
                 <h4 className="font-medium text-white mb-2">{SITE_SETTINGS?.serviceFaqs?.[0]?.question || "Can we choose just one deliverable?"}</h4>
-                <p className="text-sm text-white/50">{SITE_SETTINGS?.serviceFaqs?.[0]?.answer || "We strongly recommend going through our assessment first. If a single deliverable solves the root problem, yes. If not, we will recommend a connected system."}</p>
+                <p className="text-[17px] md:text-[19px] text-white/50">{SITE_SETTINGS?.serviceFaqs?.[0]?.answer || "We strongly recommend going through our assessment first. If a single deliverable solves the root problem, yes. If not, we will recommend a connected system."}</p>
                 <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             </StaggerItem>
             <StaggerItem>
               <div className="p-8 rounded-[24px] border border-white/5 relative group overflow-hidden" style={{ backgroundColor: palette.panel }}>
                 <h4 className="font-medium text-white mb-2">{SITE_SETTINGS?.serviceFaqs?.[1]?.question || "How do we know which route is right for us?"}</h4>
-                <p className="text-sm text-white/50">{SITE_SETTINGS?.serviceFaqs?.[1]?.answer || 'You don\'t need to guess. Use our "Build My Brand Scope" tool, and our strategic engine will diagnose your gaps and assign the perfect route automatically.'}</p>
+                <p className="text-[17px] md:text-[19px] text-white/50">{SITE_SETTINGS?.serviceFaqs?.[1]?.answer || 'You don\'t need to guess. Use our "Build My Brand Scope" tool, and our strategic engine will diagnose your gaps and assign the perfect route automatically.'}</p>
                 <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             </StaggerItem>
@@ -4074,7 +4076,7 @@ const ServicesPage = ({ navigate }) => {
         </div>
 
         <FadeUp className="text-center w-full">
-          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-lg">Build Your Scope</PremiumButton>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-xl md:text-xl md:text-2xl">Build Your Scope</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -4093,28 +4095,28 @@ const ServiceDetailPage = ({ navigate, routeId }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('services')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Services</button>
+        <button onClick={() => navigate('services')} className="text-white/40 hover:text-white text-[17px] md:text-[19px] transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Services</button>
         <FadeUp>
           <div className="w-20 h-20 rounded-[20px] flex items-center justify-center mb-10 shadow-lg" style={{ backgroundColor: rColor, color: palette.bgDeep }}>{route.icon}</div>
-          <h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h1>
+          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h1>
           <p className="text-xl text-white/50 font-light mb-12 max-w-3xl leading-relaxed font-secondary">{route.desc}</p>
         </FadeUp>
 
         <FadeUp className="bg-white/[0.03] border border-white/10 rounded-[24px] p-8 mb-16 max-w-4xl relative overflow-hidden shadow-inner">
           <div className="absolute top-0 right-0 w-64 h-64 blur-[80px] opacity-10 pointer-events-none" style={{ backgroundColor: rColor }} />
-          <h4 className="text-sm font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-5 h-5" /> Best For</h4>
+          <h4 className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-5 h-5" /> Best For</h4>
           <p className="text-xl font-light text-white/90 leading-relaxed relative z-10">{route.bestFor}</p>
         </FadeUp>
 
-        <FadeUp><h3 className="text-3xl font-light mb-10 border-b border-white/10 pb-6 font-primary text-white">What's Included</h3></FadeUp>
+        <FadeUp><h3 className="text-xl md:text-2xl font-light mb-10 border-b border-white/10 pb-6 font-primary text-white">What's Included</h3></FadeUp>
         <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 w-full">
           {route.lineItems.map((li, i) => (
             <StaggerItem key={li.id}>
               <div className="border border-white/5 rounded-[24px] p-8 h-full w-full bg-white/[0.02] hover:bg-white/[0.04] transition-colors shadow-lg">
-                <h4 className="text-2xl font-medium mb-8 text-white font-primary">{li.name}</h4>
+                <h4 className="text-xl md:text-2xl font-medium mb-8 text-white font-primary">{li.name}</h4>
                 <ul className="space-y-4 font-secondary">
                   {DELIVERABLES_MASTER.filter(d => d.lineItem === li.id).map(d => (
-                    <li key={d.id} className="text-base md:text-lg font-light text-white/80 flex items-start gap-3"><Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }} /> <span className="leading-snug">{d.name}</span></li>
+                    <li key={d.id} className="text-[17px] md:text-[19px] font-light text-white/80 flex items-start gap-3"><Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }} /> <span className="leading-snug">{d.name}</span></li>
                   ))}
                 </ul>
               </div>
@@ -4124,7 +4126,7 @@ const ServiceDetailPage = ({ navigate, routeId }) => {
 
         <FadeUp className="border border-white/10 rounded-[24px] p-12 text-center w-full relative overflow-hidden" >
           <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
-          <h2 className="text-3xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
+          <h2 className="text-xl md:text-2xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
           <PremiumButton onClick={() => navigate('assessment')} className="relative z-10">Build A Scope</PremiumButton>
         </FadeUp>
       </div>
@@ -4160,23 +4162,23 @@ const ServiceModal = ({ navigate, routeId, onClose }) => {
 
         <div className="px-8 md:px-16 pb-16 -mt-10 relative z-10">
           <div className="w-20 h-20 rounded-[20px] flex items-center justify-center mb-10 shadow-lg" style={{ backgroundColor: rColor, color: palette.bgDeep }}>{route.icon}</div>
-          <h2 className="text-4xl md:text-6xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h2>
+          <h2 className="text-xl md:text-2xl md:text-5xl md:text-5xl md:text-7xl lg:text-8xl lg:text-8xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h2>
           <p className="text-xl text-white/50 font-light mb-12 max-w-3xl leading-relaxed font-secondary">{route.desc}</p>
 
           <div className="bg-white/[0.03] border border-white/10 rounded-[24px] p-8 mb-16 max-w-4xl relative overflow-hidden shadow-inner">
             <div className="absolute top-0 right-0 w-64 h-64 blur-[80px] opacity-10 pointer-events-none" style={{ backgroundColor: rColor }} />
-            <h4 className="text-sm font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-5 h-5" /> Best For</h4>
+            <h4 className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-4 font-primary flex items-center gap-3 relative z-10"><Target className="w-5 h-5" /> Best For</h4>
             <p className="text-xl font-light text-white/90 leading-relaxed relative z-10">{route.bestFor}</p>
           </div>
 
-          <h3 className="text-3xl font-light mb-10 border-b border-white/10 pb-6 font-primary text-white">What's Included</h3>
+          <h3 className="text-xl md:text-2xl font-light mb-10 border-b border-white/10 pb-6 font-primary text-white">What's Included</h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 w-full">
             {route.lineItems.map((li, i) => (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} key={li.id} className="border border-white/5 rounded-[24px] p-8 h-full w-full bg-white/[0.02] hover:bg-white/[0.04] transition-colors shadow-lg">
-                <h4 className="text-2xl font-medium mb-8 text-white font-primary">{li.name}</h4>
+                <h4 className="text-xl md:text-2xl font-medium mb-8 text-white font-primary">{li.name}</h4>
                 <ul className="space-y-4 font-secondary">
                   {DELIVERABLES_MASTER.filter(d => d.lineItem === li.id).map(d => (
-                    <li key={d.id} className="text-base md:text-lg font-light text-white/80 flex items-start gap-3"><Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }} /> <span className="leading-snug">{d.name}</span></li>
+                    <li key={d.id} className="text-[17px] md:text-[19px] font-light text-white/80 flex items-start gap-3"><Check className="w-5 h-5 shrink-0 mt-[2px]" style={{ color: rColor }} /> <span className="leading-snug">{d.name}</span></li>
                   ))}
                 </ul>
               </motion.div>
@@ -4185,7 +4187,7 @@ const ServiceModal = ({ navigate, routeId, onClose }) => {
 
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="border border-white/10 rounded-[24px] p-12 text-center w-full relative overflow-hidden" >
             <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20 pointer-events-none" style={{ backgroundColor: rColor }} />
-            <h2 className="text-3xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
+            <h2 className="text-xl md:text-2xl font-light mb-6 font-primary relative z-10 text-white">Find the right scope for your breakthrough.</h2>
             <PremiumButton onClick={() => { onClose(); navigate('assessment'); }} className="relative z-10">Build A Scope</PremiumButton>
           </motion.div>
         </div>
@@ -4202,7 +4204,7 @@ const WorkPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
         <RevealText><h1 className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight mb-6 font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.workPageHeader || "Our Work.")}</h1></RevealText>
         <FadeUp><p className="text-[17px] md:text-[19px] leading-relaxed font-normal text-white/50 mb-16 max-w-2xl font-secondary">{SITE_SETTINGS?.workPageSubtext || "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns."}</p></FadeUp>
 
@@ -4215,7 +4217,7 @@ const WorkPage = ({ navigate }) => {
               ) : (
                 <>
                   <div className="absolute inset-0 opacity-30 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105"  />
-                  <div className="absolute inset-0 flex items-center justify-center"><span className="font-primary italic text-white/10 text-7xl md:text-9xl">{caseStudies[0].client ? caseStudies[0].client.split(' ')[0] : 'Work'}</span></div>
+                  <div className="absolute inset-0 flex items-center justify-center"><span className="font-primary italic text-white/10 text-5xl md:text-7xl lg:text-8xl">{caseStudies[0].client ? caseStudies[0].client.split(' ')[0] : 'Work'}</span></div>
                 </>
               )}
             </div>
@@ -4224,18 +4226,18 @@ const WorkPage = ({ navigate }) => {
               <h3 className="t-display mb-6">{caseStudies[0].client}</h3>
               <p className="t-body text-white/50 mb-10 max-w-lg">{caseStudies[0].challenge}</p>
               <div className="flex gap-4 font-secondary mb-12 flex-wrap">
-                {(caseStudies[0].tags || []).map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-white/70 uppercase tracking-widest">{t}</span>)}
+                {(caseStudies[0].tags || []).map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[17px] md:text-[19px] text-white/70 uppercase tracking-widest">{t}</span>)}
               </div>
-              <div className="mt-auto flex items-center gap-2 text-white/70 group-hover:text-white transition-colors font-medium font-secondary">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
+              <div className="mt-auto flex items-center gap-2 text-[17px] md:text-[19px] text-white/70 group-hover:text-white transition-colors font-medium font-secondary">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
             </div>
           </div>
         </FadeUp>
 
         <FadeUp delay={0.2} className="flex gap-4 mb-12 border-b border-white/10 pb-6 overflow-x-auto font-secondary w-full custom-scrollbar">
-          <button className="px-4 py-2 rounded-full border border-white text-white text-sm shrink-0">{SITE_SETTINGS?.allProjectsButton || "All Projects"}</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">Brand Boulevard</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">SciArt Saga</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-sm shrink-0 hover:bg-white/5">Storytelling Corner</button>
+          <button className="px-4 py-2 rounded-full border border-white text-white text-[17px] md:text-[19px] shrink-0">{SITE_SETTINGS?.allProjectsButton || "All Projects"}</button>
+          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[17px] md:text-[19px] shrink-0 hover:bg-white/5">Brand Boulevard</button>
+          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[17px] md:text-[19px] shrink-0 hover:bg-white/5">SciArt Saga</button>
+          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[17px] md:text-[19px] shrink-0 hover:bg-white/5">Storytelling Corner</button>
         </FadeUp>
 
         <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-32">
@@ -4281,7 +4283,7 @@ const WorkPage = ({ navigate }) => {
                       <div className="flex justify-between items-end font-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
                         <div className="flex gap-2 flex-wrap">
                           {(cs.tags || []).map(t => (
-                            <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-[10px] tracking-wider text-white/80 uppercase">
+                            <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-[17px] md:text-[19px] tracking-wider text-white/80 uppercase">
                               {t}
                             </span>
                           ))}
@@ -4300,8 +4302,8 @@ const WorkPage = ({ navigate }) => {
 
         <FadeUp className="border border-white/10 rounded-[32px] p-16 text-center bg-[#010825] relative overflow-hidden w-full">
           <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20" style={{ backgroundColor: palette.blue }} />
-          <h3 className="text-4xl font-light mb-6 font-primary text-white">Ready to start your project?</h3>
-          <p className="text-lg text-white/50 font-secondary mb-10 max-w-xl mx-auto">Skip the generic agency pitch. Map your brand needs instantly using our Scope Builder.</p>
+          <h3 className="text-xl md:text-2xl font-light mb-6 font-primary text-white">Ready to start your project?</h3>
+          <p className="text-xl md:text-xl md:text-2xl text-white/50 font-secondary mb-10 max-w-xl mx-auto">Skip the generic agency pitch. Map your brand needs instantly using our Scope Builder.</p>
           <PremiumButton onClick={() => navigate('assessment')} className="px-10 py-4">Build My Brand Scope</PremiumButton>
         </FadeUp>
       </div>
@@ -4326,18 +4328,18 @@ const JournalPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
-        <RevealText><h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.journalHeader || "The Journal.")}</h1></RevealText>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
+        <RevealText><h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.journalHeader || "The Journal.")}</h1></RevealText>
         <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">{SITE_SETTINGS?.journalSubtext || "Essays, frameworks, and perspectives on building brands that matter."}</p></FadeUp>
 
         {/* Featured Article */}
         <FadeUp delay={0.1} className="mb-24 w-full">
           <div onClick={() => navigate('article/' + JOURNAL_ARTICLES[0].id)} className="group relative border border-white/10 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[500px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
             <div className="md:w-1/2 p-12 md:p-16 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/10 w-full">
-              <span className="text-[10px] font-medium tracking-widest uppercase block mb-6 font-primary" style={{ color: palette.primary }}>Featured • {JOURNAL_ARTICLES[0].tag}</span>
-              <h3 className="text-4xl md:text-5xl font-light mb-8 font-primary group-hover:text-white/80 transition-colors leading-tight max-w-2xl">{JOURNAL_ARTICLES[0].title}</h3>
-              <p className="text-white/50 font-light mb-10 text-lg leading-relaxed font-secondary line-clamp-3 max-w-xl">{JOURNAL_ARTICLES[0].excerpt}</p>
-              <div className="mt-auto flex items-center justify-between font-secondary text-sm border-t border-white/5 pt-6 text-white/40">
+              <span className="text-[17px] md:text-[19px] font-medium tracking-widest uppercase block mb-6 font-primary" style={{ color: palette.primary }}>Featured • {JOURNAL_ARTICLES[0].tag}</span>
+              <h3 className="text-xl md:text-2xl font-light mb-8 font-primary group-hover:text-white/80 transition-colors leading-tight max-w-2xl">{JOURNAL_ARTICLES[0].title}</h3>
+              <p className="text-white/50 font-light mb-10 text-xl md:text-xl md:text-2xl leading-relaxed font-secondary line-clamp-3 max-w-xl">{JOURNAL_ARTICLES[0].excerpt}</p>
+              <div className="mt-auto flex items-center justify-between font-secondary text-[17px] md:text-[19px] border-t border-white/5 pt-6 text-white/40">
                 <span>{JOURNAL_ARTICLES[0].author}</span>
                 <span>{JOURNAL_ARTICLES[0].time}</span>
               </div>
@@ -4354,7 +4356,7 @@ const JournalPage = ({ navigate }) => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-full border text-sm shrink-0 transition-colors ${activeTab === tab ? 'border-white text-white' : 'border-white/10 text-white/50 hover:bg-white/5'}`}
+              className={`px-4 py-2 rounded-full border text-[17px] md:text-[19px] shrink-0 transition-colors ${activeTab === tab ? 'border-white text-white' : 'border-white/10 text-white/50 hover:bg-white/5'}`}
             >
               {tab}
             </button>
@@ -4368,7 +4370,7 @@ const JournalPage = ({ navigate }) => {
                 <div className="t-label mb-6" style={{ color: palette[article.type] || palette.primary }}>{article.tag}</div>
                 <h4 className="t-subtitle text-white mb-6 group-hover:text-white/80 transition-colors leading-snug font-primary">{article.title}</h4>
                 <p className="t-body text-white/50 line-clamp-3 mb-8">{article.excerpt}</p>
-                <div className="mt-auto flex justify-between items-center text-xs text-white/40 font-secondary pt-6 border-t border-white/5">
+                <div className="mt-auto flex justify-between items-center text-[17px] md:text-[19px] text-white/40 font-secondary pt-6 border-t border-white/5">
                   <span>{article.time}</span>
                   <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all">
                     <ArrowRight className="w-3 h-3 group-hover:text-white" />
@@ -4386,8 +4388,8 @@ const JournalPage = ({ navigate }) => {
         {/* Newsletter CTA */}
         <FadeUp className="border border-white/10 rounded-[32px] p-12 md:p-16 flex flex-col md:flex-row gap-12 items-center w-full" >
           <div className="md:w-1/2">
-            <h3 className="text-3xl font-light mb-4 font-primary text-white">Get insights in your inbox.</h3>
-            <p className="text-white/50 font-secondary text-lg leading-relaxed max-w-lg">Join innovators receiving our monthly digest on brand strategy, SciArt philosophy, and design thinking.</p>
+            <h3 className="text-xl md:text-2xl font-light mb-4 font-primary text-white">Get insights in your inbox.</h3>
+            <p className="text-white/50 font-secondary text-xl md:text-xl md:text-2xl leading-relaxed max-w-lg">Join innovators receiving our monthly digest on brand strategy, SciArt philosophy, and design thinking.</p>
           </div>
           <div className="md:w-1/2 w-full">
             <form className="flex gap-4 w-full" onSubmit={(e) => e.preventDefault()}>
@@ -4409,12 +4411,12 @@ const ArticlePage = ({ navigate, articleId }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('journal')} className="text-white/40 hover:text-white text-sm transition-colors flex items-center gap-2 group mb-16 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Journal</button>
+        <button onClick={() => navigate('journal')} className="text-white/40 hover:text-white text-[17px] md:text-[19px] transition-colors flex items-center gap-2 group mb-16 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Journal</button>
 
         <FadeUp className="w-full max-w-4xl mx-auto">
-          <div className="text-[10px] tracking-widest uppercase mb-6 font-primary font-medium" style={{ color: artColor }}>{article.tag}</div>
-          <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-8 font-primary leading-tight">{article.title}</h1>
-          <div className="flex items-center gap-6 text-white/40 font-secondary text-sm mb-16 pb-8 border-b border-white/10">
+          <div className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-primary font-medium" style={{ color: artColor }}>{article.tag}</div>
+          <h1 className="text-xl md:text-2xl md:text-5xl md:text-5xl md:text-7xl lg:text-8xl lg:text-8xl font-light tracking-tight mb-8 font-primary leading-tight">{article.title}</h1>
+          <div className="flex items-center gap-6 text-white/40 font-secondary text-[17px] md:text-[19px] mb-16 pb-8 border-b border-white/10">
             <span>By {article.author}</span>
             <span className="w-1 h-1 rounded-full bg-white/20" />
             <span>{article.date}</span>
@@ -4428,13 +4430,13 @@ const ArticlePage = ({ navigate, articleId }) => {
           <div className="absolute inset-0 flex items-center justify-center"><BookOpen className="w-24 h-24 text-white/5" /></div>
         </FadeUp>
 
-        <StaggerGroup className="space-y-8 text-lg font-light text-white/70 font-secondary leading-relaxed mb-32 max-w-3xl mx-auto w-full">
-          <StaggerItem><p className="text-2xl text-white font-medium mb-10 leading-snug">{article.excerpt}</p></StaggerItem>
+        <StaggerGroup className="space-y-8 text-xl md:text-xl md:text-2xl font-light text-white/70 font-secondary leading-relaxed mb-32 max-w-3xl mx-auto w-full">
+          <StaggerItem><p className="text-xl md:text-2xl text-white font-medium mb-10 leading-snug">{article.excerpt}</p></StaggerItem>
           <StaggerItem>
             <p>This is a placeholder for the rich text content of the article. In a fully implemented CMS, this section would parse Markdown or HTML blocks representing the body of the perspective.</p>
           </StaggerItem>
           <StaggerItem>
-            <h3 className="text-2xl font-primary text-white mt-12 mb-6">The Strategic Imperative</h3>
+            <h3 className="text-xl md:text-2xl font-primary text-white mt-12 mb-6">The Strategic Imperative</h3>
             <p>Every brand faces a moment where aesthetics alone are no longer enough to carry the narrative. This is where the structural integrity of science—the underlying logic of your product—must marry the emotional resonance of art.</p>
           </StaggerItem>
           <StaggerItem>
@@ -4448,13 +4450,13 @@ const ArticlePage = ({ navigate, articleId }) => {
         </StaggerGroup>
 
         <div className="border-t border-white/10 pt-16 mt-16 w-full">
-          <h3 className="text-2xl font-light mb-8 font-primary text-center">More from the Journal</h3>
+          <h3 className="text-xl md:text-2xl font-light mb-8 font-primary text-center">More from the Journal</h3>
           <div className="grid sm:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
             {JOURNAL_ARTICLES.filter(a => a.id !== article.id).slice(0, 2).map((a, i) => (
               <div key={i} onClick={() => navigate('article/' + a.id)} className="border border-white/10 rounded-[16px] p-6 flex flex-col hover:-translate-y-1 transition-transform cursor-pointer group w-full" style={{ backgroundColor: palette.panel }}>
-                <div className="text-[10px] tracking-widest uppercase mb-4 font-primary" style={{ color: palette[a.type] || palette.primary }}>{a.tag}</div>
-                <h4 className="text-lg font-medium text-white mb-6 font-primary group-hover:text-white/80">{a.title}</h4>
-                <div className="mt-auto flex justify-between items-center text-xs text-white/40 font-secondary">
+                <div className="text-[17px] md:text-[19px] tracking-widest uppercase mb-4 font-primary" style={{ color: palette[a.type] || palette.primary }}>{a.tag}</div>
+                <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-6 font-primary group-hover:text-white/80">{a.title}</h4>
+                <div className="mt-auto flex justify-between items-center text-[17px] md:text-[19px] text-white/40 font-secondary">
                   <span>{a.time}</span>
                   <ArrowRight className="w-3 h-3 group-hover:text-white" />
                 </div>
@@ -4637,11 +4639,11 @@ const ContactPage = ({ navigate }) => {
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
-        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-sm backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
+        <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
 
         {/* Section 1: Hero */}
         <FadeUp>
-          <h1 className="text-5xl md:text-7xl font-light mb-6 tracking-tight font-primary">Start with a conversation. <br /><AnimatedItalic className="text-white/50">Or start with clarity.</AnimatedItalic></h1>
+          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary">Start with a conversation. <br /><AnimatedItalic className="text-white/50">Or start with clarity.</AnimatedItalic></h1>
           <p className="text-white/50 mb-20 text-xl font-light font-secondary max-w-2xl">Have a project in mind? Choose how you want to begin your journey with PurpleBlue House.</p>
         </FadeUp>
 
@@ -4649,7 +4651,7 @@ const ContactPage = ({ navigate }) => {
         <FadeUp className="grid md:grid-cols-2 gap-8 mb-24 w-full">
           <div className="border border-white/10 rounded-[24px] p-10 flex flex-col justify-between w-full" style={{ backgroundColor: palette.panel }}>
             <div>
-              <h3 className="text-2xl font-light mb-4 font-primary">I know what I need.</h3>
+              <h3 className="text-xl md:text-2xl font-light mb-4 font-primary">I know what I need.</h3>
               <p className="text-white/50 font-light mb-8 font-secondary max-w-md">Skip the discovery flow and send us a direct message outlining your requirements.</p>
             </div>
             <form className="space-y-4 text-left w-full font-secondary" onSubmit={handleSubmit}>
@@ -4657,8 +4659,8 @@ const ContactPage = ({ navigate }) => {
               <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} placeholder="Work Email" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
               <textarea required value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} placeholder="Tell us about your project..." rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30 resize-none custom-scrollbar" />
 
-              {status === 'success' && <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-[12px] text-sm">Message sent successfully! We'll be in touch soon.</div>}
-              {status === 'error' && <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-[12px] text-sm">Failed to send message. Please try again.</div>}
+              {status === 'success' && <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-[12px] text-[17px] md:text-[19px]">Message sent successfully! We'll be in touch soon.</div>}
+              {status === 'error' && <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-[12px] text-[17px] md:text-[19px]">Failed to send message. Please try again.</div>}
 
               <PremiumButton type="submit" disabled={isSubmitting} className="w-full">
                 {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</> : 'Send Message'}
@@ -4667,7 +4669,7 @@ const ContactPage = ({ navigate }) => {
           </div>
           <div className="border rounded-[24px] p-10 flex flex-col justify-center text-center items-center relative overflow-hidden w-full" style={{ background: `linear-gradient(to bottom right, ${hexToRgba(palette.primary, 0.1)}, transparent)`, borderColor: hexToRgba(palette.primary, 0.2) }}>
             <div className="w-16 h-16 rounded-[16px] flex items-center justify-center mb-6" style={{ backgroundColor: hexToRgba(palette.primary, 0.2), color: palette.primary }}><Fingerprint className="w-8 h-8" /></div>
-            <h3 className="text-2xl font-light mb-4 text-white font-primary">I need help defining the scope.</h3>
+            <h3 className="text-xl md:text-2xl font-light mb-4 text-white font-primary">I need help defining the scope.</h3>
             <p className="text-white/70 font-light mb-8 max-w-sm font-secondary">Use our strategic tool to map your exact deliverables before the first call.</p>
             <PremiumButton onClick={() => navigate('assessment')} className="w-full font-secondary">Build My Brand Scope</PremiumButton>
           </div>
@@ -4676,27 +4678,27 @@ const ContactPage = ({ navigate }) => {
         {/* Section 3 & 4: Direct Info & Map */}
         <FadeUp className="grid md:grid-cols-2 gap-8 mb-24 h-[400px] w-full">
           <div className="border border-white/10 rounded-[24px] p-10 flex flex-col justify-center w-full" style={{ backgroundColor: palette.panel }}>
-            <h3 className="text-2xl font-light mb-8 font-primary">Direct Contact</h3>
+            <h3 className="text-xl md:text-2xl font-light mb-8 font-primary">Direct Contact</h3>
             <div className="space-y-6 font-secondary">
               <div className="flex items-start gap-4">
                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Mail className="w-4 h-4 text-white/70" /></div>
                 <div>
-                  <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Email</p>
-                  <p className="text-lg text-white">hello@purplebluehouse.com</p>
+                  <p className="text-[17px] md:text-[19px] text-white/40 uppercase tracking-widest mb-1">Email</p>
+                  <p className="text-xl md:text-xl md:text-2xl text-white">hello@purplebluehouse.com</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Phone className="w-4 h-4 text-white/70" /></div>
                 <div>
-                  <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Phone</p>
-                  <p className="text-lg text-white">+91 (123) 456-7890</p>
+                  <p className="text-[17px] md:text-[19px] text-white/40 uppercase tracking-widest mb-1">Phone</p>
+                  <p className="text-xl md:text-xl md:text-2xl text-white">+91 (123) 456-7890</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><MapPin className="w-4 h-4 text-white/70" /></div>
                 <div>
-                  <p className="text-xs text-white/40 uppercase tracking-widest mb-1">Global HQ</p>
-                  <p className="text-lg text-white">Nehru Place, Delhi, IN</p>
+                  <p className="text-[17px] md:text-[19px] text-white/40 uppercase tracking-widest mb-1">Global HQ</p>
+                  <p className="text-xl md:text-xl md:text-2xl text-white">Nehru Place, Delhi, IN</p>
                 </div>
               </div>
             </div>
@@ -4708,7 +4710,7 @@ const ContactPage = ({ navigate }) => {
 
         {/* Section 5: What Happens Next */}
         <div className="mb-24 w-full">
-          <FadeUp><h3 className="text-3xl font-light mb-12 font-primary text-center">What happens next?</h3></FadeUp>
+          <FadeUp><h3 className="text-xl md:text-2xl font-light mb-12 font-primary text-center">What happens next?</h3></FadeUp>
           <StaggerGroup className="grid md:grid-cols-3 gap-6 w-full">
             {[
               { num: "01", title: "Review", desc: "Our strategy team reviews your message or Scope Blueprint within 24 hours.", icon: <CheckSquare /> },
@@ -4717,10 +4719,10 @@ const ContactPage = ({ navigate }) => {
             ].map((step, idx) => (
               <StaggerItem key={idx}>
                 <div className="border border-white/5 bg-white/[0.02] rounded-[16px] p-8 text-center relative overflow-hidden group h-full w-full">
-                  <div className="absolute top-0 right-0 p-4 text-6xl font-primary italic text-white/5 group-hover:text-white/10 transition-colors">{step.num}</div>
+                  <div className="absolute top-0 right-0 p-4 text-5xl md:text-5xl md:text-7xl lg:text-8xl lg:text-8xl font-primary italic text-white/5 group-hover:text-white/10 transition-colors">{step.num}</div>
                   <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5 relative z-10" style={{ color: palette.primary }}>{step.icon}</div>
                   <h4 className="text-xl font-medium text-white mb-3 font-primary relative z-10">{step.title}</h4>
-                  <p className="text-white/50 font-secondary text-sm leading-relaxed relative z-10 max-w-sm mx-auto">{step.desc}</p>
+                  <p className="text-white/50 font-secondary text-[17px] md:text-[19px] leading-relaxed relative z-10 max-w-sm mx-auto">{step.desc}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -4729,13 +4731,13 @@ const ContactPage = ({ navigate }) => {
 
         {/* Section 6: FAQ */}
         <div className="w-full border-t border-white/10 pt-16">
-          <FadeUp><h3 className="text-3xl font-light mb-8 font-primary text-center">Frequently Asked Questions</h3></FadeUp>
+          <FadeUp><h3 className="text-xl md:text-2xl font-light mb-8 font-primary text-center">Frequently Asked Questions</h3></FadeUp>
           <StaggerGroup className="space-y-4 font-secondary max-w-4xl mx-auto w-full">
             {FAQS.map((faq, i) => (
               <StaggerItem key={i}>
                 <div className="p-6 border border-white/10 rounded-[12px] bg-white/[0.01] w-full">
                   <h4 className="font-medium text-white mb-2">{faq.question}</h4>
-                  <p className="text-sm text-white/50">{faq.answer}</p>
+                  <p className="text-[17px] md:text-[19px] text-white/50">{faq.answer}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -4753,15 +4755,15 @@ const AdminDashboard = ({ navigate }) => {
       <div className="w-full px-[3%]">
         <div className="flex justify-between items-end mb-12">
           <div>
-            <h1 className="text-3xl font-light mb-2 font-primary">Lead Intelligence Dashboard</h1>
-            <p className="text-white/40 text-sm font-secondary">Brand discoveries captured via Brand Scope Builder.</p>
+            <h1 className="text-xl md:text-2xl font-light mb-2 font-primary">Lead Intelligence Dashboard</h1>
+            <p className="text-white/40 text-[17px] md:text-[19px] font-secondary">Brand discoveries captured via Brand Scope Builder.</p>
           </div>
           <PremiumButton variant="ghost" onClick={() => navigate('home')} className="px-0 font-secondary">Exit System <ArrowRight className="w-4 h-4 ml-2" /></PremiumButton>
         </div>
         <div className="border border-white/10 rounded-[16px] overflow-hidden" style={{ backgroundColor: palette.panel }}>
           <div className="overflow-x-auto font-secondary">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-white/[0.02] border-b border-white/10 text-white/40 uppercase tracking-widest text-[10px]">
+            <table className="w-full text-left text-[17px] md:text-[19px]">
+              <thead className="bg-white/[0.02] border-b border-white/10 text-white/40 uppercase tracking-widest text-[17px] md:text-[19px]">
                 <tr>
                   <th className="p-6 font-medium">Lead Context</th>
                   <th className="p-6 font-medium">Brand Stage</th>
@@ -4777,12 +4779,12 @@ const AdminDashboard = ({ navigate }) => {
                 ) : (
                   GLOBAL_LEADS.map((lead, i) => (
                     <tr key={i} className="hover:bg-white/[0.01] transition-colors group">
-                      <td className="p-6"><div className="font-medium text-white mb-1">{lead.company}</div><div className="text-xs text-white/50 flex items-center gap-2"><User className="w-3 h-3" /> {lead.name}</div></td>
+                      <td className="p-6"><div className="font-medium text-white mb-1">{lead.company}</div><div className="text-[17px] md:text-[19px] text-white/50 flex items-center gap-2"><User className="w-3 h-3" /> {lead.name}</div></td>
                       <td className="p-6 text-white/70 font-light">{lead.stage}</td>
-                      <td className="p-6"><span className="px-3 py-1 rounded-full text-xs border" style={{ backgroundColor: hexToRgba(palette.primary, 0.1), color: palette.primary, borderColor: hexToRgba(palette.primary, 0.2) }}>{lead.clusters[0]}</span></td>
-                      <td className="p-6 text-xs text-white/60 font-light">{lead.routes.join(', ')}</td>
+                      <td className="p-6"><span className="px-3 py-1 rounded-full text-[17px] md:text-[19px] border" style={{ backgroundColor: hexToRgba(palette.primary, 0.1), color: palette.primary, borderColor: hexToRgba(palette.primary, 0.2) }}>{lead.clusters[0]}</span></td>
+                      <td className="p-6 text-[17px] md:text-[19px] text-white/60 font-light">{lead.routes.join(', ')}</td>
                       <td className="p-6 text-center"><span className={`font-secondary ${lead.score > 80 ? 'text-green-400' : 'text-yellow-400'}`}>{lead.score}</span></td>
-                      <td className="p-6"><span className="px-3 py-1 rounded-full bg-white/5 text-white/70 text-[10px] uppercase tracking-widest border border-white/10">New</span></td>
+                      <td className="p-6"><span className="px-3 py-1 rounded-full bg-white/5 text-white/70 text-[17px] md:text-[19px] uppercase tracking-widest border border-white/10">New</span></td>
                     </tr>
                   )).reverse()
                 )}
@@ -4803,7 +4805,7 @@ const LatestCredentialsPage = ({ navigate }) => {
       <div className="w-full max-w-5xl mx-auto text-left">
         <FadeUp>
           <div className="w-16 h-16 border border-white/10 rounded-[16px] flex items-center justify-center mb-8 bg-white/5"><Fingerprint className="w-8 h-8 text-white" /></div>
-          <h1 className="text-4xl md:text-6xl font-light tracking-tight mb-6 font-primary leading-tight">Credentials & Selected Work.</h1>
+          <h1 className="text-xl md:text-2xl md:text-5xl md:text-5xl md:text-7xl lg:text-8xl lg:text-8xl font-light tracking-tight mb-6 font-primary leading-tight">Credentials & Selected Work.</h1>
           <p className="text-xl text-white/50 font-light mb-16 leading-relaxed font-secondary max-w-2xl">A curated selection of breakthroughs. How we partner with visionary teams to build clear, scalable brand systems.</p>
         </FadeUp>
 
@@ -4812,10 +4814,10 @@ const LatestCredentialsPage = ({ navigate }) => {
             <StaggerItem key={study.id}>
               <div onClick={() => navigate('work/' + study.id)} className="group cursor-pointer border border-white/10 rounded-[24px] overflow-hidden flex flex-col md:flex-row bg-[#0A0A10] hover:border-white/20 transition-colors">
                 <div className="md:w-1/3 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-center">
-                  <div className="text-[10px] tracking-widest uppercase mb-4 font-primary" style={{ color: palette[study.category] || palette.primary }}>{study.category}</div>
-                  <h3 className="text-2xl font-light mb-4 text-white group-hover:text-white/80 transition-colors font-primary">{study.client}</h3>
-                  <p className="text-white/50 text-sm font-secondary font-light line-clamp-3">{study.preview}</p>
-                  <div className="mt-8 flex items-center gap-2 text-xs text-white/40 group-hover:text-white transition-colors font-secondary">View Case Study <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" /></div>
+                  <div className="text-[17px] md:text-[19px] tracking-widest uppercase mb-4 font-primary" style={{ color: palette[study.category] || palette.primary }}>{study.category}</div>
+                  <h3 className="text-xl md:text-2xl font-light mb-4 text-white group-hover:text-white/80 transition-colors font-primary">{study.client}</h3>
+                  <p className="text-white/50 text-[17px] md:text-[19px] font-secondary font-light line-clamp-3">{study.preview}</p>
+                  <div className="mt-8 flex items-center gap-2 text-[17px] md:text-[19px] text-white/40 group-hover:text-white transition-colors font-secondary">View Case Study <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" /></div>
                 </div>
                 <div className="md:w-2/3 h-[250px] md:h-[350px] relative overflow-hidden bg-[#05050A]">
                   {(study.bannerVideo || study.fullStory?.heroVideo || study.bannerImage || study.fullStory?.heroImg || study.imageUrl) ? (
@@ -4836,9 +4838,9 @@ const LatestCredentialsPage = ({ navigate }) => {
           <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center mb-6 bg-white/5">
             <Mail className="w-5 h-5 text-white/70" />
           </div>
-          <h3 className="text-2xl font-light mb-4 font-primary text-white">Ready to start?</h3>
-          <p className="text-white/50 font-secondary text-lg mb-8">You can reach out <a href="mailto:prerita@purplebluehouse.com" className="text-white hover:underline transition-all">prerita@purplebluehouse.com</a></p>
-          <button onClick={() => navigate('assessment')} className="px-8 py-4 border border-white/20 rounded-full text-white/80 hover:bg-white hover:text-black transition-colors text-sm font-medium font-secondary">Build Your Brand Scope</button>
+          <h3 className="text-xl md:text-2xl font-light mb-4 font-primary text-white">Ready to start?</h3>
+          <p className="text-white/50 font-secondary text-xl md:text-xl md:text-2xl mb-8">You can reach out <a href="mailto:prerita@purplebluehouse.com" className="text-white hover:underline transition-all">prerita@purplebluehouse.com</a></p>
+          <button onClick={() => navigate('assessment')} className="px-8 py-4 border border-white/20 rounded-full text-white/80 hover:bg-white hover:text-black transition-colors text-[17px] md:text-[19px] font-medium font-secondary">Build Your Brand Scope</button>
         </FadeUp>
       </div>
     </div>
@@ -4862,7 +4864,7 @@ const Footer = ({ navigate }) => {
               <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className="h-8 w-auto object-contain shrink-0" />
               {SITE_SETTINGS?.title || "PurpleBlue House"}
             </div>
-            <p className="text-white/40 font-light text-sm leading-relaxed mb-6 font-secondary max-w-sm">{SITE_SETTINGS?.footerTagline || SITE_SETTINGS?.description || "A premium brand, storytelling, and communication studio that understands your brand problem before you even speak to them."}</p>
+            <p className="text-white/40 font-light text-[17px] md:text-[19px] leading-relaxed mb-6 font-secondary max-w-sm">{SITE_SETTINGS?.footerTagline || SITE_SETTINGS?.description || "A premium brand, storytelling, and communication studio that understands your brand problem before you even speak to them."}</p>
             <div className="flex gap-4 mb-6">
               {SITE_SETTINGS?.contactEmail && (
                 <a href={`mailto:${SITE_SETTINGS.contactEmail}`} className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-white/30 cursor-pointer transition-all"><Mail className="w-3 h-3" /></a>
@@ -4873,8 +4875,8 @@ const Footer = ({ navigate }) => {
             </div>
           </div>
           <div className="flex flex-col items-start font-secondary md:col-span-1">
-            <h4 className="text-white/80 font-medium mb-6 text-sm">Studio</h4>
-            <div className="flex flex-col space-y-4 text-white/40 text-sm font-light">
+            <h4 className="text-white/80 font-medium mb-6 text-[17px] md:text-[19px]">Studio</h4>
+            <div className="flex flex-col space-y-4 text-white/40 text-[17px] md:text-[19px] font-light">
               <button onClick={() => navigate('home')} className="hover:text-white transition-colors text-left">Home</button>
               <button onClick={() => navigate('about')} className="hover:text-white transition-colors text-left">About Us</button>
               <button onClick={() => navigate('method')} className="hover:text-white transition-colors text-left">The PBH Method</button>
@@ -4884,8 +4886,8 @@ const Footer = ({ navigate }) => {
             </div>
           </div>
           <div className="flex flex-col items-start font-secondary md:col-span-1">
-            <h4 className="text-white/80 font-medium mb-6 text-sm">Services</h4>
-            <div className="flex flex-col space-y-4 text-white/40 text-sm font-light">
+            <h4 className="text-white/80 font-medium mb-6 text-[17px] md:text-[19px]">Services</h4>
+            <div className="flex flex-col space-y-4 text-white/40 text-[17px] md:text-[19px] font-light">
               <button onClick={() => navigate('services')} className="hover:text-white transition-colors text-left">Overview</button>
               <button onClick={() => navigate('service-detail/bb')} className="hover:text-white transition-colors text-left">Brand Boulevard</button>
               <button onClick={() => navigate('service-detail/sas')} className="hover:text-white transition-colors text-left">SciArt Saga</button>
@@ -4893,14 +4895,14 @@ const Footer = ({ navigate }) => {
             </div>
           </div>
           <div className="flex flex-col items-start font-secondary md:col-span-1">
-            <h4 className="text-white/80 font-medium mb-6 text-sm">Connect</h4>
-            <div className="flex flex-col space-y-4 text-white/40 text-sm font-light">
+            <h4 className="text-white/80 font-medium mb-6 text-[17px] md:text-[19px]">Connect</h4>
+            <div className="flex flex-col space-y-4 text-white/40 text-[17px] md:text-[19px] font-light">
               <button onClick={() => navigate('contact')} className="hover:text-white transition-colors text-left">Contact Us</button>
               <button onClick={() => navigate('assessment')} className="hover:text-white transition-colors text-left">Build Brand Scope</button>
             </div>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-[10px] sm:text-xs font-medium text-white/30 uppercase tracking-widest gap-4 font-secondary w-full">
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-[17px] md:text-[19px] sm:text-[17px] md:text-[19px] font-medium text-white/30 uppercase tracking-widest gap-4 font-secondary w-full">
           <p>{SITE_SETTINGS?.footerCopyright || `© ${new Date().getFullYear()} PurpleBlue House. All rights reserved.`}</p>
           <div className="flex gap-6"><span className="cursor-pointer hover:text-white">Privacy Policy</span><span className="cursor-pointer hover:text-white">Terms</span></div>
         </div>

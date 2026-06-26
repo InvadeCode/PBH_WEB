@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
+import MediaRibbon3D from './MediaRibbon3D';
 
 const palette = {
   bgDeep: '#010d54',
@@ -276,7 +277,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         {/* Content Container */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
-            <h3 className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
+            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
                {title}
             </h3>
             <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
@@ -286,6 +287,79 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         </div>
       </div>
     </section>
+  );
+};
+
+/* ── Ecosystem Highlights carousel ──────────────────────────────────────────
+   Seamless infinite horizontal carousel. Each card keeps the media's EXACT
+   aspect ratio from Sanity (square stays square, rectangle stays rectangle —
+   never a circle) and its exact format (image / gif / video) via CaseStudyMedia.
+   Native scroll (mobile swipe works) + jump-free wrap; pauses on hover/touch. */
+const getMediaAspect = (m) => {
+  const ar = m?.source?.metadata?.dimensions?.aspectRatio;
+  return (typeof ar === 'number' && ar > 0) ? ar : 4 / 3;
+};
+
+const EcosystemCarousel = ({ media }) => {
+  const containerRef = useRef(null);
+  const firstSetRef = useRef(null);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    let raf;
+    let last = performance.now();
+    const speed = 0.45; // px per ~16ms frame
+    const loop = (time) => {
+      const dt = time - last;
+      last = time;
+      const el = containerRef.current;
+      if (el && !paused) {
+        el.scrollLeft += speed * (dt / 16);
+        const w = firstSetRef.current?.offsetWidth || 0;
+        if (w > 0 && el.scrollLeft >= w) el.scrollLeft -= w; // seamless wrap
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [paused]);
+
+  if (!media || media.length === 0) return null;
+
+  const renderCard = (m, i, prefix) => (
+    <figure
+      key={`${prefix}-${m.key || i}`}
+      className="group relative shrink-0 h-[clamp(220px,34vh,440px)] rounded-[20px] overflow-hidden ring-1 ring-white/10 bg-[#0C185C] shadow-[0_28px_70px_-24px_rgba(0,0,0,0.75)]"
+      style={{ aspectRatio: getMediaAspect(m) }}
+    >
+      <CaseStudyMedia
+        item={m}
+        alt={m.alt}
+        className="h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-105"
+        sizes="(min-width: 768px) 42vw, 82vw"
+      />
+      <div className="pointer-events-none absolute inset-0 rounded-[20px] ring-1 ring-inset ring-white/5" />
+    </figure>
+  );
+
+  return (
+    <div
+      ref={containerRef}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={() => setPaused(true)}
+      onTouchEnd={() => setPaused(false)}
+      className="flex overflow-x-auto pb-4 eco-hide-scrollbar"
+      style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+    >
+      <div ref={firstSetRef} className="flex items-center gap-5 md:gap-7 pr-5 md:pr-7 shrink-0">
+        {media.map((m, i) => renderCard(m, i, 'a'))}
+      </div>
+      <div className="flex items-center gap-5 md:gap-7 pr-5 md:pr-7 shrink-0" aria-hidden="true">
+        {media.map((m, i) => renderCard(m, i, 'b'))}
+      </div>
+      <style dangerouslySetInnerHTML={{ __html: '.eco-hide-scrollbar::-webkit-scrollbar{display:none}' }} />
+    </div>
   );
 };
 
@@ -311,7 +385,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
 
       {/* Navigation */}
       <div className="fixed top-0 left-0 w-full z-50 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex items-center gap-3 pointer-events-none">
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-sm md:text-base backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
       </div>
@@ -339,7 +413,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {(project?.tags || project?.roles || ['Branding', 'Visual Identity', 'Collateral']).map((tag, i) => (
-              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-sm md:text-base tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
+              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[17px] md:text-[19px] tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
                 {tag}
               </span>
             ))}
@@ -406,7 +480,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} 
               viewport={{ once: true, margin: "-10%" }}
             >
-              <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-sm md:text-base font-bold tracking-widest uppercase backdrop-blur-md font-primary">
+              <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-[17px] md:text-[19px] font-bold tracking-widest uppercase backdrop-blur-md font-primary">
                 <span className="w-2 h-2 rounded-full bg-[#D4CEFC] animate-pulse shadow-[0_0_10px_#D4CEFC]" />
                 The Solution
               </div>
@@ -571,76 +645,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </h2>
             </ElegantFade>
 
-            {(() => {
-              const isAriseBespoke = project.client?.toLowerCase().includes('arise');
-
-              if (isAriseBespoke) { 
-                return (
-                  <div className="grid grid-cols-1 md:grid-cols-12 md:grid-rows-[repeat(4,_minmax(150px,_auto))] gap-4 md:gap-6 w-full max-w-[1600px] mx-auto">
-                    {/* Image 0: Large Left Block (Row 1-4) */}
-                    <div className="md:col-start-1 md:col-span-5 md:row-start-1 md:row-span-4 h-full min-h-[300px] md:min-h-0">
-                      {cmsMedia[0] && <ParallaxImage src={cmsMedia[0].url} alt={cmsMedia[0].alt} delay={0.1} yOffset={10} className="h-full w-full object-cover" />}
-                    </div>
-                    
-                    {/* Image 1: Middle Top (Row 1) */}
-                    <div className="md:col-start-6 md:col-span-3 md:row-start-1 md:row-span-1 h-full">
-                      {cmsMedia[1] && <ParallaxImage src={cmsMedia[1].url} alt={cmsMedia[1].alt} delay={0.2} yOffset={5} className="h-full w-full object-cover" />}
-                    </div>
-
-                    {/* Image 2: Middle Center (Row 2-3) */}
-                    <div className="md:col-start-6 md:col-span-3 md:row-start-2 md:row-span-2 h-full">
-                      {cmsMedia[2] && <ParallaxImage src={cmsMedia[2].url} alt={cmsMedia[2].alt} delay={0.3} yOffset={-5} className="h-full w-full object-cover" />}
-                    </div>
-
-                    {/* Image 3: Middle Bottom (Row 4) */}
-                    <div className="md:col-start-6 md:col-span-3 md:row-start-4 md:row-span-1 h-full">
-                      {cmsMedia[3] && <ParallaxImage src={cmsMedia[3].url} alt={cmsMedia[3].alt} delay={0.4} yOffset={-10} className="h-full w-full object-cover" />}
-                    </div>
-
-                    {/* Image 4: Right Top (Row 1) */}
-                    <div className="md:col-start-9 md:col-span-4 md:row-start-1 md:row-span-1 h-full">
-                      {cmsMedia[4] && <ParallaxImage src={cmsMedia[4].url} alt={cmsMedia[4].alt} delay={0.3} yOffset={10} className="h-full w-full object-cover" />}
-                    </div>
-
-                    {/* Image 5: Right Center (Row 2-3) */}
-                    <div className="md:col-start-9 md:col-span-4 md:row-start-2 md:row-span-2 h-full">
-                      {cmsMedia[5] && <ParallaxImage src={cmsMedia[5].url} alt={cmsMedia[5].alt} delay={0.4} yOffset={-10} className="h-full w-full object-cover" />}
-                    </div>
-
-                    {/* Image 6: Right Bottom-Left (Row 4) */}
-                    <div className="md:col-start-9 md:col-span-2 md:row-start-4 md:row-span-1 h-full">
-                      {cmsMedia[6] && <ParallaxImage src={cmsMedia[6].url} alt={cmsMedia[6].alt} delay={0.5} yOffset={10} className="h-full w-full object-cover" />}
-                    </div>
-
-                    {/* Image 7: Right Bottom-Right (Row 4) */}
-                    <div className="md:col-start-11 md:col-span-2 md:row-start-4 md:row-span-1 h-full">
-                      {cmsMedia[7] && <ParallaxImage src={cmsMedia[7].url} alt={cmsMedia[7].alt} delay={0.6} yOffset={25} className="h-full w-full object-cover" />}
-                    </div>
-                  </div>
-                );
-              }
-
-              // Fallback masonry layout for other clients or fewer images
-              return (
-                <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-                  {cmsMedia.map((media, index) => {
-                    const yOffsets = [30, 15, -20, 35, -15];
-                    const parallaxY = yOffsets[index % yOffsets.length];
-                    
-                    return (
-                      <div key={media.key} className="break-inside-avoid relative w-full mb-6">
-                        <ParallaxImage 
-                          src={media.url}
-                          alt={media.alt || `Highlight 0${index + 1}`}
-                          delay={0.1 * ((index % 3) + 1)} 
-                          yOffset={parallaxY} 
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            })()}
+            <MediaRibbon3D media={cmsMedia} />
           </div>
         </section>
       )}
@@ -649,7 +654,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10">
         <div className="max-w-[1200px] mx-auto">
           <ElegantFade>
-            <p className="text-sm md:text-base tracking-widest uppercase text-[#D4CEFC] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
+            <p className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#D4CEFC] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
             <motion.h2 
               onClick={() => navigate('work')} 
               className="font-primary text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"

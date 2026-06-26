@@ -71,7 +71,7 @@ const NarrativeBlock = ({ index, label, paragraphs, accent = 'cyan', align = 'le
     >
       {/* Giant index numeral bleeding behind the panel */}
       <span
-        className={`absolute -top-12 md:-top-20 ${rightAlign ? 'right-0 md:-right-6' : 'left-0 md:-left-6'} text-[28vw] md:text-[15rem] font-primary font-bold leading-none pointer-events-none select-none`}
+        className={`absolute -top-12 md:-top-20 ${rightAlign ? 'right-0 md:-right-6' : 'left-0 md:-left-6'} text-5xl md:text-7xl lg:text-8xl font-primary font-bold leading-none pointer-events-none select-none`}
         style={{ color: a.dim, zIndex: 0 }}
       >
         {index}
@@ -104,9 +104,9 @@ const NarrativeBlock = ({ index, label, paragraphs, accent = 'cyan', align = 'le
           transition={{ duration: 0.8, delay: 0.25 }}
           className={`relative flex items-center gap-4 mb-10 md:mb-12 ${rightAlign ? 'flex-row-reverse text-right' : ''}`}
         >
-          <span className="text-xs md:text-sm font-primary font-bold tabular-nums" style={{ color: a.label, opacity: 0.55 }}>{index}</span>
+          <span className="text-[17px] md:text-[19px] font-primary font-bold tabular-nums" style={{ color: a.label, opacity: 0.55 }}>{index}</span>
           <span className="h-[2px] w-10 rounded-full" style={{ background: `linear-gradient(90deg, ${a.line}, transparent)` }} />
-          <span className="text-sm md:text-base uppercase tracking-[0.5em] font-primary" style={{ color: a.label }}>{label}</span>
+          <span className="text-[17px] md:text-[19px] uppercase tracking-[0.5em] font-primary" style={{ color: a.label }}>{label}</span>
         </motion.div>
 
         {/* Two-column balanced body */}
@@ -180,7 +180,7 @@ const DynamicSciArtGrid = ({ content }) => {
                 <motion.span 
                   animate={{ y: [-15, 15, -15], scale: [1, 1.03, 1], rotateZ: [-1, 1, -1] }}
                   transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                  className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
+                  className="text-5xl md:text-7xl lg:text-8xl font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
                 >
                   ABOUT
                 </motion.span>
@@ -213,7 +213,7 @@ const DynamicSciArtGrid = ({ content }) => {
                 />
                 
                 <div className="relative z-10">
-                  <h3 className="text-sm uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
+                  <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
                     <span className="w-8 h-[1px] bg-cyan-400" /> 
                     About the brand 
                   </h3>
@@ -244,7 +244,7 @@ const DynamicSciArtGrid = ({ content }) => {
                 />
 
                 <div className="relative z-10">
-                  <h3 className="text-sm uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
+                  <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
                     <span className="w-8 h-[1px] bg-cyan-400" /> 
                     The Problem 
                   </h3>
@@ -265,7 +265,7 @@ const DynamicSciArtGrid = ({ content }) => {
                 <motion.span 
                   animate={{ y: [-15, 15, -15], scale: [1, 1.03, 1], rotateZ: [1, -1, 1] }}
                   transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                  className="text-[20vw] lg:text-[7vw] xl:text-[8vw] font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
+                  className="text-5xl md:text-7xl lg:text-8xl font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
                 >
                   PROBLEM
                 </motion.span>
@@ -287,7 +287,7 @@ const DynamicSciArtGrid = ({ content }) => {
                <motion.span 
                  animate={{ y: [-15, 15, -15], scale: [1, 1.03, 1], rotateZ: [-1, 1, -1] }}
                  transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                 className="text-[15vw] lg:text-[6vw] xl:text-[7vw] font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
+                 className="text-5xl md:text-7xl lg:text-8xl font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
                >
                  SOLUTION
                </motion.span>
@@ -307,7 +307,7 @@ const DynamicSciArtGrid = ({ content }) => {
                />
    
                <div className="relative z-10">
-                 <h3 className="text-sm uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
+                 <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
                    <span className="w-8 h-[1px] bg-cyan-400" /> 
                    Solution 
                  </h3>
@@ -338,7 +338,7 @@ const PlanetarySwarm = ({ images, currentAssetIndex, setCurrentAssetIndex, title
       {hasIntro && (
         <div className="text-center mb-12 px-4">
           {title && <h2 className="text-5xl md:text-7xl lg:text-8xl font-primary text-white mb-4">{title}</h2>}
-          {subtext && <p className="text-sm font-secondary uppercase tracking-[0.3em] text-white/50">{subtext}</p>}
+          {subtext && <p className="text-[17px] md:text-[19px] font-secondary uppercase tracking-[0.3em] text-white/50">{subtext}</p>}
           <div className="w-12 h-[1px] bg-white/30 mx-auto mt-5" />
         </div>
       )}
@@ -516,7 +516,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
 
       {/* --- NAVIGATION --- */}
       <div className="fixed top-28 left-8 z-50 flex items-center gap-3">
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-sm md:text-base backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
       </div>
@@ -547,11 +547,11 @@ const SnowLeopardExperience = ({ navigate, project }) => {
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="flex items-center gap-3 bg-black/40 backdrop-blur-md px-5 py-2 rounded-full border border-white/10">
               <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)] animate-pulse" />
-              <h1 className="text-sm md:text-base font-bold tracking-[0.2em] uppercase text-white">{project.client}</h1>
+              <h1 className="text-[17px] md:text-[19px] font-bold tracking-[0.2em] uppercase text-white">{project.client}</h1>
             </motion.div>
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="bg-black/40 backdrop-blur-md px-5 py-2 rounded-full border border-white/10 hidden md:block">
-              <span className="text-sm md:text-base uppercase tracking-widest text-white/70 font-secondary">{project.sector || "Conservation"}</span>
+              <span className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/70 font-secondary">{project.sector || "Conservation"}</span>
             </motion.div>
           </div>
           
@@ -587,7 +587,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                         <span className={`text-5xl md:text-7xl lg:text-8xl font-primary text-transparent bg-clip-text ${index === 0 ? 'bg-gradient-to-b from-cyan-400' : 'bg-gradient-to-b from-indigo-400'} to-transparent opacity-80 drop-shadow-2xl`}>
                           {String(index + 1).padStart(2, '0')}
                         </span>
-                        {stat.label && <h4 className="text-sm md:text-base font-bold uppercase tracking-[0.4em] text-white/80">{stat.label}</h4>}
+                        {stat.label && <h4 className="text-[17px] md:text-[19px] font-bold uppercase tracking-[0.4em] text-white/80">{stat.label}</h4>}
                      </div>
                      {stat.value && <p className="text-[17px] md:text-[19px] text-white/60 font-secondary leading-relaxed font-light">{stat.value}</p>}
                   </motion.div>
@@ -666,7 +666,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
           >
             <div className="w-[1px] h-24 bg-gradient-to-b from-transparent to-white/30 mx-auto mb-12" />
             {outcomeHeading && (
-              <h3 className="text-2xl md:text-4xl font-primary text-white mb-6 leading-tight max-w-4xl mx-auto drop-shadow-2xl">
+              <h3 className="text-xl md:text-2xl font-primary text-white mb-6 leading-tight max-w-4xl mx-auto drop-shadow-2xl">
                 {outcomeHeading}
               </h3>
             )}

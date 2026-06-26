@@ -46,7 +46,7 @@
     @apply font-secondary text-[17px] md:text-[19px] leading-relaxed font-normal;
   }
   .t-label {
-    @apply font-primary text-sm md:text-base tracking-widest uppercase font-bold;
+    @apply font-primary text-[17px] md:text-[19px] tracking-widest uppercase font-bold;
   }
 
   /* ── Hatching Texture Overlay (Selective Use) ──
