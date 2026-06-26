@@ -3365,8 +3365,8 @@ const HomePage = ({ navigate }) => {
           <RevealText delay={0.1}><h2 className="t-display">Selected <AnimatedItalic className="text-white/50">Work.</AnimatedItalic></h2></RevealText>
           <PremiumButton variant="ghost" onClick={() => navigate('work')} className="px-0 py-0 group" style={{ color: palette.primary }}>View Archive <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
         </div>
-        <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
-          {CASE_STUDIES.slice(0, 3).map((cs, i) => {
+        <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
+          {CASE_STUDIES.slice(0, 4).map((cs, i) => {
             const hexColor = palette[cs.type] || palette.primary;
             return (
               <StaggerItem key={i}>
