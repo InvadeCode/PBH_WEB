@@ -179,7 +179,7 @@ const DynamicSciArtGrid = ({ content }) => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-                className="w-full lg:w-[700px] xl:w-[800px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-cyan-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(34,211,238,0.15)]"
+                className="w-full lg:w-[850px] xl:w-[1000px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-cyan-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(34,211,238,0.15)]"
               >
                 {/* Dynamic Graphic: Floating Dot inside box */}
                 <motion.div 
@@ -222,7 +222,7 @@ const DynamicSciArtGrid = ({ content }) => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-                className="w-full lg:w-[700px] xl:w-[800px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-purple-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(168,85,247,0.15)]"
+                className="w-full lg:w-[850px] xl:w-[1000px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-purple-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(168,85,247,0.15)]"
               >
                 {/* Subtle Breathing Glow */}
                 <motion.div 
@@ -277,7 +277,7 @@ const DynamicSciArtGrid = ({ content }) => {
                whileInView={{ opacity: 1, x: 0 }}
                viewport={{ once: true, amount: 0.2 }}
                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-               className="w-full lg:w-[700px] xl:w-[800px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-indigo-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(99,102,241,0.15)]"
+               className="w-full lg:w-[950px] xl:w-[1100px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-indigo-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(99,102,241,0.15)]"
              >
                {/* Ambient Background Sweep */}
                <motion.div 
