@@ -176,15 +176,23 @@ const DynamicSciArtGrid = ({ content }) => {
                 whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                className="flex-1 flex justify-center items-center overflow-visible"
+                className="flex-1 flex justify-center items-center overflow-visible relative"
               >
-                <motion.span 
-                  animate={{ y: [-15, 15, -15], scale: [1, 1.03, 1], rotateZ: [-1, 1, -1] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                  className="text-5xl md:text-7xl lg:text-8xl font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
-                >
-                  ABOUT
-                </motion.span>
+                <div className="relative">
+                  <div className="absolute -top-6 -left-4 text-cyan-400/40 text-sm md:text-base font-mono tracking-[0.3em]">// SEC.01_INTEL</div>
+                  <motion.span 
+                    animate={{ y: [-10, 10, -10], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                    className="block text-7xl md:text-[8rem] lg:text-[11rem] xl:text-[13rem] font-black text-[#D4CEFC]/15 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen"
+                  >
+                    ABOUT
+                  </motion.span>
+                  <div className="absolute -bottom-6 -right-4 text-cyan-400/40 text-sm md:text-base font-mono tracking-[0.3em]">SYS_ACTIVE</div>
+                  
+                  {/* Decorative bracket lines */}
+                  <div className="absolute -left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-cyan-500/0 via-cyan-500/30 to-cyan-500/0" />
+                  <div className="absolute -right-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-cyan-500/0 via-cyan-500/30 to-cyan-500/0" />
+                </div>
               </motion.div>
               
               <motion.div 
@@ -261,15 +269,23 @@ const DynamicSciArtGrid = ({ content }) => {
                 whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-                className="flex-1 flex justify-center items-center overflow-visible"
+                className="flex-1 flex justify-center items-center overflow-visible relative"
               >
-                <motion.span 
-                  animate={{ y: [-15, 15, -15], scale: [1, 1.03, 1], rotateZ: [1, -1, 1] }}
-                  transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                  className="text-5xl md:text-7xl lg:text-8xl font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
-                >
-                  PROBLEM
-                </motion.span>
+                <div className="relative">
+                  <div className="absolute -top-6 -right-4 text-purple-400/40 text-sm md:text-base font-mono tracking-[0.3em]">// SEC.02_ERR</div>
+                  <motion.span 
+                    animate={{ y: [-10, 10, -10], scale: [1, 1.02, 1], rotateZ: [1, -1, 1] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                    className="block text-7xl md:text-[8rem] lg:text-[11rem] xl:text-[13rem] font-black text-[#D4CEFC]/15 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen"
+                  >
+                    PROBLEM
+                  </motion.span>
+                  <div className="absolute -bottom-6 -left-4 text-purple-400/40 text-sm md:text-base font-mono tracking-[0.3em]">SYS_CRITICAL</div>
+                  
+                  {/* Decorative bracket lines */}
+                  <div className="absolute -left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-purple-500/0 via-purple-500/30 to-purple-500/0" />
+                  <div className="absolute -right-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-purple-500/0 via-purple-500/30 to-purple-500/0" />
+                </div>
               </motion.div>
            </div>
          )}
@@ -283,15 +299,23 @@ const DynamicSciArtGrid = ({ content }) => {
                whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
                viewport={{ once: true, amount: 0.2 }}
                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
-               className="flex-1 flex justify-center items-center overflow-visible"
+               className="flex-1 flex justify-center items-center overflow-visible relative"
              >
-               <motion.span 
-                 animate={{ y: [-15, 15, -15], scale: [1, 1.03, 1], rotateZ: [-1, 1, -1] }}
-                 transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                 className="text-5xl md:text-7xl lg:text-8xl font-black text-[#D4CEFC]/20 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_20px_rgba(212,206,252,0.2)]"
-               >
-                 SOLUTION
-               </motion.span>
+                <div className="relative">
+                  <div className="absolute -top-6 -left-4 text-blue-400/40 text-sm md:text-base font-mono tracking-[0.3em]">// SEC.03_EXEC</div>
+                  <motion.span 
+                    animate={{ y: [-10, 10, -10], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                    className="block text-7xl md:text-[8rem] lg:text-[11rem] xl:text-[13rem] font-black text-[#D4CEFC]/15 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen"
+                  >
+                    SOLUTION
+                  </motion.span>
+                  <div className="absolute -bottom-6 -right-4 text-blue-400/40 text-sm md:text-base font-mono tracking-[0.3em]">SYS_RESOLVED</div>
+                  
+                  {/* Decorative bracket lines */}
+                  <div className="absolute -left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-blue-500/0 via-blue-500/30 to-blue-500/0" />
+                  <div className="absolute -right-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-blue-500/0 via-blue-500/30 to-blue-500/0" />
+                </div>
              </motion.div>
              
              {/* CONTENT BOX (Right Area) */}
