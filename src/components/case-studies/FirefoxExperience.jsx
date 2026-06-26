@@ -4,6 +4,19 @@ import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
 import MediaRibbon3D from './MediaRibbon3D';
+import CaseStudySectorPill from './CaseStudySectorPill';
+
+// Import all Firefox Flow Images
+import observationMap from '../../assets/firefox/observation_map.png';
+import insightMapping from '../../assets/firefox/insight_mapping.png';
+import themeMapping from '../../assets/firefox/theme_mapping.png';
+import starGazerSketch from '../../assets/firefox/star_gazer_sketch.png';
+import sketchesCollage from '../../assets/firefox/sketches_collage.png';
+import dreamerBikes from '../../assets/firefox/dreamer_bikes.png';
+import stargazerBikes from '../../assets/firefox/stargazer_bikes.png';
+import stellarBikes from '../../assets/firefox/stellar_bikes.png';
+import ecosystemImage from '../../assets/firefox/ecosystem.png';
+import lifestyleGrid from '../../assets/firefox/lifestyle_grid.png';
 
 /* ── Arise Visual DNA (palette, utilities) ─────────────────────────── */
 const palette = {
@@ -46,39 +59,40 @@ const ElegantFade = ({ children, delay = 0, className = '' }) => (
 );
 
 /* Parallax image with clip-path reveal */
-const ParallaxImage = ({ src, alt, item, delay = 0, yOffset = 40, className = '' }) => {
+const ParallaxImage = ({ src, alt, item, delay = 0, yOffset = 20, className = '', imageClassName = '' }) => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const smooth = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
   const y = useTransform(smooth, [0, 1], [-yOffset, yOffset]);
 
+  // Reduced massive scaling and clipping constraints to address user feedback "reduce the size of the images"
   return (
     <motion.div
       ref={ref}
-      initial={{ clipPath: 'inset(100% 0 0 0)', scale: 0.95 }}
+      initial={{ clipPath: 'inset(100% 0 0 0)', scale: 0.98 }}
       whileInView={{ clipPath: 'inset(0% 0 0 0)', scale: 1 }}
       viewport={{ once: true, margin: '-5%' }}
-      transition={{ duration: 1.6, delay, ease: [0.25, 1, 0.5, 1] }}
-      className={`w-full relative group overflow-hidden bg-[#0c185c]/70 flex items-center justify-center rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 ${className}`}
+      transition={{ duration: 1.2, delay, ease: [0.25, 1, 0.5, 1] }}
+      className={`w-full relative group overflow-hidden bg-[#0c185c]/40 flex items-center justify-center rounded-[2rem] shadow-xl ring-1 ring-white/10 ${className}`}
     >
       {item ? (
         <CaseStudyMedia
           item={item}
           alt={alt || item?.alt}
-          className="w-full h-auto object-cover transition-transform duration-[2s] opacity-90 group-hover:opacity-100 scale-[1.15] group-hover:scale-[1.2]"
+          className={`w-full h-auto object-cover transition-transform duration-[2s] opacity-95 group-hover:opacity-100 ${imageClassName}`}
           sizes="(min-width: 1024px) 50vw, 100vw"
-          motionProps={{ style: { y: useTransform(smooth, [0, 1], [-yOffset / 1.5, yOffset / 1.5]) } }}
+          motionProps={{ style: { y: useTransform(smooth, [0, 1], [-yOffset / 2, yOffset / 2]) } }}
         />
       ) : (
         <CaseStudyMedia
           src={src}
           alt={alt}
-          className="w-full h-auto object-cover transition-transform duration-[2s] opacity-90 group-hover:opacity-100 scale-[1.15] group-hover:scale-[1.2]"
+          className={`w-full h-auto object-cover transition-transform duration-[2s] opacity-95 group-hover:opacity-100 ${imageClassName}`}
           sizes="(min-width: 1024px) 50vw, 100vw"
-          motionProps={{ style: { y: useTransform(smooth, [0, 1], [-yOffset / 1.5, yOffset / 1.5]) } }}
+          motionProps={{ style: { y: useTransform(smooth, [0, 1], [-yOffset / 2, yOffset / 2]) } }}
         />
       )}
-      <div className="absolute inset-0 bg-[#0C185C]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay pointer-events-none" />
+      <div className="absolute inset-0 bg-[#0C185C]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay pointer-events-none" />
     </motion.div>
   );
 };
@@ -107,16 +121,16 @@ const SectionTitle = ({ children, label, className = '' }) => (
 );
 
 /* ── Editorial Section: Title → Body → Images ─────────────────────── */
-const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'text-first', children }) => {
+const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'text-first', children, imageClassName = '' }) => {
   const isVisualFirst = layoutVariant === 'visual-first' || layoutVariant === 'full-width-visual';
 
   return (
     <section className="relative w-full z-10">
-      <div className="py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto">
-        {!isVisualFirst && title && <SectionTitle label={label} className="mb-8 md:mb-12">{title}</SectionTitle>}
+      <div className="py-12 md:py-20 px-6 md:px-12 max-w-[1400px] mx-auto">
+        {!isVisualFirst && title && <SectionTitle label={label} className="mb-8 md:mb-10">{title}</SectionTitle>}
 
         {!isVisualFirst && body && (
-          <ElegantFade delay={0.15} className="mb-12 md:mb-16">
+          <ElegantFade delay={0.15} className="mb-10 md:mb-14">
             <div className="max-w-4xl">
               {body.split('\n\n').filter(Boolean).map((para, i) => (
                 <p key={i} className="text-white/90 font-normal text-[17px] md:text-[19px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
@@ -127,17 +141,18 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
           </ElegantFade>
         )}
 
-        {isVisualFirst && title && <SectionTitle label={label} className="mb-8 md:mb-12">{title}</SectionTitle>}
+        {isVisualFirst && title && <SectionTitle label={label} className="mb-8 md:mb-10">{title}</SectionTitle>}
 
         {images.length > 0 && (
-          <div className={`grid gap-6 md:gap-8 ${images.length === 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
+          <div className={`grid gap-6 md:gap-8 ${images.length === 1 ? 'grid-cols-1 max-w-5xl mx-auto' : 'grid-cols-1 md:grid-cols-2'}`}>
             {images.map((img, i) => (
               <ElegantFade key={img?._key || img?.url || i} delay={i * 0.1}>
                 <ParallaxImage
                   src={img?.url}
                   item={img?.url ? img : undefined}
                   alt={img?.alt || `Section image ${i + 1}`}
-                  yOffset={30}
+                  yOffset={15}
+                  imageClassName={imageClassName}
                 />
               </ElegantFade>
             ))}
@@ -168,8 +183,8 @@ const UniverseCard = ({ title, description, imageUrl, index }) => {
 
   return (
     <ElegantFade className="mb-16 md:mb-24 last:mb-0">
-      <div className={`grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center ${isReversed ? 'lg:direction-rtl' : ''}`}>
-        <div className={`${isReversed ? 'lg:order-2' : 'lg:order-1'}`}>
+      <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center ${isReversed ? 'lg:direction-rtl' : ''}`}>
+        <div className={`lg:col-span-5 ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}>
           <motion.h3
             className="font-primary text-3xl md:text-5xl text-white mb-6 font-medium tracking-tight"
             initial={{ opacity: 0, y: 20 }}
@@ -185,9 +200,9 @@ const UniverseCard = ({ title, description, imageUrl, index }) => {
             </p>
           )}
         </div>
-        <div className={`${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
+        <div className={`lg:col-span-7 ${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
           {imageUrl && (
-            <ParallaxImage src={imageUrl} alt={title} yOffset={25} />
+            <ParallaxImage src={imageUrl} alt={title} yOffset={20} imageClassName="object-contain max-h-[600px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
           )}
         </div>
       </div>
@@ -207,27 +222,6 @@ const FirefoxExperience = ({ navigate, project }) => {
 
   const cmsMedia = normalizeMediaItems(project?.fullStory?.media || project?.fullStory?.images, project?.client || 'Firefox');
 
-  // Firefox-specific CMS data (new fields)
-  const firefoxSections = project?.firefoxSections || [];
-  const universeCards = project?.universeCards || [];
-
-  // Helper: find a specific section by type from CMS, or return null
-  const getSection = (type) => firefoxSections.find(s => s.sectionType === type) || null;
-
-  // Build section data — CMS overrides legacy fields when populated
-  const introSection = getSection('intro');
-  const challengeSection = getSection('challenge');
-  const outcomeSection = getSection('outcome');
-  const strategySection = getSection('strategy');
-  const insightSection = getSection('insightMapping');
-  const themeSection = getSection('themeMapping');
-  const sciartSection = getSection('sciart');
-  const closingSection = getSection('closing');
-  const finalSection = getSection('finalOutcome');
-
-  // Distribute gallery images across sections when CMS sections don't have their own images
-  const galleryImages = cmsMedia.map(m => ({ url: m.url, alt: m.alt, _key: m.key, ...m }));
-
   return (
     <div className="w-full min-h-screen font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
       <ChicAmbientBackground />
@@ -240,7 +234,7 @@ const FirefoxExperience = ({ navigate, project }) => {
       </div>
 
       {/* ── 1. HERO ── */}
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-20 md:pb-24 pt-10 px-4 md:px-8">
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-16 md:pb-20 pt-10 px-4 md:px-8">
         <div
           className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5"
           style={{ aspectRatio: heroAspectRatio }}
@@ -250,6 +244,10 @@ const FirefoxExperience = ({ navigate, project }) => {
           ) : (
             <div className="w-full h-full bg-[#0C185C]" />
           )}
+          <CaseStudySectorPill
+            sector={project?.sector}
+            className="absolute left-5 top-5 z-20 border border-white/15 bg-black/35 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.25)] backdrop-blur-md md:left-8 md:top-8"
+          />
         </div>
 
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
@@ -277,109 +275,108 @@ const FirefoxExperience = ({ navigate, project }) => {
         </div>
       </section>
 
-      {/* ── 2. DESIGNING FOR UNTAMED IMAGINATIONS (Intro) ── */}
+      {/* ── 2. INTRO ── */}
       <EditorialSection
-        title={introSection?.title || 'Designing for Untamed Imaginations'}
-        body={introSection?.body || project?.overview}
-        images={introSection?.images?.length > 0 ? introSection.images : galleryImages.slice(0, 2)}
-        layoutVariant={introSection?.layoutVariant || 'text-first'}
+        title="Designing for Untamed Imaginations"
+        body={`Firefox approached us to design graphics for a new range of children's bicycles. The brief sounded simple. The opportunity wasn't.\n\nAs we explored the category, we realised children don't experience bicycles the way adults do. Adults see products. Children see possibilities. A bicycle can become a spaceship, a dragon rider, a superhero vehicle, or a ticket to another world.\n\nThat insight transformed the project.\n\nWhat began as a graphics assignment evolved into the creation of lilFox, a children's brand built around imagination, storytelling, and adventure.`}
+        images={[]}
       />
 
-      {/* ── 3. CREATING THE LILFOX UNIVERSE (Challenge) ── */}
+      {/* ── 3. CHALLENGE ── */}
       <EditorialSection
-        title={challengeSection?.title || 'Creating the lilFox Universe'}
-        body={challengeSection?.body || project?.challenge}
-        images={challengeSection?.images?.length > 0 ? challengeSection.images : galleryImages.slice(2, 4)}
-        layoutVariant={challengeSection?.layoutVariant || 'text-first'}
+        title="Creating the lilFox Universe"
+        body={`Rather than designing a product range under Firefox, we set out to create a world with its own personality, language, and visual identity.\n\nThis led to the creation of lilFox as a standalone children's brand where imagination became the organising principle behind every touchpoint.\n\nFrom bicycles to accessories, packaging, and future products, every element belonged to the same universe.\n\nThe goal wasn't to sell bicycles.\n\nIt was to create a platform for adventure.`}
+        images={[]}
       />
 
-      {/* ── 4. OUTCOME ── */}
-      {(outcomeSection || project?.outcomeText) && (
-        <EditorialSection
-          title={outcomeSection?.title || project?.outcomeHeading || 'Outcome'}
-          label="Impact"
-          body={outcomeSection?.body || project?.outcomeText}
-          images={outcomeSection?.images || []}
-          layoutVariant={outcomeSection?.layoutVariant || 'text-first'}
-        />
-      )}
-
-      {/* ── 5. OUR CREATIVE STRATEGY ── */}
+      {/* ── 4. STRATEGY ── */}
       <EditorialSection
-        title={strategySection?.title || 'Our Creative Strategy'}
+        title="Our Creative Strategy"
         label="Strategy"
-        body={strategySection?.body || project?.solution}
-        images={strategySection?.images?.length > 0 ? strategySection.images : galleryImages.slice(4, 6)}
-        layoutVariant={strategySection?.layoutVariant || 'text-first'}
+        body={`Our research revealed that bicycles play a very different role in a child's life.\n\nIt wasn't just a vehicle to get from point A to B.\n\nIt was something they imagined through.`}
+        images={[{ url: observationMap, alt: 'Observation Map' }]}
+        imageClassName="object-contain max-h-[500px]"
       />
 
-      {/* ── 6. INSIGHT MAPPING ── */}
-      {insightSection && (
-        <EditorialSection
-          title={insightSection.title || 'Insight Mapping'}
-          body={insightSection.body}
-          images={insightSection.images || []}
-          layoutVariant={insightSection.layoutVariant || 'visual-first'}
-        />
-      )}
+      {/* ── 5. INSIGHT MAPPING ── */}
+      <EditorialSection
+        title="Insight Mapping"
+        body=""
+        images={[{ url: insightMapping, alt: 'Insight Mapping' }]}
+        layoutVariant="visual-first"
+        imageClassName="object-contain max-h-[500px]"
+      />
 
-      {/* ── 7. THEME MAPPING ── */}
-      {themeSection && (
-        <EditorialSection
-          title={themeSection.title || 'Theme Mapping'}
-          body={themeSection.body}
-          images={themeSection.images || []}
-          layoutVariant={themeSection.layoutVariant || 'visual-first'}
-        />
-      )}
+      {/* ── 6. THEME MAPPING ── */}
+      <EditorialSection
+        title="Theme Mapping"
+        body=""
+        images={[{ url: themeMapping, alt: 'Theme Mapping' }]}
+        layoutVariant="visual-first"
+        imageClassName="object-contain max-h-[500px]"
+      />
 
-      {/* ── 8. DESIGNING THROUGH SCIART ── */}
-      {(sciartSection || project?.fullStory?.strategy) && (
-        <EditorialSection
-          title={sciartSection?.title || 'Designing Through SciArt'}
-          body={sciartSection?.body || project?.fullStory?.strategy}
-          images={sciartSection?.images || []}
-          layoutVariant={sciartSection?.layoutVariant || 'text-first'}
-        />
-      )}
+      {/* ── 7. SCIART ── */}
+      <EditorialSection
+        title="Designing Through SciArt"
+        body={`At PBH, we call our approach SciArt.\n\nFor lilFox, that meant combining observation with imagination.\n\nWe studied how children interact with objects, how they create stories, how curiosity develops, and how fantasy becomes a tool for understanding the world.\n\nEvery concept had to work within real manufacturing constraints, frame geometries, production requirements, and decal placement limitations.\n\nThrough multiple iterations, we developed graphic systems that balanced storytelling with practicality.\n\nThe same thinking extended beyond the bicycle itself into accessories, packaging, manuals, merchandise, and future product concepts, creating a cohesive experience across the entire ecosystem.`}
+        images={[
+          { url: starGazerSketch, alt: 'Star Gazer Sketch' },
+          { url: sketchesCollage, alt: 'Sketches Collage' }
+        ]}
+        imageClassName="object-contain max-h-[400px]"
+      />
 
-      {/* ── 9. UNIVERSE BREAKDOWN ── */}
-      {universeCards.length > 0 && (
-        <section className="relative w-full z-10">
-          <div className="py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto">
-            <SectionTitle label="The Universe" className="mb-16 md:mb-20">Universe Breakdown</SectionTitle>
-            {universeCards.map((card, i) => (
-              <UniverseCard
-                key={card._key || i}
-                title={card.title}
-                description={card.description}
-                imageUrl={card.imageUrl}
-                index={i}
-              />
-            ))}
+      {/* ── 8. UNIVERSE BREAKDOWN ── */}
+      <section className="relative w-full z-10">
+        <div className="py-12 md:py-20 px-6 md:px-12 max-w-[1400px] mx-auto">
+          <SectionTitle label="The Universe" className="mb-8 md:mb-10">Dreamer, Stargazer & Stellar</SectionTitle>
+          <div className="mb-16">
+            <p className="text-white/90 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary max-w-4xl">
+              To translate the strategy into products, we created three distinct worlds within the lilFox universe.
+            </p>
           </div>
-        </section>
-      )}
+          
+          <div className="space-y-12">
+            <UniverseCard
+              title="Dreamer"
+              description="A world of wonder, optimism, stars, clouds, and limitless imagination."
+              imageUrl={dreamerBikes}
+              index={0}
+            />
+            <UniverseCard
+              title="Stargazer"
+              description="A world inspired by curiosity, celestial discovery, and exploration."
+              imageUrl={stargazerBikes}
+              index={1}
+            />
+            <UniverseCard
+              title="Stellar"
+              description="A vibrant universe built around movement, adventure, and big dreams."
+              imageUrl={stellarBikes}
+              index={2}
+            />
+          </div>
+        </div>
+      </section>
 
-      {/* ── 10. CLOSING NARRATIVE ── */}
-      {closingSection && (
-        <EditorialSection
-          title={closingSection.title}
-          body={closingSection.body}
-          images={closingSection.images || []}
-          layoutVariant={closingSection.layoutVariant || 'visual-first'}
-        />
-      )}
+      {/* ── 9. ECOSYSTEM ── */}
+      <EditorialSection
+        title=""
+        body=""
+        images={[{ url: ecosystemImage, alt: 'Ecosystem accessories and packaging' }]}
+        layoutVariant="visual-first"
+        imageClassName="object-contain max-h-[600px]"
+      />
 
-      {/* ── 11. MORE THAN A BICYCLE (Final Outcome) ── */}
-      {(finalSection || project?.results?.length > 0) && (
-        <EditorialSection
-          title={finalSection?.title || 'More Than a Bicycle'}
-          body={finalSection?.body || project?.results?.join('\n\n')}
-          images={finalSection?.images || []}
-          layoutVariant={finalSection?.layoutVariant || 'text-first'}
-        />
-      )}
+      {/* ── 10. OUTCOME ── */}
+      <EditorialSection
+        title="Outcome: More Than a Bicycle"
+        label="Impact"
+        body={`What started as a graphics project became a scalable children's brand.\n\nA visual language.\n\nA storytelling framework.\n\nAn expandable ecosystem of products and experiences.\n\nMost importantly, it transformed the bicycle from a mobility product into a catalyst for imagination.\n\nFirefox came to us to design bicycles.\n\nWe helped create a world where imagination could ride along.`}
+        images={[{ url: lifestyleGrid, alt: 'Kids enjoying the bicycles' }]}
+        imageClassName="object-contain max-h-[500px]"
+      />
 
       {/* ── GALLERY CAROUSEL ── */}
       {cmsMedia.length > 0 && (
@@ -416,3 +413,4 @@ const FirefoxExperience = ({ navigate, project }) => {
 };
 
 export default FirefoxExperience;
+
