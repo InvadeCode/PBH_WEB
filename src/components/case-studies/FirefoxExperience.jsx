@@ -234,15 +234,17 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
   const renderCard = (img, idx, prefix) => (
     <div 
       key={`${prefix}-${idx}`} 
-      className="flex-none w-[85vw] max-w-[420px] relative group shrink-0"
+      className="flex-none w-[85vw] max-w-[420px] relative group shrink-0 px-2"
     >
-      <div className={`w-full aspect-[4/5] rounded-[2rem] bg-gradient-to-br from-white/5 to-transparent overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 group-hover:scale-[1.02] group-hover:border-white/20 flex items-center justify-center`}>
-        <img 
-          src={img.url || img} 
-          alt={img.alt || `Carousel item ${idx + 1}`} 
-          className="w-full h-full object-contain p-6 md:p-8 transition-transform duration-1000 group-hover:scale-105"
-          draggable="false"
-        />
+      <div className="w-full relative p-2 bg-[#0E0805]/40 border border-white/10 shadow-2xl rounded-xl overflow-hidden transition-all duration-700 group-hover:scale-[1.02] group-hover:border-white/20">
+        <div className="w-full overflow-hidden bg-white/5 rounded-lg flex items-center justify-center relative">
+          <img 
+            src={img.url || img} 
+            alt={img.alt || `Carousel item ${idx + 1}`} 
+            className="w-full h-auto object-contain transition-transform duration-1000 group-hover:scale-105"
+            draggable="false"
+          />
+        </div>
       </div>
       {img.alt && (
         <p className="text-center mt-8 text-white/50 font-secondary text-sm md:text-base tracking-[0.25em] uppercase pointer-events-none">
