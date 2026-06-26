@@ -3575,7 +3575,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
         case 'legacy':
           return <LegacyExperience navigate={navigate} project={project} palette={palette} />;
         case 'storytelling':
-          return <GenericStorytellingExperience navigate={navigate} project={project} />;
+          return <BackToRootsExperience navigate={navigate} project={project} />;
       }
     }
 
@@ -3630,7 +3630,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     return <BackToRootsExperience navigate={navigate} project={project} />;
   }
 
-    return <GenericStorytellingExperience navigate={navigate} project={project} />;
+    return <BackToRootsExperience navigate={navigate} project={project} />;
   })();
 
   return (
