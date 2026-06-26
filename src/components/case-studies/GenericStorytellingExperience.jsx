@@ -223,7 +223,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
 
   const hasImages = images && images.length > 0;
   
-  const firstSetRef = useRef(null);
+
   const x = useMotionValue(0);
 
   // To prevent the "lag" or "jumping" bug when wrapping, we must ensure a single set
