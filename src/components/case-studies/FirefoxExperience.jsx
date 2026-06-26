@@ -210,6 +210,7 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
 const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) => {
   const scrollRef = useRef(null);
   const [isDown, setIsDown] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
@@ -221,6 +222,11 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
 
   const handleMouseLeave = () => {
     setIsDown(false);
+    setIsHovered(false);
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
   };
 
   const handleMouseUp = () => {
@@ -237,12 +243,42 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
     }
   };
 
+  // Auto-advance logic
+  useEffect(() => {
+    if (isDown || isHovered) return;
+
+    const interval = setInterval(() => {
+      if (!scrollRef.current) return;
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      
+      const itemWidth = scrollRef.current.children[0]?.offsetWidth || clientWidth / 2;
+      const gap = window.innerWidth >= 768 ? 40 : 24; 
+      
+      let nextScroll = scrollLeft + itemWidth + gap;
+      
+      // If we reach the end, loop back to start
+      if (scrollLeft + clientWidth >= scrollWidth - 10) {
+        nextScroll = 0;
+      }
+      
+      scrollRef.current.scrollTo({
+        left: nextScroll,
+        behavior: 'smooth'
+      });
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [isDown, isHovered]);
+
   return (
-    <div className="relative w-full overflow-hidden">
+    <div 
+      className="relative w-full overflow-hidden"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div 
         ref={scrollRef}
         onMouseDown={handleMouseDown}
-        onMouseLeave={handleMouseLeave}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
         className={`flex gap-6 md:gap-10 overflow-x-auto scrollbar-hide px-6 md:px-12 py-8 pb-12 ${isDown ? 'cursor-grabbing snap-none' : 'cursor-grab snap-x snap-mandatory'}`}
