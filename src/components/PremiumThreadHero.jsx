@@ -56,12 +56,14 @@ const Bead = ({ media, index, step, radius, beadSize, rotation, isActive }) => {
   // Depth-driven looks (GPU: transform + filter + opacity only).
   const scale = useTransform(front, [-1, 0.5, 1], [0.78, 1.0, 1.14]);
   const opacity = useTransform(front, [-1, -0.35, 0.15, 1], [0.06, 0.32, 0.82, 1]);
-  const liftZ = useTransform(front, [-1, 1], [-40, 70]); // active pops slightly toward viewer
   const blurPx = useTransform(front, (f) => (((1 - (f + 1) / 2) * 7).toFixed(2)));
   const brightness = useTransform(front, [-1, 0.4, 1], [0.5, 0.92, 1.16]);
   const saturate = useTransform(front, [-1, 1], [0.65, 1.18]);
   const filter = useMotionTemplate`blur(${blurPx}px) brightness(${brightness}) saturate(${saturate})`;
   const glow = useTransform(front, [0.55, 1], [0, 1]); // 0..1 highlight as it reaches front
+  const glowBlur = useTransform(glow, [0, 1], [0, 60]);
+  const glowAlpha = useTransform(glow, [0, 1], [0, 0.5]);
+  const boxShadow = useMotionTemplate`0 28px 60px -18px rgba(0,0,0,0.65), 0 0 ${glowBlur}px rgba(150,150,255,${glowAlpha})`;
 
   const videoRef = useRef(null);
   useEffect(() => {
@@ -92,14 +94,7 @@ const Bead = ({ media, index, step, radius, beadSize, rotation, isActive }) => {
     >
       <motion.div
         className="relative h-full w-full rounded-full overflow-hidden will-change-transform"
-        style={{
-          scale,
-          opacity,
-          filter,
-          z: liftZ,
-          transformStyle: 'preserve-3d',
-          boxShadow: useMotionTemplate`0 30px 60px -20px rgba(0,0,0,0.65), 0 0 ${useTransform(glow, [0, 1], [0, 60])}px rgba(140,150,255,${useTransform(glow, [0, 1], [0, 0.55])})`,
-        }}
+        style={{ scale, opacity, filter, boxShadow }}
       >
         {/* Media surface */}
         {isVideo ? (

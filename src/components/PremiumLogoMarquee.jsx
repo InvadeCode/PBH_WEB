@@ -41,10 +41,82 @@ const LOGOS = [
   { src: '/pbh-logos/novus.png',              name: 'IIT Delhi' },
 ];
 
+const LOGO_CASE_STUDY_ALIASES = {
+  'Hero Lectro': ['hero lectro'],
+  'Arise Ventures': ['arise ventures'],
+  Firefox: ['firefox', 'firefox bikes', 'firefox bicycles'],
+  'Leverage Edu': ['leverage edu'],
+  EcoBiotraps: ['ecobiotraps', 'eco biotraps', 'ebt'],
+  NSE: ['nse', 'national stock exchange'],
+  'Earthy Souls': ['earthy souls'],
+  Navankur: ['navankur'],
+  'Snow Leopard Trust': ['snow leopard trust', 'snow leopard'],
+  'Back To Roots': ['back to roots'],
+  ORF: ['orf', 'observer research found', 'observer research foundation', 'observer research'],
+  'Param Science Centre': ['param science centre', 'param innovation', 'param'],
+  'Veauli Techniks': ['veauli techniks', 'veauli'],
+  'India Global Forum': ['india global forum', 'igf'],
+  'Sayre Therapeutics': ['sayre therapeutics', 'sayre'],
+  'Kanti Sweets': ['kanti sweets'],
+  'Bella Vita': ['bella vita'],
+  'IIT Delhi': ['iit delhi'],
+};
+
 const BASE_SPEED = 140;   // px / second — faster cinematic pace
 const SLOW_FACTOR = 0.4; // Slower on hover for readability
 
-const Logo = ({ logo, i, reduce }) => {
+const normalizeMatchText = (value) => (
+  (value || '')
+    .toString()
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+);
+
+const compactMatchText = (value) => normalizeMatchText(value).replace(/\s+/g, '');
+
+const matchAlias = (caseStudy, alias) => {
+  const needle = normalizeMatchText(alias);
+  const compactNeedle = compactMatchText(alias);
+  if (!needle) return false;
+
+  const haystacks = [
+    normalizeMatchText(caseStudy?.client),
+    normalizeMatchText(caseStudy?.title),
+    normalizeMatchText(caseStudy?.id),
+  ].filter(Boolean);
+
+  return haystacks.some((haystack) => {
+    const compactHaystack = haystack.replace(/\s+/g, '');
+    return (
+      haystack === needle ||
+      haystack.includes(needle) ||
+      compactHaystack === compactNeedle ||
+      compactHaystack.includes(compactNeedle)
+    );
+  });
+};
+
+const findCaseStudyForLogo = (logo, caseStudies = []) => {
+  const aliases = LOGO_CASE_STUDY_ALIASES[logo.name] || [logo.name];
+  return aliases.reduce((match, alias) => match || caseStudies.find((caseStudy) => matchAlias(caseStudy, alias)), null);
+};
+
+const Logo = ({ logo, i, reduce, navigate, isClone = false }) => {
+  const canNavigate = Boolean(navigate && logo.caseStudy?.id);
+
+  const openCaseStudy = () => {
+    if (canNavigate) navigate(`work/${logo.caseStudy.id}`);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openCaseStudy();
+    }
+  };
+
   const getSizeClass = (name) => {
     const customSizes = {
       // BUMPED UP further per request
@@ -93,9 +165,14 @@ const Logo = ({ logo, i, reduce }) => {
 
   return (
     <motion.div
-      className="pbh-slot group relative shrink-0 flex items-center justify-center h-full"
+      className={`pbh-slot group relative shrink-0 flex items-center justify-center h-full ${canNavigate ? 'cursor-pointer' : ''}`}
       animate={reduce ? undefined : { y: [0, i % 2 ? -3.5 : 3.5, 0] }}
       transition={{ duration: 5.5 + (i % 5) * 0.6, repeat: Infinity, ease: 'easeInOut', delay: (i % 6) * 0.4 }}
+      role={canNavigate ? 'link' : undefined}
+      tabIndex={canNavigate && !isClone ? 0 : undefined}
+      aria-label={canNavigate ? `View ${logo.caseStudy.client || logo.name} case study` : undefined}
+      onClick={canNavigate ? openCaseStudy : undefined}
+      onKeyDown={canNavigate && !isClone ? handleKeyDown : undefined}
     >
       <div className="pbh-hover relative flex items-center justify-center">
         <span className="pbh-glow" aria-hidden="true" />
@@ -112,11 +189,15 @@ const Logo = ({ logo, i, reduce }) => {
   );
 };
 
-const PremiumLogoMarquee = () => {
+const PremiumLogoMarquee = ({ navigate, caseStudies = [] }) => {
   const reduce = useReducedMotion();
   const x = useMotionValue(0);
   const setWidth = useRef(0);
   const firstSet = useRef(null);
+  const logos = LOGOS.map((logo) => ({
+    ...logo,
+    caseStudy: findCaseStudyForLogo(logo, caseStudies),
+  }));
 
   const speedTarget = useRef(1);
   const speedCurrent = useRef(1);
@@ -206,10 +287,10 @@ const PremiumLogoMarquee = () => {
           {/* Track — two identical sets translated by a single motion value */}
           <motion.div className="absolute top-0 left-0 h-full flex w-max items-center will-change-transform gap-16 md:gap-28" style={{ x }}>
             <div ref={firstSet} className="flex items-center gap-16 md:gap-28 shrink-0 pl-16 md:pl-28">
-              {LOGOS.map((logo, i) => <Logo key={`a-${i}`} logo={logo} i={i} reduce={reduce} />)}
+              {logos.map((logo, i) => <Logo key={`a-${i}`} logo={logo} i={i} reduce={reduce} navigate={navigate} />)}
             </div>
             <div className="flex items-center gap-16 md:gap-28 shrink-0 pl-16 md:pl-28" aria-hidden="true">
-              {LOGOS.map((logo, i) => <Logo key={`b-${i}`} logo={logo} i={i} reduce={reduce} />)}
+              {logos.map((logo, i) => <Logo key={`b-${i}`} logo={logo} i={i} reduce={reduce} navigate={navigate} isClone />)}
             </div>
           </motion.div>
         </div>

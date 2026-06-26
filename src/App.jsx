@@ -26,7 +26,6 @@ import CaseStudyTeamCredits from './components/case-studies/CaseStudyTeamCredits
 import CaseStudyMedia from './components/case-studies/CaseStudyMedia';
 
 import PremiumLogoMarquee from './components/PremiumLogoMarquee';
-import PremiumThreadHero from './components/PremiumThreadHero';
 
 export const GlobalContext = createContext(null);
 
