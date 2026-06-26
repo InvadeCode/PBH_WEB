@@ -234,22 +234,34 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
   const renderCard = (img, idx, prefix) => (
     <div 
       key={`${prefix}-${idx}`} 
-      className="flex-none w-[85vw] max-w-[420px] relative group shrink-0 px-2"
+      className="flex-none w-[70vw] max-w-[280px] md:max-w-[340px] relative group shrink-0 px-4 py-16"
     >
-      <div className="w-full relative p-2 bg-[#0E0805]/40 border border-white/10 shadow-2xl rounded-xl overflow-hidden transition-all duration-700 group-hover:scale-[1.02] group-hover:border-white/20">
-        <div className="w-full overflow-hidden bg-white/5 rounded-lg flex items-center justify-center relative">
+      {/* 
+        Hover wrapper:
+        Very smooth scaling and vertical shift for the sophisticated pop-up effect.
+      */}
+      <div className="w-full relative rounded-2xl transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.15] group-hover:-translate-y-6 z-10 group-hover:z-50">
+        
+        {/* Glow effect behind the card */}
+        <div className="absolute inset-0 bg-white/20 blur-3xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-[900ms] ease-out -z-10" />
+
+        <div className="w-full rounded-2xl overflow-hidden bg-white/5 border border-white/10 group-hover:border-white/30 transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] shadow-[0_10px_30px_rgba(0,0,0,0.3)] group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.6)]">
           <img 
             src={img.url || img} 
             alt={img.alt || `Carousel item ${idx + 1}`} 
-            className="w-full h-auto object-contain transition-transform duration-1000 group-hover:scale-105"
+            className="w-full aspect-[4/5] object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-105"
             draggable="false"
           />
         </div>
       </div>
+      
+      {/* Title fades in below image on hover */}
       {img.alt && (
-        <p className="text-center mt-8 text-white/50 font-secondary text-sm md:text-base tracking-[0.25em] uppercase pointer-events-none">
-          {img.alt}
-        </p>
+        <div className="absolute bottom-4 left-0 right-0 text-center opacity-0 translate-y-4 transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:translate-y-0 z-50 pointer-events-none">
+          <p className="text-white/80 font-secondary text-xs md:text-sm tracking-[0.25em] uppercase drop-shadow-md">
+            {img.alt}
+          </p>
+        </div>
       )}
     </div>
   );
@@ -264,20 +276,20 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
     >
       <div 
         ref={containerRef}
-        className="flex overflow-x-auto pb-12 eco-hide-scrollbar"
+        className="flex overflow-x-auto items-center eco-hide-scrollbar"
         style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
       >
-        <div ref={firstSetRef} className="flex gap-6 md:gap-10 pr-6 md:pr-10 shrink-0">
+        <div ref={firstSetRef} className="flex gap-2 md:gap-4 pr-2 md:pr-4 shrink-0">
           {images.map((img, idx) => renderCard(img, idx, 'a'))}
         </div>
-        <div className="flex gap-6 md:gap-10 pr-6 md:pr-10 shrink-0" aria-hidden="true">
+        <div className="flex gap-2 md:gap-4 pr-2 md:pr-4 shrink-0" aria-hidden="true">
           {images.map((img, idx) => renderCard(img, idx, 'b'))}
         </div>
       </div>
       
       {/* Edge Fades for elegance */}
-      <div className="absolute left-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-r from-[#030203] via-[#030203]/80 to-transparent pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-32 bg-gradient-to-l from-[#030203] via-[#030203]/80 to-transparent pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-8 md:w-48 bg-gradient-to-r from-[#010d54] via-[#010d54]/80 to-transparent pointer-events-none z-40" />
+      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-48 bg-gradient-to-l from-[#010d54] via-[#010d54]/80 to-transparent pointer-events-none z-40" />
       <style dangerouslySetInnerHTML={{ __html: '.eco-hide-scrollbar::-webkit-scrollbar{display:none}' }} />
     </div>
   );
