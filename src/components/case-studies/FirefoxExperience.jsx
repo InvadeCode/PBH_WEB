@@ -512,11 +512,10 @@ const FirefoxExperience = ({ navigate, project }) => {
         motionGraphic={<ProblemGraphic />}
       />
 
-      {/* ── 4. CREATIVE STRATEGY (Custom White Card) ── */}
-      <section className="relative w-full z-10 py-16 px-4 md:px-12 flex justify-center">
-        <div className="w-full max-w-[1400px] bg-[#F8F9FA] rounded-[2rem] md:rounded-[3rem] p-8 md:p-12 lg:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.4)] overflow-hidden">
-          
-          <ElegantFade>
+      {/* ── 4. OUR CREATIVE STRATEGY ── */}
+      <section className="relative w-full z-10 py-16 md:py-24 px-4 md:px-8 bg-[#010d54]">
+        <div className="w-full max-w-[1200px] mx-auto bg-white rounded-3xl md:rounded-[2.5rem] p-8 md:p-16 lg:p-24 shadow-2xl">
+          <ElegantFade delay={0.1}>
             <h2 className="text-center font-primary text-3xl md:text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-8 md:mb-10 tracking-tight">
               Our Creative Strategy
             </h2>
@@ -529,18 +528,16 @@ const FirefoxExperience = ({ navigate, project }) => {
             </div>
           </ElegantFade>
           
-          <ElegantFade delay={0.2} className="mt-8 md:mt-12 w-full flex justify-center">
-            <div className="relative w-full max-w-[900px] aspect-[2.2/1] md:aspect-[2.5/1] overflow-hidden rounded-xl">
-              {/* By making the image taller than the container (h-[130%]) and pinning it to the bottom, the top portion containing the baked text gets cropped out automatically. */}
+          <ElegantFade delay={0.2} className="mt-12 md:mt-16 w-full flex justify-center">
+            <div className="w-full max-w-[900px]">
               <img 
                 src={observationMap} 
                 alt="Observation Map" 
-                className="absolute bottom-0 left-0 w-full h-[135%] md:h-[150%] object-cover object-bottom" 
+                className="w-full h-auto object-contain" 
                 draggable="false"
               />
             </div>
           </ElegantFade>
-          
         </div>
       </section>
 
@@ -565,7 +562,8 @@ const FirefoxExperience = ({ navigate, project }) => {
       {/* ── 7. DESIGNING THROUGH SCI ART ── */}
       <section className="w-full relative z-10 py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto">
         
-        <div className="max-w-4xl mx-auto text-center mb-16 md:mb-24">
+        {/* Intro Text */}
+        <div className="max-w-4xl mx-auto text-center mb-16 md:mb-20">
           <ElegantFade>
             <p className="text-white font-secondary text-[18px] md:text-[24px] leading-relaxed md:leading-[1.6]">
               Using our SciArt approach, we combined behavioural observations with creative exploration to understand how imagination shapes childhood experiences.
@@ -573,6 +571,19 @@ const FirefoxExperience = ({ navigate, project }) => {
           </ElegantFade>
         </div>
 
+        {/* Standalone Star Gazer Image */}
+        <ElegantFade delay={0.2} className="w-full flex justify-center mb-16 md:mb-24">
+          <div className="w-full max-w-[1000px] bg-white rounded-xl shadow-2xl overflow-hidden p-6 md:p-10 border border-white/10">
+            <img 
+              src={starGazerSketch} 
+              alt="Star Gazer Sketch" 
+              className="w-full h-auto object-contain drop-shadow-md" 
+              draggable="false" 
+            />
+          </div>
+        </ElegantFade>
+
+        {/* 4-Image Sketches Masonry Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-start">
           {/* Left Column */}
           <div className="flex flex-col gap-6 md:gap-10">
@@ -582,8 +593,8 @@ const FirefoxExperience = ({ navigate, project }) => {
               </div>
             </ElegantFade>
             <ElegantFade delay={0.3}>
-              <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10 scale-105 origin-top">
-                <img src={starGazerSketch} alt="Star Gazer Sketch" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+              <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
+                <img src={sketches3} alt="Sketch 3" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
               </div>
             </ElegantFade>
           </div>
