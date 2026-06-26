@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
@@ -172,6 +172,8 @@ const Narrative = ({ project, c }) => {
 // ── SCENE 3 · STORYTELLING CAROUSEL ──────────────────────────────────────────
 const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
   const containerRef = useRef(null);
+  const firstSetRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
 
   const fallbackChapters = [
     { t: 'The Seed', l: 'Every brand begins as a single idea, planted deep.' },
@@ -188,26 +190,40 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
     t: ch.title,
     l: ch.description
   }));
-  
+
   const defaultChaptersArray = (siteDefaultChapters?.length > 0) ? siteDefaultChapters : fallbackChapters;
 
-  // We use standard CSS horizontal scroll plus a smooth auto-scroll effect
+  const hasImages = images && images.length > 0;
+  
+  // To prevent the "lag" or "jumping" bug when wrapping, we must ensure a single set
+  // is physically wider than the user's screen. If they only upload 1-3 images, we duplicate 
+  // them in the base array until it has enough items to span a large desktop.
+  let baseImages = [];
+  if (hasImages) {
+    baseImages = [...images];
+    while (baseImages.length < 6) {
+      baseImages = [...baseImages, ...images];
+    }
+  }
+
+  // Seamless infinite auto-scroll (native scroll, so touch swipe still works).
+  // We duplicate the set and wrap by the measured width of ONE set, so the loop
+  // never visibly jumps. Pauses while hovering / touching so users can browse.
   useEffect(() => {
+    if (!hasImages) return;
     let animationFrameId;
     let lastTime = performance.now();
-    let speed = 0.6; // pixels per frame
+    const speed = 0.5; // pixels per ~16ms frame
 
     const scrollLoop = (time) => {
       const delta = time - lastTime;
       lastTime = time;
-      
-      if (containerRef.current) {
-        // Auto-scroll runs continuously
-        containerRef.current.scrollLeft += speed * (delta / 16);
-        
-        // Soft loop
-        if (containerRef.current.scrollLeft >= containerRef.current.scrollWidth - containerRef.current.clientWidth - 5) {
-            containerRef.current.scrollLeft = 0;
+      const el = containerRef.current;
+      if (el && !isPaused) {
+        el.scrollLeft += speed * (delta / 16);
+        const setWidth = firstSetRef.current?.offsetWidth || 0;
+        if (setWidth > 0 && el.scrollLeft >= setWidth) {
+          el.scrollLeft -= setWidth; // identical second set → seamless wrap
         }
       }
       animationFrameId = requestAnimationFrame(scrollLoop);
@@ -215,86 +231,96 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
 
     animationFrameId = requestAnimationFrame(scrollLoop);
     return () => cancelAnimationFrame(animationFrameId);
-  }, []);
+  }, [hasImages, isPaused]);
 
-  if (!images || images.length === 0) return null;
+  if (!hasImages) return null;
 
-  // Duplicate images for infinite scroll effect
-  const extendedImages = [...images, ...images, ...images];
+  const renderCard = (img, index, prefix) => {
+    // We map back to the original index using modulo so chapters match properly
+    const originalIndex = index % images.length;
+    const storyChapters = project?.fullStory?.storyChapters || [];
+    const chData = storyChapters.length > 0 ? storyChapters[originalIndex % storyChapters.length] : null;
+    const defaultCh = defaultChaptersArray[originalIndex % defaultChaptersArray.length];
+    const ch = chData ? {
+      label: chData.chapterLabel, // No default label, optional
+      t: chData.title || defaultCh.t,
+      l: chData.description || defaultCh.l
+    } : defaultCh;
+
+    return (
+      <motion.div
+        key={`${prefix}-${img?.key ?? index}-${index}`}
+        className="relative shrink-0 flex flex-col items-center"
+        style={{ width: 'min(85vw, 420px)', maxHeight: '75vh' }}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-8%" }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      >
+        {/* Adaptive Image Container */}
+        <div className="w-full h-full max-h-[60vh] relative p-3 bg-[#0E0805] shadow-2xl flex flex-col z-10 hover:scale-[1.02] transition-transform duration-500 cursor-grab active:cursor-grabbing"
+             style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.8)' }}>
+          <Sprockets pos="top" c={c} />
+          <Sprockets pos="bottom" c={c} />
+          <div className="flex-1 w-full overflow-hidden bg-white/5 flex items-center justify-center relative border border-white/5 p-2 min-h-0 pointer-events-none">
+            {img ? (
+              <CaseStudyMedia
+                item={img}
+                alt={ch?.t || 'Case study image'}
+                className="w-full h-auto object-contain shadow-inner"
+                sizes="(min-width: 768px) 420px, 85vw"
+              />
+            ) : (
+              <div className="w-full aspect-[3/4] flex items-center justify-center">
+                <span className="text-white/30 text-xs uppercase tracking-widest font-secondary">Media Unavailable</span>
+              </div>
+            )}
+          </div>
+          <RegMarks c={c} />
+        </div>
+
+        {/* Chapter Text */}
+        <div className="mt-8 text-center max-w-[80%] pointer-events-none">
+          <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${c.cream}80` }}>
+            {ch.label}
+          </p>
+          <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: c.cream }}>
+            {ch.t}
+          </h4>
+          <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${c.cream}AA` }}>
+            {ch.l}
+          </p>
+        </div>
+      </motion.div>
+    );
+  };
 
   return (
     <section className="relative py-24 md:py-32 overflow-hidden" style={{ backgroundColor: c.soilDeep }}>
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.1 }} />
-      
+
       <div className="text-center mb-16 px-[6%] relative z-10">
         <h3 className="font-primary text-2xl md:text-4xl" style={{ color: c.terra }}>{project?.carouselTitle || SITE_SETTINGS?.csCarouselFallbackTitle || 'The Unfolding Story'}</h3>
         <p className="text-sm font-secondary uppercase tracking-[0.3em] mt-4" style={{ color: `${c.cream}66` }}>{project?.carouselSubtext || SITE_SETTINGS?.csCarouselFallbackSubtitle || 'Scroll or drag to explore'}</p>
       </div>
 
-      <div 
+      <div
         ref={containerRef}
-        className="flex gap-16 md:gap-24 overflow-x-auto snap-x snap-mandatory hide-scrollbar px-[10vw] pb-16 pt-8 items-center"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={() => setIsPaused(true)}
+        onTouchEnd={() => setIsPaused(false)}
+        className="flex overflow-x-auto hide-scrollbar px-[10vw] pb-16 pt-8 items-center"
         style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
       >
-        {extendedImages.map((img, index) => {
-          const storyChapters = project?.fullStory?.storyChapters || [];
-          const chData = storyChapters.length > 0 ? storyChapters[index % storyChapters.length] : null;
-          const defaultCh = defaultChaptersArray[index % defaultChaptersArray.length];
-          const ch = chData ? { 
-            label: chData.chapterLabel, // No default label, optional
-            t: chData.title || defaultCh.t, 
-            l: chData.description || defaultCh.l 
-          } : defaultCh;
-
-          return (
-            <motion.div
-              key={`${img.key}-${index}`}
-              className="relative shrink-0 snap-center flex flex-col items-center"
-              style={{ width: 'min(85vw, 420px)', maxHeight: '75vh' }}
-              initial={{ opacity: 0, rotateY: 45, x: 100 }}
-              whileInView={{ opacity: 1, rotateY: 0, x: 0 }}
-              viewport={{ margin: "-10%" }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              {/* Adaptive Image Container */}
-              <div className="w-full h-full max-h-[60vh] relative p-3 bg-[#0E0805] shadow-2xl flex flex-col z-10" 
-                   style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.8)', transformStyle: 'preserve-3d' }}>
-                <Sprockets pos="top" c={c} />
-                <Sprockets pos="bottom" c={c} />
-                <div className="flex-1 w-full overflow-hidden bg-white/5 flex items-center justify-center relative border border-white/5 p-2 min-h-0">
-                  {img ? (
-                    <CaseStudyMedia
-                      item={img}
-                      alt={ch?.t || 'Case study image'}
-                      className="w-full h-auto object-contain shadow-inner"
-                      sizes="(min-width: 768px) 420px, 85vw"
-                    />
-                  ) : (
-                    <div className="w-full aspect-[3/4] flex items-center justify-center">
-                      <span className="text-white/30 text-xs uppercase tracking-widest font-secondary">Media Unavailable</span>
-                    </div>
-                  )}
-                </div>
-                <RegMarks c={c} />
-              </div>
-
-              {/* Chapter Text */}
-              <div className="mt-8 text-center max-w-[80%]">
-                <p className="text-xs font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${c.cream}80` }}>
-                  {ch.label}
-                </p>
-                <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: c.cream }}>
-                  {ch.t}
-                </h4>
-                <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${c.cream}AA` }}>
-                  {ch.l}
-                </p>
-              </div>
-            </motion.div>
-          );
-        })}
+        <div ref={firstSetRef} className="flex gap-16 md:gap-24 items-center pr-16 md:pr-24 shrink-0">
+          {baseImages.map((img, i) => renderCard(img, i, 'a'))}
+        </div>
+        <div className="flex gap-16 md:gap-24 items-center pr-16 md:pr-24 shrink-0" aria-hidden="true">
+          {baseImages.map((img, i) => renderCard(img, i, 'b'))}
+        </div>
       </div>
-      
+
       {/* CSS to hide scrollbar for webkit browsers */}
       <style dangerouslySetInnerHTML={{__html: `
         .hide-scrollbar::-webkit-scrollbar {

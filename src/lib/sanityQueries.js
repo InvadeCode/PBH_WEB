@@ -54,6 +54,7 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(coalesce(orde
       alt,
       caption,
       "url": asset->url,
+      "originalFilename": asset->originalFilename,
       "mimeType": asset->mimeType,
       "extension": asset->extension,
       "metadata": asset->metadata {
