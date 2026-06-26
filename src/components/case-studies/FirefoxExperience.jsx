@@ -234,13 +234,13 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
   const renderCard = (img, idx, prefix) => (
     <div 
       key={`${prefix}-${idx}`} 
-      className="flex-none w-[85vw] md:w-[65vw] lg:w-[55vw] relative group shrink-0"
+      className="flex-none w-[85vw] max-w-[420px] relative group shrink-0"
     >
-      <div className={`w-full ${heightClass} rounded-[2rem] bg-gradient-to-br from-white/5 to-transparent overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 group-hover:scale-[1.01] group-hover:border-white/20 flex items-center justify-center`}>
+      <div className={`w-full aspect-[4/5] rounded-[2rem] bg-gradient-to-br from-white/5 to-transparent overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 group-hover:scale-[1.02] group-hover:border-white/20 flex items-center justify-center`}>
         <img 
           src={img.url || img} 
           alt={img.alt || `Carousel item ${idx + 1}`} 
-          className="w-full h-full object-contain p-6 md:p-12 transition-transform duration-1000 group-hover:scale-105"
+          className="w-full h-full object-contain p-6 md:p-8 transition-transform duration-1000 group-hover:scale-105"
           draggable="false"
         />
       </div>
