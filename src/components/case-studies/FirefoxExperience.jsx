@@ -12,9 +12,12 @@ import insightMapping from '../../assets/firefox/insight_mapping.png';
 import themeMapping from '../../assets/firefox/theme_mapping.png';
 import starGazerSketch from '../../assets/firefox/star_gazer_sketch.png';
 import sketchesCollage from '../../assets/firefox/sketches_collage.png';
-import dreamerBikes from '../../assets/firefox/dreamer_bikes.png';
-import stargazerBikes from '../../assets/firefox/stargazer_bikes.png';
-import stellarBikes from '../../assets/firefox/stellar_bikes.png';
+import dreamerBikesLeft from '../../assets/firefox/dreamer_bikes_left.png';
+import dreamerBikesRight from '../../assets/firefox/dreamer_bikes_right.png';
+import stargazerBikesLeft from '../../assets/firefox/stargazer_bikes_left.png';
+import stargazerBikesRight from '../../assets/firefox/stargazer_bikes_right.png';
+import stellarBikesLeft from '../../assets/firefox/stellar_bikes_left.png';
+import stellarBikesRight from '../../assets/firefox/stellar_bikes_right.png';
 import ecosystemImage from '../../assets/firefox/ecosystem.png';
 import lifestyleGrid from '../../assets/firefox/lifestyle_grid.png';
 
@@ -199,35 +202,49 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
 };
 
 /* ── Universe Card — alternating text/image blocks ────────────────── */
-const UniverseCard = ({ title, description, imageUrl, index }) => {
+const UniverseCard = ({ title, description, images, index }) => {
   const isReversed = index % 2 !== 0;
 
   return (
-    <ElegantFade className="mb-16 md:mb-24 last:mb-0">
-      <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center ${isReversed ? 'lg:direction-rtl' : ''}`}>
-        <div className={`lg:col-span-5 ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}>
-          <motion.h3
-            className="font-primary text-3xl md:text-5xl text-white mb-6 font-medium tracking-tight"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            {title}
-          </motion.h3>
-          {description && (
-            <p className="text-white/85 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary">
-              {description}
-            </p>
-          )}
+    <div className="mb-24 md:mb-32 last:mb-0">
+      {/* First Row: Text and First Image */}
+      <ElegantFade>
+        <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center ${isReversed ? 'lg:direction-rtl' : ''}`}>
+          <div className={`lg:col-span-4 ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}>
+            <motion.h3
+              className="font-primary text-3xl md:text-5xl text-white mb-6 font-medium tracking-tight"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              {title}
+            </motion.h3>
+            {description && (
+              <p className="text-white/85 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary">
+                {description}
+              </p>
+            )}
+          </div>
+          <div className={`lg:col-span-8 ${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
+            {images && images[0] && (
+              <ParallaxImage src={images[0]} alt={`${title} 1`} yOffset={20} imageClassName="object-contain max-h-[600px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
+            )}
+          </div>
         </div>
-        <div className={`lg:col-span-7 ${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
-          {imageUrl && (
-            <ParallaxImage src={imageUrl} alt={title} yOffset={20} imageClassName="object-contain max-h-[600px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
-          )}
-        </div>
-      </div>
-    </ElegantFade>
+      </ElegantFade>
+
+      {/* Second Row: Second Image, staggered in the opposite direction */}
+      {images && images[1] && (
+        <ElegantFade className="mt-16 md:mt-24">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            <div className={`lg:col-span-8 ${isReversed ? 'lg:col-start-5' : 'lg:col-start-1'}`}>
+              <ParallaxImage src={images[1]} alt={`${title} 2`} yOffset={20} imageClassName="object-contain max-h-[600px] w-auto mx-auto" className="bg-transparent shadow-none ring-0" />
+            </div>
+          </div>
+        </ElegantFade>
+      )}
+    </div>
   );
 };
 
@@ -471,19 +488,19 @@ const FirefoxExperience = ({ navigate, project }) => {
             <UniverseCard
               title="Dreamer"
               description="A world of wonder, optimism, stars, clouds, and limitless imagination."
-              imageUrl={dreamerBikes}
+              images={[dreamerBikesLeft, dreamerBikesRight]}
               index={0}
             />
             <UniverseCard
               title="Stargazer"
               description="A world inspired by curiosity, celestial discovery, and exploration."
-              imageUrl={stargazerBikes}
+              images={[stargazerBikesLeft, stargazerBikesRight]}
               index={1}
             />
             <UniverseCard
               title="Stellar"
               description="A vibrant universe built around movement, adventure, and big dreams."
-              imageUrl={stellarBikes}
+              images={[stellarBikesLeft, stellarBikesRight]}
               index={2}
             />
           </div>
