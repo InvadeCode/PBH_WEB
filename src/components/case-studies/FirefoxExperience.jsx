@@ -410,15 +410,23 @@ const FirefoxExperience = ({ navigate, project }) => {
       />
 
       {/* ── 7. SCIART ── */}
-      <EditorialSection
+      <DramaticSection
         title="Designing Through SciArt"
-        body={`At PBH, we call our approach SciArt.\n\nFor lilFox, that meant combining observation with imagination.\n\nWe studied how children interact with objects, how they create stories, how curiosity develops, and how fantasy becomes a tool for understanding the world.\n\nEvery concept had to work within real manufacturing constraints, frame geometries, production requirements, and decal placement limitations.\n\nThrough multiple iterations, we developed graphic systems that balanced storytelling with practicality.\n\nThe same thinking extended beyond the bicycle itself into accessories, packaging, manuals, merchandise, and future product concepts, creating a cohesive experience across the entire ecosystem.`}
-        images={[
-          { url: starGazerSketch, alt: 'Star Gazer Sketch' },
-          { url: sketchesCollage, alt: 'Sketches Collage' }
-        ]}
-        imageClassName="object-contain max-h-[400px]"
+        content={`At PBH, we call our approach SciArt.\n\nFor lilFox, that meant combining observation with imagination.\n\nWe studied how children interact with objects, how they create stories, how curiosity develops, and how fantasy becomes a tool for understanding the world.\n\nEvery concept had to work within real manufacturing constraints, frame geometries, production requirements, and decal placement limitations.\n\nThrough multiple iterations, we developed graphic systems that balanced storytelling with practicality.\n\nThe same thinking extended beyond the bicycle itself into accessories, packaging, manuals, merchandise, and future product concepts, creating a cohesive experience across the entire ecosystem.`}
+        motionGraphic={<AboutGraphic />}
       />
+      <section className="relative w-full z-10 pb-16 md:pb-24 -mt-32 md:-mt-48">
+        <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <ElegantFade delay={0.1}>
+              <ParallaxImage src={starGazerSketch} alt="Star Gazer Sketch" yOffset={15} imageClassName="object-contain max-h-[400px]" />
+            </ElegantFade>
+            <ElegantFade delay={0.2}>
+              <ParallaxImage src={sketchesCollage} alt="Sketches Collage" yOffset={15} imageClassName="object-contain max-h-[400px]" />
+            </ElegantFade>
+          </div>
+        </div>
+      </section>
 
       {/* ── 8. UNIVERSE BREAKDOWN ── */}
       <section className="relative w-full z-10">
