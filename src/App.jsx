@@ -3401,9 +3401,13 @@ const HomePage = ({ navigate }) => {
                         <p className="font-secondary text-white/60 text-sm md:text-[15px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
                       )}
                       {(cs.tags || []).length > 0 && (
-                        <p className="font-secondary text-white/35 text-xs md:text-sm mb-4 tracking-wide">
-                          {(cs.tags || []).slice(0, 3).join(' | ')}
-                        </p>
+                        <div className="flex flex-wrap gap-1.5 mb-4">
+                          {(cs.tags || []).slice(0, 3).map(t => (
+                            <span key={t} className="px-3 py-1 rounded-full border border-white/25 bg-white/10 text-white/75 text-[11px] md:text-xs font-secondary tracking-wide uppercase backdrop-blur-sm">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
                       )}
                       <span className="inline-block px-5 py-2 rounded-full bg-[#F5C518]/90 text-black text-sm font-semibold font-secondary shadow-[0_4px_20px_rgba(245,197,24,0.3)]">
                         View Case Study
@@ -4291,9 +4295,13 @@ const WorkPage = ({ navigate }) => {
                         <p className="font-secondary text-white/60 text-sm md:text-[15px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
                       )}
                       {(cs.tags || []).length > 0 && (
-                        <p className="font-secondary text-white/35 text-xs md:text-sm mb-4 tracking-wide">
-                          {(cs.tags || []).slice(0, 3).join(' | ')}
-                        </p>
+                        <div className="flex flex-wrap gap-1.5 mb-4">
+                          {(cs.tags || []).slice(0, 3).map(t => (
+                            <span key={t} className="px-3 py-1 rounded-full border border-white/25 bg-white/10 text-white/75 text-[11px] md:text-xs font-secondary tracking-wide uppercase backdrop-blur-sm">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
                       )}
                       <span className="inline-block px-5 py-2 rounded-full bg-[#F5C518]/90 text-black text-sm font-semibold font-secondary shadow-[0_4px_20px_rgba(245,197,24,0.3)]">
                         View Case Study
