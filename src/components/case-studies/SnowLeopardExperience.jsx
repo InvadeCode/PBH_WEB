@@ -144,6 +144,202 @@ const NarrativeBlock = ({ index, label, paragraphs, accent = 'cyan', align = 'le
   );
 };
 
+// ── CINEMATIC MOTION GRAPHICS ──
+
+const AboutMotionGraphic = () => (
+  <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-visible">
+    {/* Deep Space Glow */}
+    <motion.div 
+      animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.6, 0.2] }}
+      transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[500px] h-[500px] rounded-full bg-indigo-600/30 blur-[120px] mix-blend-screen"
+    />
+    
+    {/* Orbital Rings in 3D */}
+    <div className="absolute w-[500px] h-[500px] [perspective:1000px] flex items-center justify-center">
+      <motion.div 
+        animate={{ rotateX: [60, 75, 60], rotateZ: [0, 360] }}
+        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+        className="absolute w-[450px] h-[450px] rounded-full border border-indigo-400/40 shadow-[inset_0_0_50px_rgba(99,102,241,0.2)]"
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        <motion.div 
+          animate={{ rotateY: [0, -360] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-400/80 border-b-purple-500/80 blur-[1px]"
+        />
+      </motion.div>
+      
+      <motion.div 
+        animate={{ rotateX: [80, 60, 80], rotateZ: [360, 0] }}
+        transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+        className="absolute w-[600px] h-[600px] rounded-full border border-cyan-400/20"
+        style={{ transformStyle: 'preserve-3d' }}
+      />
+    </div>
+
+    {/* Rising Data Particles */}
+    {Array.from({ length: 15 }).map((_, i) => (
+      <motion.div
+        key={`particle-${i}`}
+        className="absolute w-2 h-2 rounded-full bg-cyan-300 shadow-[0_0_15px_#67E8F9]"
+        initial={{
+          x: (Math.random() - 0.5) * 500,
+          y: (Math.random() - 0.5) * 500,
+          scale: Math.random() * 0.5 + 0.5,
+          opacity: 0,
+        }}
+        animate={{
+          y: [null, (Math.random() - 0.5) * 500 - 100],
+          opacity: [0, 1, 0],
+        }}
+        transition={{
+          duration: Math.random() * 5 + 5,
+          repeat: Infinity,
+          ease: 'easeInOut',
+          delay: Math.random() * 5,
+        }}
+      />
+    ))}
+  </div>
+);
+
+const ProblemMotionGraphic = () => (
+  <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-visible [perspective:1200px]">
+    {/* Fracture Core Glow */}
+    <motion.div 
+      animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.7, 0.3] }}
+      transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[600px] h-[600px] rounded-full bg-purple-700/20 blur-[100px] mix-blend-color-dodge"
+    />
+
+    {/* 3D Distorted Cyber Grid */}
+    <motion.div 
+      animate={{ rotateX: [60, 65, 60], rotateZ: [-10, 10, -10], scale: [1, 1.1, 1] }}
+      transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[1200px] h-[1200px] opacity-50 mix-blend-screen shadow-[inset_0_0_150px_rgba(168,85,247,0.5)]"
+      style={{
+        backgroundImage: 'linear-gradient(rgba(168,85,247,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(168,85,247,0.4) 1px, transparent 1px)',
+        backgroundSize: '50px 50px',
+        transformStyle: 'preserve-3d',
+      }}
+    >
+      {/* Glitching sweeping line */}
+      <motion.div 
+        animate={{ top: ['-10%', '110%'] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+        className="absolute left-0 right-0 h-[2px] bg-cyan-400 shadow-[0_0_30px_#67E8F9]"
+      />
+    </motion.div>
+
+    {/* Floating Glass Shards / Nodes */}
+    {Array.from({ length: 12 }).map((_, i) => (
+      <motion.div
+        key={`shard-${i}`}
+        className="absolute border border-purple-400/50 bg-purple-900/10 backdrop-blur-md"
+        style={{
+          width: Math.random() * 100 + 30,
+          height: Math.random() * 100 + 30,
+        }}
+        initial={{
+          x: (Math.random() - 0.5) * 800,
+          y: (Math.random() - 0.5) * 800,
+        }}
+        animate={{
+          rotateX: [0, 360],
+          rotateY: [0, 360],
+          rotateZ: [0, 360],
+          opacity: [0, 0.6, 0],
+          scale: [0.5, 1.2, 0.5],
+        }}
+        transition={{
+          duration: Math.random() * 10 + 10,
+          repeat: Infinity,
+          ease: 'linear',
+          delay: Math.random() * 5,
+        }}
+      />
+    ))}
+  </div>
+);
+
+const SolutionMotionGraphic = () => (
+  <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-visible">
+    {/* Brilliant Core */}
+    <motion.div 
+      animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
+      transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[500px] h-[500px] rounded-full bg-cyan-500/30 blur-[90px] mix-blend-screen"
+    />
+
+    {/* Radiating Shockwaves */}
+    {Array.from({ length: 4 }).map((_, i) => (
+      <motion.div
+        key={`shockwave-${i}`}
+        className="absolute w-[100px] h-[100px] rounded-full border-2 border-cyan-300 shadow-[0_0_20px_rgba(103,232,249,0.5)]"
+        animate={{
+          scale: [1, 12],
+          opacity: [0.8, 0],
+          borderWidth: ['3px', '0px']
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: 'easeOut',
+          delay: i * 1.5,
+        }}
+      />
+    ))}
+
+    {/* Harmonious Sacred Geometry (Overlapping Rings) */}
+    <motion.div
+      animate={{ rotate: 360 }}
+      transition={{ duration: 45, repeat: Infinity, ease: 'linear' }}
+      className="relative w-[300px] h-[300px]"
+    >
+      {Array.from({ length: 6 }).map((_, i) => (
+        <motion.div
+          key={`ring-${i}`}
+          className="absolute w-[180px] h-[180px] rounded-full border border-blue-400/50 mix-blend-screen shadow-[inset_0_0_20px_rgba(96,165,250,0.3)]"
+          style={{
+            top: '50%',
+            left: '50%',
+            transform: `translate(-50%, -50%) rotate(${i * 60}deg) translateY(-50px)`,
+          }}
+          animate={{
+            borderColor: ['rgba(96,165,250,0.2)', 'rgba(167,139,250,0.8)', 'rgba(96,165,250,0.2)'],
+          }}
+          transition={{ duration: 6, repeat: Infinity, delay: i * 1 }}
+        />
+      ))}
+      <div className="absolute inset-0 rounded-full border border-cyan-300/40 shadow-[0_0_30px_rgba(103,232,249,0.3)]" />
+    </motion.div>
+
+    {/* Ascending Light Particles */}
+    {Array.from({ length: 25 }).map((_, i) => (
+      <motion.div
+        key={`light-${i}`}
+        className="absolute w-1 rounded-full bg-white shadow-[0_0_15px_#FFF]"
+        style={{ height: Math.random() * 20 + 10 }}
+        initial={{
+          x: (Math.random() - 0.5) * 600,
+          y: 400,
+          opacity: 0,
+        }}
+        animate={{
+          y: -400,
+          opacity: [0, 1, 0],
+        }}
+        transition={{
+          duration: Math.random() * 4 + 3,
+          repeat: Infinity,
+          ease: 'easeIn',
+          delay: Math.random() * 5,
+        }}
+      />
+    ))}
+  </div>
+);
 
 // ── DYNAMIC SCI-ART 2-COLUMN GRID ──
 const DynamicSciArtGrid = ({ content }) => {
@@ -186,7 +382,7 @@ const DynamicSciArtGrid = ({ content }) => {
                   <motion.span 
                     animate={{ y: [-15, 15, -15], scale: [1, 1.05, 1], opacity: [0.03, 0.08, 0.03] }}
                     transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-                    className="absolute top-0 left-0 block text-[6rem] md:text-[9rem] lg:text-[11rem] xl:text-[13rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
+                    className="absolute top-0 left-0 block text-[4.5rem] md:text-[6.5rem] lg:text-[7.5rem] xl:text-[9rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
                     style={{ WebkitTextStroke: '2px rgba(212,206,252,0.08)' }}
                   >
                     ABOUT
@@ -196,10 +392,13 @@ const DynamicSciArtGrid = ({ content }) => {
                   <motion.span 
                     animate={{ y: [-5, 5, -5], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
                     transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                    className="relative block text-[6rem] md:text-[9rem] lg:text-[11rem] xl:text-[13rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen z-10"
+                    className="relative block text-[4.5rem] md:text-[6.5rem] lg:text-[7.5rem] xl:text-[9rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen z-10"
                   >
                     ABOUT
                   </motion.span>
+                  
+                  {/* Aesthetic Motion Graphic */}
+                  <AboutMotionGraphic />
                   
                   {/* Elegant vertical scan line */}
                   <motion.div
@@ -219,7 +418,7 @@ const DynamicSciArtGrid = ({ content }) => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-                className="w-full lg:w-[850px] xl:w-[1000px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-cyan-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(34,211,238,0.15)]"
+                className="w-full lg:w-3/5 lg:max-w-2xl xl:max-w-3xl shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-cyan-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(34,211,238,0.15)]"
               >
                 {/* Dynamic Graphic: Floating Dot inside box */}
                 <motion.div 
@@ -262,7 +461,7 @@ const DynamicSciArtGrid = ({ content }) => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.55 }}
-                className="w-full lg:w-[850px] xl:w-[1000px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-purple-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(168,85,247,0.15)]"
+                className="w-full lg:w-3/5 lg:max-w-2xl xl:max-w-3xl shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-purple-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(168,85,247,0.15)]"
               >
                 {/* Subtle Breathing Glow */}
                 <motion.div 
@@ -298,7 +497,7 @@ const DynamicSciArtGrid = ({ content }) => {
                   <motion.span 
                     animate={{ y: [15, -15, 15], scale: [1, 1.05, 1], opacity: [0.03, 0.08, 0.03] }}
                     transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                    className="absolute top-0 left-0 block text-[6rem] md:text-[9rem] lg:text-[11rem] xl:text-[13rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
+                    className="absolute top-0 left-0 block text-[4.5rem] md:text-[6.5rem] lg:text-[7.5rem] xl:text-[8.5rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
                     style={{ WebkitTextStroke: '2px rgba(212,206,252,0.08)' }}
                   >
                     PROBLEM
@@ -308,10 +507,13 @@ const DynamicSciArtGrid = ({ content }) => {
                   <motion.span 
                     animate={{ y: [5, -5, 5], scale: [1, 1.02, 1], rotateZ: [1, -1, 1] }}
                     transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                    className="relative block text-[6rem] md:text-[9rem] lg:text-[11rem] xl:text-[13rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen z-10"
+                    className="relative block text-[4.5rem] md:text-[6.5rem] lg:text-[7.5rem] xl:text-[8.5rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen z-10"
                   >
                     PROBLEM
                   </motion.span>
+                  
+                  {/* Aesthetic Motion Graphic */}
+                  <ProblemMotionGraphic />
 
                   {/* Elegant vertical scan line */}
                   <motion.div
@@ -347,7 +549,7 @@ const DynamicSciArtGrid = ({ content }) => {
                   <motion.span 
                     animate={{ y: [-15, 15, -15], scale: [1, 1.05, 1], opacity: [0.03, 0.08, 0.03] }}
                     transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                    className="absolute top-0 left-0 block text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[11.5rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
+                    className="absolute top-0 left-0 block text-[4rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[8rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
                     style={{ WebkitTextStroke: '2px rgba(212,206,252,0.08)' }}
                   >
                     SOLUTION
@@ -357,10 +559,13 @@ const DynamicSciArtGrid = ({ content }) => {
                   <motion.span 
                     animate={{ y: [-5, 5, -5], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
                     transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                    className="relative block text-[6rem] md:text-[8rem] lg:text-[10rem] xl:text-[11.5rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen z-10"
+                    className="relative block text-[4rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[8rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen z-10"
                   >
                     SOLUTION
                   </motion.span>
+
+                  {/* Aesthetic Motion Graphic */}
+                  <SolutionMotionGraphic />
 
                   {/* Elegant vertical scan line */}
                   <motion.div
@@ -381,7 +586,7 @@ const DynamicSciArtGrid = ({ content }) => {
                whileInView={{ opacity: 1, x: 0 }}
                viewport={{ once: true, amount: 0.2 }}
                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.95 }}
-               className="w-full lg:w-[900px] xl:w-[1100px] shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-blue-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(59,130,246,0.15)]"
+               className="w-full lg:w-3/5 lg:max-w-3xl xl:max-w-4xl shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-blue-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(59,130,246,0.15)]"
              >
                {/* Ambient Background Sweep */}
                <motion.div 

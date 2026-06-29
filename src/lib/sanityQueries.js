@@ -161,6 +161,7 @@ export const GET_SITE_SETTINGS = `*[_type == "siteSettings"][0] {
   workPageHeader, workPageSubtext, methodPageHeader, methodPageSubtext, teamPageHeader, teamPageSubtext,
   coreValuesHeader, ourJourneyHeader, frameworkHeader, timelineHeader,
   aboutPage, storyPage, teamPage, methodPage, serviceFaqs, footerTagline, footerCopyright,
+  uiCopy[] { key, label, source, value, location },
   csBackToWork, csSeeMoreWork, csAllProjects, csScrollStory, csTheApproach,
   defaultStoryChapters, csCarouselFallbackTitle, csCarouselFallbackSubtitle, csOurRole, csTheProcess, csResults,
   csAboutTheBrand, csTheProblem, csCreativeSolution, csEcosystemHighlights,

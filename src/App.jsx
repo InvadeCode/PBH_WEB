@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { jsPDF } from 'jspdf';
 import ExcelJS from 'exceljs';
 import { useSanity } from './lib/useSanity';
+import { useEditableUiCopy } from './lib/useEditableUiCopy';
 import { CASE_STUDIES_QUERY, GET_JOURNAL_ARTICLES, GET_PROBLEM_DATA, GET_QUIZ_QUESTIONS, GET_ROUTES_INFO, GET_DELIVERABLES, GET_SITE_SETTINGS, GET_TEAM_MEMBERS, GET_CORE_VALUES, GET_TIMELINE, GET_FRAMEWORK, GET_FAQS } from './lib/sanityQueries';
 import { normalizeCaseStudyUrlId, orderCaseStudies } from './lib/caseStudyOrdering';
 import { motion, AnimatePresence, useScroll, useTransform, useInView, useSpring, useMotionValue, useMotionTemplate, useAnimationFrame } from 'framer-motion';
@@ -5040,6 +5041,7 @@ export default function App() {
     journalSubtext: "Explore our latest essays on brand building, deep-tech storytelling, and the SciArt methodology.",
     footerCTA: "Experience the method yourself."
   };
+  useEditableUiCopy(finalSettings?.uiCopy);
 
   const { data: sanityRoutes } = useSanity(GET_ROUTES_INFO);
   const finalRoutes = sanityRoutes?.length > 0 ? (() => {

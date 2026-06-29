@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import {
   motion,
   useMotionValue,
@@ -8,20 +7,11 @@ import {
   useSpring,
   useMotionTemplate,
   useReducedMotion,
-  AnimatePresence
 } from 'framer-motion';
-import { X } from 'lucide-react';
 import CaseStudyMedia from './CaseStudyMedia';
-
-/**
- * MediaRibbon3D
- * A premium 3D "floating ribbon" — media panels orbit a central axis in true 3D
- * (perspective + preserve-3d + rotateY/translateZ). 
- */
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
-// Exact aspect ratio from Sanity asset metadata (falls back gracefully).
 const getMediaAspect = (m) => {
   const dim = m?.source?.metadata?.dimensions || m?.metadata?.dimensions;
   let ar = dim?.aspectRatio;
@@ -30,25 +20,65 @@ const getMediaAspect = (m) => {
   return clamp(ar, 0.45, 2.4);
 };
 
-// ── A single media panel: places itself on the ring, derives depth looks from `rotation`.
-const Panel = ({ media, index, step, radius, height, rotation, isActive, onClickCapture }) => {
+const Panel = ({ media, index, step, radius, height, rotation, isActive, onHoverChange }) => {
   const aspect = getMediaAspect(media);
   const width = height * aspect;
-  
   const baseAngle = index * step;
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Spring-based hover scale — multiplies on top of depth scale
+  const hoverScaleSpring = useSpring(1, { stiffness: 300, damping: 24, mass: 0.8 });
+  useEffect(() => {
+    hoverScaleSpring.set(isHovered ? 1.42 : 1);
+  }, [isHovered, hoverScaleSpring]);
 
   const front = useTransform(rotation, (r) => Math.cos(((baseAngle + r) * Math.PI) / 180));
 
-  const scale = useTransform(front, [-1, 0.5, 1], [0.8, 1.0, 1.12]);
+  const depthScale = useTransform(front, [-1, 0.5, 1], [0.8, 1.0, 1.12]);
+  // Combine depth scale × hover scale
+  const combinedScale = useTransform(
+    [depthScale, hoverScaleSpring],
+    ([d, h]) => d * h,
+  );
+
   const opacity = useTransform(front, [-1, -0.35, 0.15, 1], [0.05, 0.35, 0.88, 1]);
+
+  // On hover: remove blur and max brightness; off hover: normal depth blur
   const blurPx = useTransform(front, (f) => ((1 - (f + 1) / 2) * 6).toFixed(2));
+  const hoverBlur = useSpring(0, { stiffness: 320, damping: 28 });
+  useEffect(() => { hoverBlur.set(isHovered ? -99 : 0); }, [isHovered, hoverBlur]);
+  const effectiveBlur = useTransform([blurPx, hoverBlur], ([b, h]) =>
+    Math.max(0, parseFloat(b) + h).toFixed(2),
+  );
+
   const brightness = useTransform(front, [-1, 0.4, 1], [0.5, 0.95, 1.15]);
+  const hoverBrightness = useSpring(0, { stiffness: 300, damping: 26 });
+  useEffect(() => { hoverBrightness.set(isHovered ? 0.25 : 0); }, [isHovered, hoverBrightness]);
+  const effectiveBrightness = useTransform(
+    [brightness, hoverBrightness],
+    ([b, h]) => Math.min(2, b + h),
+  );
+
   const saturate = useTransform(front, [-1, 1], [0.7, 1.15]);
-  const filter = useMotionTemplate`blur(${blurPx}px) brightness(${brightness}) saturate(${saturate})`;
+  const hoverSaturate = useSpring(0, { stiffness: 300, damping: 26 });
+  useEffect(() => { hoverSaturate.set(isHovered ? 0.2 : 0); }, [isHovered, hoverSaturate]);
+  const effectiveSaturate = useTransform([saturate, hoverSaturate], ([s, h]) => s + h);
+
+  const filter = useMotionTemplate`blur(${effectiveBlur}px) brightness(${effectiveBrightness}) saturate(${effectiveSaturate})`;
+
   const glow = useTransform(front, [0.55, 1], [0, 1]);
-  const glowBlur = useTransform(glow, [0, 1], [0, 60]);
-  const glowAlpha = useTransform(glow, [0, 1], [0, 0.6]);
+  const hoverGlow = useSpring(0, { stiffness: 280, damping: 24 });
+  useEffect(() => { hoverGlow.set(isHovered ? 1 : 0); }, [isHovered, hoverGlow]);
+  const effectiveGlow = useTransform([glow, hoverGlow], ([g, h]) => Math.min(1, g + h * 0.6));
+  const glowBlur = useTransform(effectiveGlow, [0, 1], [0, 80]);
+  const glowAlpha = useTransform(effectiveGlow, [0, 1], [0, 0.75]);
   const boxShadow = useMotionTemplate`0 34px 80px -26px rgba(0,0,0,0.8), 0 0 ${glowBlur}px rgba(150,150,255,${glowAlpha})`;
+
+  // Hover ring border intensity
+  const ringOpacity = useSpring(0.1, { stiffness: 300, damping: 26 });
+  useEffect(() => { ringOpacity.set(isHovered ? 0.7 : 0.1); }, [isHovered, ringOpacity]);
+  const ringBorder = useMotionTemplate`1px solid rgba(212, 206, 252, ${ringOpacity})`;
 
   const videoRef = useRef(null);
   useEffect(() => {
@@ -58,12 +88,20 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onClick
     else v.pause();
   }, [isActive]);
 
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    onHoverChange?.(true);
+  };
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    onHoverChange?.(false);
+  };
+
   const useVideoTag = media?.isVideo;
 
   return (
     <div
-      className="absolute top-1/2 left-1/2 cursor-pointer select-none"
-      onClickCapture={onClickCapture}
+      className="absolute top-1/2 left-1/2 select-none"
       style={{
         width,
         height,
@@ -71,11 +109,15 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onClick
         marginTop: -height / 2,
         transformStyle: 'preserve-3d',
         transform: `rotateY(${baseAngle}deg) translateZ(${radius}px)`,
+        zIndex: isHovered ? 200 : 'auto',
+        cursor: isHovered ? 'zoom-in' : 'grab',
       }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <motion.div
-        className="relative h-full w-full overflow-hidden rounded-[16px] ring-1 ring-white/10 bg-[#0b1340] will-change-transform"
-        style={{ scale, opacity, filter, boxShadow }}
+        className="relative h-full w-full overflow-hidden rounded-[16px] bg-[#0b1340] will-change-transform"
+        style={{ scale: combinedScale, opacity, filter, boxShadow, outline: ringBorder }}
       >
         {useVideoTag ? (
           <video
@@ -89,73 +131,41 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onClick
             className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none"
           />
         ) : (
-          <CaseStudyMedia item={media} alt={media?.alt} className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none" sizes="(min-width: 768px) 40vw, 80vw" draggable="false" />
+          <CaseStudyMedia
+            item={media}
+            alt={media?.alt}
+            className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none"
+            sizes="(min-width: 768px) 40vw, 80vw"
+            draggable="false"
+          />
         )}
-        {/* Soft top sheen + bottom depth — flat panel volume, no hard edge */}
-        <div className="pointer-events-none absolute inset-0 rounded-[16px]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.16) 0%, transparent 22%, transparent 70%, rgba(0,0,0,0.35) 100%)' }} />
-        <div className="pointer-events-none absolute inset-0 rounded-[16px]" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), inset 0 0 0 1px rgba(255,255,255,0.05)' }} />
-        <motion.div className="pointer-events-none absolute -inset-px rounded-[16px]" style={{ opacity: glow, boxShadow: 'inset 0 0 0 1.5px rgba(212,206,252,0.55)' }} />
+
+        {/* Soft sheen + depth gradient */}
+        <div
+          className="pointer-events-none absolute inset-0 rounded-[16px]"
+          style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.16) 0%, transparent 22%, transparent 70%, rgba(0,0,0,0.35) 100%)' }}
+        />
+        <div
+          className="pointer-events-none absolute inset-0 rounded-[16px]"
+          style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), inset 0 0 0 1px rgba(255,255,255,0.05)' }}
+        />
+
+        {/* Lavender hover ring overlay */}
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-[16px]"
+          style={{ opacity: effectiveGlow, boxShadow: 'inset 0 0 0 2px rgba(212,206,252,0.7)' }}
+        />
+
+        {/* Hover shine sweep */}
+        <motion.div
+          className="pointer-events-none absolute inset-0 rounded-[16px]"
+          style={{
+            opacity: hoverGlow,
+            background: 'linear-gradient(135deg, rgba(212,206,252,0.12) 0%, transparent 50%, rgba(104,101,250,0.08) 100%)',
+          }}
+        />
       </motion.div>
     </div>
-  );
-};
-
-// ── Lightbox Portal Component — Premium floating popup card
-const LightboxPortal = ({ media, onClose }) => {
-  if (!media) return null;
-  const useVideoTag = media?.isVideo;
-
-  return createPortal(
-    <motion.div
-      initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-      animate={{ opacity: 1, backdropFilter: 'blur(24px)' }}
-      exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-      transition={{ duration: 0.35 }}
-      className="fixed inset-0 z-[99999] flex items-center justify-center p-6 md:p-16"
-      style={{ backgroundColor: 'rgba(5, 11, 36, 0.55)' }}
-      onClick={onClose}
-    >
-      {/* Popup card */}
-      <motion.div
-        initial={{ scale: 0.88, opacity: 0, y: 30 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
-        exit={{ scale: 0.92, opacity: 0, y: 16 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-        className="relative max-w-[90vw] max-h-[88vh] overflow-hidden rounded-[20px]"
-        style={{
-          background: 'linear-gradient(145deg, rgba(20,26,60,0.85), rgba(10,14,40,0.92))',
-          boxShadow: '0 40px 120px -20px rgba(0,0,0,0.7), 0 0 80px rgba(100,100,255,0.12), inset 0 1px 0 rgba(255,255,255,0.12)',
-          border: '1px solid rgba(255,255,255,0.12)',
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Close button inside the card */}
-        <button 
-          className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/10 hover:bg-white/25 text-white/80 hover:text-white transition-all duration-200"
-          onClick={onClose}
-          style={{ backdropFilter: 'blur(8px)' }}
-        >
-          <X className="w-5 h-5" />
-        </button>
-
-        {/* Inner media with padding for card feel */}
-        <div className="p-3">
-          {useVideoTag ? (
-            <video
-              src={media.url}
-              autoPlay
-              loop
-              controls
-              playsInline
-              className="w-auto h-auto max-w-full max-h-[82vh] object-contain rounded-[14px]"
-            />
-          ) : (
-            <CaseStudyMedia item={media} alt={media?.alt} className="w-auto h-auto max-w-full max-h-[82vh] object-contain rounded-[14px]" />
-          )}
-        </div>
-      </motion.div>
-    </motion.div>,
-    document.body
   );
 };
 
@@ -166,26 +176,23 @@ const MediaRibbon3D = ({ media }) => {
   const reduce = useReducedMotion();
   const sceneRef = useRef(null);
   const [dims, setDims] = useState({ height: 230, radius: 540 });
-  const [selectedMedia, setSelectedMedia] = useState(null);
+  const [hoverPaused, setHoverPaused] = useState(false);
+  const [expandedMediaIndex, setExpandedMediaIndex] = useState(null);
+  const hoverTimeout = useRef(null);
 
-  // Drag state
   const isDragging = useRef(false);
   const dragDistance = useRef(0);
   const lastX = useRef(0);
+  const hoverCount = useRef(0); // track multiple overlapping enter/leave calls
 
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      // Reduced card size based on feedback
-      const height = clamp(w * 0.12, 140, 260); 
-      
-      // Dynamic radius: wide enough to stop overlap, but not so big it breaks perspective
-      const maxRadius = clamp(w * 0.45, 400, 950); 
-      const minRadius = clamp(w * 0.20, 200, 350);  
-      // Smoothly interpolate: 1-3 items → min, 8+ items → max
+      const height = clamp(w * 0.12, 140, 260);
+      const maxRadius = clamp(w * 0.45, 400, 950);
+      const minRadius = clamp(w * 0.20, 200, 350);
       const t = clamp((items.length - 1) / 7, 0, 1);
       const radius = minRadius + (maxRadius - minRadius) * t;
-      
       setDims({ height, radius });
     };
     measure();
@@ -196,8 +203,7 @@ const MediaRibbon3D = ({ media }) => {
   }, [items]);
 
   const rotation = useMotionValue(0);
-  // Fast, dynamic carousel speed
-  const BASE_VEL = reduce ? 0 : 18; // Decreased speed from 35 to 18
+  const BASE_VEL = reduce ? 0 : 18;
   const velocity = useRef(BASE_VEL);
   const targetVel = useRef(BASE_VEL);
 
@@ -210,46 +216,51 @@ const MediaRibbon3D = ({ media }) => {
   useAnimationFrame((_, deltaMs) => {
     if (N === 0) return;
     const dt = Math.min(deltaMs, 50) / 1000;
-    // Smoother acceleration interpolation
-    velocity.current += (targetVel.current - velocity.current) * Math.min(1, dt * 4);
+    // Slow to ~10% speed when a panel is hovered, so it stays readable
+    const effective = hoverPaused ? BASE_VEL * 0.08 : targetVel.current;
+    velocity.current += (effective - velocity.current) * Math.min(1, dt * 4);
     rotation.set(rotation.get() + velocity.current * dt);
     const r = rotation.get();
     const idx = ((Math.round(-r / step) % N) + N) % N;
     setActiveIndex((prev) => (prev === idx ? prev : idx));
   });
 
+  const handlePanelHoverChange = (entering, index) => {
+    hoverCount.current = Math.max(0, hoverCount.current + (entering ? 1 : -1));
+    setHoverPaused(hoverCount.current > 0);
+    
+    if (entering) {
+      clearTimeout(hoverTimeout.current);
+      setExpandedMediaIndex(index);
+    } else {
+      hoverTimeout.current = setTimeout(() => {
+        setExpandedMediaIndex(null);
+      }, 150); // Small delay prevents flicker when moving to overlay
+    }
+  };
+
   const handlePointerDown = (e) => {
     isDragging.current = true;
     dragDistance.current = 0;
     lastX.current = e.clientX;
-    targetVel.current = 0; // Pause auto-rotation temporarily
+    targetVel.current = 0;
     e.target.setPointerCapture?.(e.pointerId);
   };
 
   const handlePointerMove = (e) => {
-    // Always compute tilt for parallax effect
     const rect = sceneRef.current?.getBoundingClientRect();
     if (rect) {
       const px = (e.clientX - rect.left) / rect.width - 0.5;
       const py = (e.clientY - rect.top) / rect.height - 0.5;
       tiltX.set(-6 - py * 10);
       tiltY.set(px * 8);
-      
-      if (!isDragging.current) {
-        // Adjust speed slightly based on mouse position horizontally
-        targetVel.current = BASE_VEL + px * 15;
-      }
+      if (!isDragging.current) targetVel.current = BASE_VEL + px * 15;
     }
-
     if (isDragging.current) {
       const deltaX = e.clientX - lastX.current;
       dragDistance.current += Math.abs(deltaX);
       lastX.current = e.clientX;
-
-      // Physically drag the rotation. Subtracting deltaX makes it feel like you are grabbing and pulling it.
       rotation.set(rotation.get() - deltaX * 0.4);
-      
-      // Inject momentum into the velocity so when released, it keeps spinning
       velocity.current = -deltaX * 25;
     }
   };
@@ -257,16 +268,16 @@ const MediaRibbon3D = ({ media }) => {
   const handlePointerUp = (e) => {
     if (isDragging.current) {
       isDragging.current = false;
-      targetVel.current = BASE_VEL; // Resume base auto-rotation
+      targetVel.current = BASE_VEL;
       e.target.releasePointerCapture?.(e.pointerId);
     }
   };
-  
-  const handlePointerLeave = () => { 
-    if (isDragging.current) return; // Keep dragging if mouse leaves momentarily
-    tiltX.set(-6); 
-    tiltY.set(0); 
-    targetVel.current = BASE_VEL; 
+
+  const handlePointerLeave = () => {
+    if (isDragging.current) return;
+    tiltX.set(-6);
+    tiltY.set(0);
+    targetVel.current = BASE_VEL;
   };
 
   const ringTransform = useMotionTemplate`translate(-50%, -50%) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
@@ -275,59 +286,92 @@ const MediaRibbon3D = ({ media }) => {
   if (N === 0) return null;
 
   return (
-    <>
-      <div
-        ref={sceneRef}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerLeave}
-        onDragStart={(e) => e.preventDefault()}
-        className="relative w-full overflow-hidden touch-none cursor-grab active:cursor-grabbing border-y border-white/5 shadow-2xl"
-        style={{ height: 'clamp(500px, 75vh, 850px)' }}
-      >
-        {/* Ambient depth */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/2 top-[45%] h-[60vw] w-[60vw] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[150px]" style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.18), transparent 62%)' }} />
-          <div className="absolute inset-x-0 top-0 h-32" style={{ background: 'linear-gradient(to bottom, #010836, transparent)' }} />
-          <div className="absolute inset-x-0 bottom-0 h-32 z-10 pointer-events-none" style={{ background: 'linear-gradient(to top, #010836 10%, transparent)' }} />
-        </div>
-
-        {/* 3D scene */}
-        <div className="absolute inset-0" style={{ perspective: '1700px', perspectiveOrigin: '50% 48%' }}>
-          <motion.div className="absolute left-1/2 top-[45%]" style={{ transformStyle: 'preserve-3d', transform: ringTransform, willChange: 'transform' }}>
-            <motion.div className="absolute" style={{ transformStyle: 'preserve-3d', transform: innerRotate }}>
-              {items.map((m, i) => (
-                <Panel
-                  key={m.key || i}
-                  media={m}
-                  index={i}
-                  step={step}
-                  radius={dims.radius}
-                  height={dims.height}
-                  rotation={rotation}
-                  isActive={i === activeIndex}
-                  onClickCapture={(e) => {
-                    // Prevent opening lightbox if this was a drag gesture
-                    if (dragDistance.current > 10) {
-                      e.stopPropagation();
-                    } else {
-                      setSelectedMedia(m);
-                    }
-                  }}
-                />
-              ))}
-            </motion.div>
-          </motion.div>
-        </div>
+    <div
+      ref={sceneRef}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerLeave}
+      onDragStart={(e) => e.preventDefault()}
+      className="relative w-full overflow-hidden touch-none cursor-grab active:cursor-grabbing"
+      style={{ height: 'clamp(500px, 75vh, 850px)' }}
+    >
+      {/* Ambient depth */}
+      <div className="pointer-events-none absolute inset-0">
+        <div
+          className="absolute left-1/2 top-[45%] h-[60vw] w-[60vw] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[150px]"
+          style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.18), transparent 62%)' }}
+        />
       </div>
 
-      <AnimatePresence>
-        {selectedMedia && (
-          <LightboxPortal media={selectedMedia} onClose={() => setSelectedMedia(null)} />
-        )}
-      </AnimatePresence>
-    </>
+      {/* 3D scene */}
+      <div className="absolute inset-0" style={{ perspective: '1700px', perspectiveOrigin: '50% 48%' }}>
+        <motion.div
+          className="absolute left-1/2 top-[45%]"
+          style={{ transformStyle: 'preserve-3d', transform: ringTransform, willChange: 'transform' }}
+        >
+          <motion.div className="absolute" style={{ transformStyle: 'preserve-3d', transform: innerRotate }}>
+            {items.map((m, i) => (
+              <Panel
+                key={m.key || i}
+                media={m}
+                index={i}
+                step={step}
+                radius={dims.radius}
+                height={dims.height}
+                rotation={rotation}
+                isActive={i === activeIndex}
+                onHoverChange={(entering) => handlePanelHoverChange(entering, i)}
+              />
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Static Hover Overlay */}
+      {expandedMediaIndex !== null && items[expandedMediaIndex] && (
+        <motion.div 
+          initial={{ backgroundColor: 'rgba(0,0,0,0)', backdropFilter: 'blur(0px)' }}
+          animate={{ backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }}
+          exit={{ backgroundColor: 'rgba(0,0,0,0)', backdropFilter: 'blur(0px)' }}
+          className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
+        >
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 10 }}
+            transition={{ type: "spring", stiffness: 350, damping: 25 }}
+            className="relative pointer-events-auto shadow-[0_40px_100px_rgba(0,0,0,0.9)] rounded-[20px] overflow-hidden bg-transparent border border-white/10"
+            style={{ 
+              height: '85%', 
+              maxHeight: '850px',
+              aspectRatio: getMediaAspect(items[expandedMediaIndex]),
+              boxShadow: '0 0 100px rgba(104,101,250,0.3)'
+            }}
+            onMouseEnter={() => clearTimeout(hoverTimeout.current)}
+            onMouseLeave={() => setExpandedMediaIndex(null)}
+          >
+            {items[expandedMediaIndex].isVideo ? (
+              <video
+                src={items[expandedMediaIndex].url}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            ) : (
+              <CaseStudyMedia
+                item={items[expandedMediaIndex]}
+                alt={items[expandedMediaIndex]?.alt}
+                className="absolute inset-0 h-full w-full object-cover"
+                sizes="100vw"
+              />
+            )}
+          </motion.div>
+        </motion.div>
+      )}
+    </div>
   );
 };
 

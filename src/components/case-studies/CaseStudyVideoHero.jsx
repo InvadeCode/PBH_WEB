@@ -195,24 +195,17 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
 
   const renderPlayer = (video) => {
     if (!video) return null;
-    if (video.embedUrl || video.videoUrl) {
-      return (
-        <iframe
-          className="absolute inset-0 w-full h-full"
-          src={withAutoplay(getSafeEmbedUrl(video.embedUrl || video.videoUrl))}
-          title={video.videoTitle || 'Case study video'}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-          allowFullScreen
-          style={{ border: 'none' }}
-        />
-      );
-    }
-    if (video.uploadedVideoUrl || video.videoFileUrl) {
+    
+    const embedOrUrl = video.embedUrl || video.videoUrl || '';
+    const isDirectFile = /\.(mp4|webm|ogg|mov)(?:$|\?)/i.test(embedOrUrl);
+    
+    if (video.uploadedVideoUrl || video.videoFileUrl || isDirectFile) {
+      const srcToUse = video.uploadedVideoUrl || video.videoFileUrl || embedOrUrl;
       return (
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-contain bg-black"
-          src={video.uploadedVideoUrl || video.videoFileUrl}
+          src={srcToUse}
           poster={video.thumbnailUrl}
           controls
           autoPlay
@@ -220,6 +213,25 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
         />
       );
     }
+    
+    if (embedOrUrl) {
+      const safeUrl = getSafeEmbedUrl(embedOrUrl);
+      const isInstagram = /instagram\.com/i.test(safeUrl);
+      
+      return (
+        <div className={`absolute inset-0 w-full h-full bg-black ${isInstagram ? 'flex justify-center items-center py-4 sm:py-8' : ''}`}>
+          <iframe
+            className={isInstagram ? "h-full w-full max-w-[450px] rounded-[1.5rem] overflow-hidden" : "absolute inset-0 w-full h-full"}
+            src={withAutoplay(safeUrl)}
+            title={video.videoTitle || 'Case study video'}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowFullScreen
+            style={{ border: 'none' }}
+          />
+        </div>
+      );
+    }
+    
     return (
       <div className="absolute inset-0 grid place-items-center bg-black text-white/40 text-[17px] md:text-[19px] tracking-widest uppercase">
         No video source
@@ -253,9 +265,13 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
         {heroVideos.map((video, idx) => {
           const vTitle = video.videoTitle || 'Watch Video';
           const vThumb = video.thumbnailUrl;
-          const vEmbed = video.embedUrl || video.videoUrl;
+          const rawUrl = video.embedUrl || video.videoUrl;
+          const vEmbed = rawUrl;
           const vEmbedThumb = getEmbedThumbnailUrl(vEmbed);
           const vUpload = video.uploadedVideoUrl || video.videoFileUrl;
+          
+          const isDirectFile = rawUrl && /\.(mp4|webm|ogg|mov)(?:$|\?)/i.test(rawUrl);
+          const activeUploadSrc = vUpload || (isDirectFile ? rawUrl : null);
           const fallbackLabel = (backdropText || vTitle || fallbackName || 'Play').slice(0, 12);
 
           return (
@@ -277,9 +293,9 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
                       whileHover={prefersReduced ? undefined : { scale: 1.06 }}
                       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      {vUpload ? (
+                      {activeUploadSrc ? (
                         <video
-                          src={vUpload}
+                          src={activeUploadSrc}
                           poster={vThumb || vEmbedThumb || undefined}
                           autoPlay
                           loop

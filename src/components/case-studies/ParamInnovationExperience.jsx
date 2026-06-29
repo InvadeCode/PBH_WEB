@@ -340,7 +340,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
            ) : (
              <div className="w-full h-full bg-[#0C185C]" />
            )}
-          <div className="pointer-events-none absolute left-1/2 top-5 z-20 -translate-x-1/2 px-3 md:top-6">
+          <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 px-3 md:top-28">
             <CaseStudySectorPill
               sector={project?.sector}
               className="border border-white/[0.16] bg-[#010d54]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"

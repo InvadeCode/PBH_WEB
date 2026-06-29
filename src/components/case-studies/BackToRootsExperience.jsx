@@ -6,6 +6,7 @@ import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
 import CaseStudySectorPill from './CaseStudySectorPill';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
+import { DEFAULT_STORY_CHAPTERS } from '../../lib/defaultStoryChapters';
 
 // ── Palette ───────────────────────────────────────────────────────────────
 const C = {
@@ -16,15 +17,36 @@ const C = {
   ease: [0.16, 1, 0.3, 1],
 };
 
-const DEFAULT_CHAPTERS = [
-  { t: 'The Seed', l: 'Every brand begins as a single idea, planted deep.' },
-  { t: 'The Soil', l: 'Nurtured by heritage, grounded in meaning.' },
-  { t: 'First Light', l: 'A visual language breaks through the surface.' },
-  { t: 'Taking Root', l: 'Identity spreads, steady and deliberate.' },
-  { t: 'The Bloom', l: 'Form and feeling flourish into one.' },
-  { t: 'The Harvest', l: 'A story ready to be shared with the world.' },
-  { t: 'Full Circle', l: 'Rooted in the past, reaching for tomorrow.' },
-];
+const cleanText = (value) => (typeof value === 'string' ? value.trim() : '');
+
+const normalizeChapterCopy = (chapter) => ({
+  label: cleanText(chapter?.chapterLabel),
+  t: cleanText(chapter?.title || chapter?.caption),
+  l: cleanText(chapter?.description),
+});
+
+const getEditableChapters = (chapters, { preserveSlots = false } = {}) => {
+  if (!Array.isArray(chapters)) return [];
+
+  const normalizedChapters = chapters.map(normalizeChapterCopy);
+  return preserveSlots
+    ? normalizedChapters
+    : normalizedChapters.filter((chapter) => chapter.label || chapter.t || chapter.l);
+};
+
+const BUILT_IN_STORY_CHAPTERS = getEditableChapters(DEFAULT_STORY_CHAPTERS);
+
+const resolveChapterCopy = ({ projectChapters, defaultChapters, image, index }) => {
+  const projectChapter = projectChapters.length ? projectChapters[index % projectChapters.length] : {};
+  const defaultChapter = defaultChapters.length ? defaultChapters[index % defaultChapters.length] : {};
+  const imageChapter = normalizeChapterCopy(image);
+
+  return {
+    label: projectChapter.label || defaultChapter.label || imageChapter.label,
+    t: projectChapter.t || defaultChapter.t || imageChapter.t,
+    l: projectChapter.l || defaultChapter.l || imageChapter.l,
+  };
+};
 
 // Gradient backdrops cycled across the image chapters
 const GRADS = [
@@ -210,6 +232,9 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
   const [isPaused, setIsPaused] = useState(false);
   const firstSetRef = useRef(null);
   const x = useMotionValue(0);
+  const projectChapters = getEditableChapters(project?.fullStory?.storyChapters, { preserveSlots: true });
+  const editableDefaultChapters = getEditableChapters(SITE_SETTINGS?.defaultStoryChapters);
+  const defaultChapters = editableDefaultChapters.length ? editableDefaultChapters : BUILT_IN_STORY_CHAPTERS;
 
   const hasImages = images && images.length > 0;
   
@@ -246,9 +271,13 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
 
   const renderCard = (img, index, prefix) => {
     const originalIndex = index % images.length;
-    const storyChapters = project?.fullStory?.storyChapters || [];
-    const chData = storyChapters.length > 0 ? storyChapters[originalIndex % storyChapters.length] : null;
-    const ch = chData ? { label: chData.chapterLabel, t: chData.title, l: chData.description } : DEFAULT_CHAPTERS[originalIndex % DEFAULT_CHAPTERS.length];
+    const ch = resolveChapterCopy({
+      projectChapters,
+      defaultChapters,
+      image: img,
+      index: originalIndex,
+    });
+    const hasChapterText = Boolean(ch.label || ch.t || ch.l);
 
     return (
       <motion.div 
@@ -283,17 +312,25 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
         </div>
 
         {/* Chapter Text */}
-        <div className="mt-8 text-center max-w-[80%] pointer-events-none">
-          <p className="text-[17px] md:text-[19px] font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
-            {ch.label}
-          </p>
-          <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: C.cream }}>
-            {ch.t}
-          </h4>
-          <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${C.cream}AA` }}>
-            {ch.l}
-          </p>
-        </div>
+        {hasChapterText && (
+          <div className="mt-8 text-center max-w-[80%] pointer-events-none">
+            {ch.label && (
+              <p className="text-[17px] md:text-[19px] font-secondary uppercase tracking-[0.2em] mb-2" style={{ color: `${C.cream}80` }}>
+                {ch.label}
+              </p>
+            )}
+            {ch.t && (
+              <h4 className="text-xl md:text-2xl font-primary mb-3" style={{ color: C.cream }}>
+                {ch.t}
+              </h4>
+            )}
+            {ch.l && (
+              <p className="text-[17px] md:text-[19px] font-secondary leading-relaxed" style={{ color: `${C.cream}AA` }}>
+                {ch.l}
+              </p>
+            )}
+          </div>
+        )}
       </motion.div>
     );
   };

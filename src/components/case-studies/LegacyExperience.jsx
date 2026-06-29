@@ -32,7 +32,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
               priority
               sizes="(min-width: 1280px) 1280px, 100vw"
             />
-            <div className="pointer-events-none absolute left-1/2 top-5 z-20 -translate-x-1/2 px-3 md:top-6">
+            <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 px-3 md:top-28">
               <CaseStudySectorPill
                 sector={project?.sector}
                 className="border border-white/15 bg-black/35 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
@@ -41,7 +41,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
           </div>
         ) : (
           <div className="relative w-full h-24 md:h-32 mb-8">
-            <div className="pointer-events-none absolute left-1/2 top-5 z-20 -translate-x-1/2 px-3 md:top-6">
+            <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 px-3 md:top-28">
               <CaseStudySectorPill
                 sector={project?.sector}
                 className="border border-white/15 bg-black/35 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"

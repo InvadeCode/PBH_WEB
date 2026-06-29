@@ -1,9 +1,57 @@
 import { defineField, defineType } from 'sanity'
 
+const DEFAULT_STORY_CHAPTERS = [
+  {
+    _key: 'seed',
+    _type: 'object',
+    title: 'The Seed',
+    description: 'Every brand begins as a single idea, planted deep.',
+  },
+  {
+    _key: 'soil',
+    _type: 'object',
+    title: 'The Soil',
+    description: 'Nurtured by heritage, grounded in meaning.',
+  },
+  {
+    _key: 'first-light',
+    _type: 'object',
+    title: 'First Light',
+    description: 'A visual language breaks through the surface.',
+  },
+  {
+    _key: 'taking-root',
+    _type: 'object',
+    title: 'Taking Root',
+    description: 'Identity spreads, steady and deliberate.',
+  },
+  {
+    _key: 'bloom',
+    _type: 'object',
+    title: 'The Bloom',
+    description: 'Form and feeling flourish into one.',
+  },
+  {
+    _key: 'harvest',
+    _type: 'object',
+    title: 'The Harvest',
+    description: 'A story ready to be shared with the world.',
+  },
+  {
+    _key: 'full-circle',
+    _type: 'object',
+    title: 'Full Circle',
+    description: 'Rooted in the past, reaching for tomorrow.',
+  },
+]
+
 export default defineType({
   name: 'siteSettings',
   title: 'Site Settings',
   type: 'document',
+  initialValue: {
+    defaultStoryChapters: DEFAULT_STORY_CHAPTERS,
+  },
   groups: [
     { name: 'home', title: 'Home Page' },
     { name: 'about', title: 'About Us Page' },
@@ -19,6 +67,7 @@ export default defineType({
     { name: 'forms', title: 'Forms & Modals' },
     { name: 'navigation', title: 'Navigation & Misc' },
     { name: 'clients', title: 'Client Logos' },
+    { name: 'copy', title: 'Global UI Copy' },
   ],
   fields: [
     // ── HOME PAGE ──
@@ -218,6 +267,63 @@ export default defineType({
     defineField({ name: 'contactPhone', title: 'Contact Phone', type: 'string', group: 'footer' }),
     defineField({ name: 'contactAddress', title: 'Contact Address', type: 'string', group: 'footer' }),
 
+    // ── GLOBAL UI COPY ──
+    defineField({
+      name: 'uiCopy',
+      title: 'Global UI Copy',
+      type: 'array',
+      group: 'copy',
+      description:
+        'Editable source for visible website fallback copy, buttons, labels, placeholders, and helper text. Edit "Website Text"; keep "Original Text" unchanged so the site knows what to replace.',
+      of: [
+        {
+          type: 'object',
+          name: 'uiCopyEntry',
+          title: 'UI Copy Entry',
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              description: 'Human-friendly label used only inside Sanity.',
+            }),
+            defineField({
+              name: 'source',
+              title: 'Original Text',
+              type: 'text',
+              rows: 2,
+              description: 'The exact original website text. Do not edit this unless you are adding a new custom entry.',
+            }),
+            defineField({
+              name: 'value',
+              title: 'Website Text',
+              type: 'text',
+              rows: 3,
+              description: 'Edit this field to change the text shown on the website.',
+            }),
+            defineField({
+              name: 'location',
+              title: 'Source Location',
+              type: 'string',
+              readOnly: true,
+            }),
+            defineField({
+              name: 'key',
+              title: 'System Key',
+              type: 'string',
+              readOnly: true,
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'label',
+              subtitle: 'value',
+            },
+          },
+        },
+      ],
+    }),
+
     // ── CASE STUDIES UI ──
     defineField({ name: 'csBackToWork', title: 'Back to Work Text', type: 'string', group: 'caseStudies' }),
     defineField({ name: 'csSeeMoreWork', title: 'See More Work Text', type: 'string', group: 'caseStudies' }),
@@ -232,6 +338,7 @@ export default defineType({
       type: 'array', 
       group: 'caseStudies',
       description: 'These will be used automatically as the story text if a case study does not define its own custom story chapters.',
+      initialValue: DEFAULT_STORY_CHAPTERS,
       of: [{
         type: 'object',
         fields: [

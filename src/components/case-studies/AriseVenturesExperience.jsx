@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
 import CaseStudyVideoHero from './CaseStudyVideoHero';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
+import CaseStudySectorPill from './CaseStudySectorPill';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 import MediaRibbon3D from './MediaRibbon3D';
 
@@ -101,14 +102,21 @@ const HoverFloatCard = ({ children, className }) => {
 const SolutionGraphic = () => (
   <>
     <motion.div 
-      animate={{ rotate: 360, scale: [1, 1.15, 1] }} 
+      animate={{ rotate: 360, scale: [1, 1.08, 1] }} 
       transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[75vw] h-[75vw] md:w-[45vw] md:h-[45vw] rounded-[40%] border-[2px] border-[#6865FA]/40 opacity-70 shadow-[0_0_120px_rgba(104,101,250,0.3)] mix-blend-screen pointer-events-none"
+      className="absolute w-[90vw] h-[90vw] md:w-[60vw] md:h-[60vw] rounded-full border-[3px] border-[#6865FA]/60 opacity-90 pointer-events-none"
+      style={{ boxShadow: '0 0 80px rgba(104,101,250,0.25), inset 0 0 60px rgba(104,101,250,0.1)' }}
     />
     <motion.div 
-      animate={{ rotate: -360, scale: [1, 1.25, 1] }} 
+      animate={{ rotate: -360, scale: [1, 1.12, 1] }} 
       transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[65vw] h-[65vw] md:w-[35vw] md:h-[35vw] rounded-[50%] border border-[#2a97d9]/30 opacity-60 shadow-[inset_0_0_80px_rgba(42,151,217,0.2)] mix-blend-screen pointer-events-none"
+      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-full border-[2px] border-[#2a97d9]/50 opacity-80 pointer-events-none"
+      style={{ boxShadow: 'inset 0 0 50px rgba(42,151,217,0.15)' }}
+    />
+    <motion.div 
+      animate={{ rotate: 180, scale: [1, 1.05, 1] }} 
+      transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[50vw] h-[50vw] md:w-[30vw] md:h-[30vw] rounded-full border border-[#D4CEFC]/30 opacity-70 pointer-events-none"
     />
   </>
 );
@@ -155,14 +163,21 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) =>
 const AboutGraphic = () => (
   <>
     <motion.div 
-      animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
+      animate={{ rotate: 360, scale: [1, 1.08, 1] }} 
       transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
+      className="absolute w-[90vw] h-[90vw] md:w-[60vw] md:h-[60vw] rounded-full border-[3px] border-[#6865FA]/50 opacity-85 pointer-events-none"
+      style={{ boxShadow: 'inset 0 0 80px rgba(104,101,250,0.15)' }}
     />
     <motion.div 
-      animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
+      animate={{ rotate: -360, scale: [1, 1.12, 1] }} 
       transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#D4CEFC]/20 opacity-50 shadow-[0_0_80px_rgba(212,206,252,0.1)] mix-blend-screen pointer-events-none"
+      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-full border-[2px] border-[#D4CEFC]/40 opacity-75 pointer-events-none"
+      style={{ boxShadow: '0 0 60px rgba(212,206,252,0.12)' }}
+    />
+    <motion.div 
+      animate={{ rotate: 180, scale: [1, 1.06, 1] }} 
+      transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[50vw] h-[50vw] md:w-[30vw] md:h-[30vw] rounded-full border border-[#6865FA]/25 opacity-60 pointer-events-none"
     />
   </>
 );
@@ -170,14 +185,21 @@ const AboutGraphic = () => (
 const ProblemGraphic = () => (
   <>
     <motion.div 
-      animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.4, 0.1] }} 
-      transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] bg-[#D4CEFC] mix-blend-screen blur-[120px] pointer-events-none"
+      animate={{ rotate: -360, scale: [1, 1.1, 1] }} 
+      transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[90vw] h-[90vw] md:w-[60vw] md:h-[60vw] rounded-full border-[3px] border-[#D4CEFC]/50 opacity-85 pointer-events-none"
+      style={{ boxShadow: '0 0 80px rgba(212,206,252,0.2), inset 0 0 60px rgba(212,206,252,0.1)' }}
     />
     <motion.div 
-      animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }} 
-      transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] bg-[#6865FA] mix-blend-screen blur-[140px] pointer-events-none"
+      animate={{ rotate: 360, scale: [1, 1.15, 1] }} 
+      transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-full border-[2px] border-[#6865FA]/45 opacity-80 pointer-events-none"
+      style={{ boxShadow: 'inset 0 0 50px rgba(104,101,250,0.12)' }}
+    />
+    <motion.div 
+      animate={{ rotate: -180, scale: [1, 1.08, 1] }} 
+      transition={{ duration: 38, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[50vw] h-[50vw] md:w-[30vw] md:h-[30vw] rounded-full border border-[#D4CEFC]/30 opacity-65 pointer-events-none"
     />
   </>
 );
@@ -187,28 +209,33 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const spring = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
   
-  const titleOpacity = useTransform(spring, [0, 0.15], [1, 0]);
-  const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
-  const titleY = useTransform(spring, [0, 0.15], [0, -30]);
+  // Phase 1: Title appears and holds (0 → 0.25), then fades out (0.25 → 0.35)
+  const titleOpacity = useTransform(spring, [0, 0.05, 0.25, 0.35], [0, 1, 1, 0]);
+  const titleScale = useTransform(spring, [0, 0.05, 0.25, 0.35], [0.9, 1, 1, 1.15]);
+  const titleY = useTransform(spring, [0, 0.05, 0.25, 0.35], [40, 0, 0, -40]);
   
-  // Fade content in from 0.05 to 0.25, hold until 0.9, then fade out quickly by 1.0
-  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.9, 1], [0, 1, 1, 0]);
-  const contentY = useTransform(spring, [0.05, 0.25, 0.9, 1], [30, 0, 0, -30]);
-  const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
+  // Phase 2: Circle expands dramatically (0.15 → 0.6) — starts small, grows huge
+  const graphicScale = useTransform(spring, [0, 0.15, 0.55, 1], [0.6, 0.8, 2.8, 3.5]);
+  const graphicOpacity = useTransform(spring, [0, 0.1, 0.2, 0.85, 1], [0.3, 0.5, 1, 1, 0.4]);
+  
+  // Phase 3: Content fades in AFTER circle has expanded (0.4 → 0.55), holds until 0.88, fades out
+  const contentOpacity = useTransform(spring, [0.4, 0.55, 0.88, 1], [0, 1, 1, 0]);
+  const contentY = useTransform(spring, [0.4, 0.55, 0.88, 1], [50, 0, 0, -40]);
 
   return (
-    <section ref={ref} className="h-[200vh] relative w-full">
+    <section ref={ref} className="h-[250vh] relative w-full">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         
-        <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        {/* Circular graphic — scales dramatically from small to huge */}
+        <motion.div style={{ scale: graphicScale, opacity: graphicOpacity }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
           {motionGraphic}
         </motion.div>
 
-        {/* Ambient Edge Masking (Prevents graphics from hard-cutting at the top/bottom of the screen) */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#010d54] to-transparent z-0 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010d54] to-transparent z-0 pointer-events-none" />
+        {/* Ambient Edge Masking */}
+        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-[#010d54] to-transparent z-[1] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#010d54] to-transparent z-[1] pointer-events-none" />
         
-        {/* Title Container */}
+        {/* Phase 1: Title Container — appears first, fades before content */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
           <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="flex flex-col items-center justify-center w-full px-6 text-center pointer-events-auto">
             <motion.h2 
@@ -225,7 +252,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
           </motion.div>
         </div>
         
-        {/* Content Container */}
+        {/* Phase 3: Content Container — appears after circle has expanded */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
             <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
@@ -358,6 +385,12 @@ const AriseVenturesExperience = ({ navigate, project }) => {
            ) : (
              <div className="w-full h-full bg-[#0C185C]" />
            )}
+          <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 px-3 md:top-28">
+            <CaseStudySectorPill
+              sector={project?.sector}
+              className="border border-white/[0.16] bg-[#010d54]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
+            />
+          </div>
         </div>
 
         {/* Text Below the Banner Box */}
@@ -389,23 +422,6 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 1.5 CASE STUDY VIDEO HERO (CMS-driven, reusable) ── */}
       <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} />
 
-      {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
-      {project?.overview && (
-        <DramaticSection
-          title={project?.overviewHeading || SITE_SETTINGS?.csAboutTheBrand || "About the Brand."}
-          content={project?.overview}
-          motionGraphic={<AboutGraphic />}
-        />
-      )}
-
-      {/* ── 3. DRAMATIC: PROBLEM STATEMENT ── */}
-      {project?.challenge && (
-        <DramaticSection 
-          title={project?.challengeHeading || SITE_SETTINGS?.csTheProblem || "The Problem."}
-          content={project?.challenge}
-          motionGraphic={<ProblemGraphic />}
-        />
-      )}
       {/* ── 4. DRAMATIC: CREATIVE SOLUTION ── */}
       {(project?.solution || project?.fullStory?.execution) && (
         <DramaticSection 
