@@ -35,7 +35,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
 
   const front = useTransform(rotation, (r) => Math.cos(((baseAngle + r) * Math.PI) / 180));
 
-  const depthScale = useTransform(front, [-1, 0.5, 1], [0.8, 1.0, 1.12]);
+  const depthScale = useTransform(front, [-1, 0.5, 1], [0.82, 1.0, 1.04]);
   // Combine depth scale × hover scale
   const combinedScale = useTransform(
     [depthScale, hoverScaleSpring],
@@ -190,10 +190,10 @@ const MediaRibbon3D = ({ media }) => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
       const height = clamp(w * 0.13, 130, 220);
       const minRadius = clamp(w * 0.28, 280, 500);
-      const maxRadius = clamp(w * 1.2, 900, 2000);
-      // Auto-scale radius so each panel has at least 32px gap
-      const approxPanelWidth = height * 1.35;
-      const minGap = 32;
+      const maxRadius = clamp(w * 1.6, 1200, 2800);
+      // Use actual max panel width + generous gap to prevent any overlap
+      const approxPanelWidth = height * 1.4;
+      const minGap = 100;
       const requiredRadius = items.length > 1
         ? (items.length * (approxPanelWidth + minGap)) / (2 * Math.PI)
         : minRadius;
