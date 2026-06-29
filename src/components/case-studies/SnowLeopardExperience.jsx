@@ -211,8 +211,12 @@ const AboutMotionGraphic = () => <PBHVerticalBands variant="about" />;
 const ProblemMotionGraphic = () => <PBHVerticalBands variant="problem" />;
 const SolutionMotionGraphic = () => <PBHVerticalBands variant="solution" />;
 
-// ── DYNAMIC SCI-ART 2-COLUMN GRID (About + Problem only) ──
+// ── DYNAMIC SCI-ART 2-COLUMN GRID ──
 const DynamicSciArtGrid = ({ content }) => {
+  const executionBlocks = content.solution2 ? content.solution2.split('\n\n') : [];
+  const strategicIntro = content.solution1 || (executionBlocks.length > 0 ? executionBlocks[0] : null);
+  const remainingExecution = content.solution1 ? executionBlocks : executionBlocks.slice(1);
+
   return (
     <section className="w-full relative bg-gradient-to-b from-transparent via-[#05001a] to-transparent text-white overflow-hidden py-24 lg:py-32">
       
@@ -262,6 +266,9 @@ const DynamicSciArtGrid = ({ content }) => {
                   >
                     ABOUT
                   </motion.span>
+                  
+                  {/* Aesthetic Motion Graphic */}
+                  <AboutMotionGraphic />
                   
                   {/* Elegant vertical scan line */}
                   <motion.div
@@ -375,6 +382,9 @@ const DynamicSciArtGrid = ({ content }) => {
                     PROBLEM
                   </motion.span>
                   
+                  {/* Aesthetic Motion Graphic */}
+                  <ProblemMotionGraphic />
+
                   {/* Elegant vertical scan line */}
                   <motion.div
                     animate={{ x: ['100%', '0%', '100%'] }}
@@ -389,170 +399,90 @@ const DynamicSciArtGrid = ({ content }) => {
               </motion.div>
            </div>
          )}
-      </div>
+         {/* SECTION 3: SOLUTION (Big Text Left, Box Right) */}
+         {(content.solution1 || remainingExecution.length > 0) && (
+           <div className="relative w-full flex flex-col lg:flex-row justify-start items-center py-8 gap-8 lg:gap-12 mt-8 lg:mt-0">
+             
+             {/* BIG TEXT (Left Area) */}
+             <motion.div 
+               initial={{ opacity: 0, x: -100, filter: 'blur(10px)' }}
+               whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+               viewport={{ once: true, amount: 0.2 }}
+               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
+               className="flex-1 flex justify-center items-center overflow-visible relative"
+             >
+                <div className="relative">
+                  {/* Subtle Grid behind text */}
+                  <div className="absolute inset-[-20%] bg-[linear-gradient(rgba(212,206,252,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(212,206,252,0.03)_1px,transparent_1px)] bg-[size:2rem_2rem] z-0 pointer-events-none" style={{ maskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)', WebkitMaskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)' }} />
+                  
+                  {/* Subtle Ghost Text Behind */}
+                  <motion.span 
+                    animate={{ y: [-15, 15, -15], scale: [1, 1.05, 1], opacity: [0.03, 0.08, 0.03] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                    className="absolute top-0 left-0 block text-[4rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[8rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
+                    style={{ WebkitTextStroke: '2px rgba(212,206,252,0.08)' }}
+                  >
+                    SOLUTION
+                  </motion.span>
 
+                  {/* Main Text */}
+                  <motion.span 
+                    animate={{ y: [-5, 5, -5], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                    className="relative block text-[4rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[8rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen z-10"
+                  >
+                    SOLUTION
+                  </motion.span>
+
+                  {/* Aesthetic Motion Graphic */}
+                  <SolutionMotionGraphic />
+
+                  {/* Elegant vertical scan line */}
+                  <motion.div
+                    animate={{ x: ['0%', '100%', '0%'] }}
+                    transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+                    className="absolute top-0 bottom-0 left-0 w-[1px] bg-gradient-to-b from-transparent via-[#D4CEFC]/30 to-transparent z-20 shadow-[0_0_15px_rgba(212,206,252,0.5)]"
+                  />
+                  
+                  {/* Very Subtle decorative gradient corner */}
+                  <div className="absolute -left-4 top-0 w-[20px] h-[20px] border-t border-l border-[#D4CEFC]/10 rounded-tl-lg" />
+                  <div className="absolute -right-4 bottom-0 w-[20px] h-[20px] border-b border-r border-[#D4CEFC]/10 rounded-br-lg" />
+                </div>
+             </motion.div>
+             
+             {/* CONTENT BOX (Right Area) */}
+             <motion.div 
+               initial={{ opacity: 0, x: 100 }}
+               whileInView={{ opacity: 1, x: 0 }}
+               viewport={{ once: true, amount: 0.2 }}
+               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.95 }}
+               className="w-full lg:w-3/5 lg:max-w-3xl xl:max-w-4xl shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-blue-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(59,130,246,0.15)]"
+             >
+               {/* Ambient Background Sweep */}
+               <motion.div 
+                 className="absolute inset-0 bg-gradient-to-br from-indigo-900/40 via-purple-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" 
+               />
+   
+               <div className="relative z-10">
+                 <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
+                   <span className="w-8 h-[1px] bg-cyan-400" /> 
+                   Solution 
+                 </h3>
+                 
+                 <div className="flex flex-col gap-6 text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
+                   {strategicIntro && <p>{strategicIntro}</p>}
+                   {remainingExecution.map((para, idx) => (
+                     <p key={idx} className="text-white/70">{para}</p>
+                   ))}
+                 </div>
+               </div>
+             </motion.div>
+   
+           </div>
+         )}
+      </div>
+      
     </section>
-  );
-};
-
-// ── PBH DENSE STRIPE BACKGROUND ──
-// Matches the screenshot: dense vertical bars with horizontal blur in PBH brand colors
-const PBHStripesBg = () => (
-  <div className="absolute inset-0 overflow-hidden bg-[#010836]">
-    {/* Layer 1: dense crisp bars */}
-    <div
-      className="absolute inset-0"
-      style={{
-        backgroundImage: `repeating-linear-gradient(90deg,
-          #010d54 0px,   #010d54 4px,
-          #6865fa 4px,   #6865fa 7px,
-          #010d54 7px,   #010d54 22px,
-          #d4cefc 22px,  #d4cefc 24px,
-          #010d54 24px,  #010d54 44px,
-          #6865fa 44px,  #6865fa 50px,
-          #010d54 50px,  #010d54 68px,
-          #6865fa 68px,  #6865fa 70px,
-          #010d54 70px,  #010d54 90px,
-          #d4cefc 90px,  #d4cefc 92px,
-          #010d54 92px,  #010d54 115px,
-          #6865fa 115px, #6865fa 122px,
-          #010d54 122px, #010d54 148px,
-          #ffcd00 148px, #ffcd00 150px,
-          #010d54 150px, #010d54 178px,
-          #6865fa 178px, #6865fa 183px,
-          #d4cefc 183px, #d4cefc 185px,
-          #010d54 185px, #010d54 210px
-        )`,
-        filter: 'blur(7px)',
-        transform: 'scaleX(1.04)',
-      }}
-    />
-    {/* Layer 2: wider blurred bars for the bloom/glow */}
-    <div
-      className="absolute inset-0 opacity-60"
-      style={{
-        backgroundImage: `repeating-linear-gradient(90deg,
-          transparent 0px,
-          #6865fa 60px,  #6865fa 80px,
-          transparent 160px,
-          #d4cefc 240px, #d4cefc 250px,
-          transparent 340px,
-          #6865fa 420px, #6865fa 445px,
-          transparent 530px
-        )`,
-        filter: 'blur(28px)',
-      }}
-    />
-    {/* Layer 3: bright hot-spot glow — mimics the light-source in the screenshot */}
-    <div
-      className="absolute inset-0"
-      style={{
-        background: 'radial-gradient(ellipse 28% 100% at 72% 50%, rgba(212,206,252,0.55) 0%, rgba(104,101,250,0.35) 40%, transparent 70%)',
-        mixBlendMode: 'screen',
-      }}
-    />
-    {/* Left edge fade to deep navy */}
-    <div className="absolute inset-0 bg-gradient-to-r from-[#010836] via-transparent to-transparent" style={{ width: '18%' }} />
-  </div>
-);
-
-// ── SUI-STYLE SOLUTION REVEAL ──
-// Sequence: stripes wipe left→right → SOLUTION word fades in → body content rises in
-const SolutionRevealSection = ({ solution1, solution2 }) => {
-  const executionBlocks = solution2 ? solution2.split('\n\n') : [];
-  const strategicIntro = solution1 || (executionBlocks.length > 0 ? executionBlocks[0] : null);
-  const remainingExecution = solution1 ? executionBlocks : executionBlocks.slice(1);
-
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
-  const smooth = useSpring(scrollYProgress, { stiffness: 65, damping: 18 });
-
-  // Phase 1 — stripe bars wipe left → right (0% → 40%)
-  const barsClip    = useTransform(smooth, [0, 0.40], ['inset(0 100% 0 0)', 'inset(0 0% 0 0)']);
-  const barsOpacity = useTransform(smooth, [0, 0.08], [0, 1]);
-
-  // Phase 2 — SOLUTION word fades in (32% → 52%) and stays
-  const wordOpacity = useTransform(smooth, [0.32, 0.52, 0.72, 0.82], [0, 1, 1, 0]);
-  const wordY       = useTransform(smooth, [0.32, 0.52], [28, 0]);
-
-  // Phase 3 — content card rises in (65% → 85%)
-  const contentOpacity = useTransform(smooth, [0.65, 0.85], [0, 1]);
-  const contentY       = useTransform(smooth, [0.65, 0.85], [55, 0]);
-
-  // Dark overlay — lightens slightly once content is visible
-  const overlayOpacity = useTransform(smooth, [0.40, 0.70], [0.18, 0.60]);
-
-  const hasContent = !!(strategicIntro || remainingExecution.length > 0);
-  if (!hasContent) return null;
-
-  return (
-    <div ref={containerRef} className="relative" style={{ minHeight: '300vh' }}>
-      <div className="sticky top-0 h-screen overflow-hidden flex flex-col items-center justify-center bg-[#010836]">
-
-        {/* ── Dense PBH stripe background — wipes left to right ── */}
-        <motion.div
-          className="absolute inset-0 z-0 pointer-events-none"
-          style={{ clipPath: barsClip, opacity: barsOpacity }}
-        >
-          <PBHStripesBg />
-        </motion.div>
-
-        {/* Dark overlay — makes word + content pop over the stripes */}
-        <motion.div
-          className="absolute inset-0 z-[1] bg-[#010836] pointer-events-none"
-          style={{ opacity: overlayOpacity }}
-        />
-
-        {/* ── SOLUTION word ── */}
-        <motion.div
-          className="relative z-[2] text-center select-none pointer-events-none"
-          style={{ opacity: wordOpacity, y: wordY }}
-        >
-          <span
-            className="block font-primary font-black leading-none tracking-tighter whitespace-nowrap text-transparent"
-            style={{
-              fontSize: 'clamp(3.5rem, 12vw, 14rem)',
-              WebkitTextStroke: '2px rgba(212,206,252,0.55)',
-              filter: 'drop-shadow(0 0 80px rgba(104,101,250,0.7)) drop-shadow(0 0 20px rgba(212,206,252,0.4))',
-            }}
-          >
-            SOLUTION
-          </span>
-        </motion.div>
-
-        {/* ── Body content card ── */}
-        <motion.div
-          className="relative z-[2] w-full max-w-3xl xl:max-w-4xl mx-auto px-6 md:px-12 mt-10"
-          style={{ opacity: contentOpacity, y: contentY }}
-        >
-          <div
-            className="relative overflow-hidden rounded-2xl p-8 md:p-14"
-            style={{
-              background: 'linear-gradient(145deg, rgba(1,10,64,0.80) 0%, rgba(10,8,50,0.75) 100%)',
-              border: '1px solid rgba(104,101,250,0.25)',
-              boxShadow: '0 0 80px rgba(104,101,250,0.2), inset 0 1px 0 rgba(212,206,252,0.08)',
-              backdropFilter: 'blur(16px)',
-            }}
-          >
-            <div className="relative z-10">
-              <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-[#d4cefc] font-bold mb-8 flex items-center gap-4 font-primary">
-                <span className="w-8 h-[1px] bg-[#6865fa]" />
-                Solution
-              </h3>
-              <div className="flex flex-col gap-6 text-[17px] md:text-[19px] font-secondary leading-[1.85] text-white/88 font-light">
-                {strategicIntro && <p>{strategicIntro}</p>}
-                {remainingExecution.map((para, idx) => (
-                  <p key={idx} className="text-white/65">{para}</p>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </div>
   );
 };
 
@@ -793,9 +723,6 @@ const SnowLeopardExperience = ({ navigate, project }) => {
 
       {/* ── EXTREME SCI-ART SCROLLYTELLING SECTIONS (FULL WIDTH) ── */}
       <DynamicSciArtGrid content={content} />
-
-      {/* ── SUI-STYLE SOLUTION REVEAL (sticky scroll sequence) ── */}
-      <SolutionRevealSection solution1={content.solution1} solution2={content.solution2} />
 
       {/* Re-open container for stats and planetary swarm */}
       <div className="relative z-20 max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col gap-6">
