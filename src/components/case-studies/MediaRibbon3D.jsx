@@ -188,7 +188,7 @@ const MediaRibbon3D = ({ media }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.27, 290, 520);
+      const height = clamp(w * 0.20, 200, 360);
       const minRadius = clamp(w * 0.28, 280, 500);
       const maxRadius = clamp(w * 1.2, 900, 2000);
       // Auto-scale radius so each panel has at least 32px gap
