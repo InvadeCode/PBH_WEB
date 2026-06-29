@@ -146,70 +146,200 @@ const NarrativeBlock = ({ index, label, paragraphs, accent = 'cyan', align = 'le
 
 // ── CINEMATIC MOTION GRAPHICS ──
 
-const PBHVerticalBands = ({ variant }) => {
-  const isSolution = variant === 'solution';
-  const isProblem = variant === 'problem';
-  
-  // PBH Colors
-  const primary = '#6865fa';
-  const cyan = '#2a97d9';
-  const purple = '#af73dd';
-  const light = '#d4cefc';
-  
-  const c1 = isSolution ? cyan : isProblem ? purple : primary;
-  const c2 = isSolution ? purple : isProblem ? cyan : cyan;
-  const c3 = light;
-
-  return (
-    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#010836]">
-      {/* Hard Vertical Color Bars (Sui-style) */}
+const AboutMotionGraphic = () => (
+  <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-visible">
+    {/* Deep Space Glow */}
+    <motion.div 
+      animate={{ scale: [1, 1.3, 1], opacity: [0.2, 0.6, 0.2] }}
+      transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[500px] h-[500px] rounded-full bg-indigo-600/30 blur-[120px] mix-blend-screen"
+    />
+    
+    {/* Orbital Rings in 3D */}
+    <div className="absolute w-[500px] h-[500px] [perspective:1000px] flex items-center justify-center">
       <motion.div 
-        animate={{ x: ['0px', '-1000px'] }}
-        transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
-        className="absolute top-0 bottom-0 left-0 w-[300vw] opacity-80"
-        style={{
-          backgroundSize: '1000px 100%',
-          backgroundImage: `repeating-linear-gradient(90deg, 
-            ${c1} 0%, 
-            ${c1} 1%, 
-            ${c2} 1%, 
-            ${c2} 2.5%, 
-            #010836 2.5%, 
-            #010836 4%, 
-            ${c1} 4%, 
-            ${c1} 8%, 
-            transparent 8%, 
-            transparent 12%,
-            ${c3} 12%,
-            ${c3} 15%,
-            transparent 15%,
-            transparent 22%,
-            ${c2} 22%,
-            ${c2} 23%,
-            transparent 23%,
-            transparent 30%
-          )`
+        animate={{ rotateX: [60, 75, 60], rotateZ: [0, 360] }}
+        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+        className="absolute w-[450px] h-[450px] rounded-full border border-indigo-400/40 shadow-[inset_0_0_50px_rgba(99,102,241,0.2)]"
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        <motion.div 
+          animate={{ rotateY: [0, -360] }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-400/80 border-b-purple-500/80 blur-[1px]"
+        />
+      </motion.div>
+      
+      <motion.div 
+        animate={{ rotateX: [80, 60, 80], rotateZ: [360, 0] }}
+        transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+        className="absolute w-[600px] h-[600px] rounded-full border border-cyan-400/20"
+        style={{ transformStyle: 'preserve-3d' }}
+      />
+    </div>
+
+    {/* Rising Data Particles */}
+    {Array.from({ length: 15 }).map((_, i) => (
+      <motion.div
+        key={`particle-${i}`}
+        className="absolute w-2 h-2 rounded-full bg-cyan-300 shadow-[0_0_15px_#67E8F9]"
+        initial={{
+          x: (Math.random() - 0.5) * 500,
+          y: (Math.random() - 0.5) * 500,
+          scale: Math.random() * 0.5 + 0.5,
+          opacity: 0,
+        }}
+        animate={{
+          y: [null, (Math.random() - 0.5) * 500 - 100],
+          opacity: [0, 1, 0],
+        }}
+        transition={{
+          duration: Math.random() * 5 + 5,
+          repeat: Infinity,
+          ease: 'easeInOut',
+          delay: Math.random() * 5,
         }}
       />
+    ))}
+  </div>
+);
 
-      {/* Smooth glowing backdrop behind the bars */}
+const ProblemMotionGraphic = () => (
+  <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-visible [perspective:1200px]">
+    {/* Fracture Core Glow */}
+    <motion.div 
+      animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.7, 0.3] }}
+      transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[600px] h-[600px] rounded-full bg-purple-700/20 blur-[100px] mix-blend-color-dodge"
+    />
+
+    {/* 3D Distorted Cyber Grid */}
+    <motion.div 
+      animate={{ rotateX: [60, 65, 60], rotateZ: [-10, 10, -10], scale: [1, 1.1, 1] }}
+      transition={{ duration: 25, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[1200px] h-[1200px] opacity-50 mix-blend-screen shadow-[inset_0_0_150px_rgba(168,85,247,0.5)]"
+      style={{
+        backgroundImage: 'linear-gradient(rgba(168,85,247,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(168,85,247,0.4) 1px, transparent 1px)',
+        backgroundSize: '50px 50px',
+        transformStyle: 'preserve-3d',
+      }}
+    >
+      {/* Glitching sweeping line */}
       <motion.div 
-        animate={{ opacity: [0.3, 0.6, 0.3], scaleX: [1, 1.2, 1] }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-0 bottom-0 left-[-10%] w-[60%] blur-[120px] origin-left"
-        style={{ background: `linear-gradient(90deg, ${c1}, ${c2}, transparent)` }}
+        animate={{ top: ['-10%', '110%'] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+        className="absolute left-0 right-0 h-[2px] bg-cyan-400 shadow-[0_0_30px_#67E8F9]"
       />
-      
-      {/* Heavy fade to dark on the right so text is super clear */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-r from-transparent via-[#010836]/90 to-[#010836]" />
-      <div className="absolute inset-0 z-10 bg-gradient-to-l from-[#010836]/80 via-transparent to-transparent opacity-60" />
-    </div>
-  );
-};
+    </motion.div>
 
-const AboutMotionGraphic = () => <PBHVerticalBands variant="about" />;
-const ProblemMotionGraphic = () => <PBHVerticalBands variant="problem" />;
-const SolutionMotionGraphic = () => <PBHVerticalBands variant="solution" />;
+    {/* Floating Glass Shards / Nodes */}
+    {Array.from({ length: 12 }).map((_, i) => (
+      <motion.div
+        key={`shard-${i}`}
+        className="absolute border border-purple-400/50 bg-purple-900/10 backdrop-blur-md"
+        style={{
+          width: Math.random() * 100 + 30,
+          height: Math.random() * 100 + 30,
+        }}
+        initial={{
+          x: (Math.random() - 0.5) * 800,
+          y: (Math.random() - 0.5) * 800,
+        }}
+        animate={{
+          rotateX: [0, 360],
+          rotateY: [0, 360],
+          rotateZ: [0, 360],
+          opacity: [0, 0.6, 0],
+          scale: [0.5, 1.2, 0.5],
+        }}
+        transition={{
+          duration: Math.random() * 10 + 10,
+          repeat: Infinity,
+          ease: 'linear',
+          delay: Math.random() * 5,
+        }}
+      />
+    ))}
+  </div>
+);
+
+const SolutionMotionGraphic = () => (
+  <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-visible">
+    {/* Brilliant Core */}
+    <motion.div 
+      animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
+      transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+      className="absolute w-[500px] h-[500px] rounded-full bg-cyan-500/30 blur-[90px] mix-blend-screen"
+    />
+
+    {/* Radiating Shockwaves */}
+    {Array.from({ length: 4 }).map((_, i) => (
+      <motion.div
+        key={`shockwave-${i}`}
+        className="absolute w-[100px] h-[100px] rounded-full border-2 border-cyan-300 shadow-[0_0_20px_rgba(103,232,249,0.5)]"
+        animate={{
+          scale: [1, 12],
+          opacity: [0.8, 0],
+          borderWidth: ['3px', '0px']
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: 'easeOut',
+          delay: i * 1.5,
+        }}
+      />
+    ))}
+
+    {/* Harmonious Sacred Geometry (Overlapping Rings) */}
+    <motion.div
+      animate={{ rotate: 360 }}
+      transition={{ duration: 45, repeat: Infinity, ease: 'linear' }}
+      className="relative w-[300px] h-[300px]"
+    >
+      {Array.from({ length: 6 }).map((_, i) => (
+        <motion.div
+          key={`ring-${i}`}
+          className="absolute w-[180px] h-[180px] rounded-full border border-blue-400/50 mix-blend-screen shadow-[inset_0_0_20px_rgba(96,165,250,0.3)]"
+          style={{
+            top: '50%',
+            left: '50%',
+            transform: `translate(-50%, -50%) rotate(${i * 60}deg) translateY(-50px)`,
+          }}
+          animate={{
+            borderColor: ['rgba(96,165,250,0.2)', 'rgba(167,139,250,0.8)', 'rgba(96,165,250,0.2)'],
+          }}
+          transition={{ duration: 6, repeat: Infinity, delay: i * 1 }}
+        />
+      ))}
+      <div className="absolute inset-0 rounded-full border border-cyan-300/40 shadow-[0_0_30px_rgba(103,232,249,0.3)]" />
+    </motion.div>
+
+    {/* Ascending Light Particles */}
+    {Array.from({ length: 25 }).map((_, i) => (
+      <motion.div
+        key={`light-${i}`}
+        className="absolute w-1 rounded-full bg-white shadow-[0_0_15px_#FFF]"
+        style={{ height: Math.random() * 20 + 10 }}
+        initial={{
+          x: (Math.random() - 0.5) * 600,
+          y: 400,
+          opacity: 0,
+        }}
+        animate={{
+          y: -400,
+          opacity: [0, 1, 0],
+        }}
+        transition={{
+          duration: Math.random() * 4 + 3,
+          repeat: Infinity,
+          ease: 'easeIn',
+          delay: Math.random() * 5,
+        }}
+      />
+    ))}
+  </div>
+);
 
 // ── DYNAMIC SCI-ART 2-COLUMN GRID ──
 const DynamicSciArtGrid = ({ content }) => {
