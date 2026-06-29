@@ -4524,6 +4524,7 @@ const LeafletMap = () => {
 
 const ContactPage = ({ navigate }) => {
   const { SITE_SETTINGS, FAQS } = useContext(GlobalContext);
+  const finalSettings = SITE_SETTINGS || {};
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState(null); // 'success' or 'error'
