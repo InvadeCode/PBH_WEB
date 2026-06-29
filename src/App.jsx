@@ -3395,17 +3395,17 @@ const HomePage = ({ navigate }) => {
 
                   {/* Hover panel — slides up from bottom */}
                   <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]">
-                    <div className="bg-[#1a1a1a]/95 backdrop-blur-md px-7 py-6 text-left">
-                      <h3 className="font-primary text-white text-lg md:text-xl font-semibold leading-snug mb-1">{cs.client}</h3>
+                    <div className="bg-gradient-to-t from-black/80 to-black/40 backdrop-blur-xl border-t border-white/10 px-7 py-6 text-left">
+                      <h3 className="font-primary text-white text-lg md:text-xl font-semibold leading-snug mb-1 drop-shadow-md">{cs.client}</h3>
                       {(cs.preview || cs.challenge) && (
-                        <p className="font-secondary text-white/70 text-sm md:text-[15px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
+                        <p className="font-secondary text-white/60 text-sm md:text-[15px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
                       )}
                       {(cs.tags || []).length > 0 && (
-                        <p className="font-secondary text-white/40 text-xs md:text-sm mb-4 tracking-wide">
+                        <p className="font-secondary text-white/35 text-xs md:text-sm mb-4 tracking-wide">
                           {(cs.tags || []).slice(0, 3).join(' | ')}
                         </p>
                       )}
-                      <span className="inline-block px-5 py-2 rounded-full bg-[#F5C518] text-black text-sm font-semibold font-secondary">
+                      <span className="inline-block px-5 py-2 rounded-full bg-[#F5C518]/90 text-black text-sm font-semibold font-secondary shadow-[0_4px_20px_rgba(245,197,24,0.3)]">
                         View Case Study
                       </span>
                     </div>
@@ -4285,17 +4285,17 @@ const WorkPage = ({ navigate }) => {
 
                   {/* Hover panel — slides up from bottom */}
                   <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]">
-                    <div className="bg-[#1a1a1a]/95 backdrop-blur-md px-7 py-6 text-left">
-                      <h3 className="font-primary text-white text-lg md:text-xl font-semibold leading-snug mb-1">{cs.client}</h3>
+                    <div className="bg-gradient-to-t from-black/80 to-black/40 backdrop-blur-xl border-t border-white/10 px-7 py-6 text-left">
+                      <h3 className="font-primary text-white text-lg md:text-xl font-semibold leading-snug mb-1 drop-shadow-md">{cs.client}</h3>
                       {(cs.preview || cs.challenge) && (
-                        <p className="font-secondary text-white/70 text-sm md:text-[15px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
+                        <p className="font-secondary text-white/60 text-sm md:text-[15px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
                       )}
                       {(cs.tags || []).length > 0 && (
-                        <p className="font-secondary text-white/40 text-xs md:text-sm mb-4 tracking-wide">
+                        <p className="font-secondary text-white/35 text-xs md:text-sm mb-4 tracking-wide">
                           {(cs.tags || []).slice(0, 3).join(' | ')}
                         </p>
                       )}
-                      <span className="inline-block px-5 py-2 rounded-full bg-[#F5C518] text-black text-sm font-semibold font-secondary">
+                      <span className="inline-block px-5 py-2 rounded-full bg-[#F5C518]/90 text-black text-sm font-semibold font-secondary shadow-[0_4px_20px_rgba(245,197,24,0.3)]">
                         View Case Study
                       </span>
                     </div>
