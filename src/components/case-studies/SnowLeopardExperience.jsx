@@ -395,8 +395,69 @@ const DynamicSciArtGrid = ({ content }) => {
   );
 };
 
+// ── PBH DENSE STRIPE BACKGROUND ──
+// Matches the screenshot: dense vertical bars with horizontal blur in PBH brand colors
+const PBHStripesBg = () => (
+  <div className="absolute inset-0 overflow-hidden bg-[#010836]">
+    {/* Layer 1: dense crisp bars */}
+    <div
+      className="absolute inset-0"
+      style={{
+        backgroundImage: `repeating-linear-gradient(90deg,
+          #010d54 0px,   #010d54 4px,
+          #6865fa 4px,   #6865fa 7px,
+          #010d54 7px,   #010d54 22px,
+          #d4cefc 22px,  #d4cefc 24px,
+          #010d54 24px,  #010d54 44px,
+          #6865fa 44px,  #6865fa 50px,
+          #010d54 50px,  #010d54 68px,
+          #6865fa 68px,  #6865fa 70px,
+          #010d54 70px,  #010d54 90px,
+          #d4cefc 90px,  #d4cefc 92px,
+          #010d54 92px,  #010d54 115px,
+          #6865fa 115px, #6865fa 122px,
+          #010d54 122px, #010d54 148px,
+          #ffcd00 148px, #ffcd00 150px,
+          #010d54 150px, #010d54 178px,
+          #6865fa 178px, #6865fa 183px,
+          #d4cefc 183px, #d4cefc 185px,
+          #010d54 185px, #010d54 210px
+        )`,
+        filter: 'blur(7px)',
+        transform: 'scaleX(1.04)',
+      }}
+    />
+    {/* Layer 2: wider blurred bars for the bloom/glow */}
+    <div
+      className="absolute inset-0 opacity-60"
+      style={{
+        backgroundImage: `repeating-linear-gradient(90deg,
+          transparent 0px,
+          #6865fa 60px,  #6865fa 80px,
+          transparent 160px,
+          #d4cefc 240px, #d4cefc 250px,
+          transparent 340px,
+          #6865fa 420px, #6865fa 445px,
+          transparent 530px
+        )`,
+        filter: 'blur(28px)',
+      }}
+    />
+    {/* Layer 3: bright hot-spot glow — mimics the light-source in the screenshot */}
+    <div
+      className="absolute inset-0"
+      style={{
+        background: 'radial-gradient(ellipse 28% 100% at 72% 50%, rgba(212,206,252,0.55) 0%, rgba(104,101,250,0.35) 40%, transparent 70%)',
+        mixBlendMode: 'screen',
+      }}
+    />
+    {/* Left edge fade to deep navy */}
+    <div className="absolute inset-0 bg-gradient-to-r from-[#010836] via-transparent to-transparent" style={{ width: '18%' }} />
+  </div>
+);
+
 // ── SUI-STYLE SOLUTION REVEAL ──
-// Sticky 280 vh container: word appears → iris expands from center → content fades in
+// Sequence: stripes wipe left→right → SOLUTION word fades in → body content rises in
 const SolutionRevealSection = ({ solution1, solution2 }) => {
   const executionBlocks = solution2 ? solution2.split('\n\n') : [];
   const strategicIntro = solution1 || (executionBlocks.length > 0 ? executionBlocks[0] : null);
@@ -407,79 +468,84 @@ const SolutionRevealSection = ({ solution1, solution2 }) => {
     target: containerRef,
     offset: ['start start', 'end end'],
   });
-  const smooth = useSpring(scrollYProgress, { stiffness: 70, damping: 18 });
+  const smooth = useSpring(scrollYProgress, { stiffness: 65, damping: 18 });
 
-  // Phase 1 — word fades+scales in (0 → 28%), stays, then blows up and fades (28 → 48%)
-  const wordOpacity = useTransform(smooth, [0, 0.10, 0.30, 0.48], [0, 1, 1, 0]);
-  const wordScale   = useTransform(smooth, [0, 0.10, 0.48], [0.45, 1, 3.2]);
+  // Phase 1 — stripe bars wipe left → right (0% → 40%)
+  const barsClip    = useTransform(smooth, [0, 0.40], ['inset(0 100% 0 0)', 'inset(0 0% 0 0)']);
+  const barsOpacity = useTransform(smooth, [0, 0.08], [0, 1]);
 
-  // Phase 2 — PBHVerticalBands iris-expand from center (30 → 65%)
-  const bgClip    = useTransform(smooth, [0.30, 0.65], ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)']);
-  const bgOpacity = useTransform(smooth, [0.28, 0.38], [0, 1]);
+  // Phase 2 — SOLUTION word fades in (32% → 52%) and stays
+  const wordOpacity = useTransform(smooth, [0.32, 0.52, 0.72, 0.82], [0, 1, 1, 0]);
+  const wordY       = useTransform(smooth, [0.32, 0.52], [28, 0]);
 
-  // Overlay fades from nearly opaque (word phase) to semi-transparent (content phase)
-  const overlayOpacity = useTransform(smooth, [0.30, 0.68], [0.92, 0.72]);
+  // Phase 3 — content card rises in (65% → 85%)
+  const contentOpacity = useTransform(smooth, [0.65, 0.85], [0, 1]);
+  const contentY       = useTransform(smooth, [0.65, 0.85], [55, 0]);
 
-  // Phase 3 — content card rises in (58 → 80%)
-  const contentOpacity = useTransform(smooth, [0.58, 0.80], [0, 1]);
-  const contentY       = useTransform(smooth, [0.58, 0.80], [55, 0]);
+  // Dark overlay — lightens slightly once content is visible
+  const overlayOpacity = useTransform(smooth, [0.40, 0.70], [0.18, 0.60]);
 
   const hasContent = !!(strategicIntro || remainingExecution.length > 0);
   if (!hasContent) return null;
 
   return (
-    <div ref={containerRef} className="relative" style={{ minHeight: '280vh' }}>
-      {/* Sticky viewport-height stage */}
-      <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center bg-[#010836]">
+    <div ref={containerRef} className="relative" style={{ minHeight: '300vh' }}>
+      <div className="sticky top-0 h-screen overflow-hidden flex flex-col items-center justify-center bg-[#010836]">
 
-        {/* PBHVerticalBands — iris expand from center */}
+        {/* ── Dense PBH stripe background — wipes left to right ── */}
         <motion.div
           className="absolute inset-0 z-0 pointer-events-none"
-          style={{ clipPath: bgClip, opacity: bgOpacity }}
+          style={{ clipPath: barsClip, opacity: barsOpacity }}
         >
-          <SolutionMotionGraphic />
+          <PBHStripesBg />
         </motion.div>
 
-        {/* Dark overlay — keeps text readable, fades slightly as bg takes over */}
+        {/* Dark overlay — makes word + content pop over the stripes */}
         <motion.div
-          className="absolute inset-0 z-[1] pointer-events-none bg-[#010836]"
+          className="absolute inset-0 z-[1] bg-[#010836] pointer-events-none"
           style={{ opacity: overlayOpacity }}
         />
 
-        {/* SOLUTION word — appears then blows up as iris opens */}
+        {/* ── SOLUTION word ── */}
         <motion.div
-          className="absolute inset-0 z-[2] flex items-center justify-center pointer-events-none select-none"
-          style={{ opacity: wordOpacity, scale: wordScale }}
+          className="relative z-[2] text-center select-none pointer-events-none"
+          style={{ opacity: wordOpacity, y: wordY }}
         >
           <span
-            className="block font-black leading-none tracking-tighter whitespace-nowrap text-transparent"
+            className="block font-primary font-black leading-none tracking-tighter whitespace-nowrap text-transparent"
             style={{
-              fontSize: 'clamp(4rem, 14vw, 16rem)',
-              WebkitTextStroke: '2px rgba(212,206,252,0.45)',
-              filter: 'drop-shadow(0 0 60px rgba(104,101,250,0.5))',
+              fontSize: 'clamp(3.5rem, 12vw, 14rem)',
+              WebkitTextStroke: '2px rgba(212,206,252,0.55)',
+              filter: 'drop-shadow(0 0 80px rgba(104,101,250,0.7)) drop-shadow(0 0 20px rgba(212,206,252,0.4))',
             }}
           >
             SOLUTION
           </span>
         </motion.div>
 
-        {/* Content card — fades in once bg has filled the screen */}
+        {/* ── Body content card ── */}
         <motion.div
-          className="relative z-[3] w-full max-w-3xl xl:max-w-4xl mx-auto px-6 md:px-12"
+          className="relative z-[2] w-full max-w-3xl xl:max-w-4xl mx-auto px-6 md:px-12 mt-10"
           style={{ opacity: contentOpacity, y: contentY }}
         >
-          <div className="bg-[#010a40]/75 backdrop-blur-md p-8 md:p-14 border border-blue-500/25 relative overflow-hidden rounded-2xl shadow-[0_0_80px_rgba(59,130,246,0.25)]">
-            {/* Ambient sweep on hover */}
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/40 via-purple-900/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" />
+          <div
+            className="relative overflow-hidden rounded-2xl p-8 md:p-14"
+            style={{
+              background: 'linear-gradient(145deg, rgba(1,10,64,0.80) 0%, rgba(10,8,50,0.75) 100%)',
+              border: '1px solid rgba(104,101,250,0.25)',
+              boxShadow: '0 0 80px rgba(104,101,250,0.2), inset 0 1px 0 rgba(212,206,252,0.08)',
+              backdropFilter: 'blur(16px)',
+            }}
+          >
             <div className="relative z-10">
-              <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-cyan-400 font-bold mb-8 flex items-center gap-4 font-primary">
-                <span className="w-8 h-[1px] bg-cyan-400" />
+              <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-[#d4cefc] font-bold mb-8 flex items-center gap-4 font-primary">
+                <span className="w-8 h-[1px] bg-[#6865fa]" />
                 Solution
               </h3>
-              <div className="flex flex-col gap-6 text-[17px] md:text-[19px] font-secondary leading-[1.85] text-white/90 font-light">
+              <div className="flex flex-col gap-6 text-[17px] md:text-[19px] font-secondary leading-[1.85] text-white/88 font-light">
                 {strategicIntro && <p>{strategicIntro}</p>}
                 {remainingExecution.map((para, idx) => (
-                  <p key={idx} className="text-white/70">{para}</p>
+                  <p key={idx} className="text-white/65">{para}</p>
                 ))}
               </div>
             </div>
