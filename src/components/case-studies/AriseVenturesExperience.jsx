@@ -406,8 +406,19 @@ const AriseVenturesExperience = ({ navigate, project }) => {
           motionGraphic={<ProblemGraphic />}
         />
       )}
-
-      </section>
+      {/* ── 4. DRAMATIC: CREATIVE SOLUTION ── */}
+      {(project?.solution || project?.fullStory?.execution) && (
+        <DramaticSection 
+          title={project?.solutionHeading || SITE_SETTINGS?.csCreativeSolution || "Creative Solution."}
+          content={
+            <div className="flex flex-col gap-6">
+              {project?.solution && <span>{project.solution}</span>}
+              {project?.fullStory?.execution && <span>{project.fullStory.execution}</span>}
+            </div>
+          }
+          motionGraphic={<SolutionGraphic />}
+        />
+      )}
 
       {/* ── 5. STATEMENT ── */}
       {(project?.results?.length > 0) && (
