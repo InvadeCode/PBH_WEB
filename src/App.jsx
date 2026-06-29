@@ -3378,38 +3378,39 @@ const HomePage = ({ navigate }) => {
               <StaggerItem key={i}>
                 <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/10 rounded-[24px] overflow-hidden cursor-pointer w-full aspect-square bg-[#0a0a0a] shadow-2xl transition-all duration-700 hover:border-white/30 hover:translate-y-[-4px]">
 
-                  {/* Background Thumbnail & Overlays */}
+                  {/* Background Image */}
                   <div className="absolute inset-0 z-0">
                     {(cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl) ? (
                       <CaseStudyMedia
                         src={cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl}
                         alt={cs.client}
-                        className="w-full h-full object-cover opacity-70 group-hover:scale-105 group-hover:opacity-100 transition-all duration-1000 ease-out"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="font-primary italic text-white/10 text-5xl">{cs.client ? cs.client.split(' ')[0] : 'Work'}</span>
                       </div>
                     )}
-                    {/* Cinematic Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/10 group-hover:via-black/20 transition-all duration-700" />
                   </div>
 
-                  {/* Content Overlay */}
-                  <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-10 text-left">
-                    <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-[0.16,1,0.3,1]">
-                      <span className="t-label block mb-3" style={{ color: hexColor }}>{cs.sector}</span>
-                      <h3 className="t-subtitle font-primary text-white mb-6 drop-shadow-lg">{cs.client}</h3>
-                      <div className="flex justify-between items-end font-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
-                        <div className="flex gap-2 flex-wrap">
-                          {(cs.tags || []).map(t => (
-                            <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-[17px] md:text-[19px] tracking-wider text-white/80 uppercase">{t}</span>
-                          ))}
-                        </div>
-                        <ArrowUpRight className="w-8 h-8 text-white p-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20" />
-                      </div>
+                  {/* Hover panel — slides up from bottom */}
+                  <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]">
+                    <div className="bg-[#1a1a1a]/95 backdrop-blur-md px-7 py-6 text-left">
+                      <h3 className="font-primary text-white text-lg md:text-xl font-semibold leading-snug mb-1">{cs.client}</h3>
+                      {(cs.preview || cs.challenge) && (
+                        <p className="font-secondary text-white/70 text-sm md:text-[15px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
+                      )}
+                      {(cs.tags || []).length > 0 && (
+                        <p className="font-secondary text-white/40 text-xs md:text-sm mb-4 tracking-wide">
+                          {(cs.tags || []).slice(0, 3).join(' | ')}
+                        </p>
+                      )}
+                      <span className="inline-block px-5 py-2 rounded-full bg-[#F5C518] text-black text-sm font-semibold font-secondary">
+                        View Case Study
+                      </span>
                     </div>
                   </div>
+
                 </div>
               </StaggerItem>
             )
@@ -4266,50 +4267,37 @@ const WorkPage = ({ navigate }) => {
             return (
               <StaggerItem key={i}>
                 <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/10 rounded-[24px] overflow-hidden cursor-pointer w-full aspect-square bg-[#0a0a0a] shadow-2xl transition-all duration-700 hover:border-white/30">
-                  
-                  {/* Background Image & Overlays */}
+
+                  {/* Background Image */}
                   <div className="absolute inset-0 z-0">
                     {(cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl) ? (
-                      <CaseStudyMedia 
-                        src={cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl} 
-                        alt={cs.client} 
-                        className="w-full h-full object-cover opacity-70 group-hover:scale-105 group-hover:opacity-100 transition-all duration-1000 ease-out" 
+                      <CaseStudyMedia
+                        src={cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl}
+                        alt={cs.client}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span className="font-primary italic text-white/10 text-5xl">{cs.client ? cs.client.split(' ')[0] : 'Work'}</span>
                       </div>
                     )}
-                    {/* Cinematic Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/10 group-hover:via-black/20 transition-all duration-700" />
                   </div>
 
-                  {/* Content Overlay */}
-                  <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-10 text-left">
-                    <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-[0.16,1,0.3,1]">
-                      
-                      {/* Sector */}
-                      <span className="t-label block mb-3" style={{ color: hexColor }}>
-                        {cs.sector}
+                  {/* Hover panel — slides up from bottom */}
+                  <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]">
+                    <div className="bg-[#1a1a1a]/95 backdrop-blur-md px-7 py-6 text-left">
+                      <h3 className="font-primary text-white text-lg md:text-xl font-semibold leading-snug mb-1">{cs.client}</h3>
+                      {(cs.preview || cs.challenge) && (
+                        <p className="font-secondary text-white/70 text-sm md:text-[15px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
+                      )}
+                      {(cs.tags || []).length > 0 && (
+                        <p className="font-secondary text-white/40 text-xs md:text-sm mb-4 tracking-wide">
+                          {(cs.tags || []).slice(0, 3).join(' | ')}
+                        </p>
+                      )}
+                      <span className="inline-block px-5 py-2 rounded-full bg-[#F5C518] text-black text-sm font-semibold font-secondary">
+                        View Case Study
                       </span>
-                      
-                      {/* Title */}
-                      <h3 className="t-subtitle font-primary text-white mb-6 drop-shadow-lg">
-                        {cs.client}
-                      </h3>
-                      
-                      {/* Tags & Action (Fade in on hover) */}
-                      <div className="flex justify-between items-end font-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
-                        <div className="flex gap-2 flex-wrap">
-                          {(cs.tags || []).map(t => (
-                            <span key={t} className="px-4 py-1.5 rounded-full border border-white/20 bg-black/40 backdrop-blur-md text-[17px] md:text-[19px] tracking-wider text-white/80 uppercase">
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                        <ArrowUpRight className="w-8 h-8 text-white p-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20" />
-                      </div>
-
                     </div>
                   </div>
 
