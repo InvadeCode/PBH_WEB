@@ -17,7 +17,7 @@ const getMediaAspect = (m) => {
   let ar = dim?.aspectRatio;
   if (!(typeof ar === 'number' && ar > 0) && dim?.width && dim?.height) ar = dim.width / dim.height;
   if (!(typeof ar === 'number' && ar > 0)) ar = 4 / 3;
-  return clamp(ar, 0.45, 2.4);
+  return clamp(ar, 0.45, 1.4);
 };
 
 const Panel = ({ media, index, step, radius, height, rotation, isActive, onHoverChange }) => {
@@ -189,10 +189,15 @@ const MediaRibbon3D = ({ media }) => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
       const height = clamp(w * 0.27, 290, 520);
-      const maxRadius = clamp(w * 0.52, 520, 1050);
-      const minRadius = clamp(w * 0.28, 290, 480);
-      const t = clamp((items.length - 1) / 7, 0, 1);
-      const radius = minRadius + (maxRadius - minRadius) * t;
+      const minRadius = clamp(w * 0.28, 280, 500);
+      const maxRadius = clamp(w * 0.75, 700, 1400);
+      // Auto-scale radius so panels never overlap regardless of item count
+      const approxPanelWidth = height * 1.35;
+      const minGap = 24;
+      const requiredRadius = items.length > 1
+        ? (items.length * (approxPanelWidth + minGap)) / (2 * Math.PI)
+        : minRadius;
+      const radius = clamp(requiredRadius, minRadius, maxRadius);
       setDims({ height, radius });
     };
     measure();
