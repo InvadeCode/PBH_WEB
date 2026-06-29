@@ -976,7 +976,8 @@ const BrandHealthRadar = ({ clusters }) => {
 
 // --- STRATEGIC ENGINE (SCOPE BUILDER) ---
 const StrategicEngine = ({ navigate }) => {
-  const { QUIZ_QUESTIONS, ROUTES_INFO, DELIVERABLES_MASTER } = useContext(GlobalContext);
+  const { QUIZ_QUESTIONS, ROUTES_INFO, DELIVERABLES_MASTER, SITE_SETTINGS } = useContext(GlobalContext);
+  const finalSettings = SITE_SETTINGS || {};
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [comments, setComments] = useState({});
@@ -2778,6 +2779,7 @@ const NavLink = ({ children, onClick, active, onMouseEnter, onMouseLeave }) => {
 
 const Header = ({ navigate, current }) => {
   const { SITE_SETTINGS, ROUTES_INFO, CASE_STUDIES } = useContext(GlobalContext);
+  const finalSettings = SITE_SETTINGS || {};
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const timeoutRef = useRef(null);
@@ -3168,6 +3170,7 @@ const SelectedCollaboratorsSection = () => {
 
 const HomePage = ({ navigate }) => {
   const { SITE_SETTINGS, ROUTES_INFO, PROBLEM_DATA, CASE_STUDIES, JOURNAL_ARTICLES } = useContext(GlobalContext);
+  const finalSettings = SITE_SETTINGS || {};
   const heroRef = useRef(null);
   const { scrollYProgress: heroProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroY = useTransform(heroProgress, [0, 1], ["0%", "40%"]);
@@ -3829,6 +3832,7 @@ const OurStoryPage = ({ navigate }) => {
 
 const TeamPage = ({ navigate }) => {
   const { TEAM_MEMBERS, SITE_SETTINGS } = useContext(GlobalContext);
+  const finalSettings = SITE_SETTINGS || {};
   const [showCareers, setShowCareers] = useState(false);
   return (
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
