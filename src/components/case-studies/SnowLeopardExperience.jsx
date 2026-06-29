@@ -267,9 +267,6 @@ const DynamicSciArtGrid = ({ content }) => {
                     ABOUT
                   </motion.span>
                   
-                  {/* Aesthetic Motion Graphic */}
-                  <AboutMotionGraphic />
-                  
                   {/* Elegant vertical scan line */}
                   <motion.div
                     animate={{ x: ['0%', '100%', '0%'] }}
@@ -382,9 +379,6 @@ const DynamicSciArtGrid = ({ content }) => {
                     PROBLEM
                   </motion.span>
                   
-                  {/* Aesthetic Motion Graphic */}
-                  <ProblemMotionGraphic />
-
                   {/* Elegant vertical scan line */}
                   <motion.div
                     animate={{ x: ['100%', '0%', '100%'] }}
@@ -399,85 +393,87 @@ const DynamicSciArtGrid = ({ content }) => {
               </motion.div>
            </div>
          )}
-         {/* SECTION 3: SOLUTION (Big Text Left, Box Right) */}
+         {/* SECTION 3: SOLUTION — full-section PBHVerticalBands bg that expands in on scroll */}
          {(content.solution1 || remainingExecution.length > 0) && (
-           <div className="relative w-full flex flex-col lg:flex-row justify-start items-center py-8 gap-8 lg:gap-12 mt-8 lg:mt-0">
-             
-             {/* BIG TEXT (Left Area) */}
-             <motion.div 
-               initial={{ opacity: 0, x: -100, filter: 'blur(10px)' }}
-               whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-               viewport={{ once: true, amount: 0.2 }}
-               transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
-               className="flex-1 flex justify-center items-center overflow-visible relative"
+           <div className="relative w-full mt-8 lg:mt-0 rounded-[2rem] overflow-hidden">
+
+             {/* ── Expanding PBHVerticalBands background ── */}
+             <motion.div
+               initial={{ clipPath: 'inset(0 100% 0 0)' }}
+               whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
+               viewport={{ once: true, amount: 0.15 }}
+               transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+               className="absolute inset-0 z-0 pointer-events-none"
              >
-                <div className="relative">
-                  {/* Subtle Grid behind text */}
-                  <div className="absolute inset-[-20%] bg-[linear-gradient(rgba(212,206,252,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(212,206,252,0.03)_1px,transparent_1px)] bg-[size:2rem_2rem] z-0 pointer-events-none" style={{ maskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)', WebkitMaskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)' }} />
-                  
-                  {/* Subtle Ghost Text Behind */}
-                  <motion.span 
-                    animate={{ y: [-15, 15, -15], scale: [1, 1.05, 1], opacity: [0.03, 0.08, 0.03] }}
-                    transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                    className="absolute top-0 left-0 block text-[4rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[8rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
-                    style={{ WebkitTextStroke: '2px rgba(212,206,252,0.08)' }}
-                  >
-                    SOLUTION
-                  </motion.span>
-
-                  {/* Main Text */}
-                  <motion.span 
-                    animate={{ y: [-5, 5, -5], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                    className="relative block text-[4rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[8rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen z-10"
-                  >
-                    SOLUTION
-                  </motion.span>
-
-                  {/* Aesthetic Motion Graphic */}
-                  <SolutionMotionGraphic />
-
-                  {/* Elegant vertical scan line */}
-                  <motion.div
-                    animate={{ x: ['0%', '100%', '0%'] }}
-                    transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-                    className="absolute top-0 bottom-0 left-0 w-[1px] bg-gradient-to-b from-transparent via-[#D4CEFC]/30 to-transparent z-20 shadow-[0_0_15px_rgba(212,206,252,0.5)]"
-                  />
-                  
-                  {/* Very Subtle decorative gradient corner */}
-                  <div className="absolute -left-4 top-0 w-[20px] h-[20px] border-t border-l border-[#D4CEFC]/10 rounded-tl-lg" />
-                  <div className="absolute -right-4 bottom-0 w-[20px] h-[20px] border-b border-r border-[#D4CEFC]/10 rounded-br-lg" />
-                </div>
+               <SolutionMotionGraphic />
              </motion.div>
-             
-             {/* CONTENT BOX (Right Area) */}
-             <motion.div 
-               initial={{ opacity: 0, x: 100 }}
-               whileInView={{ opacity: 1, x: 0 }}
-               viewport={{ once: true, amount: 0.2 }}
-               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.95 }}
-               className="w-full lg:w-3/5 lg:max-w-3xl xl:max-w-4xl shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-blue-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(59,130,246,0.15)]"
-             >
-               {/* Ambient Background Sweep */}
-               <motion.div 
-                 className="absolute inset-0 bg-gradient-to-br from-indigo-900/40 via-purple-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" 
-               />
-   
-               <div className="relative z-10">
-                 <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
-                   <span className="w-8 h-[1px] bg-cyan-400" /> 
-                   Solution 
-                 </h3>
-                 
-                 <div className="flex flex-col gap-6 text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
-                   {strategicIntro && <p>{strategicIntro}</p>}
-                   {remainingExecution.map((para, idx) => (
-                     <p key={idx} className="text-white/70">{para}</p>
-                   ))}
+             {/* Dark overlay so text stays legible over the bands */}
+             <div className="absolute inset-0 z-[1] pointer-events-none bg-[#010836]/70" />
+
+             {/* Inner flex row — py padding gives the section height */}
+             <div className="relative z-[2] w-full flex flex-col lg:flex-row justify-start items-center py-16 gap-8 lg:gap-12 px-[5%] lg:px-[8%]">
+
+               {/* BIG TEXT (Left Area) */}
+               <motion.div
+                 initial={{ opacity: 0, x: -80, filter: 'blur(10px)' }}
+                 whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                 viewport={{ once: true, amount: 0.2 }}
+                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+                 className="flex-1 flex justify-center items-center overflow-visible relative"
+               >
+                 <div className="relative">
+                   {/* Ghost Text Behind */}
+                   <motion.span
+                     animate={{ y: [-15, 15, -15], scale: [1, 1.05, 1], opacity: [0.04, 0.1, 0.04] }}
+                     transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+                     className="absolute top-0 left-0 block text-[4rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[8rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
+                     style={{ WebkitTextStroke: '2px rgba(212,206,252,0.12)' }}
+                   >
+                     SOLUTION
+                   </motion.span>
+                   {/* Main visible word */}
+                   <motion.span
+                     animate={{ y: [-5, 5, -5], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
+                     transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                     className="relative block text-[4rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[8rem] font-black text-[#D4CEFC]/15 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.3)] mix-blend-screen z-10"
+                   >
+                     SOLUTION
+                   </motion.span>
+                   {/* Vertical scan line */}
+                   <motion.div
+                     animate={{ x: ['0%', '100%', '0%'] }}
+                     transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+                     className="absolute top-0 bottom-0 left-0 w-[1px] bg-gradient-to-b from-transparent via-[#D4CEFC]/40 to-transparent z-20 shadow-[0_0_15px_rgba(212,206,252,0.6)]"
+                   />
                  </div>
-               </div>
-             </motion.div>
-   
+               </motion.div>
+
+               {/* CONTENT BOX (Right Area) */}
+               <motion.div
+                 initial={{ opacity: 0, x: 80 }}
+                 whileInView={{ opacity: 1, x: 0 }}
+                 viewport={{ once: true, amount: 0.2 }}
+                 transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.65 }}
+                 className="w-full lg:w-3/5 lg:max-w-3xl xl:max-w-4xl shrink-0 bg-[#010a40]/70 backdrop-blur-md p-8 md:p-12 border border-blue-500/25 relative overflow-hidden group z-10 shadow-[0_0_60px_rgba(59,130,246,0.2)] rounded-2xl"
+               >
+                 <motion.div
+                   className="absolute inset-0 bg-gradient-to-br from-indigo-900/40 via-purple-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0"
+                 />
+                 <div className="relative z-10">
+                   <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
+                     <span className="w-8 h-[1px] bg-cyan-400" />
+                     Solution
+                   </h3>
+                   <div className="flex flex-col gap-6 text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
+                     {strategicIntro && <p>{strategicIntro}</p>}
+                     {remainingExecution.map((para, idx) => (
+                       <p key={idx} className="text-white/70">{para}</p>
+                     ))}
+                   </div>
+                 </div>
+               </motion.div>
+
+             </div>
            </div>
          )}
       </div>
