@@ -190,10 +190,10 @@ const MediaRibbon3D = ({ media }) => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
       const height = clamp(w * 0.27, 290, 520);
       const minRadius = clamp(w * 0.28, 280, 500);
-      const maxRadius = clamp(w * 0.75, 700, 1400);
-      // Auto-scale radius so panels never overlap regardless of item count
+      const maxRadius = clamp(w * 1.2, 900, 2000);
+      // Auto-scale radius so each panel has at least 32px gap
       const approxPanelWidth = height * 1.35;
-      const minGap = 24;
+      const minGap = 32;
       const requiredRadius = items.length > 1
         ? (items.length * (approxPanelWidth + minGap)) / (2 * Math.PI)
         : minRadius;
@@ -310,7 +310,7 @@ const MediaRibbon3D = ({ media }) => {
       </div>
 
       {/* 3D scene */}
-      <div className="absolute inset-0" style={{ perspective: '1700px', perspectiveOrigin: '50% 48%' }}>
+      <div className="absolute inset-0" style={{ perspective: '3200px', perspectiveOrigin: '50% 48%' }}>
         <motion.div
           className="absolute left-1/2 top-[45%]"
           style={{ transformStyle: 'preserve-3d', transform: ringTransform, willChange: 'transform' }}
