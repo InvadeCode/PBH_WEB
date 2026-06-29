@@ -135,7 +135,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
             item={media}
             alt={media?.alt}
             className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none"
-            sizes="(min-width: 768px) 40vw, 80vw"
+            sizes="(min-width: 768px) 56vw, 92vw"
             draggable="false"
           />
         )}
@@ -175,7 +175,7 @@ const MediaRibbon3D = ({ media }) => {
 
   const reduce = useReducedMotion();
   const sceneRef = useRef(null);
-  const [dims, setDims] = useState({ height: 230, radius: 540 });
+  const [dims, setDims] = useState({ height: 320, radius: 720 });
   const [hoverPaused, setHoverPaused] = useState(false);
   const [expandedMediaIndex, setExpandedMediaIndex] = useState(null);
   const hoverTimeout = useRef(null);
@@ -188,9 +188,9 @@ const MediaRibbon3D = ({ media }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.12, 140, 260);
-      const maxRadius = clamp(w * 0.45, 400, 950);
-      const minRadius = clamp(w * 0.20, 200, 350);
+      const height = clamp(w * 0.34, 340, 620);
+      const maxRadius = clamp(w * 0.48, 480, 980);
+      const minRadius = clamp(w * 0.26, 280, 500);
       const t = clamp((items.length - 1) / 7, 0, 1);
       const radius = minRadius + (maxRadius - minRadius) * t;
       setDims({ height, radius });
@@ -294,7 +294,7 @@ const MediaRibbon3D = ({ media }) => {
       onPointerLeave={handlePointerLeave}
       onDragStart={(e) => e.preventDefault()}
       className="relative w-full overflow-hidden touch-none cursor-grab active:cursor-grabbing"
-      style={{ height: 'clamp(500px, 75vh, 850px)' }}
+      style={{ height: 'clamp(680px, 86vh, 1080px)' }}
     >
       {/* Ambient depth */}
       <div className="pointer-events-none absolute inset-0">
@@ -343,8 +343,8 @@ const MediaRibbon3D = ({ media }) => {
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
             className="relative pointer-events-auto shadow-[0_40px_100px_rgba(0,0,0,0.9)] rounded-[20px] overflow-hidden bg-transparent border border-white/10"
             style={{ 
-              height: '85%', 
-              maxHeight: '850px',
+              height: '90%', 
+              maxHeight: '980px',
               aspectRatio: getMediaAspect(items[expandedMediaIndex]),
               boxShadow: '0 0 100px rgba(104,101,250,0.3)'
             }}
