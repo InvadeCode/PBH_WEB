@@ -163,7 +163,14 @@ export const GET_SITE_SETTINGS = `*[_type == "siteSettings"][0] {
   aboutPage, storyPage, teamPage, methodPage, serviceFaqs, footerTagline, footerCopyright,
   csBackToWork, csSeeMoreWork, csAllProjects, csScrollStory, csTheApproach,
   defaultStoryChapters, csCarouselFallbackTitle, csCarouselFallbackSubtitle, csOurRole, csTheProcess, csResults,
-  csAboutTheBrand, csTheProblem, csCreativeSolution, csEcosystemHighlights
+  csAboutTheBrand, csTheProblem, csCreativeSolution, csEcosystemHighlights,
+  assessmentPage, forms, navigation,
+  "clientLogos": clientLogos[] {
+    name,
+    "src": image.asset->url,
+    invert,
+    centerCrop
+  }
 }`;
 
 export const GET_TEAM_MEMBERS = `*[_type == "teamMember"] | order(order asc) { id, name, role, bio }`;

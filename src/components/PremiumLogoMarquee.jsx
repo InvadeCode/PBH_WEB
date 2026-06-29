@@ -118,6 +118,8 @@ const Logo = ({ logo, i, reduce, navigate, isClone = false }) => {
   };
 
   const getSizeClass = (name) => {
+    if (logo.fromCMS) return 'h-[140px] md:h-[200px]'; // Standardized size for CMS images
+    
     const customSizes = {
       // BUMPED UP further per request
       'Sayre Therapeutics': 'h-[200px] md:h-[280px]',
@@ -151,6 +153,11 @@ const Logo = ({ logo, i, reduce, navigate, isClone = false }) => {
   };
 
   const getFilterClass = (name) => {
+    if (logo.fromCMS) {
+      if (logo.invert) return 'pbh-logo-vector-black-cutout';
+      return 'pbh-logo';
+    }
+
     if (name === 'Firefox') {
       return 'pbh-logo-vector-black-cutout';
     }
@@ -170,11 +177,11 @@ const Logo = ({ logo, i, reduce, navigate, isClone = false }) => {
       transition={{ duration: 5.5 + (i % 5) * 0.6, repeat: Infinity, ease: 'easeInOut', delay: (i % 6) * 0.4 }}
       role={canNavigate ? 'link' : undefined}
       tabIndex={canNavigate && !isClone ? 0 : undefined}
-      aria-label={canNavigate ? `View ${logo.caseStudy.client || logo.name} case study` : undefined}
+      aria-label={canNavigate ? `View ${logo.caseStudy?.client || logo.name} case study` : undefined}
       onClick={canNavigate ? openCaseStudy : undefined}
       onKeyDown={canNavigate && !isClone ? handleKeyDown : undefined}
     >
-      <div className="pbh-hover relative flex items-center justify-center">
+      <div className="pbh-hover relative flex items-center justify-center h-full w-full">
         <span className="pbh-glow" aria-hidden="true" />
         <img
           src={logo.src}
@@ -182,19 +189,24 @@ const Logo = ({ logo, i, reduce, navigate, isClone = false }) => {
           loading="lazy"
           decoding="async"
           draggable="false"
-          className={`relative z-10 w-auto max-w-none select-none object-contain ${getSizeClass(logo.name)} ${getFilterClass(logo.name)}`}
+          className={`relative z-10 w-auto max-w-none select-none ${logo.centerCrop ? 'object-cover w-[180px] h-[180px] rounded-full' : 'object-contain'} ${logo.centerCrop ? '' : getSizeClass(logo.name)} ${getFilterClass(logo.name)}`}
         />
       </div>
     </motion.div>
   );
 };
 
-const PremiumLogoMarquee = ({ navigate, caseStudies = [] }) => {
+const PremiumLogoMarquee = ({ navigate, caseStudies = [], clientLogos = [] }) => {
   const reduce = useReducedMotion();
   const x = useMotionValue(0);
   const setWidth = useRef(0);
   const firstSet = useRef(null);
-  const logos = LOGOS.map((logo) => ({
+
+  const activeLogos = clientLogos && clientLogos.length > 0 
+    ? clientLogos.map(cl => ({ ...cl, fromCMS: true })) 
+    : LOGOS;
+
+  const logos = activeLogos.map((logo) => ({
     ...logo,
     caseStudy: findCaseStudyForLogo(logo, caseStudies),
   }));

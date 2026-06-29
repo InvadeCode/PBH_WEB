@@ -178,20 +178,39 @@ const DynamicSciArtGrid = ({ content }) => {
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="flex-1 flex justify-center items-center overflow-visible relative"
               >
-                <div className="relative">
-                  <div className="absolute -top-6 -left-4 text-cyan-400/40 text-sm md:text-base font-mono tracking-[0.3em]">// SEC.01_INTEL</div>
+                  <div className="absolute -top-6 -left-4 text-cyan-400/60 text-sm md:text-base font-mono tracking-[0.3em] z-20">// SEC.01_INTEL</div>
+                  
+                  {/* Subtle Ghost Text Behind */}
                   <motion.span 
-                    animate={{ y: [-10, 10, -10], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                    className="block text-7xl md:text-[8rem] lg:text-[11rem] xl:text-[13rem] font-black text-[#D4CEFC]/15 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen"
+                    animate={{ y: [-15, 15, -15], scale: [1, 1.05, 1], opacity: [0.05, 0.1, 0.05] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+                    className="absolute top-0 left-0 block text-[8rem] md:text-[12rem] lg:text-[15rem] xl:text-[18rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
+                    style={{ WebkitTextStroke: '2px rgba(212,206,252,0.1)' }}
                   >
                     ABOUT
                   </motion.span>
-                  <div className="absolute -bottom-6 -right-4 text-cyan-400/40 text-sm md:text-base font-mono tracking-[0.3em]">SYS_ACTIVE</div>
+                  
+                  {/* Main Text */}
+                  <motion.span 
+                    animate={{ y: [-5, 5, -5], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                    className="relative block text-[8rem] md:text-[12rem] lg:text-[15rem] xl:text-[18rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.3)] mix-blend-screen z-10"
+                  >
+                    ABOUT
+                  </motion.span>
+                  
+                  {/* Animated Data Line through text */}
+                  <motion.div
+                    animate={{ scaleX: [0, 1, 0], opacity: [0, 1, 0], x: ['-20%', '0%', '20%'] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                    className="absolute top-1/2 left-[-10%] right-[-10%] h-[1px] bg-cyan-400/30 z-20"
+                  />
+
+                  <div className="absolute -bottom-6 -right-4 text-cyan-400/60 text-sm md:text-base font-mono tracking-[0.3em] z-20">SYS_ACTIVE</div>
                   
                   {/* Decorative bracket lines */}
-                  <div className="absolute -left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-cyan-500/0 via-cyan-500/30 to-cyan-500/0" />
-                  <div className="absolute -right-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-cyan-500/0 via-cyan-500/30 to-cyan-500/0" />
+                  <div className="absolute -left-12 top-0 bottom-0 w-[2px] bg-gradient-to-b from-cyan-500/0 via-cyan-500/40 to-cyan-500/0" />
+                  <div className="absolute -right-12 top-0 bottom-0 w-[2px] bg-gradient-to-b from-cyan-500/0 via-cyan-500/40 to-cyan-500/0" />
                 </div>
               </motion.div>
               
@@ -272,19 +291,39 @@ const DynamicSciArtGrid = ({ content }) => {
                 className="flex-1 flex justify-center items-center overflow-visible relative"
               >
                 <div className="relative">
-                  <div className="absolute -top-6 -right-4 text-purple-400/40 text-sm md:text-base font-mono tracking-[0.3em]">// SEC.02_ERR</div>
+                  <div className="absolute -top-6 -right-4 text-purple-400/60 text-sm md:text-base font-mono tracking-[0.3em] z-20">// SEC.02_ERR</div>
+                  
+                  {/* Subtle Ghost Text Behind */}
                   <motion.span 
-                    animate={{ y: [-10, 10, -10], scale: [1, 1.02, 1], rotateZ: [1, -1, 1] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                    className="block text-7xl md:text-[8rem] lg:text-[11rem] xl:text-[13rem] font-black text-[#D4CEFC]/15 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen"
+                    animate={{ y: [15, -15, 15], scale: [1, 1.05, 1], opacity: [0.05, 0.1, 0.05] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                    className="absolute top-0 left-0 block text-[8rem] md:text-[12rem] lg:text-[15rem] xl:text-[18rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
+                    style={{ WebkitTextStroke: '2px rgba(212,206,252,0.1)' }}
                   >
                     PROBLEM
                   </motion.span>
-                  <div className="absolute -bottom-6 -left-4 text-purple-400/40 text-sm md:text-base font-mono tracking-[0.3em]">SYS_CRITICAL</div>
+
+                  {/* Main Text */}
+                  <motion.span 
+                    animate={{ y: [5, -5, 5], scale: [1, 1.02, 1], rotateZ: [1, -1, 1] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                    className="relative block text-[8rem] md:text-[12rem] lg:text-[15rem] xl:text-[18rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.3)] mix-blend-screen z-10"
+                  >
+                    PROBLEM
+                  </motion.span>
+
+                  {/* Animated Data Line through text */}
+                  <motion.div
+                    animate={{ scaleX: [0, 1, 0], opacity: [0, 1, 0], x: ['20%', '0%', '-20%'] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                    className="absolute top-[60%] left-[-10%] right-[-10%] h-[1px] bg-purple-400/30 z-20"
+                  />
+
+                  <div className="absolute -bottom-6 -left-4 text-purple-400/60 text-sm md:text-base font-mono tracking-[0.3em] z-20">SYS_CRITICAL</div>
                   
                   {/* Decorative bracket lines */}
-                  <div className="absolute -left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-purple-500/0 via-purple-500/30 to-purple-500/0" />
-                  <div className="absolute -right-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-purple-500/0 via-purple-500/30 to-purple-500/0" />
+                  <div className="absolute -left-12 top-0 bottom-0 w-[2px] bg-gradient-to-b from-purple-500/0 via-purple-500/40 to-purple-500/0" />
+                  <div className="absolute -right-12 top-0 bottom-0 w-[2px] bg-gradient-to-b from-purple-500/0 via-purple-500/40 to-purple-500/0" />
                 </div>
               </motion.div>
            </div>
@@ -302,19 +341,39 @@ const DynamicSciArtGrid = ({ content }) => {
                className="flex-1 flex justify-center items-center overflow-visible relative"
              >
                 <div className="relative">
-                  <div className="absolute -top-6 -left-4 text-blue-400/40 text-sm md:text-base font-mono tracking-[0.3em]">// SEC.03_EXEC</div>
+                  <div className="absolute -top-6 -left-4 text-blue-400/60 text-sm md:text-base font-mono tracking-[0.3em] z-20">// SEC.03_EXEC</div>
+                  
+                  {/* Subtle Ghost Text Behind */}
                   <motion.span 
-                    animate={{ y: [-10, 10, -10], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
-                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                    className="block text-7xl md:text-[8rem] lg:text-[11rem] xl:text-[13rem] font-black text-[#D4CEFC]/15 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen"
+                    animate={{ y: [-15, 15, -15], scale: [1, 1.05, 1], opacity: [0.05, 0.1, 0.05] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                    className="absolute top-0 left-0 block text-[7rem] md:text-[10rem] lg:text-[13rem] xl:text-[16rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
+                    style={{ WebkitTextStroke: '2px rgba(212,206,252,0.1)' }}
                   >
                     SOLUTION
                   </motion.span>
-                  <div className="absolute -bottom-6 -right-4 text-blue-400/40 text-sm md:text-base font-mono tracking-[0.3em]">SYS_RESOLVED</div>
+
+                  {/* Main Text */}
+                  <motion.span 
+                    animate={{ y: [-5, 5, -5], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
+                    transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                    className="relative block text-[7rem] md:text-[10rem] lg:text-[13rem] xl:text-[16rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.3)] mix-blend-screen z-10"
+                  >
+                    SOLUTION
+                  </motion.span>
+
+                  {/* Animated Data Line through text */}
+                  <motion.div
+                    animate={{ scaleX: [0, 1, 0], opacity: [0, 1, 0], x: ['-20%', '0%', '20%'] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                    className="absolute top-[40%] left-[-10%] right-[-10%] h-[1px] bg-blue-400/30 z-20"
+                  />
+
+                  <div className="absolute -bottom-6 -right-4 text-blue-400/60 text-sm md:text-base font-mono tracking-[0.3em] z-20">SYS_RESOLVED</div>
                   
                   {/* Decorative bracket lines */}
-                  <div className="absolute -left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-blue-500/0 via-blue-500/30 to-blue-500/0" />
-                  <div className="absolute -right-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-blue-500/0 via-blue-500/30 to-blue-500/0" />
+                  <div className="absolute -left-12 top-0 bottom-0 w-[2px] bg-gradient-to-b from-blue-500/0 via-blue-500/40 to-blue-500/0" />
+                  <div className="absolute -right-12 top-0 bottom-0 w-[2px] bg-gradient-to-b from-blue-500/0 via-blue-500/40 to-blue-500/0" />
                 </div>
              </motion.div>
              

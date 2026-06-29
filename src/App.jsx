@@ -67,7 +67,7 @@ const sendEmailViaResend = async (subject, htmlContent, attachments = [], toEmai
 
 // --- NEW CAREERS MODAL COMPONENT ---
 // --- NEW CAREERS MODAL COMPONENT ---
-const CareersModal = ({ onClose }) => {
+const CareersModal = ({ onClose, formDataSettings }) => {
   const [file, setFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState(null);
@@ -151,23 +151,23 @@ const CareersModal = ({ onClose }) => {
           <X size={20} />
         </button>
 
-        <h3 className="text-xl md:text-2xl font-light mb-2 text-white font-primary">Want to work with us?</h3>
+        <h3 className="text-xl md:text-2xl font-light mb-2 text-white font-primary">{formDataSettings?.careersModalTitle || 'Want to work with us?'}</h3>
         <p className="text-white/50 mb-8 font-secondary text-[17px] md:text-[19px] leading-relaxed">
-          We are always looking for visionary strategists and artists. Send us your profile below.
+          {formDataSettings?.careersModalText || 'We are always looking for visionary strategists and artists. Send us your profile below.'}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input required name="name" value={formData.name} onChange={handleInputChange} type="text" placeholder="Full Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
-            <input required name="phone" value={formData.phone} onChange={handleInputChange} type="tel" placeholder="Phone Number" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+            <input required name="name" value={formData.name} onChange={handleInputChange} type="text" placeholder={formDataSettings?.namePlaceholder || 'Full Name'} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+            <input required name="phone" value={formData.phone} onChange={handleInputChange} type="tel" placeholder={formDataSettings?.phonePlaceholder || 'Phone Number'} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input required name="email" value={formData.email} onChange={handleInputChange} type="email" placeholder="Email Address" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
-            <input required name="linkedin" value={formData.linkedin} onChange={handleInputChange} type="url" placeholder="LinkedIn Profile URL" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+            <input required name="email" value={formData.email} onChange={handleInputChange} type="email" placeholder={formDataSettings?.emailPlaceholder || 'Email Address'} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
+            <input required name="linkedin" value={formData.linkedin} onChange={handleInputChange} type="url" placeholder={formDataSettings?.linkedinPlaceholder || 'LinkedIn Profile URL'} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary" />
           </div>
 
-          <textarea required name="summary" value={formData.summary} onChange={handleInputChange} placeholder="Tell us about yourself and what you do best..." rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary resize-none custom-scrollbar" />
+          <textarea required name="summary" value={formData.summary} onChange={handleInputChange} placeholder={formDataSettings?.summaryPlaceholder || 'Tell us about yourself and what you do best...'} rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-4 py-3 text-white text-[17px] md:text-[19px] focus:outline-none transition-colors focus:border-white/30 font-secondary resize-none custom-scrollbar" />
 
           <div className="border border-white/10 bg-white/[0.02] rounded-[16px] p-2 overflow-hidden focus-within:border-white/30 transition-colors mt-2">
             <input
@@ -194,7 +194,7 @@ const CareersModal = ({ onClose }) => {
                 type="submit"
                 className="w-full py-4 rounded-[12px] bg-white text-black font-medium text-[17px] md:text-[19px] font-secondary hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
-                {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</> : 'Send Profile'}
+                {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {formDataSettings?.sendingText || 'Sending...'}</> : (formDataSettings?.sendProfileBtn || 'Send Profile')}
               </button>
             )}
           </div>
@@ -2202,13 +2202,13 @@ const StrategicEngine = ({ navigate }) => {
     // 0: Opening Question (Replacing Welcome Splash)
     <div key="s0" className="flex flex-col justify-center h-full text-left w-full mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery (0/${N_QUIZ})</div>
-        <h2 className="text-xl md:text-2xl font-light mb-4 font-primary">Let's start with the basics.</h2>
-        <p className="text-[17px] md:text-[19px] text-white/50 mb-10 font-secondary max-w-2xl">Before we map your strategic gaps, please tell us who we are building this scope for.</p>
+        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.phase1Label || 'Phase 1 / Discovery'} (0/{N_QUIZ})</div>
+        <h2 className="text-xl md:text-2xl font-light mb-4 font-primary">{finalSettings.assessmentPage?.welcomeTitle || "Let's start with the basics."}</h2>
+        <p className="text-[17px] md:text-[19px] text-white/50 mb-10 font-secondary max-w-2xl">{finalSettings.assessmentPage?.welcomeText || "Before we map your strategic gaps, please tell us who we are building this scope for."}</p>
         
         <div className="space-y-6 max-w-xl">
           <div>
-            <label className="block text-[17px] md:text-[19px] font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">Brand / Business Name</label>
+            <label className="block text-[17px] md:text-[19px] font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">{finalSettings.assessmentPage?.companyInputLabel || 'Brand / Business Name'}</label>
             <input 
               type="text" 
               value={leadForm.company}
@@ -2218,7 +2218,7 @@ const StrategicEngine = ({ navigate }) => {
             />
           </div>
           <div>
-            <label className="block text-[17px] md:text-[19px] font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">Industry / Sector</label>
+            <label className="block text-[17px] md:text-[19px] font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">{finalSettings.assessmentPage?.industryInputLabel || 'Industry / Sector'}</label>
             <input 
               type="text" 
               value={leadForm.industry || ''}
@@ -2234,7 +2234,7 @@ const StrategicEngine = ({ navigate }) => {
             }} 
             className={`w-full sm:w-auto px-10 py-4 mt-4 ${!leadForm.company ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            Start Scope Builder
+            {finalSettings.assessmentPage?.startBtn || 'Start Scope Builder'}
           </PremiumButton>
         </div>
       </FadeUp>
@@ -2249,10 +2249,10 @@ const StrategicEngine = ({ navigate }) => {
       return (
       <div key={`q${i}`} className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
         <FadeUp>
-          <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 1 / Discovery ({i + 1}/${N_QUIZ})</div>
+          <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.phase1Label || 'Phase 1 / Discovery'} ({i + 1}/{N_QUIZ})</div>
           <h2 className="text-xl md:text-2xl font-light mb-4 font-primary">{q.title}</h2>
-          {isMultiSelect && <p className="text-[17px] md:text-[19px] text-cyan-400 mb-8 font-secondary">Select all that apply.</p>}
-          {!isMultiSelect && <p className="text-[17px] md:text-[19px] text-white/40 mb-8 font-secondary">Select the most accurate statement.</p>}
+          {isMultiSelect && <p className="text-[17px] md:text-[19px] text-cyan-400 mb-8 font-secondary">{finalSettings.assessmentPage?.multiSelectHint || 'Select all that apply.'}</p>}
+          {!isMultiSelect && <p className="text-[17px] md:text-[19px] text-white/40 mb-8 font-secondary">{finalSettings.assessmentPage?.singleSelectHint || 'Select the most accurate statement.'}</p>}
           
           <StaggerGroup className="space-y-3 w-full max-w-3xl">
             {q.options.map((opt, j) => {
@@ -2294,7 +2294,7 @@ const StrategicEngine = ({ navigate }) => {
                 onClick={handleMultiSelectContinue} 
                 className={`px-10 py-4 ${!hasAnswer ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
-                Continue <ArrowRight className="w-5 h-5 ml-2" />
+                {finalSettings.assessmentPage?.continueBtn || 'Continue'} <ArrowRight className="w-5 h-5 ml-2" />
               </PremiumButton>
               <button 
                 onClick={() => {
@@ -2303,7 +2303,7 @@ const StrategicEngine = ({ navigate }) => {
                 }}
                 className="px-6 py-4 border border-white/20 rounded-[12px] text-white/60 hover:text-white hover:bg-white/5 transition-colors font-secondary text-[17px] md:text-[19px] font-medium"
               >
-                Select All
+                {finalSettings.assessmentPage?.selectAllBtn || 'Select All'}
               </button>
             </div>
           )}
@@ -2315,9 +2315,9 @@ const StrategicEngine = ({ navigate }) => {
     // N+1: Diagnosis Result
     <div key="diag" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4" /> Discovery Insights</div>
-        <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">Your brand opportunity areas.</h2>
-        <p className="text-white/50 font-light mb-12 text-xl md:text-xl md:text-2xl font-secondary max-w-3xl">Based on your answers, your communication is currently breaking due to <strong className="text-white">{clusters.join(' & ')}</strong>. We recommend structuring your project around these core ecosystems:</p>
+        <div className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4" /> {finalSettings.assessmentPage?.diagPhaseLabel || 'Discovery Insights'}</div>
+        <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">{finalSettings.assessmentPage?.diagTitle || 'Your brand opportunity areas.'}</h2>
+        <p className="text-white/50 font-light mb-12 text-xl md:text-xl md:text-2xl font-secondary max-w-3xl">{finalSettings.assessmentPage?.diagPrefixText || 'Based on your answers, your communication is currently breaking due to'} <strong className="text-white">{clusters.join(' & ')}</strong>. We recommend structuring your project around these core ecosystems:</p>
         <StaggerGroup className="grid sm:grid-cols-2 gap-4 mb-12 w-full max-w-4xl">
           {routes.map(r => {
             const rColor = palette[ROUTES_INFO[r].type] || palette.primary;
@@ -2335,7 +2335,7 @@ const StrategicEngine = ({ navigate }) => {
                     }}
                     className="text-[17px] md:text-[19px] uppercase tracking-wider font-medium text-cyan-400 hover:text-cyan-300 transition-colors mt-4 self-start"
                   >
-                    Read More
+                    {finalSettings.assessmentPage?.readMoreBtn || 'Read More'}
                   </button>
                 </div>
               </StaggerItem>
@@ -2343,7 +2343,7 @@ const StrategicEngine = ({ navigate }) => {
           })}
         </StaggerGroup>
         <div className="flex gap-6 items-center">
-          <PremiumButton onClick={() => setStep(N_QUIZ + 2)}>Select Deliverables</PremiumButton>
+          <PremiumButton onClick={() => setStep(N_QUIZ + 2)}>{finalSettings.assessmentPage?.selectDeliverablesBtn || 'Select Deliverables'}</PremiumButton>
           <button onClick={() => setStep(N_QUIZ)} className="text-white/40 hover:text-white text-[17px] md:text-[19px] transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
@@ -2352,9 +2352,9 @@ const StrategicEngine = ({ navigate }) => {
     // N+3: Deliverables Selection
     <div key="delivSel" className="flex flex-col h-full w-full py-10 text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 3 / Details</div>
-        <h2 className="text-xl md:text-2xl font-light mb-2 font-primary">Build Your Scope</h2>
-        <p className="text-white/50 font-light mb-10 font-secondary">Select the specific deliverables you need across your chosen routes.</p>
+        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.detailsPhaseLabel || 'Phase 3 / Details'}</div>
+        <h2 className="text-xl md:text-2xl font-light mb-2 font-primary">{finalSettings.assessmentPage?.buildScopeTitle || 'Build Your Scope'}</h2>
+        <p className="text-white/50 font-light mb-10 font-secondary">{finalSettings.assessmentPage?.buildScopeText || 'Select the specific deliverables you need across your chosen routes.'}</p>
         <StaggerGroup className="space-y-10 w-full pb-10">
           {selectedRoutes.map(rId => {
             const route = ROUTES_INFO[rId];
@@ -2428,7 +2428,7 @@ const StrategicEngine = ({ navigate }) => {
           })}
         </StaggerGroup>
         <div className="pt-8 border-t border-white/10 mt-auto flex gap-6 items-center">
-          <PremiumButton disabled={selectedDeliverables.length === 0} onClick={() => setStep(N_QUIZ + 3)}>Next: Project Context</PremiumButton>
+          <PremiumButton disabled={selectedDeliverables.length === 0} onClick={() => setStep(N_QUIZ + 3)}>{finalSettings.assessmentPage?.nextProjectContextBtn || 'Next: Project Context'}</PremiumButton>
           <button onClick={() => setStep(N_QUIZ + 1)} className="text-white/40 hover:text-white text-[17px] md:text-[19px] transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
@@ -2437,11 +2437,11 @@ const StrategicEngine = ({ navigate }) => {
     // N+4: Context
     <div key="ctxSel" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">Phase 4 / Execution</div>
-        <h2 className="text-xl md:text-2xl font-light mb-10 font-primary">Project Context.</h2>
+        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.execPhaseLabel || 'Phase 4 / Execution'}</div>
+        <h2 className="text-xl md:text-2xl font-light mb-10 font-primary">{finalSettings.assessmentPage?.projectContextTitle || 'Project Context.'}</h2>
         <div className="space-y-6 w-full mb-12 max-w-3xl">
           <div className="w-full">
-            <label className="block text-xl md:text-2xl font-medium text-white mb-6 font-secondary">what is your expected commencement date?</label>
+            <label className="block text-xl md:text-2xl font-medium text-white mb-6 font-secondary">{finalSettings.assessmentPage?.commencementLabel || 'what is your expected commencement date?'}</label>
             <select value={context.duration} onChange={e => setContext({ ...context, duration: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
               <option value="Short term (minimum 3 months)" style={{ backgroundColor: palette.bgDeep }}>Short term (minimum 3 months)</option>
               <option value="Deep Dive- Branding (minimum 6 months)" style={{ backgroundColor: palette.bgDeep }}>Deep Dive- Branding (minimum 6 months)</option>
@@ -2450,7 +2450,7 @@ const StrategicEngine = ({ navigate }) => {
           </div>
         </div>
         <div className="flex gap-6 items-center">
-          <PremiumButton disabled={!context.duration} onClick={() => setStep(N_QUIZ + 4)}>Finalize Blueprint</PremiumButton>
+          <PremiumButton disabled={!context.duration} onClick={() => setStep(N_QUIZ + 4)}>{finalSettings.assessmentPage?.finalizeBlueprintBtn || 'Finalize Blueprint'}</PremiumButton>
           <button onClick={() => setStep(N_QUIZ + 2)} className="text-white/40 hover:text-white text-[17px] md:text-[19px] transition-colors font-secondary">Back</button>
         </div>
       </FadeUp>
@@ -2459,16 +2459,16 @@ const StrategicEngine = ({ navigate }) => {
     // N+5: Lead Capture
     <div key="leadCap" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.blue }}>Final Step</div>
-        <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">Where should we send your Scope Snapshot?</h2>
-        <p className="text-white/50 font-light mb-10 text-xl md:text-xl md:text-2xl font-secondary max-w-3xl">Enter your details below to instantly generate your strategy report and brief our consulting team.</p>
+        <div className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.blue }}>{finalSettings.assessmentPage?.finalStepLabel || 'Final Step'}</div>
+        <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">{finalSettings.assessmentPage?.leadTitle || 'Where should we send your Scope Snapshot?'}</h2>
+        <p className="text-white/50 font-light mb-10 text-xl md:text-xl md:text-2xl font-secondary max-w-3xl">{finalSettings.assessmentPage?.leadText || 'Enter your details below to instantly generate your strategy report and brief our consulting team.'}</p>
         <form onSubmit={submitLead} className="space-y-4 w-full font-secondary max-w-3xl">
-          <input required type="text" placeholder="Full Name" value={leadForm.name} onChange={e => setLeadForm({ ...leadForm, name: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
-          <input required type="email" placeholder="Work Email" value={leadForm.email} onChange={e => setLeadForm({ ...leadForm, email: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
-          <input required type="tel" placeholder="Phone Number" value={leadForm.phone} onChange={e => setLeadForm({ ...leadForm, phone: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
+          <input required type="text" placeholder={finalSettings.forms?.namePlaceholder || "Full Name"} value={leadForm.name} onChange={e => setLeadForm({ ...leadForm, name: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
+          <input required type="email" placeholder={finalSettings.forms?.emailPlaceholder || "Work Email"} value={leadForm.email} onChange={e => setLeadForm({ ...leadForm, email: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
+          <input required type="tel" placeholder={finalSettings.forms?.phonePlaceholder || "Phone Number"} value={leadForm.phone} onChange={e => setLeadForm({ ...leadForm, phone: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <div className="pt-6 flex gap-4 items-center">
             <PremiumButton type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-10">
-              {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing...</> : 'Generate Report & Send Brief'}
+              {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {finalSettings.assessmentPage?.processingText || 'Processing...'}</> : (finalSettings.assessmentPage?.generateReportBtn || 'Generate Report & Send Brief')}
             </PremiumButton>
             <button type="button" onClick={() => setStep(N_QUIZ + 3)} disabled={isSubmitting} className="text-white/40 hover:text-white text-[17px] md:text-[19px] transition-colors disabled:opacity-50">Back</button>
           </div>
@@ -2482,7 +2482,7 @@ const StrategicEngine = ({ navigate }) => {
         <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)] print:p-0 print:shadow-none print:rounded-none print:overflow-visible print-blueprint-container" style={{ backgroundColor: palette.bgDeep }}>
           <div className="flex flex-col md:flex-row justify-between items-start border-b border-white/10 pb-8 mb-10 relative z-10 gap-6 w-full">
             <div>
-              <div className="text-[17px] md:text-[19px] uppercase tracking-widest mb-3 font-medium flex items-center gap-2 font-primary" style={{ color: palette.primary }}><FileText className="w-4 h-4" /> Official Scope Snapshot</div>
+              <div className="text-[17px] md:text-[19px] uppercase tracking-widest mb-3 font-medium flex items-center gap-2 font-primary" style={{ color: palette.primary }}><FileText className="w-4 h-4" /> {finalSettings.assessmentPage?.scopeSnapshotLabel || 'Official Scope Snapshot'}</div>
               <h2 className="text-xl md:text-2xl font-light text-white mb-2 font-primary">{leadForm.company || 'Your Brand'}</h2>
               <p className="text-white/50 text-[17px] md:text-[19px] font-secondary">Prepared for {leadForm.name || 'Client'}</p>
             </div>
@@ -2978,19 +2978,19 @@ const Header = ({ navigate, current }) => {
         </div>
 
         <nav className="hidden lg:flex items-center gap-2 text-[17px] md:text-[19px] font-medium tracking-wide bg-white/[0.04] border border-white/10 rounded-full px-5 py-3 backdrop-blur-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_12px_50px_rgba(0,0,0,0.35)] font-secondary">
-          <NavLink onClick={() => { navigate('work'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('work')} active={current.startsWith('work') || activeMenu === 'work'}>Work</NavLink>
-          <NavLink onClick={() => { navigate('services'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('services')} active={current.startsWith('services') || activeMenu === 'services'}>Services</NavLink>
-          <NavLink onClick={() => { navigate('about'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('about')} active={['about', 'method', 'story', 'team'].includes(current) || activeMenu === 'about'}>About Us</NavLink>
-          <NavLink onClick={() => { navigate('journal'); setActiveMenu(null); }} onMouseEnter={() => setActiveMenu(null)} active={current.startsWith('journal') || current.startsWith('article')}>Journal</NavLink>
-          <NavLink onClick={() => { navigate('contact'); setActiveMenu(null); }} onMouseEnter={() => setActiveMenu(null)} active={current === 'contact'}>Contact Us</NavLink>
+          <NavLink onClick={() => { navigate('work'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('work')} active={current.startsWith('work') || activeMenu === 'work'}>{finalSettings.navigation?.navWork || 'Work'}</NavLink>
+          <NavLink onClick={() => { navigate('services'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('services')} active={current.startsWith('services') || activeMenu === 'services'}>{finalSettings.navigation?.navServices || 'Services'}</NavLink>
+          <NavLink onClick={() => { navigate('about'); setActiveMenu(null); }} onMouseEnter={() => handleMouseEnter('about')} active={['about', 'method', 'story', 'team'].includes(current) || activeMenu === 'about'}>{finalSettings.navigation?.navAbout || 'About Us'}</NavLink>
+          <NavLink onClick={() => { navigate('journal'); setActiveMenu(null); }} onMouseEnter={() => setActiveMenu(null)} active={current.startsWith('journal') || current.startsWith('article')}>{finalSettings.navigation?.navJournal || 'Journal'}</NavLink>
+          <NavLink onClick={() => { navigate('contact'); setActiveMenu(null); }} onMouseEnter={() => setActiveMenu(null)} active={current === 'contact'}>{finalSettings.navigation?.navContact || 'Contact Us'}</NavLink>
         </nav>
 
         <div className="hidden lg:flex items-center">
-          <PremiumButton onClick={() => { navigate('assessment'); setActiveMenu(null); }} className="px-6 py-2.5 rounded-[9px] text-[17px] md:text-[19px] font-secondary shadow-lg">Build My Brand Scope</PremiumButton>
+          <PremiumButton onClick={() => { navigate('assessment'); setActiveMenu(null); }} className="px-6 py-2.5 rounded-[9px] text-[17px] md:text-[19px] font-secondary shadow-lg">{finalSettings.navigation?.navCtaDesktop || 'Build My Brand Scope'}</PremiumButton>
         </div>
 
         <div className="lg:hidden flex items-center">
-          <button onClick={() => navigate('assessment')} className="text-[17px] md:text-[19px] font-medium text-white px-4 py-2 rounded-[6px] uppercase tracking-widest shadow-md font-secondary" style={{ backgroundColor: '#6865fa' }}>Build Scope</button>
+          <button onClick={() => navigate('assessment')} className="text-[17px] md:text-[19px] font-medium text-white px-4 py-2 rounded-[6px] uppercase tracking-widest shadow-md font-secondary" style={{ backgroundColor: '#6865fa' }}>{finalSettings.navigation?.navCtaMobile || 'Build Scope'}</button>
         </div>
       </div>
 
@@ -3346,7 +3346,7 @@ const HomePage = ({ navigate }) => {
         </div>
       </section>
 
-      <PremiumLogoMarquee navigate={navigate} caseStudies={CASE_STUDIES} />
+      <PremiumLogoMarquee navigate={navigate} caseStudies={CASE_STUDIES} clientLogos={finalSettings.clientLogos} />
 
       {/* Global Mission */}
       <section className="py-32 px-[3%] text-center relative overflow-hidden w-full" style={{ backgroundColor: palette.bgDeep }}>
@@ -3917,7 +3917,7 @@ const TeamPage = ({ navigate }) => {
           </button>
         </FadeUp>
         <AnimatePresence>
-          {showCareers && <CareersModal onClose={() => setShowCareers(false)} />}
+          {showCareers && <CareersModal onClose={() => setShowCareers(false)} formDataSettings={finalSettings.forms} />}
         </AnimatePresence>
 
       </div>
@@ -4657,62 +4657,62 @@ const ContactPage = ({ navigate }) => {
 
         {/* Section 1: Hero */}
         <FadeUp>
-          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary">Start with a conversation. <br /><AnimatedItalic className="text-white/50">Or start with clarity.</AnimatedItalic></h1>
-          <p className="text-white/50 mb-20 text-xl font-light font-secondary max-w-2xl">Have a project in mind? Choose how you want to begin your journey with PurpleBlue House.</p>
+          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary">{finalSettings.forms?.contactFormTitle || 'Start with a conversation.'} <br /><AnimatedItalic className="text-white/50">{finalSettings.forms?.contactFormTitleItalic || 'Or start with clarity.'}</AnimatedItalic></h1>
+          <p className="text-white/50 mb-20 text-xl font-light font-secondary max-w-2xl">{finalSettings.forms?.contactFormText || 'Have a project in mind? Choose how you want to begin your journey with PurpleBlue House.'}</p>
         </FadeUp>
 
         {/* Section 2: Contact Options */}
         <FadeUp className="grid md:grid-cols-2 gap-8 mb-24 w-full">
           <div className="border border-white/10 rounded-[24px] p-10 flex flex-col justify-between w-full" style={{ backgroundColor: palette.panel }}>
             <div>
-              <h3 className="text-xl md:text-2xl font-light mb-4 font-primary">I know what I need.</h3>
-              <p className="text-white/50 font-light mb-8 font-secondary max-w-md">Skip the discovery flow and send us a direct message outlining your requirements.</p>
+              <h3 className="text-xl md:text-2xl font-light mb-4 font-primary">{finalSettings.forms?.directContactTitle || 'I know what I need.'}</h3>
+              <p className="text-white/50 font-light mb-8 font-secondary max-w-md">{finalSettings.forms?.directContactText || 'Skip the discovery flow and send us a direct message outlining your requirements.'}</p>
             </div>
             <form className="space-y-4 text-left w-full font-secondary" onSubmit={handleSubmit}>
-              <input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="Your Name" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
-              <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} placeholder="Work Email" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
-              <textarea required value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} placeholder="Tell us about your project..." rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30 resize-none custom-scrollbar" />
+              <input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder={finalSettings.forms?.namePlaceholder || "Your Name"} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
+              <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} placeholder={finalSettings.forms?.emailPlaceholder || "Work Email"} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30" />
+              <textarea required value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })} placeholder={finalSettings.forms?.messagePlaceholder || "Tell us about your project..."} rows="4" className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none transition-colors focus:border-white/30 resize-none custom-scrollbar" />
 
-              {status === 'success' && <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-[12px] text-[17px] md:text-[19px]">Message sent successfully! We'll be in touch soon.</div>}
-              {status === 'error' && <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-[12px] text-[17px] md:text-[19px]">Failed to send message. Please try again.</div>}
+              {status === 'success' && <div className="p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-[12px] text-[17px] md:text-[19px]">{finalSettings.forms?.successMessage || "Message sent successfully! We'll be in touch soon."}</div>}
+              {status === 'error' && <div className="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-[12px] text-[17px] md:text-[19px]">{finalSettings.forms?.errorMessage || "Failed to send message. Please try again."}</div>}
 
               <PremiumButton type="submit" disabled={isSubmitting} className="w-full">
-                {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</> : 'Send Message'}
+                {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...</> : (finalSettings.forms?.submitButtonText || 'Send Message')}
               </PremiumButton>
             </form>
           </div>
           <div className="border rounded-[24px] p-10 flex flex-col justify-center text-center items-center relative overflow-hidden w-full" style={{ background: `linear-gradient(to bottom right, ${hexToRgba(palette.primary, 0.1)}, transparent)`, borderColor: hexToRgba(palette.primary, 0.2) }}>
             <div className="w-16 h-16 rounded-[16px] flex items-center justify-center mb-6" style={{ backgroundColor: hexToRgba(palette.primary, 0.2), color: palette.primary }}><Fingerprint className="w-8 h-8" /></div>
-            <h3 className="text-xl md:text-2xl font-light mb-4 text-white font-primary">I need help defining the scope.</h3>
-            <p className="text-white/70 font-light mb-8 max-w-sm font-secondary">Use our strategic tool to map your exact deliverables before the first call.</p>
-            <PremiumButton onClick={() => navigate('assessment')} className="w-full font-secondary">Build My Brand Scope</PremiumButton>
+            <h3 className="text-xl md:text-2xl font-light mb-4 text-white font-primary">{finalSettings.forms?.scopeTitle || 'I need help defining the scope.'}</h3>
+            <p className="text-white/70 font-light mb-8 max-w-sm font-secondary">{finalSettings.forms?.scopeText || 'Use our strategic tool to map your exact deliverables before the first call.'}</p>
+            <PremiumButton onClick={() => navigate('assessment')} className="w-full font-secondary">{finalSettings.navigation?.navCtaDesktop || 'Build My Brand Scope'}</PremiumButton>
           </div>
         </FadeUp>
 
         {/* Section 3 & 4: Direct Info & Map */}
         <FadeUp className="grid md:grid-cols-2 gap-8 mb-24 h-[400px] w-full">
           <div className="border border-white/10 rounded-[24px] p-10 flex flex-col justify-center w-full" style={{ backgroundColor: palette.panel }}>
-            <h3 className="text-xl md:text-2xl font-light mb-8 font-primary">Direct Contact</h3>
+            <h3 className="text-xl md:text-2xl font-light mb-8 font-primary">{finalSettings.forms?.directContactSectionTitle || 'Direct Contact'}</h3>
             <div className="space-y-6 font-secondary">
               <div className="flex items-start gap-4">
                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Mail className="w-4 h-4 text-white/70" /></div>
                 <div>
                   <p className="text-[17px] md:text-[19px] text-white/40 uppercase tracking-widest mb-1">Email</p>
-                  <p className="text-xl md:text-xl md:text-2xl text-white">hello@purplebluehouse.com</p>
+                  <p className="text-xl md:text-xl md:text-2xl text-white">{SITE_SETTINGS?.contactEmail || 'hello@purplebluehouse.com'}</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Phone className="w-4 h-4 text-white/70" /></div>
                 <div>
                   <p className="text-[17px] md:text-[19px] text-white/40 uppercase tracking-widest mb-1">Phone</p>
-                  <p className="text-xl md:text-xl md:text-2xl text-white">+91 (123) 456-7890</p>
+                  <p className="text-xl md:text-xl md:text-2xl text-white">{SITE_SETTINGS?.contactPhone || '+91 (123) 456-7890'}</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><MapPin className="w-4 h-4 text-white/70" /></div>
                 <div>
                   <p className="text-[17px] md:text-[19px] text-white/40 uppercase tracking-widest mb-1">Global HQ</p>
-                  <p className="text-xl md:text-xl md:text-2xl text-white">Nehru Place, Delhi, IN</p>
+                  <p className="text-xl md:text-xl md:text-2xl text-white">{SITE_SETTINGS?.contactAddress || 'Nehru Place, Delhi, IN'}</p>
                 </div>
               </div>
             </div>
@@ -4889,18 +4889,18 @@ const Footer = ({ navigate }) => {
             </div>
           </div>
           <div className="flex flex-col items-start font-secondary md:col-span-1">
-            <h4 className="text-white/80 font-medium mb-6 text-[17px] md:text-[19px]">Studio</h4>
+            <h4 className="text-white/80 font-medium mb-6 text-[17px] md:text-[19px]">{SITE_SETTINGS?.navigation?.footerStudioLabel || 'Studio'}</h4>
             <div className="flex flex-col space-y-4 text-white/40 text-[17px] md:text-[19px] font-light">
-              <button onClick={() => navigate('home')} className="hover:text-white transition-colors text-left">Home</button>
-              <button onClick={() => navigate('about')} className="hover:text-white transition-colors text-left">About Us</button>
+              <button onClick={() => navigate('home')} className="hover:text-white transition-colors text-left">{SITE_SETTINGS?.navigation?.navHome || 'Home'}</button>
+              <button onClick={() => navigate('about')} className="hover:text-white transition-colors text-left">{SITE_SETTINGS?.navigation?.navAbout || 'About Us'}</button>
               <button onClick={() => navigate('method')} className="hover:text-white transition-colors text-left">The PBH Method</button>
               <button onClick={() => navigate('story')} className="hover:text-white transition-colors text-left">Our Story</button>
               <button onClick={() => navigate('team')} className="hover:text-white transition-colors text-left">The Team</button>
-              <button onClick={() => navigate('journal')} className="hover:text-white transition-colors text-left">The Journal</button>
+              <button onClick={() => navigate('journal')} className="hover:text-white transition-colors text-left">{SITE_SETTINGS?.navigation?.navJournal || 'The Journal'}</button>
             </div>
           </div>
           <div className="flex flex-col items-start font-secondary md:col-span-1">
-            <h4 className="text-white/80 font-medium mb-6 text-[17px] md:text-[19px]">Services</h4>
+            <h4 className="text-white/80 font-medium mb-6 text-[17px] md:text-[19px]">{SITE_SETTINGS?.navigation?.footerServicesLabel || 'Services'}</h4>
             <div className="flex flex-col space-y-4 text-white/40 text-[17px] md:text-[19px] font-light">
               <button onClick={() => navigate('services')} className="hover:text-white transition-colors text-left">Overview</button>
               <button onClick={() => navigate('service-detail/bb')} className="hover:text-white transition-colors text-left">Brand Boulevard</button>
@@ -4909,16 +4909,16 @@ const Footer = ({ navigate }) => {
             </div>
           </div>
           <div className="flex flex-col items-start font-secondary md:col-span-1">
-            <h4 className="text-white/80 font-medium mb-6 text-[17px] md:text-[19px]">Connect</h4>
+            <h4 className="text-white/80 font-medium mb-6 text-[17px] md:text-[19px]">{SITE_SETTINGS?.navigation?.footerConnectLabel || 'Connect'}</h4>
             <div className="flex flex-col space-y-4 text-white/40 text-[17px] md:text-[19px] font-light">
-              <button onClick={() => navigate('contact')} className="hover:text-white transition-colors text-left">Contact Us</button>
-              <button onClick={() => navigate('assessment')} className="hover:text-white transition-colors text-left">Build Brand Scope</button>
+              <button onClick={() => navigate('contact')} className="hover:text-white transition-colors text-left">{SITE_SETTINGS?.navigation?.navContact || 'Contact Us'}</button>
+              <button onClick={() => navigate('assessment')} className="hover:text-white transition-colors text-left">{SITE_SETTINGS?.navigation?.navCtaDesktop || 'Build Brand Scope'}</button>
             </div>
           </div>
         </div>
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-[17px] md:text-[19px] sm:text-[17px] md:text-[19px] font-medium text-white/30 uppercase tracking-widest gap-4 font-secondary w-full">
           <p>{SITE_SETTINGS?.footerCopyright || `© ${new Date().getFullYear()} PurpleBlue House. All rights reserved.`}</p>
-          <div className="flex gap-6"><span className="cursor-pointer hover:text-white">Privacy Policy</span><span className="cursor-pointer hover:text-white">Terms</span></div>
+          <div className="flex gap-6"><span className="cursor-pointer hover:text-white">{SITE_SETTINGS?.navigation?.footerPrivacyPolicy || 'Privacy Policy'}</span><span className="cursor-pointer hover:text-white">{SITE_SETTINGS?.navigation?.footerTerms || 'Terms'}</span></div>
         </div>
       </div>
     </footer>
