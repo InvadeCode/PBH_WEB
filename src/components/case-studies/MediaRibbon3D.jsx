@@ -188,9 +188,9 @@ const MediaRibbon3D = ({ media }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.34, 340, 620);
-      const maxRadius = clamp(w * 0.48, 480, 980);
-      const minRadius = clamp(w * 0.26, 280, 500);
+      const height = clamp(w * 0.27, 290, 520);
+      const maxRadius = clamp(w * 0.52, 520, 1050);
+      const minRadius = clamp(w * 0.28, 290, 480);
       const t = clamp((items.length - 1) / 7, 0, 1);
       const radius = minRadius + (maxRadius - minRadius) * t;
       setDims({ height, radius });
