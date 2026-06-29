@@ -99,27 +99,62 @@ const HoverFloatCard = ({ children, className }) => {
   );
 };
 
-const SolutionGraphic = () => (
-  <>
-    <motion.div 
-      animate={{ rotate: 360, scale: [1, 1.08, 1] }} 
-      transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[90vw] h-[90vw] md:w-[60vw] md:h-[60vw] rounded-full border-[3px] border-[#6865FA]/60 opacity-90 pointer-events-none"
-      style={{ boxShadow: '0 0 80px rgba(104,101,250,0.25), inset 0 0 60px rgba(104,101,250,0.1)' }}
-    />
-    <motion.div 
-      animate={{ rotate: -360, scale: [1, 1.12, 1] }} 
-      transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-full border-[2px] border-[#2a97d9]/50 opacity-80 pointer-events-none"
-      style={{ boxShadow: 'inset 0 0 50px rgba(42,151,217,0.15)' }}
-    />
-    <motion.div 
-      animate={{ rotate: 180, scale: [1, 1.05, 1] }} 
-      transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[50vw] h-[50vw] md:w-[30vw] md:h-[30vw] rounded-full border border-[#D4CEFC]/30 opacity-70 pointer-events-none"
-    />
-  </>
-);
+const PBHVerticalBands = ({ variant }) => {
+  const isSolution = variant === 'solution';
+  const isProblem = variant === 'problem';
+  
+  const primary = '#6865fa';
+  const cyan = '#2a97d9';
+  const purple = '#af73dd';
+  const light = '#d4cefc';
+  
+  const c1 = isSolution ? cyan : isProblem ? purple : primary;
+  const c2 = isSolution ? purple : isProblem ? cyan : cyan;
+  const c3 = light;
+
+  return (
+    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#010836]">
+      <motion.div 
+        animate={{ x: ['0px', '-1000px'] }}
+        transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
+        className="absolute top-0 bottom-0 left-0 w-[300vw] opacity-80"
+        style={{
+          backgroundSize: '1000px 100%',
+          backgroundImage: `repeating-linear-gradient(90deg, 
+            ${c1} 0%, 
+            ${c1} 1%, 
+            ${c2} 1%, 
+            ${c2} 2.5%, 
+            #010836 2.5%, 
+            #010836 4%, 
+            ${c1} 4%, 
+            ${c1} 8%, 
+            transparent 8%, 
+            transparent 12%,
+            ${c3} 12%,
+            ${c3} 15%,
+            transparent 15%,
+            transparent 22%,
+            ${c2} 22%,
+            ${c2} 23%,
+            transparent 23%,
+            transparent 30%
+          )`
+        }}
+      />
+      <motion.div 
+        animate={{ opacity: [0.3, 0.6, 0.3], scaleX: [1, 1.2, 1] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-0 bottom-0 left-[-10%] w-[60%] blur-[120px] origin-left"
+        style={{ background: `linear-gradient(90deg, ${c1}, ${c2}, transparent)` }}
+      />
+      <div className="absolute inset-0 z-10 bg-gradient-to-r from-transparent via-[#010836]/90 to-[#010836]" />
+      <div className="absolute inset-0 z-10 bg-gradient-to-l from-[#010836]/80 via-transparent to-transparent opacity-60" />
+    </div>
+  );
+};
+
+const SolutionGraphic = () => <PBHVerticalBands variant="solution" />;
 
 /* --- 6. Animated Parallax Ecosystem Image --- */
 const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) => {
@@ -160,49 +195,8 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) =>
 };
 
 /* --- 7. Dramatic Scrollytelling Sections --- */
-const AboutGraphic = () => (
-  <>
-    <motion.div 
-      animate={{ rotate: 360, scale: [1, 1.08, 1] }} 
-      transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[90vw] h-[90vw] md:w-[60vw] md:h-[60vw] rounded-full border-[3px] border-[#6865FA]/50 opacity-85 pointer-events-none"
-      style={{ boxShadow: 'inset 0 0 80px rgba(104,101,250,0.15)' }}
-    />
-    <motion.div 
-      animate={{ rotate: -360, scale: [1, 1.12, 1] }} 
-      transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-full border-[2px] border-[#D4CEFC]/40 opacity-75 pointer-events-none"
-      style={{ boxShadow: '0 0 60px rgba(212,206,252,0.12)' }}
-    />
-    <motion.div 
-      animate={{ rotate: 180, scale: [1, 1.06, 1] }} 
-      transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[50vw] h-[50vw] md:w-[30vw] md:h-[30vw] rounded-full border border-[#6865FA]/25 opacity-60 pointer-events-none"
-    />
-  </>
-);
-
-const ProblemGraphic = () => (
-  <>
-    <motion.div 
-      animate={{ rotate: -360, scale: [1, 1.1, 1] }} 
-      transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[90vw] h-[90vw] md:w-[60vw] md:h-[60vw] rounded-full border-[3px] border-[#D4CEFC]/50 opacity-85 pointer-events-none"
-      style={{ boxShadow: '0 0 80px rgba(212,206,252,0.2), inset 0 0 60px rgba(212,206,252,0.1)' }}
-    />
-    <motion.div 
-      animate={{ rotate: 360, scale: [1, 1.15, 1] }} 
-      transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-full border-[2px] border-[#6865FA]/45 opacity-80 pointer-events-none"
-      style={{ boxShadow: 'inset 0 0 50px rgba(104,101,250,0.12)' }}
-    />
-    <motion.div 
-      animate={{ rotate: -180, scale: [1, 1.08, 1] }} 
-      transition={{ duration: 38, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[50vw] h-[50vw] md:w-[30vw] md:h-[30vw] rounded-full border border-[#D4CEFC]/30 opacity-65 pointer-events-none"
-    />
-  </>
-);
+const AboutGraphic = () => <PBHVerticalBands variant="about" />;
+const ProblemGraphic = () => <PBHVerticalBands variant="problem" />;
 
 const DramaticSection = ({ title, content, motionGraphic }) => {
   const ref = useRef(null);
@@ -421,6 +415,174 @@ const AriseVenturesExperience = ({ navigate, project }) => {
 
       {/* ── 1.5 CASE STUDY VIDEO HERO (CMS-driven, reusable) ── */}
       <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} />
+
+      {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
+      {(project?.overview || project?.fullStory?.overview) && (
+        <div className="relative w-full flex flex-col lg:flex-row justify-start items-center py-16 gap-8 lg:gap-12 px-[5%] lg:px-[10%]">
+          <motion.div 
+            initial={{ opacity: 0, x: -100, filter: 'blur(10px)' }}
+            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1 flex justify-center items-center overflow-visible relative"
+          >
+            <div className="relative">
+              {/* Subtle Grid behind text */}
+              <div className="absolute inset-[-20%] bg-[linear-gradient(rgba(212,206,252,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(212,206,252,0.03)_1px,transparent_1px)] bg-[size:2rem_2rem] z-0 pointer-events-none" style={{ maskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)', WebkitMaskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)' }} />
+              
+              {/* Subtle Ghost Text Behind */}
+              <motion.span 
+                animate={{ y: [-15, 15, -15], scale: [1, 1.05, 1], opacity: [0.03, 0.08, 0.03] }}
+                transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+                className="absolute top-0 left-0 block text-[4.5rem] md:text-[6.5rem] lg:text-[7.5rem] xl:text-[9rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
+                style={{ WebkitTextStroke: '2px rgba(212,206,252,0.08)' }}
+              >
+                ABOUT
+              </motion.span>
+              
+              {/* Main Text */}
+              <motion.span 
+                animate={{ y: [-5, 5, -5], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
+                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+                className="relative block text-[4.5rem] md:text-[6.5rem] lg:text-[7.5rem] xl:text-[9rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen z-10"
+              >
+                ABOUT
+              </motion.span>
+              
+              {/* Aesthetic Motion Graphic */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-full scale-[1.5] blur-[10px] opacity-20">
+                <AboutGraphic />
+              </div>
+              
+              {/* Elegant vertical scan line */}
+              <motion.div
+                animate={{ x: ['0%', '100%', '0%'] }}
+                transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+                className="absolute top-0 bottom-0 left-0 w-[1px] bg-gradient-to-b from-transparent via-[#D4CEFC]/30 to-transparent z-20 shadow-[0_0_15px_rgba(212,206,252,0.5)]"
+              />
+              
+              {/* Very Subtle decorative gradient corner */}
+              <div className="absolute -left-4 top-0 w-[20px] h-[20px] border-t border-l border-[#D4CEFC]/10 rounded-tl-lg" />
+              <div className="absolute -right-4 bottom-0 w-[20px] h-[20px] border-b border-r border-[#D4CEFC]/10 rounded-br-lg" />
+            </div>
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0, x: 100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+            className="w-full lg:w-3/5 lg:max-w-2xl xl:max-w-3xl shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-cyan-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(34,211,238,0.15)] rounded-2xl"
+          >
+            {/* Dynamic Graphic: Floating Dot inside box */}
+            <motion.div 
+              animate={{ y: [0, -20, 0], opacity: [0.5, 1, 0.5] }} 
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute top-8 right-8 w-3 h-3 rounded-full bg-[#6865FA] shadow-[0_0_15px_rgba(104,101,250,0.8)] z-0" 
+            />
+
+            {/* Scanning Line Animation inside box */}
+            <motion.div 
+              animate={{ top: ['-10%', '110%'] }} 
+              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+              className="absolute left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#6865FA]/20 to-transparent z-0 pointer-events-none" 
+            />
+            
+            {/* Gradient sweep background */}
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-br from-[#6865FA]/20 via-[#2a97d9]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" 
+            />
+            
+            <div className="relative z-10">
+              <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-[#6865FA] font-bold mb-6 flex items-center gap-4">
+                <span className="w-8 h-[1px] bg-[#6865FA]" /> 
+                {project?.overviewHeading || SITE_SETTINGS?.csAboutBrand || "The Brand."}
+              </h3>
+              <p className="text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
+                {project.overview || project.fullStory?.overview}
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* ── 3. DRAMATIC: THE QUESTION ── */}
+      {(project?.challenge || project?.fullStory?.challenge) && (
+        <div className="relative w-full flex flex-col-reverse lg:flex-row justify-start items-center py-16 gap-8 lg:gap-12 px-[5%] lg:px-[10%]">
+          <motion.div 
+            initial={{ opacity: 0, x: -100 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.55 }}
+            className="w-full lg:w-3/5 lg:max-w-2xl xl:max-w-3xl shrink-0 bg-[#010a40]/60 backdrop-blur-md p-8 md:p-12 border border-purple-500/20 relative overflow-hidden group z-10 shadow-[0_0_50px_rgba(168,85,247,0.15)] rounded-2xl"
+          >
+            {/* Subtle Breathing Glow */}
+            <motion.div 
+              animate={{ scale: [1, 1.5, 1], opacity: [0.1, 0.2, 0.1] }} 
+              transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500 rounded-full blur-[80px] pointer-events-none z-0" 
+            />
+
+            <div className="relative z-10">
+              <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-[#D4CEFC] font-bold mb-6 flex items-center gap-4">
+                <span className="w-8 h-[1px] bg-[#D4CEFC]" /> 
+                {project?.challengeHeading || SITE_SETTINGS?.csTheQuestion || "The Question."}
+              </h3>
+              <p className="text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
+                {project.challenge || project.fullStory?.challenge}
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, x: 100, filter: 'blur(10px)' }}
+            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+            className="flex-1 flex justify-center items-center overflow-visible relative"
+          >
+            <div className="relative">
+              {/* Subtle Grid behind text */}
+              <div className="absolute inset-[-20%] bg-[linear-gradient(rgba(212,206,252,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(212,206,252,0.03)_1px,transparent_1px)] bg-[size:2rem_2rem] z-0 pointer-events-none" style={{ maskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)', WebkitMaskImage: 'radial-gradient(ellipse at center, black 10%, transparent 70%)' }} />
+              
+              {/* Subtle Ghost Text Behind */}
+              <motion.span 
+                animate={{ y: [15, -15, 15], scale: [1, 1.05, 1], opacity: [0.03, 0.08, 0.03] }}
+                transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                className="absolute top-0 left-0 block text-[4.5rem] md:text-[6.5rem] lg:text-[7.5rem] xl:text-[8.5rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
+                style={{ WebkitTextStroke: '2px rgba(212,206,252,0.08)' }}
+              >
+                PROBLEM
+              </motion.span>
+
+              {/* Main Text */}
+              <motion.span 
+                animate={{ y: [5, -5, 5], scale: [1, 1.02, 1], rotateZ: [1, -1, 1] }}
+                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                className="relative block text-[4.5rem] md:text-[6.5rem] lg:text-[7.5rem] xl:text-[8.5rem] font-black text-[#D4CEFC]/10 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.2)] mix-blend-screen z-10"
+              >
+                PROBLEM
+              </motion.span>
+              
+              {/* Aesthetic Motion Graphic */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-full scale-[1.5] blur-[10px] opacity-20">
+                <ProblemGraphic />
+              </div>
+
+              {/* Elegant vertical scan line */}
+              <motion.div
+                animate={{ x: ['100%', '0%', '100%'] }}
+                transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
+                className="absolute top-0 bottom-0 left-0 w-[1px] bg-gradient-to-b from-transparent via-[#D4CEFC]/30 to-transparent z-20 shadow-[0_0_15px_rgba(212,206,252,0.5)]"
+              />
+              
+              {/* Very Subtle decorative gradient corner */}
+              <div className="absolute -left-4 bottom-0 w-[20px] h-[20px] border-b border-l border-[#D4CEFC]/10 rounded-bl-lg" />
+              <div className="absolute -right-4 top-0 w-[20px] h-[20px] border-t border-r border-[#D4CEFC]/10 rounded-tr-lg" />
+            </div>
+          </motion.div>
+        </div>
+      )}
 
       {/* ── 4. DRAMATIC: CREATIVE SOLUTION ── */}
       {(project?.solution || project?.fullStory?.execution) && (
