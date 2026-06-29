@@ -178,6 +178,7 @@ const DynamicSciArtGrid = ({ content }) => {
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="flex-1 flex justify-center items-center overflow-visible relative"
               >
+                <div className="relative">
                   <div className="absolute -top-6 -left-4 text-cyan-400/60 text-sm md:text-base font-mono tracking-[0.3em] z-20">// SEC.01_INTEL</div>
                   
                   {/* Subtle Ghost Text Behind */}
