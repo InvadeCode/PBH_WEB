@@ -98,69 +98,20 @@ const HoverFloatCard = ({ children, className }) => {
   );
 };
 
-/* --- 5. Sophisticated Solution Visualizer --- */
-const SolutionVisualizer = () => {
-  return (
-    <div className="relative w-full h-full min-h-[400px] flex items-center justify-center pointer-events-none">
-      {/* Organic Pulsing Blobs (Mesmerizing Fluid Motion) */}
-      <motion.div 
-        animate={{ scale: [1, 1.3, 1], rotate: [0, 90, 180, 360], borderRadius: ["40% 60% 70% 30%", "60% 40% 30% 70%", "40% 60% 70% 30%"] }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute w-72 h-72 bg-gradient-to-tr from-[#6865FA] via-[#D4CEFC] to-transparent blur-[50px] opacity-30 mix-blend-screen"
-      />
-      <motion.div 
-        animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0], borderRadius: ["60% 40% 30% 70%", "40% 60% 70% 30%", "60% 40% 30% 70%"] }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute w-80 h-80 bg-gradient-to-bl from-[#6865FA] via-[#010836] to-[#D4CEFC] blur-[60px] opacity-40 mix-blend-screen"
-      />
-
-      {/* Expanding Ripple Base */}
-      {[1, 2, 3].map((i) => (
-        <motion.div
-          key={`ripple-${i}`}
-          className="absolute border border-[#D4CEFC]/20 rounded-full"
-          initial={{ width: 0, height: 0, opacity: 1 }}
-          animate={{ width: 500, height: 500, opacity: 0 }}
-          transition={{ duration: 6, repeat: Infinity, delay: i * 2, ease: 'easeOut' }}
-        />
-      ))}
-
-      {/* 3D Orbiting Constellation */}
-      <div className="relative w-64 h-64" style={{ perspective: 1200 }}>
-        <motion.div
-          animate={{ rotateY: 360, rotateX: 15 }}
-          transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-0 border border-[#D4CEFC]/30 rounded-full"
-          style={{ transformStyle: 'preserve-3d' }}
-        >
-          {/* Nodes */}
-          <div className="absolute top-0 left-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_15px_white] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(24px)' }} />
-          <div className="absolute bottom-0 left-1/2 w-2.5 h-2.5 bg-[#D4CEFC] rounded-full shadow-[0_0_15px_#D4CEFC] -translate-x-1/2 translate-y-1/2" style={{ transform: 'translateZ(-24px)' }} />
-          <div className="absolute top-1/2 left-0 w-3.5 h-3.5 bg-[#6865FA] rounded-full shadow-[0_0_20px_#6865FA] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(10px)' }} />
-          <div className="absolute top-1/2 right-0 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_white] translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(-10px)' }} />
-        </motion.div>
-
-        <motion.div
-          animate={{ rotateX: 360, rotateZ: 30 }}
-          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-5 border border-[#6865FA]/40 rounded-full"
-          style={{ transformStyle: 'preserve-3d' }}
-        >
-          {/* Nodes */}
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#D4CEFC] rounded-full shadow-[0_0_10px_#D4CEFC]" />
-          <div className="absolute bottom-1/4 right-1/4 w-2.5 h-2.5 bg-white rounded-full shadow-[0_0_15px_white]" />
-        </motion.div>
-      </div>
-
-      {/* Sophisticated Central Core */}
-      <motion.div 
-        animate={{ scale: [1, 1.2, 1], filter: ['blur(20px)', 'blur(35px)', 'blur(20px)'] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute w-28 h-28 bg-gradient-to-tr from-[#6865FA] to-[#D4CEFC] rounded-full mix-blend-screen opacity-50"
-      />
-    </div>
-  );
-};
+const SolutionGraphic = () => (
+  <>
+    <motion.div 
+      animate={{ rotate: 360, scale: [1, 1.15, 1] }} 
+      transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[75vw] h-[75vw] md:w-[45vw] md:h-[45vw] rounded-[40%] border-[2px] border-[#6865FA]/40 opacity-70 shadow-[0_0_120px_rgba(104,101,250,0.3)] mix-blend-screen pointer-events-none"
+    />
+    <motion.div 
+      animate={{ rotate: -360, scale: [1, 1.25, 1] }} 
+      transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+      className="absolute w-[65vw] h-[65vw] md:w-[35vw] md:h-[35vw] rounded-[50%] border border-[#2a97d9]/30 opacity-60 shadow-[inset_0_0_80px_rgba(42,151,217,0.2)] mix-blend-screen pointer-events-none"
+    />
+  </>
+);
 
 /* --- 6. Animated Parallax Ecosystem Image --- */
 const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) => {
@@ -456,97 +407,6 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         />
       )}
 
-      {/* ── 4. HIGH-MOTION: CREATIVE SOLUTION (Seamlessly Blended) ── */}
-      <section className="relative w-full z-10">
-        
-        <div className="pt-4 pb-16 md:pt-6 md:pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
-        
-          {/* Ambient Background Aura behind the whole section (blended) */}
-          <motion.div
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#6865FA_0%,transparent_60%)] blur-[80px] pointer-events-none"
-            initial={{ opacity: 0, scale: 0.5 }}
-            whileInView={{ opacity: 0.18, scale: 1 }}
-            viewport={{ once: true, margin: '-10%' }}
-            transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
-          />
-        
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-          
-            {/* Left Side: Text (Seamlessly integrated, no boxes) */}
-            <motion.div 
-              className="lg:col-span-7 relative z-10" 
-              initial={{ opacity: 0, y: 40, filter: 'blur(15px)' }} 
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }} 
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }} 
-              viewport={{ once: true, margin: "-10%" }}
-            >
-              <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-[17px] md:text-[19px] font-bold tracking-widest uppercase backdrop-blur-md font-primary">
-                <span className="w-2 h-2 rounded-full bg-[#D4CEFC] animate-pulse shadow-[0_0_10px_#D4CEFC]" />
-                The Solution
-              </div>
-            
-              <motion.h3
-                className="font-primary text-5xl md:text-7xl lg:text-8xl text-white mb-10 font-medium tracking-tight drop-shadow-lg"
-                initial={{ opacity: 0, y: 32, filter: 'blur(14px)' }}
-                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {project?.solutionHeading?.length > 100 ? (SITE_SETTINGS?.csCreativeSolution || "Creative Solution") : (project?.solutionHeading || SITE_SETTINGS?.csCreativeSolution || "Creative Solution")}
-              </motion.h3>
-            
-              {/* Readable Text with NO box */}
-              {(project?.solution || project?.fullStory?.execution) && (
-                <div className="space-y-8 text-white/95 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary">
-                  {project?.solution && <p>{project.solution}</p>}
-                
-                  {/* Highlighted text block */}
-                  {project?.fullStory?.execution && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 22 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: '-12%' }}
-                      transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-                      className="relative overflow-hidden pt-6 pb-6 pl-8 mt-10 rounded-r-xl"
-                    >
-                      {/* Drawing accent border */}
-                      <motion.span
-                        className="absolute left-0 top-0 bottom-0 w-1 bg-[#D4CEFC] origin-top shadow-[0_0_12px_#D4CEFC]"
-                        initial={{ scaleY: 0 }}
-                        whileInView={{ scaleY: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      />
-                      {/* Gradient fill sweep */}
-                      <motion.span
-                        className="absolute inset-0 bg-gradient-to-r from-[#6865FA]/25 to-transparent origin-left"
-                        initial={{ scaleX: 0 }}
-                        whileInView={{ scaleX: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1.3, delay: 0.7, ease: 'easeOut' }}
-                      />
-                      <p className="relative z-10 font-primary font-medium text-white text-xl md:text-2xl leading-snug drop-shadow-md">
-                        {project.fullStory.execution}
-                      </p>
-                    </motion.div>
-                  )}
-                </div>
-              )}
-            </motion.div>
-
-            {/* Right Side: Visualizer (Organic & Floating) */}
-            <motion.div 
-              className="lg:col-span-5 h-[400px] lg:h-full relative flex items-center justify-center pointer-events-none"
-              initial={{ opacity: 0, scale: 0.82, rotate: -6, filter: 'blur(22px)', clipPath: 'circle(0% at 50% 50%)' }}
-              whileInView={{ opacity: 1, scale: 1, rotate: 0, filter: 'blur(0px)', clipPath: 'circle(82% at 50% 50%)' }}
-              transition={{ duration: 1.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              viewport={{ once: true, margin: "-10%" }}
-            >
-                <SolutionVisualizer />
-            </motion.div>
-
-          </div>
-        </div>
       </section>
 
       {/* ── 5. STATEMENT ── */}
