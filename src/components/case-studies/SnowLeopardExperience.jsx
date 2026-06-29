@@ -211,12 +211,8 @@ const AboutMotionGraphic = () => <PBHVerticalBands variant="about" />;
 const ProblemMotionGraphic = () => <PBHVerticalBands variant="problem" />;
 const SolutionMotionGraphic = () => <PBHVerticalBands variant="solution" />;
 
-// ── DYNAMIC SCI-ART 2-COLUMN GRID ──
+// ── DYNAMIC SCI-ART 2-COLUMN GRID (About + Problem only) ──
 const DynamicSciArtGrid = ({ content }) => {
-  const executionBlocks = content.solution2 ? content.solution2.split('\n\n') : [];
-  const strategicIntro = content.solution1 || (executionBlocks.length > 0 ? executionBlocks[0] : null);
-  const remainingExecution = content.solution1 ? executionBlocks : executionBlocks.slice(1);
-
   return (
     <section className="w-full relative bg-gradient-to-b from-transparent via-[#05001a] to-transparent text-white overflow-hidden py-24 lg:py-32">
       
@@ -393,92 +389,104 @@ const DynamicSciArtGrid = ({ content }) => {
               </motion.div>
            </div>
          )}
-         {/* SECTION 3: SOLUTION — full-section PBHVerticalBands bg that expands in on scroll */}
-         {(content.solution1 || remainingExecution.length > 0) && (
-           <div className="relative w-full mt-8 lg:mt-0 rounded-[2rem] overflow-hidden">
-
-             {/* ── Expanding PBHVerticalBands background ── */}
-             <motion.div
-               initial={{ clipPath: 'inset(0 100% 0 0)' }}
-               whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
-               viewport={{ once: true, amount: 0.15 }}
-               transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-               className="absolute inset-0 z-0 pointer-events-none"
-             >
-               <SolutionMotionGraphic />
-             </motion.div>
-             {/* Dark overlay so text stays legible over the bands */}
-             <div className="absolute inset-0 z-[1] pointer-events-none bg-[#010836]/70" />
-
-             {/* Inner flex row — py padding gives the section height */}
-             <div className="relative z-[2] w-full flex flex-col lg:flex-row justify-start items-center py-16 gap-8 lg:gap-12 px-[5%] lg:px-[8%]">
-
-               {/* BIG TEXT (Left Area) */}
-               <motion.div
-                 initial={{ opacity: 0, x: -80, filter: 'blur(10px)' }}
-                 whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                 viewport={{ once: true, amount: 0.2 }}
-                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-                 className="flex-1 flex justify-center items-center overflow-visible relative"
-               >
-                 <div className="relative">
-                   {/* Ghost Text Behind */}
-                   <motion.span
-                     animate={{ y: [-15, 15, -15], scale: [1, 1.05, 1], opacity: [0.04, 0.1, 0.04] }}
-                     transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-                     className="absolute top-0 left-0 block text-[4rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[8rem] font-black leading-none select-none tracking-tighter whitespace-nowrap text-transparent"
-                     style={{ WebkitTextStroke: '2px rgba(212,206,252,0.12)' }}
-                   >
-                     SOLUTION
-                   </motion.span>
-                   {/* Main visible word */}
-                   <motion.span
-                     animate={{ y: [-5, 5, -5], scale: [1, 1.02, 1], rotateZ: [-1, 1, -1] }}
-                     transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                     className="relative block text-[4rem] md:text-[5.5rem] lg:text-[6.5rem] xl:text-[8rem] font-black text-[#D4CEFC]/15 leading-none select-none tracking-tighter whitespace-nowrap drop-shadow-[0_0_40px_rgba(212,206,252,0.3)] mix-blend-screen z-10"
-                   >
-                     SOLUTION
-                   </motion.span>
-                   {/* Vertical scan line */}
-                   <motion.div
-                     animate={{ x: ['0%', '100%', '0%'] }}
-                     transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-                     className="absolute top-0 bottom-0 left-0 w-[1px] bg-gradient-to-b from-transparent via-[#D4CEFC]/40 to-transparent z-20 shadow-[0_0_15px_rgba(212,206,252,0.6)]"
-                   />
-                 </div>
-               </motion.div>
-
-               {/* CONTENT BOX (Right Area) */}
-               <motion.div
-                 initial={{ opacity: 0, x: 80 }}
-                 whileInView={{ opacity: 1, x: 0 }}
-                 viewport={{ once: true, amount: 0.2 }}
-                 transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.65 }}
-                 className="w-full lg:w-3/5 lg:max-w-3xl xl:max-w-4xl shrink-0 bg-[#010a40]/70 backdrop-blur-md p-8 md:p-12 border border-blue-500/25 relative overflow-hidden group z-10 shadow-[0_0_60px_rgba(59,130,246,0.2)] rounded-2xl"
-               >
-                 <motion.div
-                   className="absolute inset-0 bg-gradient-to-br from-indigo-900/40 via-purple-900/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0"
-                 />
-                 <div className="relative z-10">
-                   <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-cyan-400 font-bold mb-6 flex items-center gap-4">
-                     <span className="w-8 h-[1px] bg-cyan-400" />
-                     Solution
-                   </h3>
-                   <div className="flex flex-col gap-6 text-[17px] md:text-[19px] font-secondary leading-[1.8] text-white/90 drop-shadow-sm font-light">
-                     {strategicIntro && <p>{strategicIntro}</p>}
-                     {remainingExecution.map((para, idx) => (
-                       <p key={idx} className="text-white/70">{para}</p>
-                     ))}
-                   </div>
-                 </div>
-               </motion.div>
-
-             </div>
-           </div>
-         )}
       </div>
-      
+
     </section>
+  );
+};
+
+// ── SUI-STYLE SOLUTION REVEAL ──
+// Sticky 280 vh container: word appears → iris expands from center → content fades in
+const SolutionRevealSection = ({ solution1, solution2 }) => {
+  const executionBlocks = solution2 ? solution2.split('\n\n') : [];
+  const strategicIntro = solution1 || (executionBlocks.length > 0 ? executionBlocks[0] : null);
+  const remainingExecution = solution1 ? executionBlocks : executionBlocks.slice(1);
+
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  });
+  const smooth = useSpring(scrollYProgress, { stiffness: 70, damping: 18 });
+
+  // Phase 1 — word fades+scales in (0 → 28%), stays, then blows up and fades (28 → 48%)
+  const wordOpacity = useTransform(smooth, [0, 0.10, 0.30, 0.48], [0, 1, 1, 0]);
+  const wordScale   = useTransform(smooth, [0, 0.10, 0.48], [0.45, 1, 3.2]);
+
+  // Phase 2 — PBHVerticalBands iris-expand from center (30 → 65%)
+  const bgClip    = useTransform(smooth, [0.30, 0.65], ['circle(0% at 50% 50%)', 'circle(150% at 50% 50%)']);
+  const bgOpacity = useTransform(smooth, [0.28, 0.38], [0, 1]);
+
+  // Overlay fades from nearly opaque (word phase) to semi-transparent (content phase)
+  const overlayOpacity = useTransform(smooth, [0.30, 0.68], [0.92, 0.72]);
+
+  // Phase 3 — content card rises in (58 → 80%)
+  const contentOpacity = useTransform(smooth, [0.58, 0.80], [0, 1]);
+  const contentY       = useTransform(smooth, [0.58, 0.80], [55, 0]);
+
+  const hasContent = !!(strategicIntro || remainingExecution.length > 0);
+  if (!hasContent) return null;
+
+  return (
+    <div ref={containerRef} className="relative" style={{ minHeight: '280vh' }}>
+      {/* Sticky viewport-height stage */}
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center justify-center bg-[#010836]">
+
+        {/* PBHVerticalBands — iris expand from center */}
+        <motion.div
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{ clipPath: bgClip, opacity: bgOpacity }}
+        >
+          <SolutionMotionGraphic />
+        </motion.div>
+
+        {/* Dark overlay — keeps text readable, fades slightly as bg takes over */}
+        <motion.div
+          className="absolute inset-0 z-[1] pointer-events-none bg-[#010836]"
+          style={{ opacity: overlayOpacity }}
+        />
+
+        {/* SOLUTION word — appears then blows up as iris opens */}
+        <motion.div
+          className="absolute inset-0 z-[2] flex items-center justify-center pointer-events-none select-none"
+          style={{ opacity: wordOpacity, scale: wordScale }}
+        >
+          <span
+            className="block font-black leading-none tracking-tighter whitespace-nowrap text-transparent"
+            style={{
+              fontSize: 'clamp(4rem, 14vw, 16rem)',
+              WebkitTextStroke: '2px rgba(212,206,252,0.45)',
+              filter: 'drop-shadow(0 0 60px rgba(104,101,250,0.5))',
+            }}
+          >
+            SOLUTION
+          </span>
+        </motion.div>
+
+        {/* Content card — fades in once bg has filled the screen */}
+        <motion.div
+          className="relative z-[3] w-full max-w-3xl xl:max-w-4xl mx-auto px-6 md:px-12"
+          style={{ opacity: contentOpacity, y: contentY }}
+        >
+          <div className="bg-[#010a40]/75 backdrop-blur-md p-8 md:p-14 border border-blue-500/25 relative overflow-hidden rounded-2xl shadow-[0_0_80px_rgba(59,130,246,0.25)]">
+            {/* Ambient sweep on hover */}
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/40 via-purple-900/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0" />
+            <div className="relative z-10">
+              <h3 className="text-[17px] md:text-[19px] uppercase tracking-[0.4em] text-cyan-400 font-bold mb-8 flex items-center gap-4 font-primary">
+                <span className="w-8 h-[1px] bg-cyan-400" />
+                Solution
+              </h3>
+              <div className="flex flex-col gap-6 text-[17px] md:text-[19px] font-secondary leading-[1.85] text-white/90 font-light">
+                {strategicIntro && <p>{strategicIntro}</p>}
+                {remainingExecution.map((para, idx) => (
+                  <p key={idx} className="text-white/70">{para}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
   );
 };
 
@@ -719,6 +727,9 @@ const SnowLeopardExperience = ({ navigate, project }) => {
 
       {/* ── EXTREME SCI-ART SCROLLYTELLING SECTIONS (FULL WIDTH) ── */}
       <DynamicSciArtGrid content={content} />
+
+      {/* ── SUI-STYLE SOLUTION REVEAL (sticky scroll sequence) ── */}
+      <SolutionRevealSection solution1={content.solution1} solution2={content.solution2} />
 
       {/* Re-open container for stats and planetary swarm */}
       <div className="relative z-20 max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col gap-6">
