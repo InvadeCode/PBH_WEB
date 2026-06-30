@@ -31,6 +31,31 @@ import PremiumLogoMarquee from './components/PremiumLogoMarquee';
 
 export const GlobalContext = createContext(null);
 
+const normalizeCaseStudyTags = (value) => {
+  const values = Array.isArray(value) ? value : [value];
+  const seen = new Set();
+
+  return values.flatMap((tag) => {
+    const raw = typeof tag === 'string'
+      ? tag
+      : tag?.title || tag?.label || tag?.name || tag?.value || tag?.tag || '';
+
+    return String(raw)
+      .split(/[,;\n]+/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }).filter((tag) => {
+    const key = tag.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
+const getVisibleCaseStudyTags = (caseStudy, limit = 3) => (
+  normalizeCaseStudyTags(caseStudy?.tags).slice(0, limit)
+);
+
 // --- RESEND CONFIGURATION ---
 // Configuration moved to Vercel environment variables securely.
 // See api/send-email.js
@@ -3374,9 +3399,10 @@ const HomePage = ({ navigate }) => {
         <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
           {CASE_STUDIES.slice(0, 4).map((cs, i) => {
             const hexColor = palette[cs.type] || palette.primary;
+            const visibleTags = getVisibleCaseStudyTags(cs);
             return (
               <StaggerItem key={i}>
-                <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/10 rounded-[24px] overflow-hidden cursor-pointer w-full aspect-square bg-[#0a0a0a] shadow-2xl transition-all duration-700 hover:border-white/30 hover:translate-y-[-4px]">
+                <div data-pbh-copy-ignore onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/10 rounded-[24px] overflow-hidden cursor-pointer w-full aspect-[4/3] bg-[#0a0a0a] shadow-2xl transition-all duration-700 hover:border-white/30 hover:translate-y-[-4px]">
 
                   {/* Background Image */}
                   <div className="absolute inset-0 z-0">
@@ -3400,9 +3426,9 @@ const HomePage = ({ navigate }) => {
                       {(cs.preview || cs.challenge) && (
                         <p className="font-secondary text-white/60 text-sm md:text-[15px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
                       )}
-                      {(cs.tags || []).length > 0 && (
+                      {visibleTags.length > 0 && (
                         <div className="flex flex-wrap gap-1.5 mb-4">
-                          {(cs.tags || []).slice(0, 3).map(t => (
+                          {visibleTags.map(t => (
                             <span key={t} className="px-3 py-1 rounded-full border border-white/25 bg-white/10 text-white/75 text-[11px] md:text-xs font-secondary tracking-wide uppercase backdrop-blur-sm">
                               {t}
                             </span>
@@ -4234,7 +4260,7 @@ const WorkPage = ({ navigate }) => {
 
         {/* Featured Case Study Hero */}
         <FadeUp delay={0.1} className="mb-24 w-full">
-          <div onClick={() => navigate('work/' + caseStudies[0].id)} className="group relative border border-white/5 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
+          <div data-pbh-copy-ignore onClick={() => navigate('work/' + caseStudies[0].id)} className="group relative border border-white/5 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
             <div className="md:w-1/2 relative overflow-hidden h-[300px] md:h-full bg-white/[0.02] w-full">
               {(caseStudies[0].bannerVideo || caseStudies[0].fullStory?.heroVideo || caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl) ? (
                 <CaseStudyMedia src={caseStudies[0].bannerVideo || caseStudies[0].fullStory?.heroVideo || caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl} alt={caseStudies[0].client} className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105" />
@@ -4250,7 +4276,7 @@ const WorkPage = ({ navigate }) => {
               <h3 className="t-display mb-6">{caseStudies[0].client}</h3>
               <p className="t-body text-white/50 mb-10 max-w-lg">{caseStudies[0].challenge}</p>
               <div className="flex gap-4 font-secondary mb-12 flex-wrap">
-                {(caseStudies[0].tags || []).map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[17px] md:text-[19px] text-white/70 uppercase tracking-widest">{t}</span>)}
+                {getVisibleCaseStudyTags(caseStudies[0]).map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[17px] md:text-[19px] text-white/70 uppercase tracking-widest">{t}</span>)}
               </div>
               <div className="mt-auto flex items-center gap-2 text-[17px] md:text-[19px] text-white/70 group-hover:text-white transition-colors font-medium font-secondary">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
             </div>
@@ -4268,9 +4294,10 @@ const WorkPage = ({ navigate }) => {
           {caseStudies.slice(1).map((cs, i) => {
             const secondaryColors = [palette.lavender, palette.medBlue, palette.lightBlue, palette.primary];
             const hexColor = secondaryColors[i % secondaryColors.length];
+            const visibleTags = getVisibleCaseStudyTags(cs);
             return (
               <StaggerItem key={i}>
-                <div onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/10 rounded-[24px] overflow-hidden cursor-pointer w-full aspect-square bg-[#0a0a0a] shadow-2xl transition-all duration-700 hover:border-white/30">
+                <div data-pbh-copy-ignore onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/10 rounded-[24px] overflow-hidden cursor-pointer w-full aspect-[4/3] bg-[#0a0a0a] shadow-2xl transition-all duration-700 hover:border-white/30">
 
                   {/* Background Image */}
                   <div className="absolute inset-0 z-0">
@@ -4294,9 +4321,9 @@ const WorkPage = ({ navigate }) => {
                       {(cs.preview || cs.challenge) && (
                         <p className="font-secondary text-white/60 text-sm md:text-[15px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
                       )}
-                      {(cs.tags || []).length > 0 && (
+                      {visibleTags.length > 0 && (
                         <div className="flex flex-wrap gap-1.5 mb-4">
-                          {(cs.tags || []).slice(0, 3).map(t => (
+                          {visibleTags.map(t => (
                             <span key={t} className="px-3 py-1 rounded-full border border-white/25 bg-white/10 text-white/75 text-[11px] md:text-xs font-secondary tracking-wide uppercase backdrop-blur-sm">
                               {t}
                             </span>
@@ -4828,7 +4855,7 @@ const LatestCredentialsPage = ({ navigate }) => {
         <StaggerGroup className="space-y-12">
           {CASE_STUDIES.map((study, i) => (
             <StaggerItem key={study.id}>
-              <div onClick={() => navigate('work/' + study.id)} className="group cursor-pointer border border-white/10 rounded-[24px] overflow-hidden flex flex-col md:flex-row bg-[#0A0A10] hover:border-white/20 transition-colors">
+              <div data-pbh-copy-ignore onClick={() => navigate('work/' + study.id)} className="group cursor-pointer border border-white/10 rounded-[24px] overflow-hidden flex flex-col md:flex-row bg-[#0A0A10] hover:border-white/20 transition-colors">
                 <div className="md:w-1/3 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10 flex flex-col justify-center">
                   <div className="text-[17px] md:text-[19px] tracking-widest uppercase mb-4 font-primary" style={{ color: palette[study.category] || palette.primary }}>{study.category}</div>
                   <h3 className="text-xl md:text-2xl font-light mb-4 text-white group-hover:text-white/80 transition-colors font-primary">{study.client}</h3>
@@ -5085,10 +5112,20 @@ export default function App() {
   const { data: sanityCaseStudies } = useSanity(CASE_STUDIES_QUERY);
   const finalCaseStudiesSource = sanityCaseStudies?.length > 0 ? sanityCaseStudies : CASE_STUDIES;
   const finalCaseStudies = orderCaseStudies(
-    finalCaseStudiesSource.map(cs => ({
-      ...cs,
-      id: normalizeCaseStudyUrlId(cs, CASE_STUDIES),
-    })),
+    finalCaseStudiesSource.map(cs => {
+      const id = normalizeCaseStudyUrlId(cs, CASE_STUDIES);
+      const fallbackCaseStudy = CASE_STUDIES.find((item) => (
+        item.id === id ||
+        String(item.client || '').trim().toLowerCase() === String(cs.client || '').trim().toLowerCase()
+      ));
+      const tags = normalizeCaseStudyTags(cs.tags);
+
+      return {
+        ...cs,
+        id,
+        tags: tags.length > 0 ? tags : normalizeCaseStudyTags(fallbackCaseStudy?.tags),
+      };
+    }),
     CASE_STUDIES
   );
 
