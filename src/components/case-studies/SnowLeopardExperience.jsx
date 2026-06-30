@@ -161,7 +161,7 @@ const StickyScrollytellingGrid = ({ content }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   
   // Parse content into sections
-  const executionBlocks = content.solution2 ? content.solution2.split('\n\n') : [];
+  const executionBlocks = content.solution2 ? content.solution2.split(/\n+/) : [];
   const strategicIntro = content.solution1 || (executionBlocks.length > 0 ? executionBlocks[0] : null);
   const remainingExecution = content.solution1 ? executionBlocks : executionBlocks.slice(1);
 
@@ -318,25 +318,10 @@ const StickyScrollytellingGrid = ({ content }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -40 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-[550px] pointer-events-auto relative flex justify-center"
+                className="w-full max-w-[550px] pointer-events-auto relative"
                 onMouseEnter={() => setIsOrbHovered(true)}
                 onMouseLeave={() => setIsOrbHovered(false)}
               >
-                {/* Orbital ring centred on this content block */}
-                <div
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none mix-blend-screen opacity-55"
-                  style={{ width: 'min(90vw, 620px)', height: 'min(90vw, 620px)' }}
-                >
-                  <motion.div
-                    animate={{ rotate: -360 }}
-                    transition={{ duration: 200, repeat: Infinity, ease: 'linear' }}
-                    className="absolute inset-0 rounded-full border border-cyan-400/30"
-                  >
-                    <div className="absolute top-[15%] left-[10%] w-[4px] h-[4px] bg-cyan-300 rounded-full shadow-[0_0_15px_#22d3ee]" />
-                    <div className="absolute bottom-[20%] right-[5%] w-[3px] h-[3px] bg-indigo-300 rounded-full shadow-[0_0_10px_#818cf8]" />
-                  </motion.div>
-                </div>
-
                 <div className="relative z-10 px-8 py-12 w-full">
                   <SpatialOrbitalText activeData={activeData} isHovered={isOrbHovered} />
                 </div>
@@ -772,7 +757,22 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
 
   return (
     <div className="relative w-full pl-8 md:pl-12">
-      
+
+      {/* Ring centered directly on this text block */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none mix-blend-screen opacity-50"
+        style={{ width: '560px', height: '560px' }}
+      >
+        <motion.div
+          animate={{ rotate: -360 }}
+          transition={{ duration: 200, repeat: Infinity, ease: 'linear' }}
+          className="absolute inset-0 rounded-full border border-cyan-400/30"
+        >
+          <div className="absolute top-[15%] left-[10%] w-[4px] h-[4px] bg-cyan-300 rounded-full shadow-[0_0_15px_#22d3ee]" />
+          <div className="absolute bottom-[20%] right-[5%] w-[3px] h-[3px] bg-indigo-300 rounded-full shadow-[0_0_10px_#818cf8]" />
+        </motion.div>
+      </div>
+
       {/* EYEBROW TITLE */}
       <div className="mb-10 flex items-center gap-4 overflow-hidden relative z-10">
         <motion.span 
