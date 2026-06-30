@@ -188,14 +188,15 @@ const MediaRibbon3D = ({ media }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.13, 130, 220);
+      const height = clamp(w * 0.17, 160, 300);
       const minRadius = clamp(w * 0.30, 300, 520);
       const maxRadius = clamp(w * 2.0, 1400, 3600);
-      // Use actual max panel width + large gap — ensures clear visual separation
       const approxPanelWidth = height * 1.4;
-      const minGap = 160;
+      const minGap = 60;
+      // Chord-based formula: (W+gap) / (2·sin(π/N)) guarantees the actual 3D
+      // edge-to-edge separation equals minGap regardless of item count
       const requiredRadius = items.length > 1
-        ? (items.length * (approxPanelWidth + minGap)) / (2 * Math.PI)
+        ? (approxPanelWidth + minGap) / (2 * Math.sin(Math.PI / items.length))
         : minRadius;
       const radius = clamp(requiredRadius, minRadius, maxRadius);
       setDims({ height, radius });
