@@ -334,7 +334,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
             <motion.h2 
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text" 
+              className="font-primary text-4xl md:text-5xl font-medium tracking-tight text-transparent bg-clip-text" 
               style={{ 
                 backgroundImage: `linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, ${theme.primary} 45%, ${theme.secondary} 50%, ${theme.primary} 55%, #FFFFFF 70%, #FFFFFF 100%)`,
                 backgroundSize: '300% auto',
@@ -349,7 +349,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         {/* Content Container */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
-            <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
+            <p className="text-white/90 font-normal text-[16px] md:text-[17px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
               {content}
             </p>
           </motion.div>
@@ -471,7 +471,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
 
       {/* Navigation */}
       <div className="fixed top-0 left-0 w-full z-50 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex items-center gap-3 pointer-events-none">
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[16px] md:text-[17px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
       </div>
@@ -499,7 +499,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {(project?.tags || project?.roles || ['Branding', 'Visual Identity', 'Collateral']).map((tag, i) => (
-              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[17px] md:text-[19px] tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
+              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[12px] md:text-[13px] tracking-[0.4em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
                 {tag}
               </span>
             ))}
@@ -509,7 +509,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
             <motion.h1 
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" 
+              className="font-primary text-4xl md:text-5xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" 
               style={{ 
                 backgroundImage: `linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, ${activeTheme.secondary} 45%, ${activeTheme.primary} 50%, ${activeTheme.secondary} 55%, #FFFFFF 70%, #FFFFFF 100%)`,
                 backgroundSize: '300% auto',
@@ -664,7 +664,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         <section className="relative w-full z-10">
           <div className="pb-20 px-6 md:px-12 max-w-[1400px] mx-auto relative">
             <ElegantFade className="mb-12 pb-6 flex items-center justify-between">
-              <h2 className="font-primary text-5xl md:text-7xl lg:text-8xl text-white tracking-tight">
+              <h2 className="font-primary text-4xl md:text-5xl text-white tracking-tight">
                 {project?.deliverablesHeading || SITE_SETTINGS?.csEcosystemHighlights || "Ecosystem Highlights"}
               </h2>
             </ElegantFade>
@@ -678,12 +678,12 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10">
         <div className="max-w-[1200px] mx-auto">
           <ElegantFade>
-            <p className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-medium font-primary" style={{ color: activeTheme.secondary }}>
+            <p className="text-[12px] md:text-[13px] tracking-[0.4em] uppercase mb-6 font-medium font-primary" style={{ color: activeTheme.secondary }}>
               {SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}
             </p>
             <motion.h2 
               onClick={() => navigate('work')} 
-              className="font-primary text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"
+              className="font-primary text-4xl md:text-5xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"
             >
               <ArrowLeft className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20" /> {SITE_SETTINGS?.csAllProjects || 'All Case Studies'}
             </motion.h2>

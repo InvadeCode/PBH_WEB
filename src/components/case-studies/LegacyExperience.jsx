@@ -15,7 +15,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
     <div className="min-h-screen text-[#F4F4F5] w-full" style={{ backgroundColor: hexColor }}>
       {/* Global Top Navigation */}
       <div className="fixed top-0 left-0 w-full z-[100] px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex flex-wrap items-center gap-3 pointer-events-none">
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[16px] md:text-[17px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
       </div>
@@ -55,7 +55,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-primary tracking-tight leading-none mb-6 font-semibold"
+            className="text-4xl md:text-5xl font-primary tracking-tight leading-none mb-6 font-semibold"
           >
             {project.client}
           </motion.h1>
@@ -63,7 +63,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex flex-wrap items-center justify-center gap-3 md:gap-4 font-secondary uppercase tracking-widest text-[17px] md:text-[19px] text-white/80"
+            className="flex flex-wrap items-center justify-center gap-3 md:gap-4 font-secondary uppercase tracking-widest text-[16px] md:text-[17px] text-white/80"
           >
             {project.tags.map((tag, i) => (
               <React.Fragment key={i}>
@@ -80,21 +80,21 @@ const LegacyExperience = ({ project, navigate, palette }) => {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
           <div className="lg:col-span-4 flex flex-col gap-12">
             <div className="p-8 rounded-2xl bg-black/20 border border-white/10 shadow-inner">
-              <h3 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/60 mb-4 font-secondary">The Challenge</h3>
+              <h3 className="text-[16px] md:text-[17px] uppercase tracking-widest text-white/60 mb-4 font-secondary">The Challenge</h3>
               <p className="text-xl md:text-2xl font-primary leading-snug">{project.challenge}</p>
             </div>
             {project.route && (
               <div>
-                <h3 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/60 mb-3 font-secondary">Strategy Route</h3>
-                <p className="text-[17px] md:text-[19px] font-secondary">{project.route}</p>
+                <h3 className="text-[16px] md:text-[17px] uppercase tracking-widest text-white/60 mb-3 font-secondary">Strategy Route</h3>
+                <p className="text-[16px] md:text-[17px] font-secondary">{project.route}</p>
               </div>
             )}
             {project.roles && (
               <div>
-                <h3 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/60 mb-3 font-secondary">Capabilities</h3>
+                <h3 className="text-[16px] md:text-[17px] uppercase tracking-widest text-white/60 mb-3 font-secondary">Capabilities</h3>
                 <ul className="flex flex-col gap-2">
                   {project.roles.map((r, i) => (
-                    <li key={i} className="text-[17px] md:text-[19px] font-secondary border-l-2 pl-3 border-white/20">{r}</li>
+                    <li key={i} className="text-[16px] md:text-[17px] font-secondary border-l-2 pl-3 border-white/20">{r}</li>
                   ))}
                 </ul>
               </div>
@@ -102,7 +102,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
           </div>
           
           <div className="lg:col-span-8 flex flex-col gap-16">
-            <div className="flex flex-col gap-6 text-[17px] md:text-[19px] font-secondary leading-relaxed max-w-none text-white/90">
+            <div className="flex flex-col gap-6 text-[16px] md:text-[17px] font-secondary leading-relaxed max-w-none text-white/90">
               <h2 className="text-xl md:text-2xl font-primary font-semibold">Overview</h2>
               <p>{project.overview}</p>
               
@@ -228,7 +228,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <button 
             onClick={() => navigate('work')}
-            className="group flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-300 font-secondary uppercase tracking-widest text-[17px] md:text-[19px]"
+            className="group flex items-center gap-3 px-8 py-4 rounded-full border border-white/20 hover:bg-white hover:text-black transition-all duration-300 font-secondary uppercase tracking-widest text-[16px] md:text-[17px]"
           >
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             All Case Studies

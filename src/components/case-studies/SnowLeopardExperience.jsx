@@ -72,7 +72,7 @@ const NarrativeBlock = ({ index, label, paragraphs, accent = 'cyan', align = 'le
     >
       {/* Giant index numeral bleeding behind the panel */}
       <span
-        className={`absolute -top-12 md:-top-20 ${rightAlign ? 'right-0 md:-right-6' : 'left-0 md:-left-6'} text-5xl md:text-7xl lg:text-8xl font-primary font-bold leading-none pointer-events-none select-none`}
+        className={`absolute -top-12 md:-top-20 ${rightAlign ? 'right-0 md:-right-6' : 'left-0 md:-left-6'} text-4xl md:text-5xl font-primary font-bold leading-none pointer-events-none select-none`}
         style={{ color: a.dim, zIndex: 0 }}
       >
         {index}
@@ -105,9 +105,9 @@ const NarrativeBlock = ({ index, label, paragraphs, accent = 'cyan', align = 'le
           transition={{ duration: 0.8, delay: 0.25 }}
           className={`relative flex items-center gap-4 mb-10 md:mb-12 ${rightAlign ? 'flex-row-reverse text-right' : ''}`}
         >
-          <span className="text-[17px] md:text-[19px] font-primary font-bold tabular-nums" style={{ color: a.label, opacity: 0.55 }}>{index}</span>
+          <span className="text-[16px] md:text-[17px] font-primary font-bold tabular-nums" style={{ color: a.label, opacity: 0.55 }}>{index}</span>
           <span className="h-[2px] w-10 rounded-full" style={{ background: `linear-gradient(90deg, ${a.line}, transparent)` }} />
-          <span className="text-[17px] md:text-[19px] uppercase tracking-[0.5em] font-primary" style={{ color: a.label }}>{label}</span>
+          <span className="text-[16px] md:text-[17px] uppercase tracking-[0.5em] font-primary" style={{ color: a.label }}>{label}</span>
         </motion.div>
 
         {/* Two-column balanced body */}
@@ -123,7 +123,7 @@ const NarrativeBlock = ({ index, label, paragraphs, accent = 'cyan', align = 'le
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className={`whitespace-pre-line text-[17px] md:text-[19px] font-secondary leading-[1.85] text-white/95 tracking-wide md:pr-2 ${right ? '' : 'md:col-span-2 md:max-w-3xl'}`}
+            className={`whitespace-pre-line text-[16px] md:text-[17px] font-secondary leading-[1.85] text-white/95 tracking-wide md:pr-2 ${right ? '' : 'md:col-span-2 md:max-w-3xl'}`}
           >
             {left}
           </motion.p>
@@ -133,7 +133,7 @@ const NarrativeBlock = ({ index, label, paragraphs, accent = 'cyan', align = 'le
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              className="whitespace-pre-line text-[17px] md:text-[19px] font-secondary leading-[1.85] text-white/80 tracking-wide md:pl-2"
+              className="whitespace-pre-line text-[16px] md:text-[17px] font-secondary leading-[1.85] text-white/80 tracking-wide md:pl-2"
             >
               {right}
             </motion.p>
@@ -267,9 +267,8 @@ const StickyScrollytellingGrid = ({ content }) => {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.02)_0%,transparent_80%)]" />
         </div>
 
-        {/* GIANT BACKGROUND TYPOGRAPHY — gradient mask fades word before it hits the content area */}
-        <div className="absolute inset-0 z-0 flex items-center justify-start pointer-events-none pl-6 md:pl-12 lg:pl-[8%] overflow-hidden"
-          style={{ WebkitMaskImage: 'linear-gradient(to right, black 0%, black 38%, transparent 58%)', maskImage: 'linear-gradient(to right, black 0%, black 38%, transparent 58%)' }}>
+        {/* GIANT BACKGROUND TYPOGRAPHY — completely visible behind content */}
+        <div className="absolute inset-0 z-0 flex items-center justify-start pointer-events-none pl-6 md:pl-12 lg:pl-[8%] overflow-hidden">
           <motion.div
             style={{ y: useTransform(scrollYProgress, [0, 1], ['-2%', '2%']) }}
             className="w-full flex items-center"
@@ -311,7 +310,7 @@ const StickyScrollytellingGrid = ({ content }) => {
           </div>
 
           {/* ASYMMETRICAL EDITORIAL CONTENT BLOCK (Spatial Orbital) */}
-          <div className="w-full h-full flex items-center lg:justify-end lg:pr-[4%] relative z-20 pointer-events-none">
+          <div className="w-full h-full flex items-center lg:justify-end relative z-20 pointer-events-none lg:-mr-4 xl:-mr-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeData.id}
@@ -319,7 +318,7 @@ const StickyScrollytellingGrid = ({ content }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -40 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-[680px] pointer-events-auto relative"
+                className="w-full max-w-[680px] pointer-events-auto relative lg:translate-x-6 xl:translate-x-12"
                 onMouseEnter={() => setIsOrbHovered(true)}
                 onMouseLeave={() => setIsOrbHovered(false)}
               >
@@ -344,8 +343,8 @@ const PlanetarySwarm = ({ images, currentAssetIndex, setCurrentAssetIndex, title
       
       {hasIntro && (
         <div className="text-center mb-12 px-4">
-          {title && <h2 className="text-5xl md:text-7xl lg:text-8xl font-primary text-white mb-4">{title}</h2>}
-          {subtext && <p className="text-[17px] md:text-[19px] font-secondary uppercase tracking-[0.3em] text-white/50">{subtext}</p>}
+          {title && <h2 className="text-4xl md:text-5xl font-primary text-white mb-4">{title}</h2>}
+          {subtext && <p className="text-[16px] md:text-[17px] font-secondary uppercase tracking-[0.3em] text-white/50">{subtext}</p>}
           <div className="w-12 h-[1px] bg-white/30 mx-auto mt-5" />
         </div>
       )}
@@ -523,7 +522,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
 
       {/* --- NAVIGATION --- */}
       <div className="fixed top-28 left-8 z-50 flex items-center gap-3">
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[16px] md:text-[17px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
       </div>
@@ -597,12 +596,12 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                     className={`col-span-1 ${stats.length === 1 ? 'lg:col-span-12' : 'lg:col-span-5'} flex flex-col justify-center border-t border-white/10 pt-12 ${index === 1 ? 'lg:mt-32' : ''}`}
                   >
                      <div className="flex items-baseline gap-6 mb-6">
-                        <span className={`text-5xl md:text-7xl lg:text-8xl font-primary text-transparent bg-clip-text ${index === 0 ? 'bg-gradient-to-b from-cyan-400' : 'bg-gradient-to-b from-indigo-400'} to-transparent opacity-80 drop-shadow-2xl`}>
+                        <span className={`text-4xl md:text-5xl font-primary text-transparent bg-clip-text ${index === 0 ? 'bg-gradient-to-b from-cyan-400' : 'bg-gradient-to-b from-indigo-400'} to-transparent opacity-80 drop-shadow-2xl`}>
                           {String(index + 1).padStart(2, '0')}
                         </span>
-                        {stat.label && <h4 className="text-[17px] md:text-[19px] font-bold uppercase tracking-[0.4em] text-white/80">{stat.label}</h4>}
+                        {stat.label && <h4 className="text-[16px] md:text-[17px] font-bold uppercase tracking-[0.4em] text-white/80">{stat.label}</h4>}
                      </div>
-                     {stat.value && <p className="text-[17px] md:text-[19px] text-white/60 font-secondary leading-relaxed font-light">{stat.value}</p>}
+                     {stat.value && <p className="text-[16px] md:text-[17px] text-white/60 font-secondary leading-relaxed font-light">{stat.value}</p>}
                   </motion.div>
                 </React.Fragment>
               ))}
@@ -719,7 +718,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
               </h3>
             )}
             {outcomeText && (
-              <p className="text-[17px] md:text-[19px] text-white/70 font-secondary max-w-3xl mx-auto leading-relaxed font-light">
+              <p className="text-[16px] md:text-[17px] text-white/70 font-secondary max-w-3xl mx-auto leading-relaxed font-light">
                 {outcomeText}
               </p>
             )}
@@ -789,7 +788,7 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-          className={`text-[12px] md:text-[13px] uppercase tracking-[0.45em] ${activeData.textColor} font-semibold`}
+          className={`text-[12px] md:text-[13px] uppercase tracking-[0.4em] ${activeData.textColor} font-semibold`}
         >
           {activeData.subtitle}
         </motion.h3>
@@ -819,7 +818,7 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
       </div>
 
       {/* The Paragraphs */}
-      <div className="flex flex-col gap-8 text-[15px] md:text-[17px] font-secondary leading-[1.8] font-light text-[#8ba2bd]">
+      <div className="flex flex-col gap-8 text-[16px] md:text-[17px] font-secondary leading-[1.8] font-light text-[#8ba2bd]">
         {paragraphs.map((paragraph, i) => {
           const center = numItems > 1 ? (i + 0.5) / numItems : 0.5;
           return (
