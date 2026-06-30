@@ -56,6 +56,15 @@ const getVisibleCaseStudyTags = (caseStudy, limit = 3) => (
   normalizeCaseStudyTags(caseStudy?.tags).slice(0, limit)
 );
 
+const isSnowLeopardCaseStudy = (caseStudy) => (
+  /snow\s*leopard/i.test(`${caseStudy?.client || ''} ${caseStudy?.id || ''}`)
+);
+
+const getCaseStudyThumbnailMediaProps = (caseStudy) => ({
+  className: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out',
+  style: isSnowLeopardCaseStudy(caseStudy) ? { objectPosition: '14% center' } : undefined,
+});
+
 // --- RESEND CONFIGURATION ---
 // Configuration moved to Vercel environment variables securely.
 // See api/send-email.js
@@ -3400,6 +3409,7 @@ const HomePage = ({ navigate }) => {
           {CASE_STUDIES.slice(0, 4).map((cs, i) => {
             const hexColor = palette[cs.type] || palette.primary;
             const visibleTags = getVisibleCaseStudyTags(cs);
+            const thumbnailMediaProps = getCaseStudyThumbnailMediaProps(cs);
             return (
               <StaggerItem key={i}>
                 <div data-pbh-copy-ignore onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/10 rounded-[24px] overflow-hidden cursor-pointer w-full aspect-[4/3] bg-[#0a0a0a] shadow-2xl transition-all duration-700 hover:border-white/30 hover:translate-y-[-4px]">
@@ -3410,7 +3420,8 @@ const HomePage = ({ navigate }) => {
                       <CaseStudyMedia
                         src={cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl}
                         alt={cs.client}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
+                        className={thumbnailMediaProps.className}
+                        style={thumbnailMediaProps.style}
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
@@ -3595,15 +3606,6 @@ const WorkDetailPage = ({ navigate, projectId }) => {
   // Pick the experience template for this client, then append the shared,
   // CMS-driven Team Credits section so it appears under EVERY case study.
   const experience = (() => {
-    if (projectString.includes('veauli')) {
-      return <AriseVenturesExperience navigate={navigate} project={project} />;
-    }
-
-    // Firefox-specific experience — dedicated template before ariseClients fallback
-    if (clientName.includes('firefox')) {
-      return <FirefoxExperience navigate={navigate} project={project} />;
-    }
-
     const ariseClients = [
       'ega wellness',
       'arise ventures',
@@ -3640,7 +3642,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       return <SnowLeopardExperience navigate={navigate} project={project} />;
     }
 
-    const backToRootsClients = [
+    const kantiSweetsClients = [
       'back to roots',
       'kafe 57',
       'fermentech',
@@ -3649,7 +3651,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       'sunburst'
     ];
 
-    if (backToRootsClients.some(target => clientName.includes(target))) {
+    if (kantiSweetsClients.some(target => clientName.includes(target))) {
       return <BackToRootsExperience navigate={navigate} project={project} />;
     }
 
@@ -4263,7 +4265,7 @@ const WorkPage = ({ navigate }) => {
           <div data-pbh-copy-ignore onClick={() => navigate('work/' + caseStudies[0].id)} className="group relative border border-white/5 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
             <div className="md:w-1/2 relative overflow-hidden h-[300px] md:h-full bg-white/[0.02] w-full">
               {(caseStudies[0].bannerVideo || caseStudies[0].fullStory?.heroVideo || caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl) ? (
-                <CaseStudyMedia src={caseStudies[0].bannerVideo || caseStudies[0].fullStory?.heroVideo || caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl} alt={caseStudies[0].client} className="w-full h-full object-contain transition-transform duration-1000 ease-out group-hover:scale-105" />
+                <CaseStudyMedia src={caseStudies[0].bannerVideo || caseStudies[0].fullStory?.heroVideo || caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl} alt={caseStudies[0].client} className="w-full h-full object-cover object-left transition-transform duration-1000 ease-out group-hover:scale-105" />
               ) : (
                 <>
                   <div className="absolute inset-0 opacity-30 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105"  />
@@ -4295,6 +4297,7 @@ const WorkPage = ({ navigate }) => {
             const secondaryColors = [palette.lavender, palette.medBlue, palette.lightBlue, palette.primary];
             const hexColor = secondaryColors[i % secondaryColors.length];
             const visibleTags = getVisibleCaseStudyTags(cs);
+            const thumbnailMediaProps = getCaseStudyThumbnailMediaProps(cs);
             return (
               <StaggerItem key={i}>
                 <div data-pbh-copy-ignore onClick={() => navigate('work/' + cs.id)} className="group relative border border-white/10 rounded-[24px] overflow-hidden cursor-pointer w-full aspect-[4/3] bg-[#0a0a0a] shadow-2xl transition-all duration-700 hover:border-white/30">
@@ -4305,7 +4308,8 @@ const WorkPage = ({ navigate }) => {
                       <CaseStudyMedia
                         src={cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl}
                         alt={cs.client}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
+                        className={thumbnailMediaProps.className}
+                        style={thumbnailMediaProps.style}
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">

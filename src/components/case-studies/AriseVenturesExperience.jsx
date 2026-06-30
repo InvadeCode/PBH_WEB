@@ -7,36 +7,135 @@ import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 import MediaRibbon3D from './MediaRibbon3D';
 
-const palette = {
-  bgDeep: '#010d54',
-  panel: '#0c185c',
-  primary: '#6865fa',
-  secondary: '#d4cefc',
-  blue: '#2a97d9',
-  accent: '#ffcd00',
-  purple: '#af73dd',
-  green: '#93d435',
-  orange: '#b9d5ff',
-  text: '#F4F4F5'
+const palettes = {
+  default: {
+    bgDeep: '#010d54',
+    panel: '#0c185c',
+    primary: '#6865fa',
+    secondary: '#d4cefc',
+    blue: '#2a97d9',
+    text: '#F4F4F5',
+  },
+  piston: {
+    bgDeep: '#0f1c14',       
+    panel: '#153120',        
+    primary: '#93c572',      
+    secondary: '#d9f0c3',    
+    blue: '#a3d9a5',         
+    text: '#F4F4F5',
+  },
+  ega: {
+    bgDeep: '#1c0f0a',
+    panel: '#2c1810',
+    primary: '#d47b4a',
+    secondary: '#e8b89b',
+    blue: '#8a9a5b',
+    text: '#FDFBF7',
+  },
+  param: {
+    bgDeep: '#050b14',
+    panel: '#0a192f',
+    primary: '#64ffda',
+    secondary: '#ccd6f6',
+    blue: '#112240',
+    text: '#F4F4F5',
+  },
+  bellavita: {
+    bgDeep: '#1a110a',
+    panel: '#2d1e14',
+    primary: '#d4af37',
+    secondary: '#f3e5ab',
+    blue: '#b76e79', 
+    text: '#FDFBF7',
+  },
+  chien: {
+    bgDeep: '#0a1a1f',
+    panel: '#122c34',
+    primary: '#d4af37',
+    secondary: '#f5f5dc', 
+    blue: '#008080', 
+    text: '#FDFBF7',
+  },
+  earthy: {
+    bgDeep: '#141710',
+    panel: '#202619',
+    primary: '#8a9a5b',
+    secondary: '#d4ceb0',
+    blue: '#d47b4a',
+    text: '#FDFBF7',
+  },
+  hero: {
+    bgDeep: '#0a0a0a',
+    panel: '#141414',
+    primary: '#39ff14', 
+    secondary: '#ffffff',
+    blue: '#007fff', 
+    text: '#F4F4F5',
+  },
+  leverage: {
+    bgDeep: '#041024',
+    panel: '#0a2347',
+    primary: '#ff6b00', 
+    secondary: '#ffffff',
+    blue: '#0056d2', 
+    text: '#F4F4F5',
+  },
+  sayre: {
+    bgDeep: '#081c22',
+    panel: '#10333d',
+    primary: '#4bc0c0', 
+    secondary: '#e6f2f2',
+    blue: '#36a2eb', 
+    text: '#F4F4F5',
+  },
+  veauli: {
+    bgDeep: '#1f1313',
+    panel: '#362121',
+    primary: '#ffb6b9', 
+    secondary: '#fae3d9',
+    blue: '#bbded6',
+    text: '#FDFBF7',
+  },
+  world: {
+    bgDeep: '#011026',
+    panel: '#03204c',
+    primary: '#c5a059', 
+    secondary: '#f0f4f8',
+    blue: '#41729f',
+    text: '#F4F4F5',
+  },
+  best: {
+    bgDeep: '#1c0406',
+    panel: '#3a0910', 
+    primary: '#c5a059', 
+    secondary: '#f0f4f8',
+    blue: '#03204c', 
+    text: '#F4F4F5',
+  }
 };
 
+export const ThemeContext = React.createContext(palettes.default);
+
 /* --- 1. Chic Ambient Glows --- */
-const ChicAmbientBackground = () => (
-  <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <motion.div
-      animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
-      transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute top-[-20%] left-[-10%] w-[80vw] h-[80vw] rounded-full mix-blend-screen blur-[120px]"
-      style={{ background: `radial-gradient(circle, ${palette.primary}40 0%, transparent 60%)` }}
-    />
-    <motion.div
-      animate={{ opacity: [0.2, 0.4, 0.2], scale: [1, 1.1, 1] }}
-      transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen blur-[120px]"
-      style={{ background: `radial-gradient(circle, ${palette.secondary}30 0%, transparent 60%)` }}
-    />
-  </div>
-);
+const ChicAmbientBackground = () => {
+  const theme = React.useContext(ThemeContext);
+  return (
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      <motion.div
+        animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
+        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-[-20%] left-[-10%] w-[80vw] h-[80vw] rounded-full mix-blend-screen blur-[120px]"
+        style={{ background: `radial-gradient(circle, ${theme.primary}40 0%, transparent 60%)` }}
+      />
+      <motion.div
+        animate={{ opacity: [0.2, 0.4, 0.2], scale: [1, 1.1, 1] }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen blur-[120px]"
+        style={{ background: `radial-gradient(circle, ${theme.secondary}30 0%, transparent 60%)` }}
+      />
+    </div>
+  );
+};
 
 /* --- 2. Pleasant Elegant Fade --- */
 const ElegantFade = ({ children, delay = 0, className = "" }) => (
@@ -71,9 +170,10 @@ const getDimensionsAspectRatio = (dimensions) => {
 /* --- 3. Creative Hero Entrance --- */
 const CreativeHeroReveal = ({ src, alt, aspectRatio }) => {
   const resolvedAspectRatio = aspectRatio || getUrlAspectRatio(src) || 16 / 9;
+  const theme = React.useContext(ThemeContext);
 
   return (
-    <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-[#0c185c]/70">
+    <div className="w-full h-full relative overflow-hidden flex items-center justify-center" style={{ backgroundColor: `${theme.panel}b3` }}>
       <CaseStudyMedia
         src={src}
         alt={alt}
@@ -98,20 +198,25 @@ const HoverFloatCard = ({ children, className }) => {
   );
 };
 
-const SolutionGraphic = () => (
-  <>
-    <motion.div 
-      animate={{ rotate: 360, scale: [1, 1.15, 1] }} 
-      transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[75vw] h-[75vw] md:w-[45vw] md:h-[45vw] rounded-[40%] border-[2px] border-[#6865FA]/40 opacity-70 shadow-[0_0_120px_rgba(104,101,250,0.3)] mix-blend-screen pointer-events-none"
-    />
-    <motion.div 
-      animate={{ rotate: -360, scale: [1, 1.25, 1] }} 
-      transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[65vw] h-[65vw] md:w-[35vw] md:h-[35vw] rounded-[50%] border border-[#2a97d9]/30 opacity-60 shadow-[inset_0_0_80px_rgba(42,151,217,0.2)] mix-blend-screen pointer-events-none"
-    />
-  </>
-);
+const SolutionGraphic = () => {
+  const theme = React.useContext(ThemeContext);
+  return (
+    <>
+      <motion.div 
+        animate={{ rotate: 360, scale: [1, 1.15, 1] }} 
+        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+        className="absolute w-[75vw] h-[75vw] md:w-[45vw] md:h-[45vw] rounded-[40%] border-[2px] opacity-70 mix-blend-screen pointer-events-none"
+        style={{ borderColor: `${theme.primary}66`, boxShadow: `0 0 120px ${theme.primary}4D` }}
+      />
+      <motion.div 
+        animate={{ rotate: -360, scale: [1, 1.25, 1] }} 
+        transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+        className="absolute w-[65vw] h-[65vw] md:w-[35vw] md:h-[35vw] rounded-[50%] border opacity-60 mix-blend-screen pointer-events-none"
+        style={{ borderColor: `${theme.blue}4D`, boxShadow: `inset 0 0 80px ${theme.blue}33` }}
+      />
+    </>
+  );
+};
 
 /* --- 6. Animated Parallax Ecosystem Image --- */
 const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) => {
@@ -121,6 +226,8 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) =>
   
   const y = useTransform(smoothProgress, [0, 1], [-yOffset, yOffset]);
 
+  const theme = React.useContext(ThemeContext);
+
   return (
     <motion.div
       ref={ref}
@@ -128,7 +235,8 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) =>
       whileInView={{ clipPath: 'inset(0% 0 0 0)', scale: 1 }}
       viewport={{ once: true, margin: "-5%" }}
       transition={{ duration: 1.6, delay, ease: [0.25, 1, 0.5, 1] }}
-      className={`w-full relative group overflow-hidden bg-[#0C185C] flex items-center justify-center rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 ${className}`}
+      className={`w-full relative group overflow-hidden flex items-center justify-center rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 ${className}`}
+      style={{ backgroundColor: theme.panel }}
     >
       <CaseStudyMedia
         src={src}
@@ -139,7 +247,7 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) =>
       />
       
       {/* Creative Glassmorphism Overlay on Hover */}
-      <div className="absolute inset-0 bg-[#0C185C]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay pointer-events-none" />
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay pointer-events-none" style={{ backgroundColor: `${theme.panel}1A` }} />
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] pointer-events-none">
         <div className="w-16 h-16 rounded-full backdrop-blur-xl bg-white/10 border border-white/20 flex items-center justify-center transform scale-50 group-hover:scale-100 transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_0_30px_rgba(255,255,255,0.1)]">
            <svg className="w-6 h-6 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -152,35 +260,45 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50, className = "" }) =>
 };
 
 /* --- 7. Dramatic Scrollytelling Sections --- */
-const AboutGraphic = () => (
-  <>
-    <motion.div 
-      animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
-      transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
-    />
-    <motion.div 
-      animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
-      transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#D4CEFC]/20 opacity-50 shadow-[0_0_80px_rgba(212,206,252,0.1)] mix-blend-screen pointer-events-none"
-    />
-  </>
-);
+const AboutGraphic = () => {
+  const theme = React.useContext(ThemeContext);
+  return (
+    <>
+      <motion.div 
+        animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
+        transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+        className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border opacity-60 mix-blend-screen pointer-events-none"
+        style={{ borderColor: `${theme.primary}4D`, boxShadow: `inset 0 0 100px ${theme.primary}33` }}
+      />
+      <motion.div 
+        animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
+        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+        className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border opacity-50 mix-blend-screen pointer-events-none"
+        style={{ borderColor: `${theme.secondary}33`, boxShadow: `0 0 80px ${theme.secondary}1A` }}
+      />
+    </>
+  );
+};
 
-const ProblemGraphic = () => (
-  <>
-    <motion.div 
-      animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.4, 0.1] }} 
-      transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] bg-[#D4CEFC] mix-blend-screen blur-[120px] pointer-events-none"
-    />
-    <motion.div 
-      animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }} 
-      transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] bg-[#6865FA] mix-blend-screen blur-[140px] pointer-events-none"
-    />
-  </>
-);
+const ProblemGraphic = () => {
+  const theme = React.useContext(ThemeContext);
+  return (
+    <>
+      <motion.div 
+        animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.4, 0.1] }} 
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] mix-blend-screen blur-[120px] pointer-events-none"
+        style={{ backgroundColor: theme.secondary }}
+      />
+      <motion.div 
+        animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }} 
+        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] mix-blend-screen blur-[140px] pointer-events-none"
+        style={{ backgroundColor: theme.primary }}
+      />
+    </>
+  );
+};
 
 const DramaticSection = ({ title, content, motionGraphic }) => {
   const ref = useRef(null);
@@ -196,6 +314,8 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
   const contentY = useTransform(spring, [0.05, 0.25, 0.9, 1], [30, 0, 0, -30]);
   const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
 
+  const theme = React.useContext(ThemeContext);
+
   return (
     <section ref={ref} className="h-[200vh] relative w-full">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
@@ -204,9 +324,9 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
           {motionGraphic}
         </motion.div>
 
-        {/* Ambient Edge Masking (Prevents graphics from hard-cutting at the top/bottom of the screen) */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#010d54] to-transparent z-0 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010d54] to-transparent z-0 pointer-events-none" />
+        {/* Ambient Edge Masking */}
+        <div className="absolute top-0 left-0 right-0 h-32 z-0 pointer-events-none" style={{ backgroundImage: `linear-gradient(to bottom, ${theme.bgDeep}, transparent)` }} />
+        <div className="absolute bottom-0 left-0 right-0 h-32 z-0 pointer-events-none" style={{ backgroundImage: `linear-gradient(to top, ${theme.bgDeep}, transparent)` }} />
         
         {/* Title Container */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
@@ -214,10 +334,11 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
             <motion.h2 
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
+              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text" 
               style={{ 
-                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundImage: `linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, ${theme.primary} 45%, ${theme.secondary} 50%, ${theme.primary} 55%, #FFFFFF 70%, #FFFFFF 100%)`,
                 backgroundSize: '300% auto',
+                filter: `drop-shadow(0 0 30px ${theme.primary}80)`
               }}
             >
               {title}
@@ -228,7 +349,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         {/* Content Container */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
-            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
+            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 md:mb-8 font-bold font-primary" style={{ color: theme.secondary }}>
                {title}
             </h3>
             <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
@@ -277,11 +398,13 @@ const EcosystemCarousel = ({ media }) => {
 
   if (!media || media.length === 0) return null;
 
+  const theme = React.useContext(ThemeContext);
+
   const renderCard = (m, i, prefix) => (
     <figure
       key={`${prefix}-${m.key || i}`}
-      className="group relative shrink-0 h-[clamp(220px,34vh,440px)] rounded-[20px] overflow-hidden ring-1 ring-white/10 bg-[#0C185C] shadow-[0_28px_70px_-24px_rgba(0,0,0,0.75)]"
-      style={{ aspectRatio: getMediaAspect(m) }}
+      className="group relative shrink-0 h-[clamp(220px,34vh,440px)] rounded-[20px] overflow-hidden ring-1 ring-white/10 shadow-[0_28px_70px_-24px_rgba(0,0,0,0.75)]"
+      style={{ aspectRatio: getMediaAspect(m), backgroundColor: theme.panel }}
     >
       <CaseStudyMedia
         item={m}
@@ -330,9 +453,25 @@ const AriseVenturesExperience = ({ navigate, project }) => {
   // We no longer use a fallback demo; it only renders if Sanity data is explicitly provided.
   const videoHeroData = project?.videoHero?.enabled ? project.videoHero : null;
 
+  const clientStr = project?.client?.toLowerCase() || '';
+  let activeTheme = palettes.default;
+  if (clientStr.includes('piston')) activeTheme = palettes.piston;
+  else if (clientStr.includes('ega')) activeTheme = palettes.ega;
+  else if (clientStr.includes('param')) activeTheme = palettes.param;
+  else if (clientStr.includes('bellavita')) activeTheme = palettes.bellavita;
+  else if (clientStr.includes('chien')) activeTheme = palettes.chien;
+  else if (clientStr.includes('earthy')) activeTheme = palettes.earthy;
+  else if (clientStr.includes('hero')) activeTheme = palettes.hero;
+  else if (clientStr.includes('leverage')) activeTheme = palettes.leverage;
+  else if (clientStr.includes('sayre')) activeTheme = palettes.sayre;
+  else if (clientStr.includes('veauli')) activeTheme = palettes.veauli;
+  else if (clientStr.includes('world')) activeTheme = palettes.world;
+  else if (clientStr.includes('best')) activeTheme = palettes.best;
+
   return (
-    <div className="w-full min-h-screen font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
-      <ChicAmbientBackground />
+    <ThemeContext.Provider value={activeTheme}>
+      <div className="w-full min-h-screen font-secondary selection:bg-white/20 selection:text-white" style={{ backgroundColor: activeTheme.bgDeep, color: activeTheme.text }}>
+        <ChicAmbientBackground />
 
       {/* Navigation */}
       <div className="fixed top-0 left-0 w-full z-50 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex items-center gap-3 pointer-events-none">
@@ -356,7 +495,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
                aspectRatio={heroAspectRatio}
              />
            ) : (
-             <div className="w-full h-full bg-[#0C185C]" />
+             <div className="w-full h-full" style={{ backgroundColor: activeTheme.panel }} />
            )}
         </div>
 
@@ -376,7 +515,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
               className="font-primary text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" 
               style={{ 
-                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #D4CEFC 45%, #6865FA 50%, #D4CEFC 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundImage: `linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, ${activeTheme.secondary} 45%, ${activeTheme.primary} 50%, ${activeTheme.secondary} 55%, #FFFFFF 70%, #FFFFFF 100%)`,
                 backgroundSize: '300% auto',
               }}
             >
@@ -387,7 +526,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 1.5 CASE STUDY VIDEO HERO (CMS-driven, reusable) ── */}
-      <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} />
+      <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} theme={activeTheme} />
 
       {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
       {project?.overview && (
@@ -502,6 +641,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
             videoHero={{ enabled: true, backgroundColor: 'transparent', backgroundText: project.client || 'Case Study' }} 
             fallbackName={project.client} 
             allVideos={allVideos} 
+            theme={activeTheme}
           />
         );
       })()}
@@ -516,7 +656,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </h2>
             </ElegantFade>
 
-            <MediaRibbon3D media={cmsMedia} />
+            <MediaRibbon3D media={cmsMedia} theme={activeTheme} />
           </div>
         </section>
       )}
@@ -525,7 +665,9 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10">
         <div className="max-w-[1200px] mx-auto">
           <ElegantFade>
-            <p className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#D4CEFC] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
+            <p className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-medium font-primary" style={{ color: activeTheme.secondary }}>
+              {SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}
+            </p>
             <motion.h2 
               onClick={() => navigate('work')} 
               className="font-primary text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"
@@ -536,7 +678,8 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         </div>
       </section>
       
-    </div>
+      </div>
+    </ThemeContext.Provider>
   );
 };
 

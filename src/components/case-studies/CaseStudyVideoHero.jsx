@@ -31,12 +31,12 @@ const withAutoplay = (url) => {
 };
 
 /** Kanti Sweets-style technical preface backdrop. */
-const KantiPrefaceBackdrop = ({ backgroundColor, reduced }) => (
+const KantiPrefaceBackdrop = ({ backgroundColor, reduced, theme }) => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
     <div
       className="absolute inset-0"
       style={{
-        background: `linear-gradient(112deg, ${backgroundColor} 0%, #171b61 46%, #5f5da2 100%)`,
+        background: `linear-gradient(112deg, ${backgroundColor} 0%, ${theme?.panel || '#171b61'} 46%, ${theme?.primary || '#5f5da2'} 100%)`,
       }}
     />
     <div
@@ -49,13 +49,13 @@ const KantiPrefaceBackdrop = ({ backgroundColor, reduced }) => (
     <div
       className="absolute inset-0"
       style={{
-        background: 'linear-gradient(90deg, rgba(1,8,54,0.72) 0%, rgba(1,8,54,0.16) 32%, rgba(212,206,252,0.11) 100%)',
+        background: `linear-gradient(90deg, ${theme?.bgDeep || '#010836'}b8 0%, ${theme?.bgDeep || '#010836'}29 32%, ${theme?.secondary || '#d4cefc'}1c 100%)`,
       }}
     />
     <div
       className="absolute inset-0 opacity-70"
       style={{
-        background: 'linear-gradient(to bottom, rgba(1,8,54,0.18), transparent 22%, transparent 72%, rgba(1,8,54,0.44))',
+        background: `linear-gradient(to bottom, ${theme?.bgDeep || '#010836'}2e, transparent 22%, transparent 72%, ${theme?.bgDeep || '#010836'}70)`,
       }}
     />
     {!reduced && (
@@ -69,7 +69,7 @@ const KantiPrefaceBackdrop = ({ backgroundColor, reduced }) => (
   </div>
 );
 
-const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos = [] }) => {
+const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos = [], theme }) => {
   const {
     backgroundColor = '#010836',
     backgroundText,
@@ -245,7 +245,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
       style={{ backgroundColor }}
       aria-label={heroVideos[0]?.videoTitle || `${fallbackName} video`}
     >
-      <KantiPrefaceBackdrop backgroundColor={backgroundColor} reduced={prefersReduced} />
+      <KantiPrefaceBackdrop backgroundColor={backgroundColor} reduced={prefersReduced} theme={theme} />
 
       {/* Oversized Kanti-style background text */}
       <div className="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none select-none overflow-hidden">
@@ -312,7 +312,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
                           sizes="(min-width: 1024px) 320px, 240px"
                         />
                       ) : (
-                        <div className="w-full h-full grid place-items-center bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,0.16),rgba(255,255,255,0.035)_58%,rgba(1,8,54,0.24))]">
+                        <div className="w-full h-full grid place-items-center" style={{ background: `radial-gradient(circle at 50% 35%, rgba(255,255,255,0.16), rgba(255,255,255,0.035) 58%, ${theme?.bgDeep || '#010836'}3d)` }}>
                           <span className="text-white/18 text-5xl md:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tight font-primary">
                             {fallbackLabel}
                           </span>

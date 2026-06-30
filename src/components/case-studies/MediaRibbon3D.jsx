@@ -12,6 +12,16 @@ import CaseStudyMedia from './CaseStudyMedia';
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
+const hexToRgb = (hex) => {
+  if (!hex) return '255, 255, 255';
+  let c = hex.replace('#', '');
+  if (c.length === 3) c = c.split('').map(x => x + x).join('');
+  const r = parseInt(c.slice(0, 2), 16);
+  const g = parseInt(c.slice(2, 4), 16);
+  const b = parseInt(c.slice(4, 6), 16);
+  return `${r}, ${g}, ${b}`;
+};
+
 const getMediaAspect = (m) => {
   const dim = m?.source?.metadata?.dimensions || m?.metadata?.dimensions;
   let ar = dim?.aspectRatio;
@@ -20,7 +30,7 @@ const getMediaAspect = (m) => {
   return clamp(ar, 0.45, 1.4);
 };
 
-const Panel = ({ media, index, step, radius, height, rotation, isActive, onHoverChange }) => {
+const Panel = ({ media, index, step, radius, height, rotation, isActive, onHoverChange, theme }) => {
   const aspect = getMediaAspect(media);
   const width = height * aspect;
   const baseAngle = index * step;
@@ -73,12 +83,14 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
   const effectiveGlow = useTransform([glow, hoverGlow], ([g, h]) => Math.min(1, g + h * 0.6));
   const glowBlur = useTransform(effectiveGlow, [0, 1], [0, 80]);
   const glowAlpha = useTransform(effectiveGlow, [0, 1], [0, 0.75]);
-  const boxShadow = useMotionTemplate`0 34px 80px -26px rgba(0,0,0,0.8), 0 0 ${glowBlur}px rgba(150,150,255,${glowAlpha})`;
+  const primaryRGB = hexToRgb(theme?.primary || '#6865fa');
+  const secondaryRGB = hexToRgb(theme?.secondary || '#d4cefc');
+  const boxShadow = useMotionTemplate`0 34px 80px -26px rgba(0,0,0,0.8), 0 0 ${glowBlur}px rgba(${primaryRGB},${glowAlpha})`;
 
   // Hover ring border intensity
   const ringOpacity = useSpring(0.1, { stiffness: 300, damping: 26 });
   useEffect(() => { ringOpacity.set(isHovered ? 0.7 : 0.1); }, [isHovered, ringOpacity]);
-  const ringBorder = useMotionTemplate`1px solid rgba(212, 206, 252, ${ringOpacity})`;
+  const ringBorder = useMotionTemplate`1px solid rgba(${secondaryRGB}, ${ringOpacity})`;
 
   const videoRef = useRef(null);
   useEffect(() => {
@@ -116,8 +128,8 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
       onMouseLeave={handleMouseLeave}
     >
       <motion.div
-        className="relative h-full w-full overflow-hidden rounded-[16px] bg-[#0b1340] will-change-transform"
-        style={{ scale: combinedScale, opacity, filter, boxShadow, outline: ringBorder }}
+        className="relative h-full w-full overflow-hidden rounded-[16px] will-change-transform"
+        style={{ backgroundColor: theme?.panel || '#0b1340', scale: combinedScale, opacity, filter, boxShadow, outline: ringBorder }}
       >
         {useVideoTag ? (
           <video
@@ -153,7 +165,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
         {/* Lavender hover ring overlay */}
         <motion.div
           className="pointer-events-none absolute -inset-px rounded-[16px]"
-          style={{ opacity: effectiveGlow, boxShadow: 'inset 0 0 0 2px rgba(212,206,252,0.7)' }}
+          style={{ opacity: effectiveGlow, boxShadow: `inset 0 0 0 2px rgba(${secondaryRGB},0.7)` }}
         />
 
         {/* Hover shine sweep */}
@@ -161,7 +173,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
           className="pointer-events-none absolute inset-0 rounded-[16px]"
           style={{
             opacity: hoverGlow,
-            background: 'linear-gradient(135deg, rgba(212,206,252,0.12) 0%, transparent 50%, rgba(104,101,250,0.08) 100%)',
+            background: `linear-gradient(135deg, rgba(${secondaryRGB},0.12) 0%, transparent 50%, rgba(${primaryRGB},0.08) 100%)`,
           }}
         />
       </motion.div>
@@ -169,7 +181,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
   );
 };
 
-const MediaRibbon3D = ({ media }) => {
+const MediaRibbon3D = ({ media, theme }) => {
   const items = Array.isArray(media) ? media.filter((m) => m && m.url) : [];
   const N = items.length;
 
@@ -306,7 +318,7 @@ const MediaRibbon3D = ({ media }) => {
       <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute left-1/2 top-[45%] h-[60vw] w-[60vw] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[150px]"
-          style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.18), transparent 62%)' }}
+          style={{ background: `radial-gradient(circle, ${theme?.primary || '#6865fa'}2e, transparent 62%)` }}
         />
       </div>
 
@@ -327,6 +339,7 @@ const MediaRibbon3D = ({ media }) => {
                 height={dims.height}
                 rotation={rotation}
                 isActive={i === activeIndex}
+                theme={theme}
                 onHoverChange={(entering) => handlePanelHoverChange(entering, i)}
               />
             ))}
@@ -352,7 +365,7 @@ const MediaRibbon3D = ({ media }) => {
               height: '90%', 
               maxHeight: '980px',
               aspectRatio: getMediaAspect(items[expandedMediaIndex]),
-              boxShadow: '0 0 100px rgba(104,101,250,0.3)'
+              boxShadow: `0 0 100px ${theme?.primary || '#6865fa'}4D`
             }}
             onMouseEnter={() => clearTimeout(hoverTimeout.current)}
             onMouseLeave={() => setExpandedMediaIndex(null)}
