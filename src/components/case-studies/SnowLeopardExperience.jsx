@@ -267,8 +267,9 @@ const StickyScrollytellingGrid = ({ content }) => {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.02)_0%,transparent_80%)]" />
         </div>
 
-        {/* GIANT BACKGROUND TYPOGRAPHY — clipped to left half so it never overlaps right content */}
-        <div className="absolute inset-0 z-0 flex items-center justify-start pointer-events-none pl-6 md:pl-12 lg:pl-[8%]" style={{ clipPath: 'inset(0 48% 0 0)', overflow: 'hidden' }}>
+        {/* GIANT BACKGROUND TYPOGRAPHY — gradient mask fades word before it hits the content area */}
+        <div className="absolute inset-0 z-0 flex items-center justify-start pointer-events-none pl-6 md:pl-12 lg:pl-[8%] overflow-hidden"
+          style={{ WebkitMaskImage: 'linear-gradient(to right, black 0%, black 38%, transparent 58%)', maskImage: 'linear-gradient(to right, black 0%, black 38%, transparent 58%)' }}>
           <motion.div
             style={{ y: useTransform(scrollYProgress, [0, 1], ['-2%', '2%']) }}
             className="w-full flex items-center"
@@ -310,7 +311,7 @@ const StickyScrollytellingGrid = ({ content }) => {
           </div>
 
           {/* ASYMMETRICAL EDITORIAL CONTENT BLOCK (Spatial Orbital) */}
-          <div className="w-full h-full flex items-center lg:justify-end lg:pr-[8%] relative z-20 pointer-events-none">
+          <div className="w-full h-full flex items-center lg:justify-end lg:pr-[4%] relative z-20 pointer-events-none">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeData.id}
@@ -318,7 +319,7 @@ const StickyScrollytellingGrid = ({ content }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -40 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-[550px] pointer-events-auto relative"
+                className="w-full max-w-[680px] pointer-events-auto relative"
                 onMouseEnter={() => setIsOrbHovered(true)}
                 onMouseLeave={() => setIsOrbHovered(false)}
               >
@@ -761,7 +762,7 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
       {/* Ring centered directly on this text block */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none mix-blend-screen opacity-50"
-        style={{ width: '560px', height: '560px' }}
+        style={{ width: '680px', height: '680px' }}
       >
         <motion.div
           animate={{ rotate: -360 }}
