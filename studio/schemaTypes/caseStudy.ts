@@ -36,9 +36,9 @@ export default defineType({
     }),
     defineField({
       name: 'bannerImage',
-      title: 'Work Page Banner Image (1920 x 1080 px)',
+      title: 'Work Page Thumbnail (1600 x 1200 px — 4:3)',
       type: 'image',
-      description: 'The thumbnail image displayed on the main "Selected Work" grid. Recommended size: 1920 x 1080 px (16:9 Landscape). If empty, defaults to a colored gradient.',
+      description: 'Thumbnail displayed on the "Our Work" grid. Upload at 1600 × 1200 px (4:3 landscape) for the best fit — the card crops to this ratio. Hotspot lets you control which part of the image stays centred.',
       options: { hotspot: true }
     }),
     defineField({
