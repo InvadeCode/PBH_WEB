@@ -37,16 +37,16 @@
      Display (headings) · Body (copy) · Label (eyebrows/captions)
      ═══════════════════════════════════════════════════════════════ */
   .t-display {
-    @apply font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight;
+    @apply font-primary text-4xl md:text-5xl font-medium tracking-tight;
   }
   .t-subtitle {
-    @apply font-primary text-xl md:text-2xl font-medium tracking-tight;
+    @apply font-primary text-4xl md:text-5xl font-medium tracking-tight;
   }
   .t-body {
-    @apply font-secondary text-[17px] md:text-[19px] leading-relaxed font-normal;
+    @apply font-secondary text-[16px] md:text-[17px] leading-relaxed font-normal;
   }
   .t-label {
-    @apply font-primary text-[17px] md:text-[19px] tracking-widest uppercase font-bold;
+    @apply font-primary text-[12px] md:text-[13px] tracking-[0.4em] uppercase font-bold;
   }
 
   /* ── Hatching Texture Overlay (Selective Use) ──

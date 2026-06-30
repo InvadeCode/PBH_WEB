@@ -3652,7 +3652,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     ];
 
     if (kantiSweetsClients.some(target => clientName.includes(target))) {
-      return <GenericStorytellingExperience navigate={navigate} project={project} />;
+      return <BackToRootsExperience navigate={navigate} project={project} />;
     }
 
     const legacyClients = [
@@ -3676,6 +3676,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
           return <AriseVenturesExperience navigate={navigate} project={project} />;
         case 'back-to-roots':
         case 'kanti-sweets':
+          return <BackToRootsExperience navigate={navigate} project={project} />;
         case 'storytelling':
           return <GenericStorytellingExperience navigate={navigate} project={project} />;
         case 'legacy':
@@ -4258,7 +4259,7 @@ const WorkPage = ({ navigate }) => {
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
         <RevealText><h1 className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight mb-6 font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.workPageHeader || "Our Work.")}</h1></RevealText>
-        <FadeUp><p className="text-[17px] md:text-[19px] leading-relaxed font-normal text-white/50 mb-16 max-w-2xl font-secondary">{SITE_SETTINGS?.workPageSubtext || "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns."}</p></FadeUp>
+        <FadeUp><p className="text-[16px] md:text-[17px] leading-relaxed font-normal text-white/50 mb-16 max-w-2xl font-secondary">{SITE_SETTINGS?.workPageSubtext || "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns."}</p></FadeUp>
 
         {/* Featured Case Study Hero */}
         <FadeUp delay={0.1} className="mb-24 w-full">
@@ -4278,18 +4279,18 @@ const WorkPage = ({ navigate }) => {
               <h3 className="t-display mb-6">{caseStudies[0].client}</h3>
               <p className="t-body text-white/50 mb-10 max-w-lg">{caseStudies[0].challenge}</p>
               <div className="flex gap-4 font-secondary mb-12 flex-wrap">
-                {getVisibleCaseStudyTags(caseStudies[0]).map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[17px] md:text-[19px] text-white/70 uppercase tracking-widest">{t}</span>)}
+                {getVisibleCaseStudyTags(caseStudies[0]).map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[12px] md:text-[13px] uppercase tracking-[0.4em] text-white/70">{t}</span>)}
               </div>
-              <div className="mt-auto flex items-center gap-2 text-[17px] md:text-[19px] text-white/70 group-hover:text-white transition-colors font-medium font-secondary">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
+              <div className="mt-auto flex items-center gap-2 text-[16px] md:text-[17px] text-white/70 group-hover:text-white transition-colors font-medium font-secondary">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
             </div>
           </div>
         </FadeUp>
 
         <FadeUp delay={0.2} className="flex gap-4 mb-12 border-b border-white/10 pb-6 overflow-x-auto font-secondary w-full custom-scrollbar">
-          <button className="px-4 py-2 rounded-full border border-white text-white text-[17px] md:text-[19px] shrink-0">{SITE_SETTINGS?.allProjectsButton || "All Projects"}</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[17px] md:text-[19px] shrink-0 hover:bg-white/5">Brand Boulevard</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[17px] md:text-[19px] shrink-0 hover:bg-white/5">SciArt Saga</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[17px] md:text-[19px] shrink-0 hover:bg-white/5">Storytelling Corner</button>
+          <button className="px-4 py-2 rounded-full border border-white text-white text-[12px] md:text-[13px] tracking-[0.3em] uppercase shrink-0">{SITE_SETTINGS?.allProjectsButton || "All Projects"}</button>
+          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[12px] md:text-[13px] tracking-[0.3em] uppercase shrink-0 hover:bg-white/5">Brand Boulevard</button>
+          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[12px] md:text-[13px] tracking-[0.3em] uppercase shrink-0 hover:bg-white/5">SciArt Saga</button>
+          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[12px] md:text-[13px] tracking-[0.3em] uppercase shrink-0 hover:bg-white/5">Storytelling Corner</button>
         </FadeUp>
 
         <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-32">
@@ -4402,7 +4403,7 @@ const JournalPage = ({ navigate }) => {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-full border text-[17px] md:text-[19px] shrink-0 transition-colors ${activeTab === tab ? 'border-white text-white' : 'border-white/10 text-white/50 hover:bg-white/5'}`}
+              className={`px-4 py-2 rounded-full border text-[12px] md:text-[13px] tracking-[0.3em] uppercase shrink-0 transition-colors ${activeTab === tab ? 'border-white text-white' : 'border-white/10 text-white/50 hover:bg-white/5'}`}
             >
               {tab}
             </button>
