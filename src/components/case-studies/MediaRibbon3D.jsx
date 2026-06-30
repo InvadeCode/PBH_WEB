@@ -188,7 +188,7 @@ const MediaRibbon3D = ({ media }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.17, 160, 300);
+      const height = clamp(w * 0.26, 240, 460);
       const minRadius = clamp(w * 0.30, 300, 520);
       const maxRadius = clamp(w * 2.0, 1400, 3600);
       const approxPanelWidth = height * 1.4;
@@ -300,7 +300,7 @@ const MediaRibbon3D = ({ media }) => {
       onPointerLeave={handlePointerLeave}
       onDragStart={(e) => e.preventDefault()}
       className="relative w-full overflow-hidden touch-none cursor-grab active:cursor-grabbing"
-      style={{ height: 'clamp(680px, 86vh, 1080px)' }}
+      style={{ height: 'clamp(820px, 90vh, 1200px)' }}
     >
       {/* Ambient depth */}
       <div className="pointer-events-none absolute inset-0">
