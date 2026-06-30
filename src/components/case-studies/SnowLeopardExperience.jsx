@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useInView, AnimatePresence, useSpring, useMotionValue, animate } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import createGlobe from 'cobe';
-import CaseStudyVideoHero from './CaseStudyVideoHero';
+import CaseStudyVideoHero, { hasVideoHeroSource } from './CaseStudyVideoHero';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
 import CaseStudySectorPill from './CaseStudySectorPill';
@@ -245,64 +245,59 @@ const StickyScrollytellingGrid = ({ content }) => {
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         
         {/* SMOOTH DARKENING OVERLAY */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#060b26] to-[#0a1128] transition-colors duration-1000" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#01020a] to-[#010514] transition-colors duration-1000" />
         
         {/* SUBTLE GRID OVERLAY */}
-        <div className="absolute inset-0 z-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)', backgroundSize: '80px 80px' }} />
+        <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)', backgroundSize: '80px 80px' }} />
 
         {/* VOLUMETRIC LIGHT & PARTICLES */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           {/* Star particles */}
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIwLjUiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNiIvPjxjaXJjbGUgY3g9IjE1MCIgY3k9IjI1MCIgcj0iMC41IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjMiLz48Y2lyY2xlIGN4PSIyODAiIGN5PSIxMjAiIHI9IjAuOCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC44Ii8+PGNpcmNsZSBjeD0iMzIwIiBjeT0iMzIwIiByPSIwLjUiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjwvc3ZnPg==')] opacity-60 mix-blend-screen" />
+          <motion.div 
+            animate={{ y: [0, -100] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIwLjUiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNiIvPjxjaXJjbGUgY3g9IjE1MCIgY3k9IjI1MCIgcj0iMC41IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjMiLz48Y2lyY2xlIGN4PSIyODAiIGN5PSIxMjAiIHI9IjAuOCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC44Ii8+PGNpcmNsZSBjeD0iMzIwIiBjeT0iMzIwIiByPSIwLjUiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjwvc3ZnPg==')] opacity-40 mix-blend-screen h-[200%]" 
+          />
           
           <motion.div 
-            animate={{ opacity: [0.1, 0.2, 0.1], scale: [1, 1.1, 1] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-0 left-1/4 w-[50vw] h-[100vh] bg-gradient-to-b from-white/5 to-transparent blur-[120px] transform -rotate-12"
+            animate={{ opacity: [0.05, 0.1, 0.05], scale: [1, 1.05, 1] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-0 left-1/4 w-[50vw] h-[100vh] bg-gradient-to-b from-blue-400/5 to-transparent blur-[120px] transform -rotate-12"
           />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.03)_0%,transparent_70%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.02)_0%,transparent_80%)]" />
         </div>
 
-        {/* LARGE ORBITAL RINGS */}
-        <div className="absolute top-1/2 left-[55%] -translate-x-1/2 -translate-y-1/2 w-[160vh] h-[160vh] rounded-full pointer-events-none opacity-[0.15] flex items-center justify-center">
-           <motion.div 
-             animate={{ rotate: 360 }}
-             transition={{ duration: 200, repeat: Infinity, ease: "linear" }}
-             className="absolute w-full h-full rounded-full border border-white border-dashed border-[length:2px_24px]"
-           />
-           <motion.div 
+        {/* ORBITAL RING — tight around the right-side content block */}
+        <div className="absolute top-1/2 right-[8%] -translate-y-1/2 w-[52vh] h-[52vh] rounded-full pointer-events-none flex items-center justify-center mix-blend-screen opacity-60">
+           {/* Single rotating cyan ring */}
+           <motion.div
              animate={{ rotate: -360 }}
-             transition={{ duration: 250, repeat: Infinity, ease: "linear" }}
-             className="absolute w-[75%] h-[75%] rounded-full border border-white/40"
+             transition={{ duration: 200, repeat: Infinity, ease: "linear" }}
+             className="absolute w-full h-full rounded-full border border-cyan-400/30"
            >
-              <div className="absolute top-[10%] left-[10%] w-[3px] h-[3px] bg-white rounded-full shadow-[0_0_10px_white]" />
-              <div className="absolute bottom-[15%] right-[10%] w-[2px] h-[2px] bg-cyan-300 rounded-full shadow-[0_0_8px_cyan]" />
+              <div className="absolute top-[15%] left-[10%] w-[4px] h-[4px] bg-cyan-300 rounded-full shadow-[0_0_15px_#22d3ee]" />
+              <div className="absolute bottom-[20%] right-[5%] w-[3px] h-[3px] bg-indigo-300 rounded-full shadow-[0_0_10px_#818cf8]" />
            </motion.div>
-           <motion.div 
-             animate={{ rotate: 360 }}
-             transition={{ duration: 300, repeat: Infinity, ease: "linear" }}
-             className="absolute w-[50%] h-[50%] rounded-full border border-white/20"
-           />
         </div>
 
         {/* GIANT BACKGROUND TYPOGRAPHY */}
-        <div className="absolute inset-0 z-0 flex items-center justify-start overflow-hidden pointer-events-none pl-[5%] lg:pl-[8%]">
+        <div className="absolute inset-0 z-0 flex items-center justify-start overflow-hidden pointer-events-none pl-6 md:pl-12 lg:pl-[8%]">
           <motion.div
-            style={{ y: useTransform(scrollYProgress, [0, 1], ['-5%', '5%']) }}
+            style={{ y: useTransform(scrollYProgress, [0, 1], ['-2%', '2%']) }}
             className="w-full flex items-center"
           >
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeData.word}
-                initial={{ opacity: 0, x: -100, filter: 'blur(16px)' }}
-                animate={{ opacity: 0.08, x: [0, -12, 0], filter: 'blur(10px)' }}
-                exit={{ opacity: 0, filter: 'blur(24px)' }}
+                initial={{ opacity: 0, x: -50, filter: 'blur(8px)' }}
+                animate={{ opacity: 0.45, x: 0, filter: 'blur(2px)' }}
+                exit={{ opacity: 0, filter: 'blur(16px)' }}
                 transition={{ 
-                  opacity: { duration: 1.8, ease: [0.16, 1, 0.3, 1] },
-                  filter: { duration: 1.8, ease: [0.16, 1, 0.3, 1] },
-                  x: { duration: 20, repeat: Infinity, ease: "easeInOut" }
+                  opacity: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
+                  filter: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
+                  x: { duration: 20, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }
                 }}
-                className="absolute text-[32vw] md:text-[28vw] font-primary font-bold leading-none tracking-tighter text-white whitespace-nowrap scale-[1.1] origin-left"
+                className="absolute text-[16vw] md:text-[11vw] font-primary font-bold leading-none tracking-tight text-[#1e2e54] whitespace-nowrap origin-left mix-blend-screen"
               >
                 {activeData.word}
               </motion.div>
@@ -328,7 +323,7 @@ const StickyScrollytellingGrid = ({ content }) => {
           </div>
 
           {/* ASYMMETRICAL EDITORIAL CONTENT BLOCK (Spatial Orbital) */}
-          <div className="w-full h-full flex items-center lg:justify-end lg:pr-[15%] relative z-20 pointer-events-none">
+          <div className="w-full h-full flex items-center lg:justify-end lg:pr-[8%] relative z-20 pointer-events-none">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeData.id}
@@ -336,7 +331,7 @@ const StickyScrollytellingGrid = ({ content }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -40 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-[600px] pointer-events-auto relative"
+                className="w-full max-w-[550px] pointer-events-auto relative"
                 onMouseEnter={() => setIsOrbHovered(true)}
                 onMouseLeave={() => setIsOrbHovered(false)}
               >
@@ -677,7 +672,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
 
         {/* ── CINEMATIC VIDEO HERO & ADDITIONAL VIDEOS ── */}
         {(() => {
-          const hasVideoHero = project?.videoHero?.enabled;
+          const hasVideoHero = project?.videoHero?.enabled || hasVideoHeroSource(project?.videoHero);
           
           const allVideos = [];
           if (project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) {
@@ -756,53 +751,53 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
   const orbProgress = useMotionValue(0);
   
   useEffect(() => {
-    // Only go top to bottom and repeat with a slight pause
+    // Orb descends, exits, pauses, and repeats seamlessly
     const controls = animate(orbProgress, [0, 1], {
-      duration: isHovered ? 4 : 8,
+      duration: isHovered ? 4.5 : 7,
       repeat: Infinity,
       repeatType: "loop",
-      repeatDelay: 1,
+      repeatDelay: 1.2,
       ease: "linear"
     });
     return () => controls.stop();
   }, [isHovered, orbProgress]);
 
-  // Extract all sentences
-  const sentences = activeData.paragraphs.flatMap(p => 
-    p.match(/[^.!?]+[.!?]+/g) || [p]
-  ).map(s => s.trim()).filter(Boolean);
+  // Extract paragraphs (split by double newline) instead of jagged sentences
+  const paragraphs = activeData.paragraphs.flatMap(p => 
+    p.split(/\n\n/).map(s => s.trim()).filter(Boolean)
+  );
 
-  const numSentences = sentences.length;
+  const numItems = paragraphs.length;
 
   return (
-    <div className="relative w-full pl-6 md:pl-10">
+    <div className="relative w-full pl-8 md:pl-12">
       
       {/* EYEBROW TITLE */}
-      <div className="mb-12 flex items-center gap-4 overflow-hidden relative z-10">
+      <div className="mb-10 flex items-center gap-4 overflow-hidden relative z-10">
         <motion.span 
           key={`${activeData.id}-line`}
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-          className={`h-[1px] ${activeData.lineColor} opacity-50 origin-left`}
-          style={{ width: '48px' }}
+          className={`h-[1px] ${activeData.lineColor} opacity-70 origin-left`}
+          style={{ width: '40px' }}
         />
         <motion.h3 
           key={`${activeData.id}-subtitle`}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-          className={`text-[13px] md:text-[14px] uppercase tracking-[0.4em] ${activeData.textColor} font-medium`}
+          className={`text-[12px] md:text-[13px] uppercase tracking-[0.45em] ${activeData.textColor} font-semibold`}
         >
           {activeData.subtitle}
         </motion.h3>
       </div>
 
       {/* The Straight Orbit Path & Orb */}
-      <div className="absolute left-0 top-3 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-white/10 to-transparent">
+      <div className="absolute left-0 top-3 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-white/15 to-transparent">
         {/* The gradually illuminating line trail behind the orb */}
         <motion.div 
-          className={`absolute left-0 top-0 w-full ${activeData.lineColor} opacity-50`}
+          className={`absolute left-0 top-0 w-full ${activeData.lineColor} opacity-60`}
           style={{ height: useTransform(orbProgress, [0, 1], ['0%', '100%']) }}
         />
         
@@ -811,26 +806,27 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
           className={`absolute left-[-2.5px] w-[6px] h-[6px] rounded-full shadow-[0_0_15px_rgba(255,255,255,1)] ${activeData.dotColor}`}
           style={{ top: useTransform(orbProgress, [0, 1], ['0%', '100%']) }}
         >
-          <div className={`absolute inset-0 w-full h-full rounded-full blur-[2px] ${activeData.dotColor}`} />
+          <div className={`absolute inset-0 w-full h-full rounded-full blur-[2px] ${activeData.dotColor} shadow-[0_0_12px_${activeData.textColor}]`} />
         </motion.div>
         
         {/* Local Background Reaction Glow */}
         <motion.div
-          className={`absolute left-[-150px] w-[300px] h-[300px] rounded-full blur-[80px] pointer-events-none mix-blend-screen opacity-10 ${activeData.dotColor}`}
+          className={`absolute left-[-150px] w-[300px] h-[300px] rounded-full blur-[80px] pointer-events-none mix-blend-screen opacity-15 ${activeData.dotColor}`}
           style={{ top: useTransform(orbProgress, [0, 1], ['0%', '100%']), y: '-50%' }}
         />
       </div>
 
-      {/* The Sentences */}
-      <div className="flex flex-col gap-6 text-[15px] md:text-[17px] font-secondary leading-[1.8] font-light text-[#94a3b8]">
-        {sentences.map((sentence, i) => {
-          const center = numSentences > 1 ? (i + 0.5) / numSentences : 0.5;
+      {/* The Paragraphs */}
+      <div className="flex flex-col gap-8 text-[15px] md:text-[17px] font-secondary leading-[1.8] font-light text-[#8ba2bd]">
+        {paragraphs.map((paragraph, i) => {
+          const center = numItems > 1 ? (i + 0.5) / numItems : 0.5;
           return (
-            <SentenceItem 
+            <ParagraphItem 
               key={i} 
-              sentence={sentence} 
+              paragraph={paragraph} 
               center={center} 
               orbProgress={orbProgress} 
+              textColor={activeData.textColor}
             />
           );
         })}
@@ -839,22 +835,22 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
   );
 };
 
-const SentenceItem = ({ sentence, center, orbProgress }) => {
-  // Orb is nearby when within +/- 0.15 of the sentence's center
-  const range = [Math.max(0, center - 0.2), center, Math.min(1, center + 0.2)];
+const ParagraphItem = ({ paragraph, center, orbProgress }) => {
+  // Orb is nearby when within +/- 0.25 of the paragraph's center to ensure smooth overlapping fades
+  const range = [Math.max(0, center - 0.25), center, Math.min(1, center + 0.25)];
   
-  const opacity = useTransform(orbProgress, range, [0.4, 1, 0.4]);
-  const color = useTransform(orbProgress, range, ['#94a3b8', '#ffffff', '#94a3b8']);
-  const y = useTransform(orbProgress, range, [4, 0, 4]);
-  const textShadow = useTransform(orbProgress, range, ['none', '0 0 15px rgba(255,255,255,0.15)', 'none']);
+  const opacity = useTransform(orbProgress, range, [0.35, 1, 0.35]);
+  const color = useTransform(orbProgress, range, ['#8ba2bd', '#ffffff', '#8ba2bd']);
+  const y = useTransform(orbProgress, range, [10, 0, 10]);
+  const textShadow = useTransform(orbProgress, range, ['none', '0 0 24px rgba(255,255,255,0.25)', 'none']);
 
   return (
-    <motion.span 
+    <motion.p 
       style={{ opacity, color, y, textShadow }}
-      className="inline-block transition-colors duration-500"
+      className="inline-block transition-colors duration-700 m-0"
     >
-      {sentence}
-    </motion.span>
+      {paragraph}
+    </motion.p>
   );
 };
 
