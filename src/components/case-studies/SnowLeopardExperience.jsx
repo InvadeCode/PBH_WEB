@@ -267,21 +267,8 @@ const StickyScrollytellingGrid = ({ content }) => {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.02)_0%,transparent_80%)]" />
         </div>
 
-        {/* ORBITAL RING — tight around the right-side content block */}
-        <div className="absolute top-1/2 right-[8%] -translate-y-1/2 w-[52vh] h-[52vh] rounded-full pointer-events-none flex items-center justify-center mix-blend-screen opacity-60">
-           {/* Single rotating cyan ring */}
-           <motion.div
-             animate={{ rotate: -360 }}
-             transition={{ duration: 200, repeat: Infinity, ease: "linear" }}
-             className="absolute w-full h-full rounded-full border border-cyan-400/30"
-           >
-              <div className="absolute top-[15%] left-[10%] w-[4px] h-[4px] bg-cyan-300 rounded-full shadow-[0_0_15px_#22d3ee]" />
-              <div className="absolute bottom-[20%] right-[5%] w-[3px] h-[3px] bg-indigo-300 rounded-full shadow-[0_0_10px_#818cf8]" />
-           </motion.div>
-        </div>
-
-        {/* GIANT BACKGROUND TYPOGRAPHY */}
-        <div className="absolute inset-0 z-0 flex items-center justify-start overflow-hidden pointer-events-none pl-6 md:pl-12 lg:pl-[8%]">
+        {/* GIANT BACKGROUND TYPOGRAPHY — clipped to left half so it never overlaps right content */}
+        <div className="absolute inset-0 z-0 flex items-center justify-start pointer-events-none pl-6 md:pl-12 lg:pl-[8%]" style={{ clipPath: 'inset(0 48% 0 0)', overflow: 'hidden' }}>
           <motion.div
             style={{ y: useTransform(scrollYProgress, [0, 1], ['-2%', '2%']) }}
             className="w-full flex items-center"
@@ -331,12 +318,26 @@ const StickyScrollytellingGrid = ({ content }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -40 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-[550px] pointer-events-auto relative"
+                className="w-full max-w-[550px] pointer-events-auto relative flex justify-center"
                 onMouseEnter={() => setIsOrbHovered(true)}
                 onMouseLeave={() => setIsOrbHovered(false)}
               >
-                
-                <div className="relative z-10 px-8 py-12">
+                {/* Orbital ring centred on this content block */}
+                <div
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none mix-blend-screen opacity-55"
+                  style={{ width: 'min(90vw, 620px)', height: 'min(90vw, 620px)' }}
+                >
+                  <motion.div
+                    animate={{ rotate: -360 }}
+                    transition={{ duration: 200, repeat: Infinity, ease: 'linear' }}
+                    className="absolute inset-0 rounded-full border border-cyan-400/30"
+                  >
+                    <div className="absolute top-[15%] left-[10%] w-[4px] h-[4px] bg-cyan-300 rounded-full shadow-[0_0_15px_#22d3ee]" />
+                    <div className="absolute bottom-[20%] right-[5%] w-[3px] h-[3px] bg-indigo-300 rounded-full shadow-[0_0_10px_#818cf8]" />
+                  </motion.div>
+                </div>
+
+                <div className="relative z-10 px-8 py-12 w-full">
                   <SpatialOrbitalText activeData={activeData} isHovered={isOrbHovered} />
                 </div>
               </motion.div>
@@ -762,9 +763,9 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
     return () => controls.stop();
   }, [isHovered, orbProgress]);
 
-  // Extract paragraphs (split by double newline) instead of jagged sentences
-  const paragraphs = activeData.paragraphs.flatMap(p => 
-    p.split(/\n\n/).map(s => s.trim()).filter(Boolean)
+  // Split on single or double newlines — Sanity text fields use \n between paragraphs
+  const paragraphs = activeData.paragraphs.flatMap(p =>
+    p.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0)
   );
 
   const numItems = paragraphs.length;
