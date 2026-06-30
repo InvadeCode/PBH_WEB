@@ -27,7 +27,7 @@ const getMediaAspect = (m) => {
   let ar = dim?.aspectRatio;
   if (!(typeof ar === 'number' && ar > 0) && dim?.width && dim?.height) ar = dim.width / dim.height;
   if (!(typeof ar === 'number' && ar > 0)) ar = 4 / 3;
-  return clamp(ar, 0.45, 1.4);
+  return clamp(ar, 0.45, 3.0);
 };
 
 const Panel = ({ media, index, step, radius, height, rotation, isActive, onHoverChange, theme }) => {
@@ -203,7 +203,8 @@ const MediaRibbon3D = ({ media, theme }) => {
       const height = clamp(w * 0.33, 320, 580);
       const minRadius = clamp(w * 0.55, 560, 900);
       const maxRadius = clamp(w * 2.5, 1800, 4200);
-      const approxPanelWidth = height * 1.4;
+      const maxAspect = Math.max(...items.map(m => getMediaAspect(m)), 1.4);
+      const approxPanelWidth = height * maxAspect;
       const minGap = 70;
       // Chord-based formula: (W+gap) / (2·sin(π/N)) guarantees the actual 3D
       // edge-to-edge separation equals minGap regardless of item count

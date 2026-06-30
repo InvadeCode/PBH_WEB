@@ -281,8 +281,7 @@ const StickyScrollytellingGrid = ({ content }) => {
                 exit={{ opacity: 0, filter: 'blur(16px)' }}
                 transition={{ 
                   opacity: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
-                  filter: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
-                  x: { duration: 20, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }
+                  filter: { duration: 1.5, ease: [0.16, 1, 0.3, 1] }
                 }}
                 className="absolute text-[16vw] md:text-[11vw] font-primary font-bold leading-none tracking-tight text-[#1e2e54] whitespace-nowrap origin-left mix-blend-screen"
               >
@@ -310,7 +309,7 @@ const StickyScrollytellingGrid = ({ content }) => {
           </div>
 
           {/* ASYMMETRICAL EDITORIAL CONTENT BLOCK (Spatial Orbital) */}
-          <div className="w-full h-full flex items-center lg:justify-end relative z-20 pointer-events-none lg:-mr-4 xl:-mr-8">
+          <div className="w-full h-full flex items-center lg:justify-end relative z-20 pointer-events-none lg:-mr-10 xl:-mr-16">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeData.id}
@@ -318,7 +317,7 @@ const StickyScrollytellingGrid = ({ content }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -40 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-[680px] pointer-events-auto relative lg:translate-x-6 xl:translate-x-12"
+                className="w-full max-w-[850px] pointer-events-auto relative lg:translate-x-6 xl:translate-x-12"
                 onMouseEnter={() => setIsOrbHovered(true)}
                 onMouseLeave={() => setIsOrbHovered(false)}
               >
@@ -761,7 +760,7 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
       {/* Ring centered directly on this text block */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none mix-blend-screen opacity-50"
-        style={{ width: '680px', height: '680px' }}
+        style={{ width: '850px', height: '850px' }}
       >
         <motion.div
           animate={{ rotate: -360 }}

@@ -6,8 +6,31 @@ export default defineType({
   title: 'Case Study',
   type: 'document',
   orderings: [orderRankOrdering],
+  preview: {
+    select: {
+      title: 'client',
+      sector: 'sector',
+      workPageOrder: 'workPageOrder',
+      legacyOrder: 'order',
+    },
+    prepare({title, sector, workPageOrder, legacyOrder}) {
+      const sequence = workPageOrder ?? legacyOrder
+      return {
+        title,
+        subtitle: sequence === undefined ? sector : `Work page #${sequence}${sector ? ` · ${sector}` : ''}`,
+      }
+    },
+  },
   fields: [
     orderRankField({ type: "caseStudy" }),
+    defineField({
+      name: 'workPageOrder',
+      title: 'Work Page Position',
+      type: 'number',
+      description:
+        'Controls the sequence on the Work page. Lower numbers appear first. Leave blank to use the legacy display order and then the draggable Sanity order.',
+      validation: (Rule) => Rule.integer().min(0),
+    }),
     defineField({
       name: 'challenge',
       title: 'Challenge',
@@ -128,9 +151,10 @@ export default defineType({
     }),
     defineField({
       name: 'order',
-      title: 'Display Order (Optional)',
+      title: 'Legacy Display Order (Fallback)',
       type: 'number',
-      description: 'Optional numeric override for case study sequencing. Lower numbers appear first. If blank, the draggable Sanity order is used; if that is blank too, source order is preserved.',
+      description:
+        'Older ordering field kept so the current Work page order does not jump. Use Work Page Position for new sequencing changes.',
     }),
     defineField({
       name: 'overview',
@@ -445,6 +469,13 @@ export default defineType({
           of: [
             {
               type: 'object',
+              validation: (Rule) =>
+                Rule.custom((value) => {
+                  if (!value?.videoUrl && !value?.videoFile) {
+                    return 'Add a Video Embed URL or Uploaded Video, or remove this empty video row.'
+                  }
+                  return true
+                }),
               fields: [
                 defineField({ name: 'videoTitle', title: 'Video Title', type: 'string' }),
                 defineField({ name: 'videoSubtitle', title: 'Video Subtitle', type: 'string' }),
@@ -515,6 +546,13 @@ export default defineType({
           of: [
             {
               type: 'object',
+              validation: (Rule) =>
+                Rule.custom((value) => {
+                  if (!value?.embedUrl && !value?.uploadedVideo) {
+                    return 'Add an Embed URL or Uploaded Video, or remove this empty video row.'
+                  }
+                  return true
+                }),
               fields: [
                 defineField({ name: 'videoTitle', title: 'Video Title', type: 'string' }),
                 defineField({ name: 'videoSubtitle', title: 'Video Subtitle', type: 'string' }),

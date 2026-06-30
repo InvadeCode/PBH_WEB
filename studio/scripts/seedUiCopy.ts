@@ -158,7 +158,7 @@ const skippedExactValues = new Set([
 ])
 
 const codeLikePattern =
-  /[{}<>;=]|\$\{|rgba|rgb\(|translate|rotate|scale|skew|cubic-bezier|drop-shadow|blur\(|shadow-|border-|text-|bg-|grid-|flex-|items-|justify-|rounded-|px-|py-|mx-|my-|mt-|mb-|pt-|pb-|gap-|w-|h-|min-|max-|z-|opacity-|duration-|ease-|hover:|focus:|md:|lg:|sm:|xl:|2xl:|data:image|https?:\/\/|\/clients\/|\/api\/|\.png|\.jpe?g|\.gif|\.webp|\.svg|\.mp4|\.pdf|\.xlsx|^[.#]|^\d+(px|vh|vw|rem|em|%)?$|^[A-Z]?\d{1,3}(:[A-Z]?\d{1,3})?$/i
+  /[{}<>;=]|\$\{|rgba|rgb\(|translate|rotate|scale|skew|cubic-bezier|drop-shadow|blur\(|shadow-|border-|text-|bg-|grid-|flex-|items-|justify-|rounded-|px-|py-|mx-|my-|mt-|mb-|pt-|pb-|gap-|w-|h-|min-|max-|z-|opacity-|duration-|ease-|hover:|focus:|md:|lg:|sm:|xl:|2xl:|data:image|https?:\/\/|\/clients\/|\/api\/|\.png|\.jpe?g|\.gif|\.webp|\.svg|\.mp4|\.pdf|\.xlsx|^[.#]|^-?(left|right|top|bottom)-\d+|^-?\d+%\s+(center|left|right|top|bottom)|^\d+(px|vh|vw|rem|em|%)?$|^[A-Z]?\d{1,3}(:[A-Z]?\d{1,3})?$/i
 
 const normalizeText = (value: unknown) =>
   typeof value === 'string' ? value.replace(/\s+/g, ' ').trim() : ''
@@ -308,7 +308,9 @@ async function run() {
   const extractedSources = new Set(extracted.map((entry) => entry.source))
   const manualEntries = existingEntries.filter((entry: any) => {
     const source = normalizeText(entry.source)
-    return source && !extractedSources.has(source)
+    const isPreviousGeneratedEntry =
+      typeof entry.key === 'string' && entry.key.startsWith('copy.') && typeof entry.location === 'string'
+    return source && !extractedSources.has(source) && !isPreviousGeneratedEntry
   })
 
   const uiCopy = [...seededEntries, ...manualEntries]
