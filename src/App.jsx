@@ -4263,7 +4263,7 @@ const WorkPage = ({ navigate }) => {
           <div data-pbh-copy-ignore onClick={() => navigate('work/' + caseStudies[0].id)} className="group relative border border-white/5 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
             <div className="md:w-1/2 relative overflow-hidden h-[300px] md:h-full bg-white/[0.02] w-full">
               {(caseStudies[0].bannerVideo || caseStudies[0].fullStory?.heroVideo || caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl) ? (
-                <CaseStudyMedia src={caseStudies[0].bannerVideo || caseStudies[0].fullStory?.heroVideo || caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl} alt={caseStudies[0].client} className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105" />
+                <CaseStudyMedia src={caseStudies[0].bannerVideo || caseStudies[0].fullStory?.heroVideo || caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl} alt={caseStudies[0].client} className="w-full h-full object-contain transition-transform duration-1000 ease-out group-hover:scale-105" />
               ) : (
                 <>
                   <div className="absolute inset-0 opacity-30 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105"  />
