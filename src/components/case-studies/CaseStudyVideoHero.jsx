@@ -30,6 +30,35 @@ const withAutoplay = (url) => {
   }
 };
 
+const DIRECT_VIDEO_RE = /\.(mp4|webm|ogg|mov)(?:$|\?)/i;
+const DIRECT_IMAGE_RE = /\.(gif|png|jpe?g|webp|avif|svg)(?:$|\?)/i;
+
+export const hasPlayableVideoSource = (video) => Boolean(
+  video?.uploadedVideoUrl ||
+  video?.videoFileUrl ||
+  video?.embedUrl ||
+  video?.videoUrl
+);
+
+export const hasVideoHeroSource = (videoHero) => Boolean(
+  hasPlayableVideoSource(videoHero) ||
+  videoHero?.videos?.some((video) => hasPlayableVideoSource(video))
+);
+
+const normalizeVideoEntry = (video) => {
+  if (!video || !hasPlayableVideoSource(video)) return null;
+  return video;
+};
+
+export const toComparableVideoUrl = (url) => {
+  if (!url) return '';
+  try {
+    return getSafeEmbedUrl(url).replace(/\/+$/, '').toLowerCase();
+  } catch {
+    return String(url).replace(/\/+$/, '').toLowerCase();
+  }
+};
+
 /** Kanti Sweets-style technical preface backdrop. */
 const KantiPrefaceBackdrop = ({ backgroundColor, reduced, theme }) => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -89,35 +118,41 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
   // Add all videos from videoHero.videos if they exist
   if (videoHero?.videos && videoHero.videos.length > 0) {
     videoHero.videos.forEach((v, idx) => {
-      heroVideos.push({
+      const normalizedVideo = normalizeVideoEntry({
         videoTitle: v.videoTitle || (idx === 0 ? directVideoTitle : undefined),
         videoSubtitle: v.videoSubtitle || (idx === 0 ? directVideoSubtitle : undefined),
         embedUrl: v.embedUrl,
         uploadedVideoUrl: v.uploadedVideoUrl,
         thumbnailUrl: v.thumbnailUrl || (idx === 0 ? directThumbnailUrl : undefined),
       });
+      if (normalizedVideo) heroVideos.push(normalizedVideo);
     });
-  } else if (directEmbedUrl || directUploadedVideoUrl || (videoHero?.enabled && (!allVideos || allVideos.length === 0))) {
+  } else if (directEmbedUrl || directUploadedVideoUrl) {
     // Fallback to flat fields (for synthetic videoHero objects)
-    // Only push an empty one if there are NO other videos, otherwise we get a blank "NO VIDEO SOURCE" circle
-    heroVideos.push({
+    const normalizedVideo = normalizeVideoEntry({
       videoTitle: directVideoTitle,
       videoSubtitle: directVideoSubtitle,
       embedUrl: directEmbedUrl,
       uploadedVideoUrl: directUploadedVideoUrl,
       thumbnailUrl: directThumbnailUrl,
     });
+    if (normalizedVideo) heroVideos.push(normalizedVideo);
   }
 
   if (allVideos && allVideos.length > 0) {
     allVideos.forEach((v, idx) => {
       const vEmbed = v.embedUrl || v.videoUrl;
       const vUpload = v.uploadedVideoUrl || v.videoFileUrl;
+      if (!vEmbed && !vUpload) return;
+      const vEmbedKey = toComparableVideoUrl(vEmbed);
+      const vUploadKey = toComparableVideoUrl(vUpload);
       
       // Prevent duplicating any video already in heroVideos
       const duplicateIndex = heroVideos.findIndex(hv => {
-        return (vEmbed && hv.embedUrl === vEmbed) || 
-               (vUpload && hv.uploadedVideoUrl === vUpload);
+        const heroEmbedKey = toComparableVideoUrl(hv.embedUrl || hv.videoUrl);
+        const heroUploadKey = toComparableVideoUrl(hv.uploadedVideoUrl || hv.videoFileUrl);
+        return (vEmbedKey && heroEmbedKey === vEmbedKey) || 
+               (vUploadKey && heroUploadKey === vUploadKey);
       });
       
       if (duplicateIndex !== -1) {
@@ -134,7 +169,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
         return;
       }
       
-      heroVideos.push({
+      const normalizedVideo = normalizeVideoEntry({
         ...v,
         videoTitle: v.videoTitle || (idx === 0 ? directVideoTitle : undefined),
         videoSubtitle: v.videoSubtitle || (idx === 0 ? directVideoSubtitle : undefined),
@@ -142,10 +177,11 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
         uploadedVideoUrl: vUpload,
         thumbnailUrl: v.thumbnailUrl || (idx === 0 ? directThumbnailUrl : undefined),
       });
+      if (normalizedVideo) heroVideos.push(normalizedVideo);
     });
   }
 
-  const enabled = videoHero?.enabled === true || heroVideos.length > 0;
+  const enabled = heroVideos.length > 0;
   const bgText = (backgroundText || heroVideos[0]?.videoTitle || fallbackName || 'CASE STUDY').toString();
   const normalizedBackdropText = bgText.replace(/\s+/g, ' ').trim();
   const normalizedFallbackName = (fallbackName || '').toString().replace(/\s+/g, ' ').trim();
@@ -197,7 +233,8 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
     if (!video) return null;
     
     const embedOrUrl = video.embedUrl || video.videoUrl || '';
-    const isDirectFile = /\.(mp4|webm|ogg|mov)(?:$|\?)/i.test(embedOrUrl);
+    const isDirectFile = DIRECT_VIDEO_RE.test(embedOrUrl);
+    const isDirectImage = DIRECT_IMAGE_RE.test(embedOrUrl);
     
     if (video.uploadedVideoUrl || video.videoFileUrl || isDirectFile) {
       const srcToUse = video.uploadedVideoUrl || video.videoFileUrl || embedOrUrl;
@@ -210,6 +247,17 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
           controls
           autoPlay
           playsInline
+        />
+      );
+    }
+
+    if (isDirectImage) {
+      return (
+        <CaseStudyMedia
+          src={embedOrUrl}
+          alt={video.videoTitle || 'Case study media'}
+          className="absolute inset-0 w-full h-full object-contain bg-black"
+          sizes="100vw"
         />
       );
     }
@@ -270,7 +318,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
           const vEmbedThumb = getEmbedThumbnailUrl(vEmbed);
           const vUpload = video.uploadedVideoUrl || video.videoFileUrl;
           
-          const isDirectFile = rawUrl && /\.(mp4|webm|ogg|mov)(?:$|\?)/i.test(rawUrl);
+          const isDirectFile = rawUrl && DIRECT_VIDEO_RE.test(rawUrl);
           const activeUploadSrc = vUpload || (isDirectFile ? rawUrl : null);
           const fallbackLabel = (backdropText || vTitle || fallbackName || 'Play').slice(0, 12);
 

@@ -52,7 +52,9 @@ export const orderCaseStudies = (items = [], referenceItems = []) => {
 
   return [...items]
     .map((item, sourceIndex) => {
-      const orderNumber = toOrderNumber(item.order);
+      const workPageOrder = toOrderNumber(item.workPageOrder);
+      const legacyOrder = toOrderNumber(item.order);
+      const orderNumber = workPageOrder ?? legacyOrder;
       const rank = typeof item.orderRank === 'string' && item.orderRank.trim() ? item.orderRank.trim() : null;
       const staticIndex = lookupReferenceIndex(item);
 

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
-import CaseStudyVideoHero from './CaseStudyVideoHero';
+import CaseStudyVideoHero, { hasVideoHeroSource, toComparableVideoUrl } from './CaseStudyVideoHero';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
 import CaseStudySectorPill from './CaseStudySectorPill';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
@@ -308,9 +308,8 @@ const ParamInnovationExperience = ({ navigate, project }) => {
   
   const cmsMedia = normalizeMediaItems(project?.fullStory?.media || project?.fullStory?.images, project?.client || 'Case study media');
 
-  // When `videoHero` is filled in Sanity (enabled = true), the CMS data takes over automatically.
-  // We no longer use a fallback demo; it only renders if Sanity data is explicitly provided.
-  const videoHeroData = project?.videoHero?.enabled ? project.videoHero : null;
+  // Render only when Sanity has a real video source; the enabled toggle is optional for legacy entries.
+  const videoHeroData = hasVideoHeroSource(project?.videoHero) ? project.videoHero : null;
 
   return (
     <div className="w-full min-h-screen font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
@@ -453,8 +452,23 @@ const ParamInnovationExperience = ({ navigate, project }) => {
       {/* ── 5.5 OPTIONAL VIDEO SECTION ── */}
       {(() => {
         const allVideos = [];
+        const heroVideoKeys = new Set([
+          toComparableVideoUrl(project?.videoHero?.embedUrl),
+          toComparableVideoUrl(project?.videoHero?.uploadedVideoUrl),
+          ...(project?.videoHero?.videos || []).flatMap((video) => [
+            toComparableVideoUrl(video?.embedUrl || video?.videoUrl),
+            toComparableVideoUrl(video?.uploadedVideoUrl || video?.videoFileUrl),
+          ]),
+        ].filter(Boolean));
+
+        const pushVideo = (video) => {
+          const sourceKey = toComparableVideoUrl(video.videoUrl || video.videoFileUrl);
+          if (sourceKey && heroVideoKeys.has(sourceKey)) return;
+          allVideos.push(video);
+        };
+
         if (project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) {
-          allVideos.push({
+          pushVideo({
             videoTitle: project.videoSection.videoTitle,
             videoSubtitle: project.videoSection.videoSubtitle,
             thumbnailUrl: project.videoSection.thumbnailUrl,
@@ -465,7 +479,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
         }
         if (project?.videoSection?.videos?.length > 0) {
           project.videoSection.videos.forEach(v => {
-            allVideos.push({
+            pushVideo({
               videoTitle: v.videoTitle,
               videoSubtitle: v.videoSubtitle,
               thumbnailUrl: v.thumbnailUrl,

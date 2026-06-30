@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
-import CaseStudyVideoHero from './CaseStudyVideoHero';
+import CaseStudyVideoHero, { hasVideoHeroSource, toComparableVideoUrl } from './CaseStudyVideoHero';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 import MediaRibbon3D from './MediaRibbon3D';
@@ -349,9 +349,6 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         {/* Content Container */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
-            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 md:mb-8 font-bold font-primary" style={{ color: theme.secondary }}>
-               {title}
-            </h3>
             <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
               {content}
             </p>
@@ -449,9 +446,8 @@ const AriseVenturesExperience = ({ navigate, project }) => {
   
   const cmsMedia = normalizeMediaItems(project?.fullStory?.media || project?.fullStory?.images, project?.client || 'Case study media');
 
-  // When `videoHero` is filled in Sanity (enabled = true), the CMS data takes over automatically.
-  // We no longer use a fallback demo; it only renders if Sanity data is explicitly provided.
-  const videoHeroData = project?.videoHero?.enabled ? project.videoHero : null;
+  // Render only when Sanity has a real video source; the enabled toggle is optional for legacy entries.
+  const videoHeroData = hasVideoHeroSource(project?.videoHero) ? project.videoHero : null;
 
   const clientStr = project?.client?.toLowerCase() || '';
   let activeTheme = palettes.default;
@@ -525,8 +521,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         </div>
       </section>
 
-      {/* ── 1.5 CASE STUDY VIDEO HERO (CMS-driven, reusable) ── */}
-      <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} theme={activeTheme} />
+
 
       {/* ── 2. DRAMATIC: ABOUT THE BRAND ── */}
       {project?.overview && (
@@ -611,8 +606,23 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 5.5 OPTIONAL VIDEO SECTION ── */}
       {(() => {
         const allVideos = [];
+        const heroVideoKeys = new Set([
+          toComparableVideoUrl(project?.videoHero?.embedUrl),
+          toComparableVideoUrl(project?.videoHero?.uploadedVideoUrl),
+          ...(project?.videoHero?.videos || []).flatMap((video) => [
+            toComparableVideoUrl(video?.embedUrl || video?.videoUrl),
+            toComparableVideoUrl(video?.uploadedVideoUrl || video?.videoFileUrl),
+          ]),
+        ].filter(Boolean));
+
+        const pushVideo = (video) => {
+          const sourceKey = toComparableVideoUrl(video.videoUrl || video.videoFileUrl);
+          if (sourceKey && heroVideoKeys.has(sourceKey)) return;
+          allVideos.push(video);
+        };
+
         if (project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) {
-          allVideos.push({
+          pushVideo({
             videoTitle: project.videoSection.videoTitle,
             videoSubtitle: project.videoSection.videoSubtitle,
             thumbnailUrl: project.videoSection.thumbnailUrl,
@@ -623,7 +633,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
         }
         if (project?.videoSection?.videos?.length > 0) {
           project.videoSection.videos.forEach(v => {
-            allVideos.push({
+            pushVideo({
               videoTitle: v.videoTitle,
               videoSubtitle: v.videoSubtitle,
               thumbnailUrl: v.thumbnailUrl,
@@ -645,6 +655,9 @@ const AriseVenturesExperience = ({ navigate, project }) => {
           />
         );
       })()}
+
+      {/* ── 5.8 MAIN VIDEO HERO ── */}
+      <CaseStudyVideoHero videoHero={videoHeroData} fallbackName={project?.client || 'Arise Ventures'} theme={activeTheme} />
 
       {/* ── 6. GALLERY (ANIMATED PARALLAX MASKS) ── */}
       {cmsMedia.length > 0 && (

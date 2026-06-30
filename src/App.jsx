@@ -2875,7 +2875,7 @@ const Header = ({ navigate, current }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     return (
-      <div className="relative w-full h-[280px] flex items-center justify-center perspective-[1000px] overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.02]">
+      <div className="relative w-full h-[340px] flex items-center justify-center perspective-[1000px] overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.02]">
         {items.map((cs, i) => {
           const offset = i - currentIndex;
           const absOffset = Math.abs(offset);
@@ -2890,7 +2890,7 @@ const Header = ({ navigate, current }) => {
               className={`absolute top-1/2 left-1/2 rounded-2xl overflow-hidden shadow-2xl cursor-pointer group ${isActive ? 'shadow-black/60 border border-white/10' : 'shadow-black/20'}`}
               initial={false}
               animate={{
-                x: `calc(-50% + ${offset * 120}px)`,
+                x: `calc(-50% + ${offset * 160}px)`,
                 y: '-50%',
                 scale: isActive ? 1 : Math.max(0.7, 1 - absOffset * 0.15),
                 rotateY: offset * -15,
@@ -2898,7 +2898,7 @@ const Header = ({ navigate, current }) => {
                 opacity: absOffset > 2 ? 0 : (isActive ? 1 : 0.4)
               }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              style={{ width: '220px', height: '240px', transformOrigin: 'center center' }}
+              style={{ width: '320px', height: '240px', transformOrigin: 'center center' }}
               onClick={(e) => {
                  if (!isActive) {
                    e.stopPropagation();
@@ -3652,7 +3652,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
     ];
 
     if (kantiSweetsClients.some(target => clientName.includes(target))) {
-      return <BackToRootsExperience navigate={navigate} project={project} />;
+      return <GenericStorytellingExperience navigate={navigate} project={project} />;
     }
 
     const legacyClients = [
@@ -3673,17 +3673,17 @@ const WorkDetailPage = ({ navigate, projectId }) => {
         case 'snow-leopard':
           return <SnowLeopardExperience navigate={navigate} project={project} />;
         case 'param':
-          return <ParamInnovationExperience navigate={navigate} project={project} />;
+          return <AriseVenturesExperience navigate={navigate} project={project} />;
         case 'back-to-roots':
-          return <BackToRootsExperience navigate={navigate} project={project} />;
+        case 'kanti-sweets':
+        case 'storytelling':
+          return <GenericStorytellingExperience navigate={navigate} project={project} />;
         case 'legacy':
           return <LegacyExperience navigate={navigate} project={project} palette={palette} />;
-        case 'storytelling':
-          return <BackToRootsExperience navigate={navigate} project={project} />;
       }
     }
 
-    return <BackToRootsExperience navigate={navigate} project={project} />;
+    return <GenericStorytellingExperience navigate={navigate} project={project} />;
   })();
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import CaseStudyVideoHero from './CaseStudyVideoHero';
+import CaseStudyVideoHero, { hasVideoHeroSource } from './CaseStudyVideoHero';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
 import CaseStudySectorPill from './CaseStudySectorPill';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
@@ -179,7 +179,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
 
       {/* ── CINEMATIC VIDEO HERO & ADDITIONAL VIDEOS ── */}
       {(() => {
-        const hasVideoHero = project?.videoHero?.enabled;
+        const hasVideoHero = project?.videoHero?.enabled || hasVideoHeroSource(project?.videoHero);
         
         const allVideos = [];
         if (project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) {

@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, useAnimationFrame, useMotionValue } fr
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import HTMLFlipBook from 'react-pageflip';
 import { GlobalContext } from '../../App';
-import CaseStudyVideoHero from './CaseStudyVideoHero';
+import CaseStudyVideoHero, { hasVideoHeroSource } from './CaseStudyVideoHero';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
 import CaseStudySectorPill from './CaseStudySectorPill';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
@@ -479,7 +479,7 @@ const GenericStorytellingExperience = ({ navigate, project }) => {
 
       {/* ── CINEMATIC VIDEO HERO & ADDITIONAL VIDEOS ── */}
       {(() => {
-        const hasVideoHero = project?.videoHero?.enabled;
+        const hasVideoHero = project?.videoHero?.enabled || hasVideoHeroSource(project?.videoHero);
         
         const allVideos = [];
         if (project?.videoSection?.videoUrl || project?.videoSection?.videoFileUrl) {
