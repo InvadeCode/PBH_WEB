@@ -8,8 +8,8 @@ import CaseStudySectorPill from './CaseStudySectorPill';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 
 const palette = {
-  bgDeep: '#030810',
-  panel: '#0a1830',
+  bgDeep: '#001525',
+  panel: '#002038',
   primary: '#00b8d9',
   secondary: '#7adcf0',
   blue: '#2a97d9',
@@ -27,13 +27,13 @@ const ChicAmbientBackground = () => (
       animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
       transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
       className="absolute top-[-20%] left-[-10%] w-[80vw] h-[80vw] rounded-full mix-blend-screen blur-[120px]"
-      style={{ background: `radial-gradient(circle, ${palette.primary}40 0%, transparent 60%)` }}
+      style={{ background: `radial-gradient(circle, ${palette.primary}90 0%, transparent 60%)` }}
     />
     <motion.div
-      animate={{ opacity: [0.2, 0.4, 0.2], scale: [1, 1.1, 1] }}
+      animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.1, 1] }}
       transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
       className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen blur-[120px]"
-      style={{ background: `radial-gradient(circle, ${palette.secondary}30 0%, transparent 60%)` }}
+      style={{ background: `radial-gradient(circle, ${palette.secondary}70 0%, transparent 60%)` }}
     />
   </div>
 );
@@ -73,7 +73,7 @@ const CreativeHeroReveal = ({ src, alt, aspectRatio }) => {
   const resolvedAspectRatio = aspectRatio || getUrlAspectRatio(src) || 16 / 9;
 
   return (
-    <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-[#0a1830]/70">
+    <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-[#002038]/70">
       <CaseStudyMedia
         src={src}
         alt={alt}
@@ -177,7 +177,7 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
       whileInView={{ clipPath: 'inset(0% 0 0 0)', scale: 1 }}
       viewport={{ once: true, margin: "-5%" }}
       transition={{ duration: 1.6, delay, ease: [0.25, 1, 0.5, 1] }}
-      className="w-full h-full relative group overflow-hidden bg-[#0a1830] flex items-center justify-center"
+      className="w-full h-full relative group overflow-hidden bg-[#002038] flex items-center justify-center"
     >
       <CaseStudyMedia
         src={src}
@@ -188,7 +188,7 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
       />
       
       {/* Creative Glassmorphism Overlay on Hover */}
-      <div className="absolute inset-0 bg-[#0a1830]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay" />
+      <div className="absolute inset-0 bg-[#002038]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay" />
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]">
         <div className="w-16 h-16 rounded-full backdrop-blur-xl bg-white/10 border border-white/20 flex items-center justify-center transform scale-50 group-hover:scale-100 transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_0_30px_rgba(255,255,255,0.1)]">
            <svg className="w-6 h-6 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -254,8 +254,8 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         </motion.div>
 
         {/* Ambient Edge Masking (Prevents graphics from hard-cutting at the top/bottom of the screen) */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#030810] to-transparent z-0 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#030810] to-transparent z-0 pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#001525] to-transparent z-0 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#001525] to-transparent z-0 pointer-events-none" />
         
         {/* Title Container */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
@@ -337,12 +337,12 @@ const ParamInnovationExperience = ({ navigate, project }) => {
                aspectRatio={heroAspectRatio}
              />
            ) : (
-             <div className="w-full h-full bg-[#0a1830]" />
+             <div className="w-full h-full bg-[#002038]" />
            )}
           <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 px-3 md:top-28">
             <CaseStudySectorPill
               sector={project?.sector}
-              className="border border-white/[0.16] bg-[#030810]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
+              className="border border-white/[0.16] bg-[#001525]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
             />
           </div>
         </div>
@@ -547,7 +547,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
                 const parallaxY = yOffsets[index % yOffsets.length];
                 
                 return (
-                  <div key={media.key} className={`${colSpan} ${rowSpan} rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-[#0a1830]`}>
+                  <div key={media.key} className={`${colSpan} ${rowSpan} rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-[#002038]`}>
                     <ParallaxImage 
                       src={media.url}
                       alt={media.alt || `Highlight 0${index + 1}`}

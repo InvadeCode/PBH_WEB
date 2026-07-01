@@ -245,7 +245,7 @@ const StickyScrollytellingGrid = ({ content }) => {
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         
         {/* SMOOTH DARKENING OVERLAY */}
-        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#000c14] to-[#00050e] transition-colors duration-1000" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#001e2e] to-[#00111e] transition-colors duration-1000" />
         
         {/* SUBTLE GRID OVERLAY */}
         <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)', backgroundSize: '80px 80px' }} />
@@ -497,24 +497,24 @@ const SnowLeopardExperience = ({ navigate, project }) => {
   };
 
   return (
-    <div className="min-h-screen w-full relative overflow-clip bg-[#00060e] text-[#F4F4F5] font-primary selection:bg-teal-500/30">
-      
+    <div className="min-h-screen w-full relative overflow-clip bg-[#001e2e] text-[#F4F4F5] font-primary selection:bg-teal-500/30">
+
       {/* --- AMBIENT MESH GRADIENT BACKGROUND --- */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-60">
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-80">
         <motion.div
           animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0], x: ['-10%', '10%', '-10%'] }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full bg-teal-900/30 mix-blend-screen blur-[120px]"
+          className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full bg-teal-500/40 mix-blend-screen blur-[120px]"
         />
         <motion.div
           animate={{ scale: [1, 1.5, 1], rotate: [0, -90, 0], y: ['-10%', '20%', '-10%'] }}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-cyan-800/20 mix-blend-screen blur-[100px]"
+          className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-cyan-500/35 mix-blend-screen blur-[100px]"
         />
         <motion.div
           animate={{ scale: [1, 1.3, 1], x: ['20%', '-20%', '20%'] }}
           transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[30%] left-[20%] w-[50vw] h-[50vw] rounded-full bg-sky-400/10 mix-blend-screen blur-[100px]"
+          className="absolute top-[30%] left-[20%] w-[50vw] h-[50vw] rounded-full bg-sky-300/25 mix-blend-screen blur-[100px]"
         />
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
       </div>
@@ -545,13 +545,13 @@ const SnowLeopardExperience = ({ navigate, project }) => {
                   transition: { duration: 10, ease: "easeOut" },
                 }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#00060e] via-[#00060e]/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#001e2e] via-[#001e2e]/40 to-transparent" />
             </div>
           )}
           <div className="pointer-events-none absolute left-1/2 top-5 z-20 -translate-x-1/2 px-3 md:top-6">
             <CaseStudySectorPill
               sector={project?.sector}
-              className="border border-white/15 bg-[#00060e]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
+              className="border border-white/15 bg-[#001e2e]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
             />
           </div>
         </div>
