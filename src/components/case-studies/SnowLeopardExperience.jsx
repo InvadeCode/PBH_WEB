@@ -321,7 +321,7 @@ const StickyScrollytellingGrid = ({ content }) => {
                 onMouseEnter={() => setIsOrbHovered(true)}
                 onMouseLeave={() => setIsOrbHovered(false)}
               >
-                <div className="relative z-10 px-8 py-12 w-full">
+                <div className="relative z-10 px-8 py-12 w-full rounded-[2rem] bg-[#050a15]/40 backdrop-blur-md shadow-2xl border border-white/5">
                   <SpatialOrbitalText activeData={activeData} isHovered={isOrbHovered} />
                 </div>
               </motion.div>
@@ -687,7 +687,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
           
           const mainVideoData = hasVideoHero ? project.videoHero : {
             enabled: true,
-            backgroundColor: '#010d54', // Match SnowLeopard bg
+            backgroundColor: 'transparent',
             backgroundText: project.client || 'Case Study',
             videoTitle: allVideos[0]?.videoTitle || 'Watch Video',
             videoSubtitle: allVideos[0]?.videoSubtitle || 'Experience the story in motion.',
@@ -817,7 +817,7 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
       </div>
 
       {/* The Paragraphs */}
-      <div className="flex flex-col gap-8 text-[16px] md:text-[17px] font-secondary leading-[1.8] font-light text-[#8ba2bd]">
+      <div className="flex flex-col gap-8 text-[16px] md:text-[17px] font-secondary leading-[1.8] font-normal text-[#cbd5e1]">
         {paragraphs.map((paragraph, i) => {
           const center = numItems > 1 ? (i + 0.5) / numItems : 0.5;
           return (
@@ -839,8 +839,8 @@ const ParagraphItem = ({ paragraph, center, orbProgress }) => {
   // Orb is nearby when within +/- 0.25 of the paragraph's center to ensure smooth overlapping fades
   const range = [Math.max(0, center - 0.25), center, Math.min(1, center + 0.25)];
   
-  const opacity = useTransform(orbProgress, range, [0.35, 1, 0.35]);
-  const color = useTransform(orbProgress, range, ['#8ba2bd', '#ffffff', '#8ba2bd']);
+  const opacity = useTransform(orbProgress, range, [0.5, 1, 0.5]);
+  const color = useTransform(orbProgress, range, ['#cbd5e1', '#ffffff', '#cbd5e1']);
   const y = useTransform(orbProgress, range, [10, 0, 10]);
   const textShadow = useTransform(orbProgress, range, ['none', '0 0 24px rgba(255,255,255,0.25)', 'none']);
 
