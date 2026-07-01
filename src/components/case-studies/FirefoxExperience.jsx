@@ -141,7 +141,7 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
           <ElegantFade delay={0.15} className="mb-10 md:mb-14">
             <div className="max-w-4xl">
               {body.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} className="text-white/90 font-normal text-[18px] md:text-[22px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
+                <p key={i} className="text-white/90 font-normal text-[20px] md:text-[26px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
                   {para.trim()}
                 </p>
               ))}
@@ -192,7 +192,7 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
           <ElegantFade delay={0.15} className="mt-10 md:mt-14">
             <div className="max-w-4xl">
               {body.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} className="text-white/90 font-normal text-[18px] md:text-[22px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
+                <p key={i} className="text-white/90 font-normal text-[20px] md:text-[26px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
                   {para.trim()}
                 </p>
               ))}
@@ -313,7 +313,7 @@ const UniverseCard = ({ title, description, images, index }) => {
             {title}
           </motion.h3>
           {description && (
-            <p className="text-white/70 font-normal text-[18px] md:text-[22px] leading-relaxed font-secondary">
+            <p className="text-white/70 font-normal text-[20px] md:text-[26px] leading-relaxed font-secondary">
               {description}
             </p>
           )}
@@ -423,7 +423,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
             </h3>
             <div className="space-y-6">
               {content.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} className="text-white/90 font-normal text-[18px] md:text-[22px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
+                <p key={i} className="text-white/90 font-normal text-[20px] md:text-[26px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
                   {para.trim()}
                 </p>
               ))}
@@ -553,7 +553,7 @@ const FirefoxExperience = ({ navigate, project }) => {
               Our Creative Strategy
             </h2>
             
-            <div className="space-y-4 text-white/90 font-secondary text-[18px] md:text-[22px] leading-relaxed md:leading-[1.6]">
+            <div className="space-y-4 text-white/90 font-secondary text-[20px] md:text-[26px] leading-relaxed md:leading-[1.6]">
               <p>Our research revealed that bicycles play a very different role in a child's life.</p>
               <p>Children use objects as storytelling tools. They create characters, missions, rules, and entire worlds around them.</p>
               <p>The bicycle wasn't simply something they rode.</p>
@@ -663,11 +663,11 @@ const FirefoxExperience = ({ navigate, project }) => {
           <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
             <ElegantFade className="z-20 w-full max-w-[800px] mx-auto mb-10 md:mb-14 text-center">
               <h2 className="text-white font-primary text-4xl md:text-5xl font-bold mb-6">Dreamer, Stargazer & Stellar</h2>
-              <p className="text-white/80 font-secondary text-[18px] md:text-[22px] leading-relaxed mb-10 md:mb-14">
+              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed mb-10 md:mb-14">
                 To translate the strategy into products, we created three distinct worlds within the lilFox universe.
               </p>
               <h3 className="text-white font-primary text-4xl md:text-5xl font-bold mb-4">Dreamer</h3>
-              <p className="text-white/80 font-secondary text-[18px] md:text-[22px] leading-relaxed">
+              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed">
                 A world of wonder, optimism, stars, clouds, and limitless imagination.
               </p>
             </ElegantFade>
@@ -686,7 +686,7 @@ const FirefoxExperience = ({ navigate, project }) => {
           <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
             <ElegantFade className="w-full max-w-[800px] mx-auto text-center mb-10 md:mb-14">
               <h3 className="text-white font-primary text-4xl md:text-5xl font-bold mb-4">Stargazer</h3>
-              <p className="text-white/80 font-secondary text-[18px] md:text-[22px] leading-relaxed">
+              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed">
                 A world inspired by curiosity, celestial discovery, and exploration.
               </p>
             </ElegantFade>
@@ -704,7 +704,7 @@ const FirefoxExperience = ({ navigate, project }) => {
           <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
             <ElegantFade className="w-full max-w-[800px] mx-auto text-center mb-10 md:mb-14">
               <h3 className="text-white font-primary text-4xl md:text-5xl font-bold mb-4">Stellar</h3>
-              <p className="text-white/80 font-secondary text-[18px] md:text-[22px] leading-relaxed">
+              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed">
                 A vibrant universe built around movement, adventure, and big dreams.
               </p>
             </ElegantFade>
@@ -724,7 +724,7 @@ const FirefoxExperience = ({ navigate, project }) => {
               <div className="text-white font-primary text-4xl md:text-5xl font-bold leading-relaxed max-w-4xl mx-auto mb-6">
                 <p>From bicycles to accessories, packaging, and future products, every element belonged to the same universe.</p>
               </div>
-              <div className="text-white/80 font-secondary text-[18px] md:text-[22px] leading-relaxed space-y-4 max-w-4xl mx-auto">
+              <div className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed space-y-4 max-w-4xl mx-auto">
                 <p>The goal wasn't to sell bicycles.</p>
                 <p>It was to create a platform for adventure.</p>
               </div>
