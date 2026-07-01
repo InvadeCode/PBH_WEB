@@ -3772,7 +3772,6 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       'bellavita',
       'chien de luxe',
       'earthy souls',
-      'firefox',
       'hero lectro',
       'leverage edu',
       'param innovation',
@@ -3786,6 +3785,10 @@ const WorkDetailPage = ({ navigate, projectId }) => {
 
     if (ariseClients.some(target => clientName.includes(target))) {
       return <AriseVenturesExperience navigate={navigate} project={project} />;
+    }
+
+    if (clientName.includes('firefox')) {
+      return <FirefoxExperience navigate={navigate} project={project} />;
     }
 
     const snowLeopardClients = [
@@ -3829,6 +3832,8 @@ const WorkDetailPage = ({ navigate, projectId }) => {
 
     if (project.template) {
       switch (project.template) {
+        case 'firefox':
+          return <FirefoxExperience navigate={navigate} project={project} />;
         case 'arise':
           return <AriseVenturesExperience navigate={navigate} project={project} />;
         case 'snow-leopard':
