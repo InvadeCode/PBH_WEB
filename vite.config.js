@@ -6,6 +6,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        hoistTransitiveImports: false,
         manualChunks: (id) => {
           if (!id.includes('node_modules')) return;
           if (id.includes('@sanity') || id.includes('@portabletext') || id.includes('stega')) return 'vendor-sanity';
