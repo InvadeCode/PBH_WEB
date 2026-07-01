@@ -1157,6 +1157,7 @@ const StrategicEngine = ({ navigate }) => {
   const [warnings, setWarnings] = useState([]);
   const [context, setContext] = useState({ depth: '', timeline: '', duration: 'Deep Dive- Branding (minimum 6 months)' });
   const [leadForm, setLeadForm] = useState({ name: '', email: '', phone: '', company: '' });
+  const [isSectorDropdownOpen, setIsSectorDropdownOpen] = useState(false);
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -2399,16 +2400,42 @@ const StrategicEngine = ({ navigate }) => {
               placeholder="e.g. PurpleBlue House"
             />
           </div>
-          <div>
+          <div className="relative z-50">
             <label className="block text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-3 font-primary">{finalSettings.assessmentPage?.industryInputLabel || 'Industry / Sector'}</label>
-            <select
-              value={leadForm.industry || ''}
-              onChange={(e) => setLeadForm({...leadForm, industry: e.target.value})}
-              className="w-full bg-black/40 border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all appearance-none"
+            <div 
+              onClick={() => setIsSectorDropdownOpen(!isSectorDropdownOpen)}
+              className="w-full bg-black/40 border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white font-secondary focus:outline-none hover:border-cyan-400 focus:bg-white/5 transition-all cursor-pointer flex justify-between items-center"
             >
-              <option value="" disabled>Select your sector</option>
-              {SECTORS.map((s, idx) => <option key={idx} value={s}>{s}</option>)}
-            </select>
+              <span className={leadForm.industry ? "text-white" : "text-white/50"}>{leadForm.industry || 'Select your sector'}</span>
+              <ChevronDown className={`w-5 h-5 text-white/50 transition-transform ${isSectorDropdownOpen ? 'rotate-180' : ''}`} />
+            </div>
+            
+            {isSectorDropdownOpen && (
+              <>
+                <div className="fixed inset-0 z-[90]" onClick={() => setIsSectorDropdownOpen(false)}></div>
+                <div className="absolute top-full left-0 mt-2 w-full md:top-0 md:left-[calc(100%+24px)] md:mt-0 md:w-[400px] bg-[#0a1028] border border-white/10 rounded-[16px] shadow-[0_30px_60px_rgba(0,0,0,0.8)] z-[100] overflow-hidden">
+                  <div className="px-5 py-4 border-b border-white/10 bg-white/[0.02]">
+                    <span className="text-[13px] text-white/50 uppercase tracking-widest font-primary">Select Sector</span>
+                  </div>
+                  <div className="max-h-[350px] overflow-y-auto custom-scrollbar py-2">
+                    {SECTORS.map((s, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          setLeadForm({...leadForm, industry: s});
+                          setIsSectorDropdownOpen(false);
+                        }}
+                        className={`w-full text-left px-5 py-3 hover:bg-white/5 transition-colors font-secondary text-[16px] md:text-[17px] font-light flex items-center justify-between ${leadForm.industry === s ? 'text-cyan-400 bg-white/[0.03]' : 'text-white/80'}`}
+                      >
+                        {s}
+                        {leadForm.industry === s && <Check className="w-4 h-4 text-cyan-400" />}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+            
             {leadForm.industry === 'Other' && (
               <input 
                 type="text" 
