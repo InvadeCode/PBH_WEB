@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
@@ -11,22 +11,14 @@ import observationMap from '../../assets/firefox/observation_map.png';
 import insightMapping from '../../assets/firefox/insight_mapping.png';
 import themeMapping from '../../assets/firefox/theme_mapping.png';
 import starGazerSketch from '../../assets/firefox/star_gazer_sketch.png';
-import sketches1 from '../../assets/firefox/sketches_1.png';
-import sketches2 from '../../assets/firefox/sketches_2.png';
-import sketches3 from '../../assets/firefox/sketches_3.png';
-import sketches4 from '../../assets/firefox/sketches_4.png';
-import dreamerBikesLeft from '../../assets/firefox/dreamer_bikes_left.png';
-import dreamerBikesRight from '../../assets/firefox/dreamer_bikes_right.png';
-import stargazerBikesLeft from '../../assets/firefox/stargazer_bikes_left.png';
-import stargazerBikesRight from '../../assets/firefox/stargazer_bikes_right.png';
-import stellarBikesLeft from '../../assets/firefox/stellar_bikes_left.png';
-import stellarBikesRight from '../../assets/firefox/stellar_bikes_right.png';
-import ecosystem1 from '../../assets/firefox/ecosystem_1.png';
-import ecosystem2 from '../../assets/firefox/ecosystem_2.png';
-import ecosystem3 from '../../assets/firefox/ecosystem_3.png';
+import sketchesCollage from '../../assets/firefox/sketches_collage.png';
+import dreamerBikes from '../../assets/firefox/dreamer_bikes.png';
+import stargazerBikes from '../../assets/firefox/stargazer_bikes.png';
+import stellarBikes from '../../assets/firefox/stellar_bikes.png';
+import ecosystemImage from '../../assets/firefox/ecosystem.png';
 import lifestyleGrid from '../../assets/firefox/lifestyle_grid.png';
 
-/* ── Arise Visual DNA (palette, utilities) ─────────────────────────── */
+/* ── Palette — warm amber/golden (Firefox × lilFox brand identity) ── */
 const palette = {
   bgDeep: '#0d0600',
   panel: '#1e0e00',
@@ -35,20 +27,20 @@ const palette = {
   text: '#FFF9EE',
 };
 
-/* Ambient background glows — identical to Arise */
+/* Ambient background glows */
 const ChicAmbientBackground = () => (
   <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
     <motion.div
       animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
       transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
       className="absolute top-[-20%] left-[-10%] w-[80vw] h-[80vw] rounded-full mix-blend-screen blur-[120px]"
-      style={{ background: `radial-gradient(circle, ${palette.primary}40 0%, transparent 60%)` }}
+      style={{ background: `radial-gradient(circle, ${palette.primary}90 0%, transparent 60%)` }}
     />
     <motion.div
       animate={{ opacity: [0.2, 0.4, 0.2], scale: [1, 1.1, 1] }}
       transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
       className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen blur-[120px]"
-      style={{ background: `radial-gradient(circle, ${palette.secondary}30 0%, transparent 60%)` }}
+      style={{ background: `radial-gradient(circle, ${palette.secondary}70 0%, transparent 60%)` }}
     />
   </div>
 );
@@ -73,7 +65,6 @@ const ParallaxImage = ({ src, alt, item, delay = 0, yOffset = 20, className = ''
   const smooth = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
   const y = useTransform(smooth, [0, 1], [-yOffset, yOffset]);
 
-  // Reduced massive scaling and clipping constraints to address user feedback "reduce the size of the images"
   return (
     <motion.div
       ref={ref}
@@ -87,6 +78,8 @@ const ParallaxImage = ({ src, alt, item, delay = 0, yOffset = 20, className = ''
         <CaseStudyMedia
           item={item}
           alt={alt || item?.alt}
+          loading="lazy"
+          decoding="async"
           className={`w-full h-auto object-cover transition-transform duration-[2s] opacity-95 group-hover:opacity-100 ${imageClassName}`}
           sizes="(min-width: 1024px) 50vw, 100vw"
           motionProps={{ style: { y: useTransform(smooth, [0, 1], [-yOffset / 2, yOffset / 2]) } }}
@@ -95,6 +88,8 @@ const ParallaxImage = ({ src, alt, item, delay = 0, yOffset = 20, className = ''
         <CaseStudyMedia
           src={src}
           alt={alt}
+          loading="lazy"
+          decoding="async"
           className={`w-full h-auto object-cover transition-transform duration-[2s] opacity-95 group-hover:opacity-100 ${imageClassName}`}
           sizes="(min-width: 1024px) 50vw, 100vw"
           motionProps={{ style: { y: useTransform(smooth, [0, 1], [-yOffset / 2, yOffset / 2]) } }}
@@ -105,11 +100,11 @@ const ParallaxImage = ({ src, alt, item, delay = 0, yOffset = 20, className = ''
   );
 };
 
-/* ── Section Title — consistent typographic hierarchy ────────────── */
+/* ── Section Title ────────────────────────────────────────────────── */
 const SectionTitle = ({ children, label, className = '' }) => (
   <ElegantFade className={className}>
     {label && (
-      <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#f5c240]/10 text-[#f5c240] text-[16px] md:text-[17px] font-bold tracking-widest uppercase backdrop-blur-md font-primary">
+      <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#f5c240]/10 text-[#f5c240] text-[17px] md:text-[19px] font-bold tracking-widest uppercase backdrop-blur-md font-primary">
         <span className="w-2 h-2 rounded-full bg-[#f5c240] animate-pulse shadow-[0_0_10px_#f5c240]" />
         {label}
       </div>
@@ -117,7 +112,7 @@ const SectionTitle = ({ children, label, className = '' }) => (
     <motion.h2
       animate={{ backgroundPosition: ['200% center', '-200% center'] }}
       transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-      className="font-primary text-4xl md:text-5xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(232,128,10,0.3)]"
+      className="font-primary text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(232,128,10,0.3)]"
       style={{
         backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #e8800a 45%, #f5c240 50%, #e8800a 55%, #FFFFFF 70%, #FFFFFF 100%)',
         backgroundSize: '300% auto',
@@ -141,7 +136,7 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
           <ElegantFade delay={0.15} className="mb-10 md:mb-14">
             <div className="max-w-4xl">
               {body.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} className="text-white/90 font-normal text-[20px] md:text-[26px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
+                <p key={i} className="text-white/90 font-normal text-[17px] md:text-[19px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
                   {para.trim()}
                 </p>
               ))}
@@ -152,39 +147,18 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
         {isVisualFirst && title && <SectionTitle label={label} className="mb-8 md:mb-10">{title}</SectionTitle>}
 
         {images.length > 0 && (
-          <div className="flex flex-col gap-16 md:gap-24 w-full">
-            {images.map((img, i) => {
-              const isReversed = i % 2 !== 0;
-              return (
-                <ElegantFade key={img?._key || img?.url || i} delay={i * 0.1}>
-                  {images.length === 1 ? (
-                    <div className="max-w-5xl mx-auto w-full">
-                      <ParallaxImage
-                        src={img?.url}
-                        item={img?.url ? img : undefined}
-                        alt={img?.alt || `Section image ${i + 1}`}
-                        yOffset={15}
-                        imageClassName={imageClassName || "object-contain max-h-[700px] w-auto mx-auto"}
-                        className="bg-transparent shadow-none ring-0"
-                      />
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
-                      <div className={`lg:col-span-9 ${isReversed ? 'lg:col-start-1' : 'lg:col-start-4'}`}>
-                        <ParallaxImage
-                          src={img?.url}
-                          item={img?.url ? img : undefined}
-                          alt={img?.alt || `Section image ${i + 1}`}
-                          yOffset={15}
-                          imageClassName={imageClassName || "object-contain max-h-[700px] w-auto mx-auto"}
-                          className="bg-transparent shadow-none ring-0"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </ElegantFade>
-              );
-            })}
+          <div className={`grid gap-6 md:gap-8 ${images.length === 1 ? 'grid-cols-1 max-w-5xl mx-auto' : 'grid-cols-1 md:grid-cols-2'}`}>
+            {images.map((img, i) => (
+              <ElegantFade key={img?._key || img?.url || i} delay={i * 0.1}>
+                <ParallaxImage
+                  src={img?.url}
+                  item={img?.url ? img : undefined}
+                  alt={img?.alt || `Section image ${i + 1}`}
+                  yOffset={15}
+                  imageClassName={imageClassName}
+                />
+              </ElegantFade>
+            ))}
           </div>
         )}
 
@@ -192,7 +166,7 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
           <ElegantFade delay={0.15} className="mt-10 md:mt-14">
             <div className="max-w-4xl">
               {body.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} className="text-white/90 font-normal text-[20px] md:text-[26px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
+                <p key={i} className="text-white/90 font-normal text-[17px] md:text-[19px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
                   {para.trim()}
                 </p>
               ))}
@@ -206,105 +180,16 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
   );
 };
 
-/* ── Aesthetic Horizontal Carousel ─────────────────────────────────── */
-const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) => {
-  const containerRef = useRef(null);
-  const firstSetRef = useRef(null);
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    let raf;
-    let last = performance.now();
-    const speed = 0.25; // Slower, more elegant speed
-    const loop = (time) => {
-      const dt = time - last;
-      last = time;
-      const el = containerRef.current;
-      if (el && !paused) {
-        el.scrollLeft += speed * (dt / 16);
-        const w = firstSetRef.current?.offsetWidth || 0;
-        if (w > 0 && el.scrollLeft >= w) el.scrollLeft -= w; // seamless wrap
-      }
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
-  }, [paused]);
-
-  const renderCard = (img, idx, prefix) => (
-    <div 
-      key={`${prefix}-${idx}`} 
-      className="flex-none w-[60vw] max-w-[220px] md:max-w-[260px] relative group shrink-0 px-4 py-16"
-    >
-      {/* 
-        Hover wrapper:
-        Very smooth scaling and vertical shift for the sophisticated pop-up effect.
-      */}
-      <div className="w-full relative rounded-2xl transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-[1.15] group-hover:-translate-y-6 z-10 group-hover:z-50">
-        
-        {/* Glow effect behind the card */}
-        <div className="absolute inset-0 bg-white/20 blur-3xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-[900ms] ease-out -z-10" />
-
-        <div className="w-full rounded-2xl overflow-hidden bg-white/5 border border-white/10 group-hover:border-white/30 transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] shadow-[0_10px_30px_rgba(0,0,0,0.3)] group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.6)]">
-          <img
-            src={img.url || img}
-            alt={img.alt || `Carousel item ${idx + 1}`}
-            loading="lazy"
-            decoding="async"
-            className="w-full aspect-[4/5] object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-105"
-            draggable="false"
-          />
-        </div>
-      </div>
-      
-      {/* Title fades in below image on hover */}
-      {img.alt && (
-        <div className="absolute bottom-4 left-0 right-0 text-center opacity-0 translate-y-4 transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:opacity-100 group-hover:translate-y-0 z-50 pointer-events-none">
-          <p className="text-white/80 font-secondary text-xs md:text-sm tracking-[0.25em] uppercase drop-shadow-md">
-            {img.alt}
-          </p>
-        </div>
-      )}
-    </div>
-  );
+/* ── Universe Card — alternating text/image blocks ────────────────── */
+const UniverseCard = ({ title, description, imageUrl, index }) => {
+  const isReversed = index % 2 !== 0;
 
   return (
-    <div 
-      className="relative w-full overflow-hidden"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onTouchStart={() => setPaused(true)}
-      onTouchEnd={() => setPaused(false)}
-    >
-      <div 
-        ref={containerRef}
-        className="flex overflow-x-auto items-center eco-hide-scrollbar"
-        style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
-      >
-        <div ref={firstSetRef} className="flex gap-2 md:gap-4 pr-2 md:pr-4 shrink-0">
-          {images.map((img, idx) => renderCard(img, idx, 'a'))}
-        </div>
-        <div className="flex gap-2 md:gap-4 pr-2 md:pr-4 shrink-0" aria-hidden="true">
-          {images.map((img, idx) => renderCard(img, idx, 'b'))}
-        </div>
-      </div>
-      
-      {/* Edge Fades for elegance */}
-      <div className="absolute left-0 top-0 bottom-0 w-8 md:w-48 bg-gradient-to-r from-[#0d0600] via-[#0d0600]/80 to-transparent pointer-events-none z-40" />
-      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-48 bg-gradient-to-l from-[#0d0600] via-[#0d0600]/80 to-transparent pointer-events-none z-40" />
-      <style dangerouslySetInnerHTML={{ __html: '.eco-hide-scrollbar::-webkit-scrollbar{display:none}' }} />
-    </div>
-  );
-};
-
-/* ── Universe Card — text block + carousel ────────────────────────── */
-const UniverseCard = ({ title, description, images, index }) => {
-  return (
-    <div className="mb-24 md:mb-40 last:mb-0">
-      <ElegantFade>
-        <div className="px-6 md:px-12 mb-12 md:mb-16 text-center max-w-4xl mx-auto">
+    <ElegantFade className="mb-16 md:mb-24 last:mb-0">
+      <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center`}>
+        <div className={`lg:col-span-5 ${isReversed ? 'lg:order-2' : 'lg:order-1'}`}>
           <motion.h3
-            className="font-primary text-4xl md:text-5xl text-white mb-6 font-medium tracking-tight"
+            className="font-primary text-3xl md:text-5xl text-white mb-6 font-medium tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -313,125 +198,24 @@ const UniverseCard = ({ title, description, images, index }) => {
             {title}
           </motion.h3>
           {description && (
-            <p className="text-white/70 font-normal text-[20px] md:text-[26px] leading-relaxed font-secondary">
+            <p className="text-white/85 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary">
               {description}
             </p>
           )}
         </div>
-      </ElegantFade>
-      
-      <ElegantFade delay={0.2}>
-        <div className="px-6 md:px-12 max-w-[1400px] mx-auto">
-          <div className={`grid grid-cols-1 ${images.length > 1 ? 'md:grid-cols-2' : ''} gap-8 md:gap-12`}>
-            {images.map((img, idx) => (
-              <div 
-                key={idx} 
-                className="w-full rounded-[2rem] bg-gradient-to-br from-white/5 to-transparent overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 hover:scale-[1.01] hover:border-white/20 flex items-center justify-center relative group"
-              >
-                <img
-                  src={img.url || img}
-                  alt={img.alt || `${title} view ${idx + 1}`}
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-auto object-contain p-6 md:p-12 transition-transform duration-1000 group-hover:scale-105"
-                  draggable="false"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </ElegantFade>
-    </div>
-  );
-};
-
-/* ── Dramatic Scrollytelling Sections ─────────────────────────────────────── */
-const AboutGraphic = () => (
-  <>
-    <motion.div 
-      animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
-      transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#e8800a]/30 opacity-60 shadow-[inset_0_0_100px_rgba(232,128,10,0.2)] mix-blend-screen pointer-events-none"
-    />
-    <motion.div 
-      animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
-      transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#f5c240]/20 opacity-50 shadow-[0_0_80px_rgba(245,194,64,0.1)] mix-blend-screen pointer-events-none"
-    />
-  </>
-);
-
-const ProblemGraphic = () => (
-  <>
-    <motion.div 
-      animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.4, 0.1] }} 
-      transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] bg-[#f5c240] mix-blend-screen blur-[120px] pointer-events-none"
-    />
-    <motion.div 
-      animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }} 
-      transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] bg-[#e8800a] mix-blend-screen blur-[140px] pointer-events-none"
-    />
-  </>
-);
-
-const DramaticSection = ({ title, content, motionGraphic }) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const spring = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-  
-  const titleOpacity = useTransform(spring, [0, 0.15], [1, 0]);
-  const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
-  const titleY = useTransform(spring, [0, 0.15], [0, -30]);
-  
-  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.9, 1], [0, 1, 1, 0]);
-  const contentY = useTransform(spring, [0.05, 0.25, 0.9, 1], [30, 0, 0, -30]);
-  const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
-
-  return (
-    <section ref={ref} className="h-[200vh] relative w-full z-10">
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
-        
-        <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-          {motionGraphic}
-        </motion.div>
-
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#0d0600] to-transparent z-0 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0d0600] to-transparent z-0 pointer-events-none" />
-        
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-          <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="flex flex-col items-center justify-center w-full px-6 text-center pointer-events-auto">
-            <motion.h2 
-              animate={{ backgroundPosition: ['200% center', '-200% center'] }}
-              transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-4xl md:text-5xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(232,128,10,0.5)]" 
-              style={{ 
-                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #e8800a 45%, #f5c240 50%, #e8800a 55%, #FFFFFF 70%, #FFFFFF 100%)',
-                backgroundSize: '300% auto',
-              }}
-            >
-              {title}
-            </motion.h2>
-          </motion.div>
-        </div>
-        
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-          <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
-            <h3 className="text-xl md:text-2xl font-primary tracking-tight text-[#f5c240] mb-6 md:mb-8">
-               {title}
-            </h3>
-            <div className="space-y-6">
-              {content.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} className="text-white/90 font-light text-[20px] md:text-[26px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
-                  {para.trim()}
-                </p>
-              ))}
-            </div>
-          </motion.div>
+        <div className={`lg:col-span-7 ${isReversed ? 'lg:order-1' : 'lg:order-2'}`}>
+          {imageUrl && (
+            <ParallaxImage
+              src={imageUrl}
+              alt={title}
+              yOffset={20}
+              imageClassName="object-contain max-h-[600px] w-auto mx-auto"
+              className="bg-transparent shadow-none ring-0"
+            />
+          )}
         </div>
       </div>
-    </section>
+    </ElegantFade>
   );
 };
 
@@ -450,8 +234,6 @@ const FirefoxExperience = ({ navigate, project }) => {
   // Resolve CMS-hosted image by alt/caption match, falling back to local import
   const getCmsImage = (altText, localFallback) => {
     if (!project) return localFallback;
-
-    // Check in fullStory images
     if (project.fullStory?.images?.length > 0) {
       const match = project.fullStory.images.find(img =>
         img.alt?.toLowerCase() === altText.toLowerCase() ||
@@ -459,20 +241,6 @@ const FirefoxExperience = ({ navigate, project }) => {
       );
       if (match?.url) return match.url;
     }
-
-    // Check in firefoxSections
-    if (project.firefoxSections?.length > 0) {
-      for (const section of project.firefoxSections) {
-        if (section.images?.length > 0) {
-          const match = section.images.find(img =>
-            img.alt?.toLowerCase() === altText.toLowerCase() ||
-            img.caption?.toLowerCase() === altText.toLowerCase()
-          );
-          if (match?.url) return match.url;
-        }
-      }
-    }
-
     return localFallback;
   };
 
@@ -482,7 +250,7 @@ const FirefoxExperience = ({ navigate, project }) => {
 
       {/* Navigation */}
       <div className="fixed top-0 left-0 w-full z-50 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex items-center gap-3 pointer-events-none">
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[16px] md:text-[17px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
       </div>
@@ -498,18 +266,16 @@ const FirefoxExperience = ({ navigate, project }) => {
           ) : (
             <div className="w-full h-full bg-[#1e0e00]" />
           )}
-          <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 px-3 md:top-28">
-            <CaseStudySectorPill
-              sector={project?.sector}
-              className="border border-white/[0.16] bg-[#0d0600]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
-            />
-          </div>
+          <CaseStudySectorPill
+            sector={project?.sector}
+            className="absolute left-5 top-5 z-20 border border-white/15 bg-black/35 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.25)] backdrop-blur-md md:left-8 md:top-8"
+          />
         </div>
 
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {(project?.tags || ['Product Graphics', 'Illustration', 'Visual Strategy']).map((tag, i) => (
-              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[12px] md:text-[13px] tracking-[0.4em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
+              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[17px] md:text-[19px] tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
                 {tag}
               </span>
             ))}
@@ -519,7 +285,7 @@ const FirefoxExperience = ({ navigate, project }) => {
             <motion.h1
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-4xl md:text-5xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+              className="font-primary text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
               style={{
                 backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #f5c240 45%, #e8800a 50%, #f5c240 55%, #FFFFFF 70%, #FFFFFF 100%)',
                 backgroundSize: '300% auto',
@@ -532,52 +298,27 @@ const FirefoxExperience = ({ navigate, project }) => {
       </section>
 
       {/* ── 2. INTRO ── */}
-      <DramaticSection
+      <EditorialSection
         title="Designing for Untamed Imaginations"
-        content={`Firefox approached us to design graphics for a new range of children's bicycles. The brief sounded simple. The opportunity wasn't.\n\nAs we explored the category, we realised children don't experience bicycles the way adults do. Adults see products. Children see possibilities. A bicycle can become a spaceship, a dragon rider, a superhero vehicle, or a ticket to another world.\n\nThat insight transformed the project.\n\nWhat began as a graphics assignment evolved into the creation of lilFox, a children's brand built around imagination, storytelling, and adventure.`}
-        motionGraphic={<AboutGraphic />}
+        body={`Firefox approached us to design graphics for a new range of children's bicycles. The brief sounded simple. The opportunity wasn't.\n\nAs we explored the category, we realised children don't experience bicycles the way adults do. Adults see products. Children see possibilities. A bicycle can become a spaceship, a dragon rider, a superhero vehicle, or a ticket to another world.\n\nThat insight transformed the project.\n\nWhat began as a graphics assignment evolved into the creation of lilFox, a children's brand built around imagination, storytelling, and adventure.`}
+        images={[]}
       />
 
       {/* ── 3. CHALLENGE ── */}
-      <DramaticSection
+      <EditorialSection
         title="Creating the lilFox Universe"
-        content={`Rather than designing a product range under Firefox, we set out to create a world with its own personality, language, and visual identity.\n\nThis led to the creation of lilFox as a standalone children's brand where imagination became the organising principle behind every touchpoint.\n\nFrom bicycles to accessories, packaging, and future products, every element belonged to the same universe.\n\nThe goal wasn't to sell bicycles.\n\nIt was to create a platform for adventure.`}
-        motionGraphic={<ProblemGraphic />}
+        body={`Rather than designing a product range under Firefox, we set out to create a world with its own personality, language, and visual identity.\n\nThis led to the creation of lilFox as a standalone children's brand where imagination became the organising principle behind every touchpoint.\n\nFrom bicycles to accessories, packaging, and future products, every element belonged to the same universe.\n\nThe goal wasn't to sell bicycles.\n\nIt was to create a platform for adventure.`}
+        images={[]}
       />
 
-      {/* ── 4. OUR CREATIVE STRATEGY ── */}
-      <section className="relative w-full z-10 py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto">
-        <div className="max-w-4xl mx-auto text-center mb-16 md:mb-20">
-          <ElegantFade delay={0.1}>
-            <h2 className="font-primary text-4xl md:text-5xl font-bold text-white mb-8 md:mb-10 tracking-tight">
-              Our Creative Strategy
-            </h2>
-            
-            <div className="space-y-4 text-white/90 font-secondary text-[20px] md:text-[26px] leading-relaxed md:leading-[1.6]">
-              <p>Our research revealed that bicycles play a very different role in a child's life.</p>
-              <p>Children use objects as storytelling tools. They create characters, missions, rules, and entire worlds around them.</p>
-              <p>The bicycle wasn't simply something they rode.</p>
-              <p>It was something they imagined through.</p>
-            </div>
-          </ElegantFade>
-        </div>
-          
-        <ElegantFade delay={0.2} className="w-full flex justify-center">
-          <div className="relative w-full max-w-[1000px] aspect-[2/1] md:aspect-[2.2/1] overflow-hidden bg-white/5 rounded-xl border border-white/10 shadow-2xl p-4 md:p-6">
-            {/* Pushing the image up to crop out the baked-in text while keeping the map visible */}
-            <div className="w-full h-full relative overflow-hidden rounded-lg">
-              <img
-                src={getCmsImage('Observation Map', observationMap)}
-                alt="Observation Map Diagram"
-                loading="lazy"
-                decoding="async"
-                className="absolute left-0 w-full h-auto -top-[25%] md:-top-[28%]"
-                draggable="false"
-              />
-            </div>
-          </div>
-        </ElegantFade>
-      </section>
+      {/* ── 4. STRATEGY ── */}
+      <EditorialSection
+        title="Our Creative Strategy"
+        label="Strategy"
+        body={`Our research revealed that bicycles play a very different role in a child's life.\n\nIt wasn't just a vehicle to get from point A to B.\n\nIt was something they imagined through.`}
+        images={[{ url: getCmsImage('Observation Map', observationMap), alt: 'Observation Map' }]}
+        imageClassName="object-contain max-h-[500px]"
+      />
 
       {/* ── 5. INSIGHT MAPPING ── */}
       <EditorialSection
@@ -597,163 +338,66 @@ const FirefoxExperience = ({ navigate, project }) => {
         imageClassName="object-contain max-h-[500px]"
       />
 
-      {/* ── 7. DESIGNING THROUGH SCI ART ── */}
-      <section className="w-full relative z-10 py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto">
-        
-        {/* Intro Text */}
-        <div className="max-w-4xl mx-auto text-center mb-16 md:mb-20">
-          <ElegantFade>
-            <p className="text-white font-secondary text-[18px] md:text-[24px] leading-relaxed md:leading-[1.6]">
-              Using our SciArt approach, we combined behavioural observations with creative exploration to understand how imagination shapes childhood experiences.
-            </p>
-          </ElegantFade>
-        </div>
+      {/* ── 7. SCIART ── */}
+      <EditorialSection
+        title="Designing Through SciArt"
+        body={`At PBH, we call our approach SciArt.\n\nFor lilFox, that meant combining observation with imagination.\n\nWe studied how children interact with objects, how they create stories, how curiosity develops, and how fantasy becomes a tool for understanding the world.\n\nEvery concept had to work within real manufacturing constraints, frame geometries, production requirements, and decal placement limitations.\n\nThrough multiple iterations, we developed graphic systems that balanced storytelling with practicality.\n\nThe same thinking extended beyond the bicycle itself into accessories, packaging, manuals, merchandise, and future product concepts, creating a cohesive experience across the entire ecosystem.`}
+        images={[
+          { url: getCmsImage('Star Gazer Sketch', starGazerSketch), alt: 'Star Gazer Sketch' },
+          { url: getCmsImage('Sketches Collage', sketchesCollage), alt: 'Sketches Collage' },
+        ]}
+        imageClassName="object-contain max-h-[400px]"
+      />
 
-        {/* Standalone Star Gazer Image */}
-        <ElegantFade delay={0.2} className="w-full flex justify-center mb-16 md:mb-24">
-          <div className="w-full max-w-[1000px] bg-white rounded-xl shadow-2xl overflow-hidden p-6 md:p-10 border border-white/10">
-            <img
-              src={getCmsImage('Star Gazer Sketch', starGazerSketch)}
-              alt="Star Gazer Sketch"
-              loading="lazy"
-              decoding="async"
-              className="w-full h-auto object-contain drop-shadow-md"
-              draggable="false"
+      {/* ── 8. UNIVERSE BREAKDOWN ── */}
+      <section className="relative w-full z-10">
+        <div className="py-12 md:py-20 px-6 md:px-12 max-w-[1400px] mx-auto">
+          <SectionTitle label="The Universe" className="mb-8 md:mb-10">Dreamer, Stargazer & Stellar</SectionTitle>
+          <div className="mb-16">
+            <p className="text-white/90 font-normal text-[17px] md:text-[19px] leading-relaxed font-secondary max-w-4xl">
+              To translate the strategy into products, we created three distinct worlds within the lilFox universe.
+            </p>
+          </div>
+
+          <div className="space-y-12">
+            <UniverseCard
+              title="Dreamer"
+              description="A world of wonder, optimism, stars, clouds, and limitless imagination."
+              imageUrl={getCmsImage('Dreamer', dreamerBikes)}
+              index={0}
+            />
+            <UniverseCard
+              title="Stargazer"
+              description="A world inspired by curiosity, celestial discovery, and exploration."
+              imageUrl={getCmsImage('Stargazer', stargazerBikes)}
+              index={1}
+            />
+            <UniverseCard
+              title="Stellar"
+              description="A vibrant universe built around movement, adventure, and big dreams."
+              imageUrl={getCmsImage('Stellar', stellarBikes)}
+              index={2}
             />
           </div>
-        </ElegantFade>
-
-        {/* 4-Image Sketches Masonry Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-start">
-          {/* Left Column */}
-          <div className="flex flex-col gap-6 md:gap-10">
-            <ElegantFade delay={0.1}>
-              <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={sketches1} alt="Sketch 1" loading="lazy" decoding="async" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
-              </div>
-            </ElegantFade>
-            <ElegantFade delay={0.3}>
-              <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={sketches3} alt="Sketch 3" loading="lazy" decoding="async" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
-              </div>
-            </ElegantFade>
-          </div>
-          
-          {/* Right Column */}
-          <div className="flex flex-col gap-6 md:gap-10 md:pt-16">
-            <ElegantFade delay={0.2}>
-              <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={getCmsImage('Sketch 2', sketches2)} alt="Sketch 2" loading="lazy" decoding="async" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
-              </div>
-            </ElegantFade>
-            <ElegantFade delay={0.4}>
-              <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={getCmsImage('Sketch 4', sketches4)} alt="Sketch 4" loading="lazy" decoding="async" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
-              </div>
-            </ElegantFade>
-          </div>
         </div>
       </section>
 
-      {/* ── 8. UNIVERSE BREAKDOWN & ECOSYSTEM ── */}
-      <section className="relative w-full z-10 py-16 md:py-24">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-8">
-          
-          {/* Dreamer */}
-          <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
-            <ElegantFade className="z-20 w-full max-w-[800px] mx-auto mb-10 md:mb-14 text-center">
-              <h2 className="text-white font-primary text-4xl md:text-5xl font-bold mb-6">Dreamer, Stargazer & Stellar</h2>
-              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed mb-10 md:mb-14">
-                To translate the strategy into products, we created three distinct worlds within the lilFox universe.
-              </p>
-              <h3 className="text-white font-primary text-4xl md:text-5xl font-bold mb-4">Dreamer</h3>
-              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed">
-                A world of wonder, optimism, stars, clouds, and limitless imagination.
-              </p>
-            </ElegantFade>
-            
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
-              <ElegantFade delay={0.1}>
-                <img src={getCmsImage('Dreamer visual 1', dreamerBikesLeft)} alt="Dreamer visual 1" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
-              </ElegantFade>
-              <ElegantFade delay={0.2}>
-                <img src={getCmsImage('Dreamer visual 2', dreamerBikesRight)} alt="Dreamer visual 2" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
-              </ElegantFade>
-            </div>
-          </div>
-
-          {/* Stargazer */}
-          <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
-            <ElegantFade className="w-full max-w-[800px] mx-auto text-center mb-10 md:mb-14">
-              <h3 className="text-white font-primary text-4xl md:text-5xl font-bold mb-4">Stargazer</h3>
-              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed">
-                A world inspired by curiosity, celestial discovery, and exploration.
-              </p>
-            </ElegantFade>
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-              <ElegantFade delay={0.1}>
-                <img src={getCmsImage('Stargazer visual 1', stargazerBikesLeft)} alt="Stargazer visual 1" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
-              </ElegantFade>
-              <ElegantFade delay={0.2}>
-                <img src={getCmsImage('Stargazer visual 2', stargazerBikesRight)} alt="Stargazer visual 2" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
-              </ElegantFade>
-            </div>
-          </div>
-
-          {/* Stellar */}
-          <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
-            <ElegantFade className="w-full max-w-[800px] mx-auto text-center mb-10 md:mb-14">
-              <h3 className="text-white font-primary text-4xl md:text-5xl font-bold mb-4">Stellar</h3>
-              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed">
-                A vibrant universe built around movement, adventure, and big dreams.
-              </p>
-            </ElegantFade>
-            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-              <ElegantFade delay={0.1}>
-                <img src={getCmsImage('Stellar visual 1', stellarBikesLeft)} alt="Stellar visual 1" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
-              </ElegantFade>
-              <ElegantFade delay={0.2}>
-                <img src={getCmsImage('Stellar visual 2', stellarBikesRight)} alt="Stellar visual 2" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
-              </ElegantFade>
-            </div>
-          </div>
-
-          {/* Ecosystem */}
-          <div className="relative w-full flex flex-col items-center">
-            <ElegantFade className="w-full mb-10 md:mb-14 text-center">
-              <div className="text-white font-primary text-4xl md:text-5xl font-bold leading-relaxed max-w-4xl mx-auto mb-6">
-                <p>From bicycles to accessories, packaging, and future products, every element belonged to the same universe.</p>
-              </div>
-              <div className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed space-y-4 max-w-4xl mx-auto">
-                <p>The goal wasn't to sell bicycles.</p>
-                <p>It was to create a platform for adventure.</p>
-              </div>
-            </ElegantFade>
-            <div className="w-full flex flex-col items-center gap-6">
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-                <ElegantFade delay={0.1}>
-                  <img src={getCmsImage('Ecosystem visual 1', ecosystem1)} alt="Ecosystem visual 1" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
-                </ElegantFade>
-                <ElegantFade delay={0.2}>
-                  <img src={getCmsImage('Ecosystem visual 2', ecosystem2)} alt="Ecosystem visual 2" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
-                </ElegantFade>
-              </div>
-              <ElegantFade delay={0.3} className="w-full flex justify-center">
-                <div className="w-full md:w-1/2">
-                  <img src={getCmsImage('Ecosystem visual 3', ecosystem3)} alt="Ecosystem visual 3" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
-                </div>
-              </ElegantFade>
-            </div>
-          </div>
-
-        </div>
-      </section>
+      {/* ── 9. ECOSYSTEM ── */}
+      <EditorialSection
+        title=""
+        body=""
+        images={[{ url: getCmsImage('Ecosystem', ecosystemImage), alt: 'Ecosystem accessories and packaging' }]}
+        layoutVariant="visual-first"
+        imageClassName="object-contain max-h-[600px]"
+      />
 
       {/* ── 10. OUTCOME ── */}
-      <DramaticSection 
+      <EditorialSection
         title="Outcome: More Than a Bicycle"
-        content={`What started as a graphics project became a scalable children's brand.\n\nA visual language.\n\nA storytelling framework.\n\nAn expandable ecosystem of products and experiences.\n\nMost importantly, it transformed the bicycle from a mobility product into a catalyst for imagination.\n\nFirefox came to us to design bicycles.\n\nWe helped create a world where imagination could ride along.`}
-        motionGraphic={<ProblemGraphic />}
+        label="Impact"
+        body={`What started as a graphics project became a scalable children's brand.\n\nA visual language.\n\nA storytelling framework.\n\nAn expandable ecosystem of products and experiences.\n\nMost importantly, it transformed the bicycle from a mobility product into a catalyst for imagination.\n\nFirefox came to us to design bicycles.\n\nWe helped create a world where imagination could ride along.`}
+        images={[{ url: getCmsImage('Lifestyle Grid', lifestyleGrid), alt: 'Kids enjoying the bicycles' }]}
+        imageClassName="object-contain max-h-[500px]"
       />
 
       {/* ── GALLERY CAROUSEL ── */}
@@ -761,7 +405,7 @@ const FirefoxExperience = ({ navigate, project }) => {
         <section className="relative w-full z-10 overflow-hidden">
           <div className="pb-20 w-full relative">
             <ElegantFade className="mb-12 pb-6 px-6 md:px-12 max-w-[1400px] mx-auto">
-              <h2 className="font-primary text-4xl md:text-5xl text-white tracking-tight">
+              <h2 className="font-primary text-5xl md:text-7xl lg:text-8xl text-white tracking-tight">
                 {project?.deliverablesHeading || 'Ecosystem Highlights'}
               </h2>
             </ElegantFade>
@@ -776,10 +420,10 @@ const FirefoxExperience = ({ navigate, project }) => {
       <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10">
         <div className="max-w-[1200px] mx-auto">
           <ElegantFade>
-            <p className="text-[12px] md:text-[13px] tracking-[0.4em] uppercase text-[#f5c240] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
+            <p className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#f5c240] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
             <motion.h2
               onClick={() => navigate('work')}
-              className="font-primary text-4xl md:text-5xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"
+              className="font-primary text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"
             >
               <ArrowLeft className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20" /> {SITE_SETTINGS?.csAllProjects || 'All Case Studies'}
             </motion.h2>
