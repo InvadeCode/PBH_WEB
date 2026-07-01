@@ -2119,7 +2119,7 @@ const StrategicEngine = ({ navigate }) => {
               />
               <div className="w-2.5 h-2.5 rounded-full z-10" style={{ backgroundColor: palette.accent, boxShadow: `0 0 15px ${palette.accent}` }} />
             </div>
-            <h3 className="t-label text-white drop-shadow-md pt-1">
+            <h3 className="text-[13px] md:text-[15px] font-medium uppercase tracking-widest text-white drop-shadow-md pt-1 font-primary">
               Live Blueprint
             </h3>
           </div>
@@ -2142,7 +2142,7 @@ const StrategicEngine = ({ navigate }) => {
             {/* 1. CURRENT STATE */}
             <div className="group relative">
               <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }} className="absolute -left-10 top-1 w-[6px] h-[6px] rounded-full bg-white border z-10" style={{ borderColor: palette.primary, boxShadow: `0 0 12px ${palette.primary}` }} />
-              <div className="text-[11px] font-bold uppercase tracking-[0.25em] mb-3 font-primary flex items-center gap-2 drop-shadow-md text-white">
+              <div className="text-[13px] md:text-[15px] font-medium uppercase tracking-widest mb-3 font-primary flex items-center gap-2 drop-shadow-md text-white">
                 <Terminal className="w-4 h-4" style={{ color: palette.primary }} />
                 System State
               </div>
@@ -2164,10 +2164,10 @@ const StrategicEngine = ({ navigate }) => {
                       className="relative z-10"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <div className="text-[17px] md:text-[19px] text-white/70 font-bold uppercase tracking-widest font-secondary">Active Profile</div>
-                        <div className="text-[9px] font-secondary text-white/40 tracking-wider">ID: {(Array.isArray(answers.stage) && answers.stage.length > 0) ? answers.stage[0].id : 'SYS-001'}</div>
+                        <div className="text-[17px] md:text-[19px] text-white font-primary tracking-tight">Active Profile</div>
+                        <div className="text-[13px] md:text-[15px] font-secondary text-white/40 tracking-widest uppercase">ID: {(Array.isArray(answers.stage) && answers.stage.length > 0) ? answers.stage[0].id : 'SYS-001'}</div>
                       </div>
-                      <div className="text-[14px] font-semibold text-white font-secondary tracking-wide leading-snug drop-shadow-sm">{(Array.isArray(answers.stage) && answers.stage.length > 0) ? answers.stage.map(s => s.label).join(', ') : 'Evaluating profile metrics...'}</div>
+                      <div className="text-[17px] md:text-[19px] font-light text-white/70 font-secondary leading-snug drop-shadow-sm">{(Array.isArray(answers.stage) && answers.stage.length > 0) ? answers.stage.map(s => s.label).join(', ') : 'Evaluating profile metrics...'}</div>
                     </motion.div>
                   ) : (
                     <motion.div 
@@ -2186,7 +2186,7 @@ const StrategicEngine = ({ navigate }) => {
             {/* 2. STRATEGIC GAPS */}
             <div className="group relative">
               <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} className="absolute -left-10 top-1 w-[6px] h-[6px] rounded-full bg-white border z-10" style={{ borderColor: palette.orange, boxShadow: `0 0 12px ${palette.orange}` }} />
-              <div className="text-[11px] font-bold uppercase tracking-[0.25em] mb-3 font-primary flex items-center gap-2 text-white drop-shadow-md">
+              <div className="text-[13px] md:text-[15px] font-medium uppercase tracking-widest mb-3 font-primary flex items-center gap-2 text-white drop-shadow-md">
                 <AlertCircle className="w-4 h-4" style={{ color: palette.orange }} />
                 Strategic Gaps
               </div>
@@ -2208,7 +2208,7 @@ const StrategicEngine = ({ navigate }) => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ delay: i * 0.1, type: "spring", stiffness: 200 }}
-                        className="px-4 py-2.5 text-[12px] font-bold uppercase tracking-[0.15em] rounded-[10px] font-secondary flex items-center gap-2 group/chip cursor-default" 
+                        className="px-4 py-2 text-[13px] md:text-[15px] font-medium uppercase tracking-widest rounded-[8px] font-primary flex items-center gap-2 group/chip cursor-default" 
                         style={{ 
                           backgroundColor: hexToRgba(palette.orange, 0.2), 
                           color: '#FFF', 
@@ -2223,7 +2223,7 @@ const StrategicEngine = ({ navigate }) => {
                     )) : (
                       <motion.span 
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                        className="text-[12px] font-semibold text-white/50 tracking-widest uppercase font-secondary flex items-center gap-3"
+                        className="text-[13px] md:text-[15px] font-medium text-white/50 tracking-widest uppercase font-primary flex items-center gap-3"
                       >
                         <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: palette.orange }}/>
                         Analyzing Vulnerabilities...
@@ -2237,7 +2237,7 @@ const StrategicEngine = ({ navigate }) => {
             {/* 3. DELIVERABLES SCOPE */}
             <div className="group relative">
               <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity, delay: 1 }} className="absolute -left-10 top-1 w-[6px] h-[6px] rounded-full bg-white border border-white/80 shadow-[0_0_10px_rgba(255,255,255,0.5)] z-10" />
-              <div className="text-[11px] text-white font-bold uppercase tracking-[0.25em] mb-3 font-primary flex items-center gap-2 drop-shadow-md">
+              <div className="text-[13px] md:text-[15px] font-medium text-white uppercase tracking-widest mb-3 font-primary flex items-center gap-2 drop-shadow-md">
                 <Layers className="w-4 h-4" style={{ color: palette.blue }} />
                 Active Directives
               </div>
@@ -2279,7 +2279,7 @@ const StrategicEngine = ({ navigate }) => {
                 ) : (
                   <div className="h-full flex flex-col items-center justify-center text-center py-10 opacity-70">
                     <Target className="w-10 h-10 mb-5 text-white/30" />
-                    <div className="text-[12px] font-bold text-white/50 uppercase tracking-widest font-secondary flex items-center gap-2">
+                    <div className="text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest font-primary flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-white/40 animate-pulse"/>
                       Standby for Directives
                     </div>
@@ -2293,11 +2293,11 @@ const StrategicEngine = ({ navigate }) => {
               <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity, delay: 1.5 }} className="absolute -left-10 top-10 w-[6px] h-[6px] rounded-full bg-white border z-10" style={{ borderColor: palette.green, boxShadow: `0 0 12px ${palette.green}` }} />
               <div className="bg-gradient-to-br border border-white/20 rounded-[16px] p-8 shadow-[0_20px_40px_rgba(0,0,0,0.3)] flex items-center justify-between backdrop-blur-xl border-t-white/30" >
                 <div>
-                  <div className="text-[11px] font-bold uppercase tracking-[0.25em] mb-2 font-primary flex items-center gap-2 text-white">
+                  <div className="text-[13px] md:text-[15px] font-medium uppercase tracking-widest mb-2 font-primary flex items-center gap-2 text-white">
                     <Activity className="w-4 h-4" style={{ color: palette.green }} />
                     System Health
                   </div>
-                  <div className="text-[16px] font-bold text-white/90 tracking-widest font-secondary drop-shadow-md">STRATEGIC COMPLETENESS</div>
+                  <div className="text-[17px] md:text-[19px] font-bold text-white/90 tracking-widest font-secondary drop-shadow-md">STRATEGIC COMPLETENESS</div>
                 </div>
                 
                 <div className="relative w-28 h-28 flex items-center justify-center">
@@ -2325,7 +2325,7 @@ const StrategicEngine = ({ navigate }) => {
                       key={completeness}
                       initial={{ scale: 0.5, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      className="text-xl md:text-2xl font-bold text-white font-secondary drop-shadow-md"
+                      className="text-[17px] md:text-[19px] font-bold text-white font-secondary drop-shadow-md"
                     >
                       {completeness}%
                     </motion.span>
@@ -2345,28 +2345,28 @@ const StrategicEngine = ({ navigate }) => {
     // 0: Opening Question (Replacing Welcome Splash)
     <div key="s0" className="flex flex-col justify-center h-full text-left w-full mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.phase1Label || 'Phase 1 / Discovery'} (0/{N_QUIZ})</div>
-        <h2 className="text-xl md:text-2xl font-light mb-4 font-primary">{finalSettings.assessmentPage?.welcomeTitle || "Let's start with the basics."}</h2>
+        <div className="text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.phase1Label || 'Phase 1 / Discovery'} (0/{N_QUIZ})</div>
+        <h2 className="text-3xl md:text-5xl font-light mb-4 font-primary leading-tight">{finalSettings.assessmentPage?.welcomeTitle || "Let's start with the basics."}</h2>
         <p className="text-[17px] md:text-[19px] text-white/50 mb-10 font-secondary max-w-2xl">{finalSettings.assessmentPage?.welcomeText || "Before we map your strategic gaps, please tell us who we are building this scope for."}</p>
         
         <div className="space-y-6 max-w-xl">
           <div>
-            <label className="block text-[17px] md:text-[19px] font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">{finalSettings.assessmentPage?.companyInputLabel || 'Brand / Business Name'}</label>
+            <label className="block text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-3 font-primary">{finalSettings.assessmentPage?.companyInputLabel || 'Brand / Business Name'}</label>
             <input 
               type="text" 
               value={leadForm.company}
               onChange={(e) => setLeadForm({...leadForm, company: e.target.value})}
-              className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all"
+              className="w-full bg-black/40 border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all"
               placeholder="e.g. PurpleBlue House"
             />
           </div>
           <div>
-            <label className="block text-[17px] md:text-[19px] font-medium text-white/50 uppercase tracking-widest mb-2 font-primary">{finalSettings.assessmentPage?.industryInputLabel || 'Industry / Sector'}</label>
+            <label className="block text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-3 font-primary">{finalSettings.assessmentPage?.industryInputLabel || 'Industry / Sector'}</label>
             <input 
               type="text" 
               value={leadForm.industry || ''}
               onChange={(e) => setLeadForm({...leadForm, industry: e.target.value})}
-              className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all"
+              className="w-full bg-black/40 border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all"
               placeholder="e.g. Technology, Fashion, Real Estate"
             />
           </div>
@@ -2392,10 +2392,10 @@ const StrategicEngine = ({ navigate }) => {
       return (
       <div key={`q${i}`} className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
         <FadeUp>
-          <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.phase1Label || 'Phase 1 / Discovery'} ({i + 1}/{N_QUIZ})</div>
-          <h2 className="text-xl md:text-2xl font-light mb-4 font-primary">{q.title}</h2>
-          {isMultiSelect && <p className="text-[17px] md:text-[19px] text-cyan-400 mb-8 font-secondary">{finalSettings.assessmentPage?.multiSelectHint || 'Select all that apply.'}</p>}
-          {!isMultiSelect && <p className="text-[17px] md:text-[19px] text-white/40 mb-8 font-secondary">{q.hint || finalSettings.assessmentPage?.singleSelectHint || 'Select the most accurate statement.'}</p>}
+          <div className="text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.phase1Label || 'Phase 1 / Discovery'} ({i + 1}/{N_QUIZ})</div>
+          <h2 className="text-3xl md:text-5xl font-light mb-4 font-primary leading-tight">{q.title}</h2>
+          {isMultiSelect && <p className="text-[17px] md:text-[19px] text-cyan-400 mb-8 font-secondary font-light">{finalSettings.assessmentPage?.multiSelectHint || 'Select all that apply.'}</p>}
+          {!isMultiSelect && <p className="text-[17px] md:text-[19px] text-white/40 mb-8 font-secondary font-light">{q.hint || finalSettings.assessmentPage?.singleSelectHint || 'Select the most accurate statement.'}</p>}
           
           <StaggerGroup className="space-y-3 w-full max-w-3xl">
             {q.options.map((opt, j) => {
@@ -2410,9 +2410,9 @@ const StrategicEngine = ({ navigate }) => {
                     className="w-full text-left p-5 rounded-[12px] border transition-all duration-300 flex items-center gap-4 font-secondary hover:translate-x-1"
                     style={{ borderColor: isSelected ? palette.primary : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.primary, 0.1) : 'rgba(255,255,255,0.02)', color: isSelected ? 'white' : 'rgba(255,255,255,0.6)' }}
                   >
-                    <span className="font-secondary italic opacity-40 text-xl md:text-2xl w-6 shrink-0">0{j + 1}</span>
+                    <span className="font-secondary italic opacity-40 text-[17px] md:text-[19px] w-6 shrink-0">0{j + 1}</span>
                     <span className="flex-1">
-                      <span className="text-xl md:text-2xl font-light block">{opt.label}</span>
+                      <span className="text-[17px] md:text-[19px] font-light block">{opt.label}</span>
                       {opt.desc && <span className="text-[17px] md:text-[19px] text-white/40 mt-1 block font-light leading-snug">{opt.desc}</span>}
                     </span>
                     {isMultiSelect && isSelected && <Check className="w-5 h-5 shrink-0" style={{ color: palette.primary }} />}
@@ -2461,9 +2461,9 @@ const StrategicEngine = ({ navigate }) => {
     // N+1: Diagnosis Result
     <div key="diag" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4" /> {finalSettings.assessmentPage?.diagPhaseLabel || 'Discovery Insights'}</div>
-        <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">{finalSettings.assessmentPage?.diagTitle || 'Your brand opportunity areas.'}</h2>
-        <p className="text-white/50 font-light mb-12 text-xl md:text-2xl font-secondary max-w-3xl">{finalSettings.assessmentPage?.diagPrefixText || 'Based on your responses, we recommend building your brand through'} <strong className="text-white">{clusters.join(' & ')}</strong>. Your suggested blueprint has been pre-selected below.</p>
+        <div className="text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4" /> {finalSettings.assessmentPage?.diagPhaseLabel || 'Discovery Insights'}</div>
+        <h2 className="text-3xl md:text-5xl font-light mb-6 font-primary leading-tight">{finalSettings.assessmentPage?.diagTitle || 'Your brand opportunity areas.'}</h2>
+        <p className="text-[17px] md:text-[19px] text-white/50 font-light mb-12 font-secondary max-w-3xl">{finalSettings.assessmentPage?.diagPrefixText || 'Based on your responses, we recommend building your brand through'} <strong className="text-white">{clusters.join(' & ')}</strong>. Your suggested blueprint has been pre-selected below.</p>
         <StaggerGroup className="grid sm:grid-cols-2 gap-4 mb-12 w-full max-w-4xl">
           {routes.map(r => {
             const rColor = palette[ROUTES_INFO[r].type] || palette.primary;
@@ -2498,9 +2498,9 @@ const StrategicEngine = ({ navigate }) => {
     // N+3: Deliverables Selection
     <div key="delivSel" className="flex flex-col h-full w-full py-10 text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.detailsPhaseLabel || 'Phase 3 / Details'}</div>
-        <h2 className="text-xl md:text-2xl font-light mb-2 font-primary">{finalSettings.assessmentPage?.buildScopeTitle || 'Your Suggested PBH Blueprint'}</h2>
-        <p className="text-white/50 font-light mb-6 font-secondary">{finalSettings.assessmentPage?.buildScopeText || 'Based on your responses, we have pre-selected the routes and deliverables that may be most relevant to your brand. You can remove anything that does not feel relevant.'}</p>
+        <div className="text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.detailsPhaseLabel || 'Phase 3 / Details'}</div>
+        <h2 className="text-3xl md:text-5xl font-light mb-2 font-primary leading-tight">{finalSettings.assessmentPage?.buildScopeTitle || 'Your Suggested PBH Blueprint'}</h2>
+        <p className="text-[17px] md:text-[19px] text-white/50 font-light mb-6 font-secondary">{finalSettings.assessmentPage?.buildScopeText || 'Based on your responses, we have pre-selected the routes and deliverables that may be most relevant to your brand. You can remove anything that does not feel relevant.'}</p>
         {(() => {
           const dId = answers['q6_duration']?.id;
           const msgs = {
@@ -2528,7 +2528,7 @@ const StrategicEngine = ({ navigate }) => {
                       <div key={li.id} className="bg-white/[0.01] border border-white/5 rounded-[12px] w-full overflow-hidden">
                         <div className="bg-[#010D54] py-4 px-6 border-b border-white/10 mb-6 flex justify-between items-center gap-4">
                           <div>
-                            <h5 className="font-medium text-white text-xl md:text-2xl font-primary">{li.name}</h5>
+                            <h5 className="font-medium text-white text-[17px] md:text-[19px] font-primary">{li.name}</h5>
                             {li.desc && <p className="text-white/50 text-[17px] md:text-[19px] font-secondary mt-1 font-light">{li.desc}</p>}
                           </div>
                           <button 
@@ -2595,12 +2595,12 @@ const StrategicEngine = ({ navigate }) => {
     // N+4: Context
     <div key="ctxSel" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.execPhaseLabel || 'Phase 4 / Execution'}</div>
-        <h2 className="text-xl md:text-2xl font-light mb-10 font-primary">{finalSettings.assessmentPage?.projectContextTitle || 'Project Context.'}</h2>
+        <div className="text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.execPhaseLabel || 'Phase 4 / Execution'}</div>
+        <h2 className="text-3xl md:text-5xl font-light mb-10 font-primary leading-tight">{finalSettings.assessmentPage?.projectContextTitle || 'Project Context.'}</h2>
         <div className="space-y-6 w-full mb-12 max-w-3xl">
           <div className="w-full">
-            <label className="block text-xl md:text-2xl font-medium text-white mb-6 font-secondary">{finalSettings.assessmentPage?.commencementLabel || 'what is your expected commencement date?'}</label>
-            <select value={context.duration} onChange={e => setContext({ ...context, duration: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
+            <label className="block text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-3 font-primary">{finalSettings.assessmentPage?.commencementLabel || 'what is your expected commencement date?'}</label>
+            <select value={context.duration} onChange={e => setContext({ ...context, duration: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white focus:outline-none appearance-none font-secondary" style={{ '--tw-ring-color': palette.blue }}>
               <option value="Short term (minimum 3 months)" style={{ backgroundColor: palette.bgDeep }}>Short term (minimum 3 months)</option>
               <option value="Deep Dive- Branding (minimum 6 months)" style={{ backgroundColor: palette.bgDeep }}>Deep Dive- Branding (minimum 6 months)</option>
               <option value="Long Term Engagement (1 year- Monthly Retainer)" style={{ backgroundColor: palette.bgDeep }}>Long Term Engagement (1 year- Monthly Retainer)</option>
@@ -2617,13 +2617,13 @@ const StrategicEngine = ({ navigate }) => {
     // N+5: Lead Capture
     <div key="leadCap" className="flex flex-col justify-center h-full w-full text-left mx-auto md:mx-0">
       <FadeUp>
-        <div className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.blue }}>{finalSettings.assessmentPage?.finalStepLabel || 'Final Step'}</div>
-        <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">{finalSettings.assessmentPage?.leadTitle || 'Where should we send your Scope Snapshot?'}</h2>
-        <p className="text-white/50 font-light mb-10 text-xl md:text-2xl font-secondary max-w-3xl">{finalSettings.assessmentPage?.leadText || 'Enter your details below to instantly generate your strategy report and brief our consulting team.'}</p>
+        <div className="text-[13px] md:text-[15px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.blue }}>{finalSettings.assessmentPage?.finalStepLabel || 'Final Step'}</div>
+        <h2 className="text-3xl md:text-5xl font-light mb-6 font-primary leading-tight">{finalSettings.assessmentPage?.leadTitle || 'Where should we send your Scope Snapshot?'}</h2>
+        <p className="text-white/50 font-light mb-10 text-[17px] md:text-[19px] font-secondary max-w-3xl">{finalSettings.assessmentPage?.leadText || 'Enter your details below to instantly generate your strategy report and brief our consulting team.'}</p>
         <form onSubmit={submitLead} className="space-y-4 w-full font-secondary max-w-3xl">
-          <input required type="text" placeholder={finalSettings.forms?.namePlaceholder || "Full Name"} value={leadForm.name} onChange={e => setLeadForm({ ...leadForm, name: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
-          <input required type="email" placeholder={finalSettings.forms?.emailPlaceholder || "Work Email"} value={leadForm.email} onChange={e => setLeadForm({ ...leadForm, email: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
-          <input required type="tel" placeholder={finalSettings.forms?.phonePlaceholder || "Phone Number"} value={leadForm.phone} onChange={e => setLeadForm({ ...leadForm, phone: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
+          <input required type="text" placeholder={finalSettings.forms?.namePlaceholder || "Full Name"} value={leadForm.name} onChange={e => setLeadForm({ ...leadForm, name: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light font-secondary text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
+          <input required type="email" placeholder={finalSettings.forms?.emailPlaceholder || "Work Email"} value={leadForm.email} onChange={e => setLeadForm({ ...leadForm, email: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light font-secondary text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
+          <input required type="tel" placeholder={finalSettings.forms?.phonePlaceholder || "Phone Number"} value={leadForm.phone} onChange={e => setLeadForm({ ...leadForm, phone: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light font-secondary text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <div className="pt-6 flex gap-4 items-center">
             <PremiumButton type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-10">
               {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {finalSettings.assessmentPage?.processingText || 'Processing...'}</> : (finalSettings.assessmentPage?.generateReportBtn || 'Generate Report & Send Brief')}
@@ -2640,8 +2640,8 @@ const StrategicEngine = ({ navigate }) => {
         <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)] print:p-0 print:shadow-none print:rounded-none print:overflow-visible print-blueprint-container" style={{ backgroundColor: palette.bgDeep }}>
           <div className="flex flex-col md:flex-row justify-between items-start border-b border-white/10 pb-8 mb-10 relative z-10 gap-6 w-full">
             <div>
-              <div className="text-[17px] md:text-[19px] uppercase tracking-widest mb-3 font-medium flex items-center gap-2 font-primary" style={{ color: palette.primary }}><FileText className="w-4 h-4" /> {finalSettings.assessmentPage?.scopeSnapshotLabel || 'Official Scope Snapshot'}</div>
-              <h2 className="text-xl md:text-2xl font-light text-white mb-2 font-primary">{leadForm.company || 'Your Brand'}</h2>
+              <div className="text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-3 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><FileText className="w-4 h-4" /> {finalSettings.assessmentPage?.scopeSnapshotLabel || 'Official Scope Snapshot'}</div>
+              <h2 className="text-3xl md:text-5xl font-light text-white mb-2 font-primary leading-tight">{leadForm.company || 'Your Brand'}</h2>
               <p className="text-white/50 text-[17px] md:text-[19px] font-secondary">Prepared for {leadForm.name || 'Client'}</p>
             </div>
             <div className="md:text-right">
@@ -3036,13 +3036,36 @@ const Header = ({ navigate, current }) => {
                 <div className="w-full h-full" style={{ backgroundColor: '#010d54' }} />
               )}
               
-              <div className="absolute inset-0 bg-gradient-to-t from-[#010836] via-[#010836]/40 to-transparent flex flex-col justify-end p-5">
-                 <span className="text-[17px] md:text-[19px] tracking-widest uppercase mb-1 block font-medium font-primary" style={{ color: hexColor }}>{cs.sector}</span>
+              {/* Default state — hidden on hover */}
+              <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:opacity-0 transition-opacity duration-300 flex flex-col justify-end">
+                 <span className="text-[13px] md:text-[15px] tracking-widest uppercase mb-1 block font-medium font-primary text-white/70">{cs.sector || cs.route}</span>
                  <h4 className="text-white font-medium text-[17px] md:text-[19px] font-secondary leading-tight">{cs.client}</h4>
               </div>
               
+              {/* Hover panel — slides up from bottom */}
+              <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]">
+                <div className="bg-gradient-to-t from-black/80 to-black/40 backdrop-blur-xl border-t border-white/10 px-5 py-5 text-left">
+                  <h3 className="font-primary text-white text-[17px] md:text-[19px] font-semibold leading-snug mb-1 drop-shadow-md">{cs.client}</h3>
+                  {(cs.preview || cs.challenge) && (
+                    <p className="font-secondary text-white/60 text-[13px] md:text-[15px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
+                  )}
+                  {cs.tags && cs.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {cs.tags.slice(0,3).map(t => (
+                        <span key={t} className="px-3 py-1 rounded-full border border-white/25 bg-white/10 text-white/75 text-[11px] font-secondary tracking-wide uppercase backdrop-blur-sm">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <span className="inline-block px-4 py-1.5 rounded-full bg-[#F5C518]/90 text-black text-[13px] md:text-[15px] font-semibold font-secondary shadow-[0_4px_20px_rgba(245,197,24,0.3)]">
+                    View Case Study
+                  </span>
+                </div>
+              </div>
+              
               {isActive && (
-                 <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity">
+                 <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity z-20">
                    <ArrowUpRight size={14} />
                  </div>
               )}
