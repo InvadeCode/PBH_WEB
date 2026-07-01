@@ -1153,6 +1153,7 @@ const StrategicEngine = ({ navigate }) => {
   const [routes, setRoutes] = useState([]);
   const [selectedRoutes, setSelectedRoutes] = useState([]);
   const [selectedDeliverables, setSelectedDeliverables] = useState([]);
+  const [generatedPdfDoc, setGeneratedPdfDoc] = useState(null);
   const [priorities, setPriorities] = useState({});
   const [warnings, setWarnings] = useState([]);
   const [context, setContext] = useState({ depth: '', timeline: '', duration: 'Deep Dive- Branding (minimum 6 months)' });
@@ -1743,8 +1744,10 @@ const StrategicEngine = ({ navigate }) => {
     }
 
     const safeCompanyName = leadForm.company ? leadForm.company.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'client';
-    const pdfBase64 = doc.output('datauristring').split(',')[1];
-    const attachments = [{ filename: `PBH_ScopeOfWork_${safeCompanyName}.pdf`, content: pdfBase64 }];
+    const pdfDataUri = doc.output('datauristring');
+    setGeneratedPdfDoc(pdfDataUri);
+    const pdfBase64Content = pdfDataUri.split(',')[1];
+    const attachments = [{ filename: `PBH_ScopeOfWork_${safeCompanyName}.pdf`, content: pdfBase64Content }];
 
     // Generate Comprehensive Excel Sheet Attachment
     try {
@@ -2713,8 +2716,8 @@ const StrategicEngine = ({ navigate }) => {
 
     // N+6: The Scope Snapshot Report
     <div key="snap" className="flex flex-col justify-center h-full w-full py-12 print:py-0 print:block print-snapshot">
-      <FadeUp className="relative p-[1px] rounded-[24px] bg-gradient-to-b from-white/20 to-white/5 w-full print:p-0 print:bg-none print:rounded-none">
-        <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)] print:p-0 print:shadow-none print:rounded-none print:overflow-visible print-blueprint-container" style={{ backgroundColor: palette.bgDeep }}>
+      <FadeUp className="relative p-[1px] rounded-[24px] bg-gradient-to-b from-white/20 to-white/5 w-full print:p-0 print:!bg-white print:rounded-none">
+        <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)] print:p-0 print:shadow-none print:rounded-none print:overflow-visible print-blueprint-container print:!bg-white print:!text-[#010d54]" style={{ backgroundColor: palette.bgDeep }}>
           <div className="flex flex-col md:flex-row justify-between items-start border-b border-white/10 pb-8 mb-10 relative z-10 gap-6 w-full">
             <div>
               <div className="text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-3 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><FileText className="w-4 h-4" /> {finalSettings.assessmentPage?.scopeSnapshotLabel || 'Official Scope Snapshot'}</div>
@@ -2735,45 +2738,68 @@ const StrategicEngine = ({ navigate }) => {
               </div>
 
               <div className="w-full">
-                <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Recommended Ecosystems</h4>
+                <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary print:!text-[#6865fa] print:!border-[#d4cefc]">Recommended Ecosystems</h4>
                 <div className="flex flex-wrap gap-2 w-full">
-                  {selectedRoutes.map(r => <span key={r} className="ecosystem-pill px-3 py-1.5 bg-white/5 text-white/70 text-[17px] md:text-[19px] border border-white/10 rounded-full flex items-center gap-2 font-secondary">{ROUTES_INFO[r]?.icon} {ROUTES_INFO[r]?.title}</span>)}
+                  {selectedRoutes.map(r => <span key={r} className="ecosystem-pill px-3 py-1.5 bg-white/5 text-white/70 text-[17px] md:text-[19px] border border-white/10 rounded-full flex items-center gap-2 font-secondary print:!bg-[#d4cefc] print:!text-[#010d54] print:!border-[#6865fa]">{ROUTES_INFO[r]?.icon} {ROUTES_INFO[r]?.title}</span>)}
                 </div>
               </div>
 
               <div className="w-full">
-                <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Execution Context</h4>
-                <div className="text-[17px] md:text-[19px] text-white/70 font-light space-y-3 bg-white/[0.02] p-6 rounded-[12px] border border-white/5 font-secondary w-full">
-                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Brand Stage</span> <span className="text-right">{(Array.isArray(answers.stage) && answers.stage.length > 0) ? answers.stage.map(s => s.label).join(', ') : 'Not Selected'}</span></p>
-                  <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Expected Commencement Date</span> <span className="text-right">{context.duration}</span></p>
-                  <p className="flex justify-between"><span className="text-white/40 text-left">Suggested Starting Point</span> <span className="starting-point text-right text-[#6865FA]">{computeSuggestedStartingPoint(selectedDeliverables, priorities)}</span></p>
+                <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary print:!text-[#6865fa] print:!border-[#d4cefc]">Execution Context</h4>
+                <div className="text-[17px] md:text-[19px] text-white/70 font-light space-y-3 bg-white/[0.02] p-6 rounded-[12px] border border-white/5 font-secondary w-full print:!bg-[#f4f3ff] print:!border-[#d4cefc] print:!text-[#010d54]">
+                  <p className="flex justify-between border-b border-white/5 pb-2 print:!border-[#d4cefc]"><span className="text-white/40 print:!text-[#6865fa]">Brand Stage</span> <span className="text-right">{(Array.isArray(answers.stage) && answers.stage.length > 0) ? answers.stage.map(s => s.label).join(', ') : 'Not Selected'}</span></p>
+                  <p className="flex justify-between border-b border-white/5 pb-2 print:!border-[#d4cefc]"><span className="text-white/40 print:!text-[#6865fa]">Expected Commencement Date</span> <span className="text-right">{context.duration}</span></p>
+                  <p className="flex justify-between"><span className="text-white/40 text-left print:!text-[#6865fa]">Suggested Starting Point</span> <span className="starting-point text-right text-[#6865FA] print:!text-[#010d54]">{computeSuggestedStartingPoint(selectedDeliverables, priorities)}</span></p>
                 </div>
               </div>
             </div>
 
-            <div className="w-full">
-              <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Selected Deliverables Blueprint</h4>
-              <ul className="space-y-3 w-full max-h-[500px] overflow-y-auto custom-scrollbar pr-3 print:max-h-none print:overflow-visible print:pr-0">
-                {selectedDeliverables.map(id => DELIVERABLES_BY_ID.get(id)).filter(Boolean).map(d => (
-                  <li key={d.id} className="deliverable-item flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full print:break-inside-avoid">
-                    <div className="p-1.5 rounded-md shrink-0 mt-0.5" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4" style={{ color: palette.blue }} /></div>
-                    <div className="w-full">
-                      <div className="text-[17px] md:text-[19px] font-medium text-white mb-1 font-secondary flex items-center justify-between">
-                        <span>{d.name} {warnings.includes(d.id) && <AlertCircle className="w-3 h-3 inline text-yellow-400 ml-1" />}</span>
-                        <span className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40">{priorities[d.id] || 'Standard'}</span>
+            <div className="w-full relative">
+              <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary print:!text-[#6865fa] print:!border-[#d4cefc]">Selected Deliverables Blueprint</h4>
+              <div className="relative w-full">
+                <ul className="space-y-3 w-full max-h-[350px] md:max-h-[450px] overflow-y-auto custom-scrollbar pr-3 pb-8 print:max-h-none print:overflow-visible print:pr-0 print:pb-0">
+                  {selectedDeliverables.map(id => DELIVERABLES_BY_ID.get(id)).filter(Boolean).map(d => (
+                    <li key={d.id} className="deliverable-item flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full print:break-inside-avoid print:!bg-[#f4f3ff] print:!border-[#d4cefc]">
+                      <div className="p-1.5 rounded-md shrink-0 mt-0.5 print:!bg-[#010d54]" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4 print:!text-[#ffcd00]" style={{ color: palette.blue }} /></div>
+                      <div className="w-full">
+                        <div className="text-[17px] md:text-[19px] font-medium text-white mb-1 font-secondary flex items-center justify-between print:!text-[#010d54]">
+                          <span>{d.name} {warnings.includes(d.id) && <AlertCircle className="w-3 h-3 inline text-yellow-400 ml-1" />}</span>
+                          <span className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 print:!text-[#6865fa]">{priorities[d.id] || 'Standard'}</span>
+                        </div>
+                        <div className="text-[17px] md:text-[19px] text-white/40 leading-relaxed font-secondary print:!text-[#6865fa]">ID: {d.id}</div>
                       </div>
-                      <div className="text-[17px] md:text-[19px] text-white/40 leading-relaxed font-secondary">ID: {d.id}</div>
+                    </li>
+                  ))}
+                </ul>
+                {/* Scroll Indicator Gradient (Hidden on Print) */}
+                {selectedDeliverables.length > 3 && (
+                  <div 
+                    className="absolute bottom-0 left-0 right-3 h-32 pointer-events-none flex items-end justify-center pb-8 print:hidden z-20" 
+                    style={{ background: `linear-gradient(to top, ${palette.bgDeep} 15%, transparent)` }}
+                  >
+                    <div className="bg-white/10 p-2 rounded-full backdrop-blur-sm animate-bounce shadow-[0_0_15px_rgba(255,255,255,0.1)] border border-white/20 flex flex-col items-center justify-center">
+                      <ChevronDown className="w-5 h-5 text-white" />
                     </div>
-                  </li>
-                ))}
-              </ul>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-10 w-full">
-            <p className="print-footer-note text-[17px] md:text-[19px] text-white/40 max-w-md leading-relaxed font-secondary">This snapshot has been securely routed to our partners. We will review your requirements and reach out within 24 hours to schedule a discovery alignment.</p>
-            <div className="flex gap-4 w-full sm:w-auto">
-              <PremiumButton onClick={() => window.print()} variant="secondary" className="w-full sm:w-auto px-6 py-3"><Printer className="w-4 h-4 mr-2" /> Print</PremiumButton>
+          <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-10 w-full print:!border-[#d4cefc]">
+            <p className="print-footer-note text-[17px] md:text-[19px] text-white/40 max-w-md leading-relaxed font-secondary print:!text-[#010d54]">This snapshot has been securely routed to our partners. We will review your requirements and reach out within 24 hours to schedule a discovery alignment.</p>
+            <div className="flex gap-4 w-full sm:w-auto print:hidden">
+              <PremiumButton onClick={() => {
+                if (generatedPdfDoc) {
+                  const safeCompanyName = leadForm.company ? leadForm.company.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'client';
+                  const link = document.createElement('a');
+                  link.href = generatedPdfDoc;
+                  link.download = `PBH_ScopeOfWork_${safeCompanyName}.pdf`;
+                  link.click();
+                } else {
+                  window.print();
+                }
+              }} variant="secondary" className="w-full sm:w-auto px-6 py-3"><Printer className="w-4 h-4 mr-2" /> Download PDF</PremiumButton>
               <PremiumButton onClick={() => navigate('home')} className="w-full sm:w-auto px-6 py-3">Return to Website</PremiumButton>
             </div>
           </div>
@@ -2783,7 +2809,7 @@ const StrategicEngine = ({ navigate }) => {
   ];
 
   return (
-    <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative w-full print:overflow-visible print:pt-0 print:pb-12" style={{ backgroundColor: palette.bgDeep }}>
+    <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative w-full print:overflow-visible print:pt-0 print:pb-0 print:!bg-white print:!text-[#010d54]" style={{ backgroundColor: palette.bgDeep }}>
       {readMorePopup && (
         <div className="fixed inset-0 z-[200000] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm text-left">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#0C185C] border border-white/10 p-8 rounded-[24px] max-w-lg w-full shadow-2xl relative">
