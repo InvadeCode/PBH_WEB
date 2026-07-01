@@ -268,7 +268,7 @@ const StickyScrollytellingGrid = ({ content }) => {
         </div>
 
         {/* GIANT BACKGROUND TYPOGRAPHY — completely visible behind content */}
-        <div className="absolute inset-0 z-0 flex items-center justify-start pointer-events-none pl-6 md:pl-12 lg:pl-[2%] xl:-ml-12 overflow-hidden">
+        <div className="absolute inset-0 z-0 flex items-center justify-start pointer-events-none pl-6 md:pl-8 lg:pl-10 xl:pl-12 overflow-visible">
           <motion.div
             style={{ y: useTransform(scrollYProgress, [0, 1], ['-2%', '2%']) }}
             className="w-full flex items-center"
@@ -309,7 +309,7 @@ const StickyScrollytellingGrid = ({ content }) => {
           </div>
 
           {/* ASYMMETRICAL EDITORIAL CONTENT BLOCK (Spatial Orbital) */}
-          <div className="w-full h-full flex items-center lg:justify-end relative z-20 pointer-events-none lg:-mr-16 xl:-mr-24">
+          <div className="w-full h-full flex items-center lg:justify-end relative z-20 pointer-events-none">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeData.id}
@@ -317,7 +317,7 @@ const StickyScrollytellingGrid = ({ content }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -40 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-[850px] pointer-events-auto relative lg:translate-x-16 xl:translate-x-32"
+                className="w-full max-w-[600px] pointer-events-auto relative lg:translate-x-0"
                 onMouseEnter={() => setIsOrbHovered(true)}
                 onMouseLeave={() => setIsOrbHovered(false)}
               >
