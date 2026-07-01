@@ -3648,7 +3648,8 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       'fermentech',
       'kanti sweets',
       'navankur',
-      'sunburst'
+      'sunburst',
+      'leading business family'
     ];
 
     if (kantiSweetsClients.some(target => clientName.includes(target))) {
