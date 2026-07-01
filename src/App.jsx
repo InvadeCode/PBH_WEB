@@ -4425,7 +4425,7 @@ const WorkPage = ({ navigate }) => {
         {/* Featured Case Study Hero */}
         <FadeUp delay={0.1} className="mb-24 w-full">
           <div data-pbh-copy-ignore onClick={() => navigate('work/' + caseStudies[0].id)} className="group relative border border-white/10 rounded-[32px] overflow-hidden flex flex-col lg:flex-row h-auto cursor-pointer w-full shadow-2xl transition-all duration-700 hover:border-white/30" style={{ backgroundColor: palette.panel }}>
-            <div className="w-full lg:w-[60%] relative overflow-hidden bg-[#0a0a0a] aspect-[4/3]">
+            <div className="w-full lg:w-1/3 shrink-0 relative overflow-hidden bg-[#0a0a0a] aspect-[4/3]">
               {(caseStudies[0].bannerVideo || caseStudies[0].fullStory?.heroVideo || caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl) ? (
                 <CaseStudyMedia 
                   src={caseStudies[0].bannerVideo || caseStudies[0].fullStory?.heroVideo || caseStudies[0].bannerImage || caseStudies[0].fullStory?.heroImg || caseStudies[0].imageUrl} 
@@ -4440,7 +4440,7 @@ const WorkPage = ({ navigate }) => {
                 </>
               )}
             </div>
-            <div className="w-full lg:w-[40%] p-10 lg:p-14 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-white/5">
+            <div className="w-full lg:w-2/3 p-8 lg:p-12 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-white/5">
               <span className="t-label block mb-4" style={{ color: palette.primary }}>Featured Case Study • {caseStudies[0].sector}</span>
               <h3 className="t-display mb-6">{caseStudies[0].client}</h3>
               <p className="t-body text-white/50 mb-10 max-w-lg">{caseStudies[0].challenge}</p>
