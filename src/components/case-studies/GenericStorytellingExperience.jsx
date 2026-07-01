@@ -507,15 +507,19 @@ const GenericStorytellingExperience = ({ navigate, project }) => {
 
         if (!hasVideoHero && allVideos.length === 0) return null;
 
-        const mainVideoData = hasVideoHero ? project.videoHero : {
+        const rawMainVideoData = hasVideoHero ? project.videoHero : {
           enabled: true,
-          backgroundColor: 'transparent',
           backgroundText: project.client || 'Case Study',
           videoTitle: allVideos[0]?.videoTitle || 'Watch Video',
           videoSubtitle: allVideos[0]?.videoSubtitle || 'Experience the story in motion.',
           embedUrl: allVideos[0]?.videoUrl,
           uploadedVideoUrl: allVideos[0]?.videoFileUrl,
           thumbnailUrl: allVideos[0]?.thumbnailUrl
+        };
+
+        const mainVideoData = {
+          ...rawMainVideoData,
+          backgroundColor: (!rawMainVideoData.backgroundColor || rawMainVideoData.backgroundColor === 'transparent') ? (c.soilDeep || '#010836') : rawMainVideoData.backgroundColor
         };
         
         return (

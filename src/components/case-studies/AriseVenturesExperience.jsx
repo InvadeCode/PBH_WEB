@@ -305,36 +305,41 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const spring = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
   
-  const titleOpacity = useTransform(spring, [0, 0.15], [1, 0]);
-  const titleScale = useTransform(spring, [0, 0.15], [1, 1.2]);
-  const titleY = useTransform(spring, [0, 0.15], [0, -30]);
+  // Phase 1: Title appears and holds (0 → 0.25), then fades out (0.25 → 0.35)
+  const titleOpacity = useTransform(spring, [0, 0.05, 0.25, 0.35], [0, 1, 1, 0]);
+  const titleScale = useTransform(spring, [0, 0.05, 0.25, 0.35], [0.9, 1, 1, 1.15]);
+  const titleY = useTransform(spring, [0, 0.05, 0.25, 0.35], [40, 0, 0, -40]);
   
-  // Fade content in from 0.05 to 0.25, hold until 0.9, then fade out quickly by 1.0
-  const contentOpacity = useTransform(spring, [0.05, 0.25, 0.9, 1], [0, 1, 1, 0]);
-  const contentY = useTransform(spring, [0.05, 0.25, 0.9, 1], [30, 0, 0, -30]);
-  const graphicScale = useTransform(spring, [0, 1], [1, 1.5]);
+  // Phase 2: Circle expands dramatically (0.15 → 0.6) — starts small, grows huge
+  const graphicScale = useTransform(spring, [0, 0.15, 0.55, 1], [0.6, 0.8, 2.8, 3.5]);
+  const graphicOpacity = useTransform(spring, [0, 0.1, 0.2, 0.85, 1], [0.3, 0.5, 1, 1, 0.4]);
+  
+  // Phase 3: Content fades in AFTER circle has expanded (0.4 → 0.55), holds until 0.88, fades out
+  const contentOpacity = useTransform(spring, [0.4, 0.55, 0.88, 1], [0, 1, 1, 0]);
+  const contentY = useTransform(spring, [0.4, 0.55, 0.88, 1], [50, 0, 0, -40]);
 
   const theme = React.useContext(ThemeContext);
 
   return (
-    <section ref={ref} className="h-[200vh] relative w-full">
+    <section ref={ref} className="h-[250vh] relative w-full">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         
-        <motion.div style={{ scale: graphicScale }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        {/* Circular graphic — scales dramatically from small to huge */}
+        <motion.div style={{ scale: graphicScale, opacity: graphicOpacity }} className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
           {motionGraphic}
         </motion.div>
 
         {/* Ambient Edge Masking */}
-        <div className="absolute top-0 left-0 right-0 h-32 z-0 pointer-events-none" style={{ backgroundImage: `linear-gradient(to bottom, ${theme.bgDeep}, transparent)` }} />
-        <div className="absolute bottom-0 left-0 right-0 h-32 z-0 pointer-events-none" style={{ backgroundImage: `linear-gradient(to top, ${theme.bgDeep}, transparent)` }} />
+        <div className="absolute top-0 left-0 right-0 h-40 z-[1] pointer-events-none" style={{ backgroundImage: `linear-gradient(to bottom, ${theme.bgDeep}, transparent)` }} />
+        <div className="absolute bottom-0 left-0 right-0 h-40 z-[1] pointer-events-none" style={{ backgroundImage: `linear-gradient(to top, ${theme.bgDeep}, transparent)` }} />
         
-        {/* Title Container */}
+        {/* Phase 1: Title Container — appears first, fades before content */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
           <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="flex flex-col items-center justify-center w-full px-6 text-center pointer-events-auto">
             <motion.h2 
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-4xl md:text-5xl font-medium tracking-tight text-transparent bg-clip-text" 
+              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text" 
               style={{ 
                 backgroundImage: `linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, ${theme.primary} 45%, ${theme.secondary} 50%, ${theme.primary} 55%, #FFFFFF 70%, #FFFFFF 100%)`,
                 backgroundSize: '300% auto',
@@ -346,12 +351,15 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
           </motion.div>
         </div>
         
-        {/* Content Container */}
+        {/* Phase 3: Content Container — perfectly left aligned */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-          <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
-            <p className="text-white/90 font-normal text-[16px] md:text-[17px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
+          <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 flex flex-col items-start text-left pointer-events-auto">
+            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 md:mb-8 font-bold font-primary" style={{ color: theme.secondary }}>
+               {title}
+            </h3>
+            <div className="text-white/90 font-normal text-[16px] md:text-[17px] leading-relaxed md:leading-relaxed font-secondary text-left w-full">
               {content}
-            </p>
+            </div>
           </motion.div>
         </div>
       </div>
