@@ -1229,17 +1229,10 @@ const StrategicEngine = ({ navigate }) => {
       });
     } else {
       setAnswers(prev => ({ ...prev, [questionId]: option }));
-      setTimeout(() => {
-        if (step < N_QUIZ - 1) {
-          setStep(s => s + 1);
-        } else {
-          processDiagnosis({ ...answers, [questionId]: option });
-        }
-      }, 500);
     }
   };
 
-  const handleMultiSelectContinue = () => {
+  const handleContinue = () => {
     if (step < N_QUIZ) { setStep(step + 1); } else { processDiagnosis(answers); }
   };
 
@@ -2490,14 +2483,14 @@ const StrategicEngine = ({ navigate }) => {
             </StaggerItem>
           </StaggerGroup>
 
-          {isMultiSelect && (
-            <div className="mt-10 flex flex-wrap gap-4 items-center">
-              <PremiumButton 
-                onClick={handleMultiSelectContinue} 
-                className={`px-10 py-4 ${!hasAnswer ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                {finalSettings.assessmentPage?.continueBtn || 'Continue'} <ArrowRight className="w-5 h-5 ml-2" />
-              </PremiumButton>
+          <div className="mt-10 flex flex-wrap gap-4 items-center">
+            <PremiumButton 
+              onClick={hasAnswer ? handleContinue : undefined} 
+              className={`px-10 py-4 ${!hasAnswer ? 'opacity-50 cursor-not-allowed' : ''}`}
+            >
+              {finalSettings.assessmentPage?.continueBtn || 'Continue'} <ArrowRight className="w-5 h-5 ml-2" />
+            </PremiumButton>
+            {isMultiSelect && (
               <button 
                 onClick={() => {
                   const allValidOptions = q.options.filter(o => !o.id.startsWith('none'));
@@ -2507,8 +2500,8 @@ const StrategicEngine = ({ navigate }) => {
               >
                 {finalSettings.assessmentPage?.selectAllBtn || 'Select All'}
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </FadeUp>
       </div>
       );
@@ -2732,7 +2725,7 @@ const StrategicEngine = ({ navigate }) => {
 
             <div className="w-full">
               <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Selected Deliverables Blueprint</h4>
-              <ul className="space-y-4 w-full">
+              <ul className="space-y-3 w-full max-h-[500px] overflow-y-auto custom-scrollbar pr-3 print:max-h-none print:overflow-visible print:pr-0">
                 {selectedDeliverables.map(id => DELIVERABLES_BY_ID.get(id)).filter(Boolean).map(d => (
                   <li key={d.id} className="flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full print:break-inside-avoid">
                     <div className="p-1.5 rounded-md shrink-0 mt-0.5" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4" style={{ color: palette.blue }} /></div>
