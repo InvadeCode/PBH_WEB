@@ -354,7 +354,10 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         {/* Phase 3: Content Container — perfectly center aligned */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 flex flex-col items-center text-center pointer-events-auto">
-            <div className="text-white/90 font-normal text-[16px] md:text-[17px] leading-relaxed md:leading-relaxed font-secondary text-center w-full">
+            <h3 className="text-xl md:text-2xl font-primary tracking-tight mb-6 md:mb-8" style={{ color: theme.secondary }}>
+              {title}
+            </h3>
+            <div className="text-white/90 font-light text-[17px] md:text-[19px] leading-relaxed md:leading-relaxed font-secondary text-center w-full">
               {content}
             </div>
           </motion.div>
