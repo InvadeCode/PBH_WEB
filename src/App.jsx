@@ -2402,10 +2402,10 @@ const StrategicEngine = ({ navigate }) => {
                     className="w-full text-left p-5 rounded-[12px] border transition-all duration-300 flex items-center gap-4 font-secondary hover:translate-x-1"
                     style={{ borderColor: isSelected ? palette.primary : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.primary, 0.1) : 'rgba(255,255,255,0.02)', color: isSelected ? 'white' : 'rgba(255,255,255,0.6)' }}
                   >
-                    <span className="font-secondary italic opacity-40 text-xl md:text-xl md:text-2xl w-6 shrink-0">0{j + 1}</span>
+                    <span className="font-secondary italic opacity-40 text-xl md:text-2xl w-6 shrink-0">0{j + 1}</span>
                     <span className="flex-1">
-                      <span className="text-xl md:text-xl md:text-2xl font-light block">{opt.label}</span>
-                      {opt.desc && <span className="text-[14px] text-white/40 mt-1 block font-light leading-snug">{opt.desc}</span>}
+                      <span className="text-xl md:text-2xl font-light block">{opt.label}</span>
+                      {opt.desc && <span className="text-[17px] md:text-[19px] text-white/40 mt-1 block font-light leading-snug">{opt.desc}</span>}
                     </span>
                     {isMultiSelect && isSelected && <Check className="w-5 h-5 shrink-0" style={{ color: palette.primary }} />}
                   </button>
@@ -2455,7 +2455,7 @@ const StrategicEngine = ({ navigate }) => {
       <FadeUp>
         <div className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4" /> {finalSettings.assessmentPage?.diagPhaseLabel || 'Discovery Insights'}</div>
         <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">{finalSettings.assessmentPage?.diagTitle || 'Your brand opportunity areas.'}</h2>
-        <p className="text-white/50 font-light mb-12 text-xl md:text-xl md:text-2xl font-secondary max-w-3xl">{finalSettings.assessmentPage?.diagPrefixText || 'Based on your responses, we recommend building your brand through'} <strong className="text-white">{clusters.join(' & ')}</strong>. Your suggested blueprint has been pre-selected below.</p>
+        <p className="text-white/50 font-light mb-12 text-xl md:text-2xl font-secondary max-w-3xl">{finalSettings.assessmentPage?.diagPrefixText || 'Based on your responses, we recommend building your brand through'} <strong className="text-white">{clusters.join(' & ')}</strong>. Your suggested blueprint has been pre-selected below.</p>
         <StaggerGroup className="grid sm:grid-cols-2 gap-4 mb-12 w-full max-w-4xl">
           {routes.map(r => {
             const rColor = palette[ROUTES_INFO[r].type] || palette.primary;
@@ -2502,7 +2502,7 @@ const StrategicEngine = ({ navigate }) => {
           };
           const msg = msgs[dId];
           return msg ? (
-            <p className="text-white/60 font-light mb-10 font-secondary text-[15px] border border-white/10 rounded-[10px] px-5 py-3 bg-white/[0.03]">{msg}</p>
+            <p className="text-white/60 font-light mb-10 font-secondary text-[17px] md:text-[19px] border border-white/10 rounded-[10px] px-5 py-3 bg-white/[0.03]">{msg}</p>
           ) : null;
         })()}
         <StaggerGroup className="space-y-10 w-full pb-10">
@@ -2520,7 +2520,7 @@ const StrategicEngine = ({ navigate }) => {
                       <div key={li.id} className="bg-white/[0.01] border border-white/5 rounded-[12px] w-full overflow-hidden">
                         <div className="bg-[#010D54] py-4 px-6 border-b border-white/10 mb-6 flex justify-between items-center gap-4">
                           <div>
-                            <h5 className="font-medium text-white text-xl md:text-xl md:text-2xl font-primary">{li.name}</h5>
+                            <h5 className="font-medium text-white text-xl md:text-2xl font-primary">{li.name}</h5>
                             {li.desc && <p className="text-white/50 text-[17px] md:text-[19px] font-secondary mt-1 font-light">{li.desc}</p>}
                           </div>
                           <button 
@@ -2611,7 +2611,7 @@ const StrategicEngine = ({ navigate }) => {
       <FadeUp>
         <div className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.blue }}>{finalSettings.assessmentPage?.finalStepLabel || 'Final Step'}</div>
         <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">{finalSettings.assessmentPage?.leadTitle || 'Where should we send your Scope Snapshot?'}</h2>
-        <p className="text-white/50 font-light mb-10 text-xl md:text-xl md:text-2xl font-secondary max-w-3xl">{finalSettings.assessmentPage?.leadText || 'Enter your details below to instantly generate your strategy report and brief our consulting team.'}</p>
+        <p className="text-white/50 font-light mb-10 text-xl md:text-2xl font-secondary max-w-3xl">{finalSettings.assessmentPage?.leadText || 'Enter your details below to instantly generate your strategy report and brief our consulting team.'}</p>
         <form onSubmit={submitLead} className="space-y-4 w-full font-secondary max-w-3xl">
           <input required type="text" placeholder={finalSettings.forms?.namePlaceholder || "Full Name"} value={leadForm.name} onChange={e => setLeadForm({ ...leadForm, name: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
           <input required type="email" placeholder={finalSettings.forms?.emailPlaceholder || "Work Email"} value={leadForm.email} onChange={e => setLeadForm({ ...leadForm, email: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
@@ -2976,7 +2976,7 @@ const Header = ({ navigate, current }) => {
           return (
             <MenuHoverCard key={route.id} color={rColor} onClick={() => { navigate(`service-detail/${route.id.toLowerCase()}`); setActiveMenu(null); }}>
               <motion.div variants={{ initial: { y: 0, scale: 1 }, hover: { y: -4, scale: 1.05 } }} transition={{ type: "spring", stiffness: 400, damping: 15 }} className="w-12 h-12 rounded-[12px] border border-white/10 flex items-center justify-center mb-5 shadow-inner" style={{ backgroundColor: rColor, color: palette.bgDeep, border: 'none' }}>{route.icon}</motion.div>
-              <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-2 font-primary">{route.title}</h4>
+              <h4 className="text-xl md:text-2xl font-medium text-white mb-2 font-primary">{route.title}</h4>
               <p className="text-[17px] md:text-[19px] text-white/40 leading-relaxed font-light font-secondary">{route.desc}</p>
             </MenuHoverCard>
           )
@@ -3087,19 +3087,19 @@ const Header = ({ navigate, current }) => {
       </div>
       <div className="w-2/3 grid grid-cols-2 gap-6 w-full">
         <MenuHoverCard color={palette.primary} onClick={() => { navigate('about'); setActiveMenu(null); }}>
-          <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-2 font-primary">About PBH</h4>
+          <h4 className="text-xl md:text-2xl font-medium text-white mb-2 font-primary">About PBH</h4>
           <p className="text-[17px] md:text-[19px] text-white/40 font-secondary">Our Vision, Mission, and Core Values.</p>
         </MenuHoverCard>
         <MenuHoverCard color={palette.blue} onClick={() => { navigate('method'); setActiveMenu(null); }}>
-          <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-2 font-primary">The PBH Method</h4>
+          <h4 className="text-xl md:text-2xl font-medium text-white mb-2 font-primary">The PBH Method</h4>
           <p className="text-[17px] md:text-[19px] text-white/40 font-secondary">Our step-by-step strategic process.</p>
         </MenuHoverCard>
         <MenuHoverCard color={palette.accent} onClick={() => { navigate('story'); setActiveMenu(null); }}>
-          <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-2 font-primary">Our Story</h4>
+          <h4 className="text-xl md:text-2xl font-medium text-white mb-2 font-primary">Our Story</h4>
           <p className="text-[17px] md:text-[19px] text-white/40 font-secondary">How art and science collided.</p>
         </MenuHoverCard>
         <MenuHoverCard color={palette.purple} onClick={() => { navigate('team'); setActiveMenu(null); }}>
-          <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-2 font-primary">The Team</h4>
+          <h4 className="text-xl md:text-2xl font-medium text-white mb-2 font-primary">The Team</h4>
           <p className="text-[17px] md:text-[19px] text-white/40 font-secondary">The innovators behind the curtain.</p>
         </MenuHoverCard>
       </div>
@@ -3123,7 +3123,7 @@ const Header = ({ navigate, current }) => {
       }}
     >
       <div className="w-full px-[3%] flex justify-between items-center relative z-[10001]">
-        <div className={`font-primary font-medium tracking-wide cursor-pointer flex items-center gap-3 hover:opacity-80 transition-all duration-300 text-white ${scrolled || activeMenu ? 'text-xl md:text-xl md:text-2xl' : 'text-xl'}`} onClick={() => navigate('home')}>
+        <div className={`font-primary font-medium tracking-wide cursor-pointer flex items-center gap-3 hover:opacity-80 transition-all duration-300 text-white ${scrolled || activeMenu ? 'text-xl md:text-2xl' : 'text-xl'}`} onClick={() => navigate('home')}>
           <img src="https://static.wixstatic.com/media/32f09f_d2e483f6417246ba946ed54bbb518bb8~mv2.png" alt="PurpleBlue House" className={`w-auto object-contain shrink-0 transition-all duration-300 ${scrolled || activeMenu ? 'h-6' : 'h-8'}`} />
           PurpleBlue House
         </div>
@@ -3865,7 +3865,7 @@ const AboutPage = ({ navigate }) => {
           <div className="p-12 md:p-16 flex flex-col justify-center w-full">
             <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-primary" style={{ color: palette.accent }}>{SITE_SETTINGS?.aboutPage?.philosophyLabel || "Our Philosophy"}</h3>
             <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">{SITE_SETTINGS?.aboutPage?.philosophyTitle || "The Fusion of Logic and Aesthetics."}</h2>
-            <p className="text-xl md:text-xl md:text-2xl text-white/60 font-light font-secondary leading-relaxed mb-8">
+            <p className="text-xl md:text-2xl text-white/60 font-light font-secondary leading-relaxed mb-8">
               {SITE_SETTINGS?.aboutPage?.philosophyText || "True innovation requires more than a beautiful facade. It demands rigorous strategic thinking coupled with compelling emotional resonance. Science gives us the framework, the data, and the logic. Art gives us the empathy, the visual impact, and the connection. Together, they create brands that are unbreakable."}
             </p>
           </div>
@@ -3894,7 +3894,7 @@ const AboutPage = ({ navigate }) => {
 
         {/* Section 7: Final CTA */}
         <FadeUp className="text-center pt-16 border-t border-white/10 w-full">
-          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-xl md:text-xl md:text-2xl">{SITE_SETTINGS?.aboutPage?.ctaButton || "Co-create your brand scope"}</PremiumButton>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-xl md:text-2xl">{SITE_SETTINGS?.aboutPage?.ctaButton || "Co-create your brand scope"}</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -3915,7 +3915,7 @@ const OurStoryPage = ({ navigate }) => {
         </FadeUp>
 
         {/* Section 2: The Spark */}
-        <StaggerGroup className="space-y-8 text-xl md:text-xl md:text-2xl font-light text-white/70 font-secondary leading-relaxed mb-32 w-full">
+        <StaggerGroup className="space-y-8 text-xl md:text-2xl font-light text-white/70 font-secondary leading-relaxed mb-32 w-full">
           <StaggerItem><p className="text-xl md:text-2xl text-white mb-10 leading-tight max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara1 || "PurpleBlue House was founded to solve a critical bottleneck: breakthrough innovations were failing to reach their market potential due to fragmented communication."}</p></StaggerItem>
           <StaggerItem><p className="max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara2 || "We observed that visionary teams often struggle to translate complex, cutting-edge technology into clear, scalable narratives. They engineer incredible products, but the strategic story gets lost in execution."}</p></StaggerItem>
           <StaggerItem><p className="max-w-4xl">{SITE_SETTINGS?.storyPage?.sparkPara3 || "Meanwhile, standard creative approaches focus heavily on surface-level aesthetics without grasping the underlying functional truths. This disconnect limits long-term growth and dilutes the breakthrough."}</p></StaggerItem>
@@ -3966,14 +3966,14 @@ const OurStoryPage = ({ navigate }) => {
         {/* Section 5: The Future */}
         <FadeUp className="text-center mb-24 w-full">
           <h3 className="text-xl md:text-2xl font-light mb-8 font-primary">{SITE_SETTINGS?.storyPage?.lookingAheadTitle || "Looking Ahead"}</h3>
-          <p className="text-xl md:text-xl md:text-2xl text-white/60 font-secondary font-light leading-relaxed max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-white/60 font-secondary font-light leading-relaxed max-w-3xl mx-auto">
             {SITE_SETTINGS?.storyPage?.lookingAheadText || "Our story is just beginning. We will continue to champion creators, disrupt traditional agency models, and build visual expressions that bridge the past and the future."}
           </p>
         </FadeUp>
 
         {/* Section 6: CTA */}
         <FadeUp className="text-center pt-16 border-t border-white/10 w-full">
-          <PremiumButton onClick={() => navigate('contact')} className="px-12 py-5 text-xl md:text-xl md:text-2xl">{SITE_SETTINGS?.storyPage?.ctaButton || "Be part of our story"}</PremiumButton>
+          <PremiumButton onClick={() => navigate('contact')} className="px-12 py-5 text-xl md:text-2xl">{SITE_SETTINGS?.storyPage?.ctaButton || "Be part of our story"}</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -4024,7 +4024,7 @@ const TeamPage = ({ navigate }) => {
                   {member.image ? <img src={member.image} alt={member.name} className="w-full h-full object-cover" /> : <User className="w-12 h-12 text-white/10" />}
                 </div>
                 <div className="p-5">
-                  <h3 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-1 font-primary">{member.name}</h3>
+                  <h3 className="text-xl md:text-2xl font-medium text-white mb-1 font-primary">{member.name}</h3>
                   <p className="text-[17px] md:text-[19px] text-white/50 font-secondary">{member.role}</p>
                 </div>
               </div>
@@ -4038,17 +4038,17 @@ const TeamPage = ({ navigate }) => {
           <StaggerGroup className="grid md:grid-cols-3 gap-8 w-full">
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Globe className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[0]?.title || "No Silos"}</h4>
+              <h4 className="text-xl md:text-2xl font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[0]?.title || "No Silos"}</h4>
               <p className="text-[17px] md:text-[19px] text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[0]?.description || "Strategy, design, and execution sit at the same table. We believe in cross-pollination of ideas."}</p>
             </StaggerItem>
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><Zap className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[1]?.title || "Creator-First"}</h4>
+              <h4 className="text-xl md:text-2xl font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[1]?.title || "Creator-First"}</h4>
               <p className="text-[17px] md:text-[19px] text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[1]?.description || "We empower our team to take ownership, innovate fearlessly, and challenge the status quo."}</p>
             </StaggerItem>
             <StaggerItem className="text-center">
               <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5"><BookOpen className="w-5 h-5 text-white/70" /></div>
-              <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[2]?.title || "Continuous Learning"}</h4>
+              <h4 className="text-xl md:text-2xl font-medium text-white mb-3 font-primary">{SITE_SETTINGS?.teamPage?.cultureItems?.[2]?.title || "Continuous Learning"}</h4>
               <p className="text-[17px] md:text-[19px] text-white/50 font-secondary leading-relaxed">{SITE_SETTINGS?.teamPage?.cultureItems?.[2]?.description || "In a world driven by rapid innovation, we are perpetual students of science, art, and human behavior."}</p>
             </StaggerItem>
           </StaggerGroup>
@@ -4061,7 +4061,7 @@ const TeamPage = ({ navigate }) => {
           <div className="w-3 h-3 rounded-full bg-[#FDE68A] mb-8 shadow-[0_0_20px_#FDE68A]" />
 
           <h3 className="text-xl md:text-2xl font-light mb-6 font-primary text-white">{SITE_SETTINGS?.teamPage?.joinTitle || "Want to join the House?"}</h3>
-          <p className="text-xl md:text-xl md:text-2xl text-white/50 font-secondary mb-10 max-w-2xl mx-auto">{SITE_SETTINGS?.teamPage?.joinSubtext || "We are always looking for visionary strategists and artists."}</p>
+          <p className="text-xl md:text-2xl text-white/50 font-secondary mb-10 max-w-2xl mx-auto">{SITE_SETTINGS?.teamPage?.joinSubtext || "We are always looking for visionary strategists and artists."}</p>
 
           <button
             onClick={() => setShowCareers(true)}
@@ -4122,7 +4122,7 @@ const MethodPage = ({ navigate }) => {
                 <div className="md:col-span-1 text-xl md:text-2xl font-primary italic text-white/30">0{s.stepNumber}</div>
                 <div className="md:col-span-6 pr-8">
                   <h3 className="text-xl md:text-2xl font-light mb-4 font-primary">{s.title}</h3>
-                  <p className="text-white/50 font-light text-xl md:text-xl md:text-2xl leading-relaxed font-secondary max-w-2xl">{s.description}</p>
+                  <p className="text-white/50 font-light text-xl md:text-2xl leading-relaxed font-secondary max-w-2xl">{s.description}</p>
                 </div>
                 <div className="md:col-span-5 md:pl-12 border-l border-white/5">
                   <h4 className="text-[17px] md:text-[19px] font-medium text-white/30 uppercase tracking-widest mb-6 font-primary">Key Outputs</h4>
@@ -4138,7 +4138,7 @@ const MethodPage = ({ navigate }) => {
         {/* Section 4: The SciArt Application */}
         <FadeUp className="border border-white/10 rounded-[24px] p-12 mb-32 text-center w-full" style={{ backgroundColor: palette.panel }}>
           <h3 className="text-xl md:text-2xl font-light mb-6 font-primary">{SITE_SETTINGS?.methodPage?.appliedSciArtTitle || "Applied SciArt"}</h3>
-          <p className="text-xl md:text-xl md:text-2xl text-white/60 leading-relaxed font-secondary">
+          <p className="text-xl md:text-2xl text-white/60 leading-relaxed font-secondary">
             {SITE_SETTINGS?.methodPage?.appliedSciArtText || "Throughout every step of this method, we apply the SciArt filter. Does the strategy hold up to logical scrutiny (Science)? Does the execution evoke the right human emotion (Art)? If an output fails either test, it does not leave the House."}
           </p>
         </FadeUp>
@@ -4244,7 +4244,7 @@ const ServicesPage = ({ navigate }) => {
         </div>
 
         <FadeUp className="text-center w-full">
-          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-xl md:text-xl md:text-2xl">Build Your Scope</PremiumButton>
+          <PremiumButton onClick={() => navigate('assessment')} className="px-12 py-5 text-xl md:text-2xl">Build Your Scope</PremiumButton>
         </FadeUp>
       </div>
     </div>
@@ -4465,7 +4465,7 @@ const WorkPage = ({ navigate }) => {
         <FadeUp className="border border-white/10 rounded-[32px] p-16 text-center bg-[#010825] relative overflow-hidden w-full">
           <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20" style={{ backgroundColor: palette.blue }} />
           <h3 className="text-xl md:text-2xl font-light mb-6 font-primary text-white">Ready to start your project?</h3>
-          <p className="text-xl md:text-xl md:text-2xl text-white/50 font-secondary mb-10 max-w-xl mx-auto">Skip the generic agency pitch. Map your brand needs instantly using our Scope Builder.</p>
+          <p className="text-xl md:text-2xl text-white/50 font-secondary mb-10 max-w-xl mx-auto">Skip the generic agency pitch. Map your brand needs instantly using our Scope Builder.</p>
           <PremiumButton onClick={() => navigate('assessment')} className="px-10 py-4">Build My Brand Scope</PremiumButton>
         </FadeUp>
       </div>
@@ -4500,7 +4500,7 @@ const JournalPage = ({ navigate }) => {
             <div className="md:w-1/2 p-12 md:p-16 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/10 w-full">
               <span className="text-[17px] md:text-[19px] font-medium tracking-widest uppercase block mb-6 font-primary" style={{ color: palette.primary }}>Featured • {JOURNAL_ARTICLES[0].tag}</span>
               <h3 className="text-xl md:text-2xl font-light mb-8 font-primary group-hover:text-white/80 transition-colors leading-tight max-w-2xl">{JOURNAL_ARTICLES[0].title}</h3>
-              <p className="text-white/50 font-light mb-10 text-xl md:text-xl md:text-2xl leading-relaxed font-secondary line-clamp-3 max-w-xl">{JOURNAL_ARTICLES[0].excerpt}</p>
+              <p className="text-white/50 font-light mb-10 text-xl md:text-2xl leading-relaxed font-secondary line-clamp-3 max-w-xl">{JOURNAL_ARTICLES[0].excerpt}</p>
               <div className="mt-auto flex items-center justify-between font-secondary text-[17px] md:text-[19px] border-t border-white/5 pt-6 text-white/40">
                 <span>{JOURNAL_ARTICLES[0].author}</span>
                 <span>{JOURNAL_ARTICLES[0].time}</span>
@@ -4551,7 +4551,7 @@ const JournalPage = ({ navigate }) => {
         <FadeUp className="border border-white/10 rounded-[32px] p-12 md:p-16 flex flex-col md:flex-row gap-12 items-center w-full" >
           <div className="md:w-1/2">
             <h3 className="text-xl md:text-2xl font-light mb-4 font-primary text-white">Get insights in your inbox.</h3>
-            <p className="text-white/50 font-secondary text-xl md:text-xl md:text-2xl leading-relaxed max-w-lg">Join innovators receiving our monthly digest on brand strategy, SciArt philosophy, and design thinking.</p>
+            <p className="text-white/50 font-secondary text-xl md:text-2xl leading-relaxed max-w-lg">Join innovators receiving our monthly digest on brand strategy, SciArt philosophy, and design thinking.</p>
           </div>
           <div className="md:w-1/2 w-full">
             <form className="flex gap-4 w-full" onSubmit={(e) => e.preventDefault()}>
@@ -4592,7 +4592,7 @@ const ArticlePage = ({ navigate, articleId }) => {
           <div className="absolute inset-0 flex items-center justify-center"><BookOpen className="w-24 h-24 text-white/5" /></div>
         </FadeUp>
 
-        <StaggerGroup className="space-y-8 text-xl md:text-xl md:text-2xl font-light text-white/70 font-secondary leading-relaxed mb-32 max-w-3xl mx-auto w-full">
+        <StaggerGroup className="space-y-8 text-xl md:text-2xl font-light text-white/70 font-secondary leading-relaxed mb-32 max-w-3xl mx-auto w-full">
           <StaggerItem><p className="text-xl md:text-2xl text-white font-medium mb-10 leading-snug">{article.excerpt}</p></StaggerItem>
           <StaggerItem>
             <p>This is a placeholder for the rich text content of the article. In a fully implemented CMS, this section would parse Markdown or HTML blocks representing the body of the perspective.</p>
@@ -4617,7 +4617,7 @@ const ArticlePage = ({ navigate, articleId }) => {
             {JOURNAL_ARTICLES.filter(a => a.id !== article.id).slice(0, 2).map((a, i) => (
               <div key={i} onClick={() => navigate('article/' + a.id)} className="border border-white/10 rounded-[16px] p-6 flex flex-col hover:-translate-y-1 transition-transform cursor-pointer group w-full" style={{ backgroundColor: palette.panel }}>
                 <div className="text-[17px] md:text-[19px] tracking-widest uppercase mb-4 font-primary" style={{ color: palette[a.type] || palette.primary }}>{a.tag}</div>
-                <h4 className="text-xl md:text-xl md:text-2xl font-medium text-white mb-6 font-primary group-hover:text-white/80">{a.title}</h4>
+                <h4 className="text-xl md:text-2xl font-medium text-white mb-6 font-primary group-hover:text-white/80">{a.title}</h4>
                 <div className="mt-auto flex justify-between items-center text-[17px] md:text-[19px] text-white/40 font-secondary">
                   <span>{a.time}</span>
                   <ArrowRight className="w-3 h-3 group-hover:text-white" />
@@ -4847,21 +4847,21 @@ const ContactPage = ({ navigate }) => {
                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Mail className="w-4 h-4 text-white/70" /></div>
                 <div>
                   <p className="text-[17px] md:text-[19px] text-white/40 uppercase tracking-widest mb-1">Email</p>
-                  <p className="text-xl md:text-xl md:text-2xl text-white">{SITE_SETTINGS?.contactEmail || 'hello@purplebluehouse.com'}</p>
+                  <p className="text-xl md:text-2xl text-white">{SITE_SETTINGS?.contactEmail || 'hello@purplebluehouse.com'}</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><Phone className="w-4 h-4 text-white/70" /></div>
                 <div>
                   <p className="text-[17px] md:text-[19px] text-white/40 uppercase tracking-widest mb-1">Phone</p>
-                  <p className="text-xl md:text-xl md:text-2xl text-white">{SITE_SETTINGS?.contactPhone || '+91 (123) 456-7890'}</p>
+                  <p className="text-xl md:text-2xl text-white">{SITE_SETTINGS?.contactPhone || '+91 (123) 456-7890'}</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
                 <div className="mt-1 w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0"><MapPin className="w-4 h-4 text-white/70" /></div>
                 <div>
                   <p className="text-[17px] md:text-[19px] text-white/40 uppercase tracking-widest mb-1">Global HQ</p>
-                  <p className="text-xl md:text-xl md:text-2xl text-white">{SITE_SETTINGS?.contactAddress || 'Nehru Place, Delhi, IN'}</p>
+                  <p className="text-xl md:text-2xl text-white">{SITE_SETTINGS?.contactAddress || 'Nehru Place, Delhi, IN'}</p>
                 </div>
               </div>
             </div>
@@ -5002,7 +5002,7 @@ const LatestCredentialsPage = ({ navigate }) => {
             <Mail className="w-5 h-5 text-white/70" />
           </div>
           <h3 className="text-xl md:text-2xl font-light mb-4 font-primary text-white">Ready to start?</h3>
-          <p className="text-white/50 font-secondary text-xl md:text-xl md:text-2xl mb-8">You can reach out <a href="mailto:prerita@purplebluehouse.com" className="text-white hover:underline transition-all">prerita@purplebluehouse.com</a></p>
+          <p className="text-white/50 font-secondary text-xl md:text-2xl mb-8">You can reach out <a href="mailto:prerita@purplebluehouse.com" className="text-white hover:underline transition-all">prerita@purplebluehouse.com</a></p>
           <button onClick={() => navigate('assessment')} className="px-8 py-4 border border-white/20 rounded-full text-white/80 hover:bg-white hover:text-black transition-colors text-[17px] md:text-[19px] font-medium font-secondary">Build Your Brand Scope</button>
         </FadeUp>
       </div>
