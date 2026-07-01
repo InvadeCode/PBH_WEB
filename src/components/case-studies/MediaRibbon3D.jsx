@@ -54,14 +54,6 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
 
   const opacity = useTransform(front, [-1, -0.35, 0.15, 1], [0.05, 0.35, 0.88, 1]);
 
-  // On hover: remove blur and max brightness; off hover: normal depth blur
-  const blurPx = useTransform(front, (f) => ((1 - (f + 1) / 2) * 6).toFixed(2));
-  const hoverBlur = useSpring(0, { stiffness: 320, damping: 28 });
-  useEffect(() => { hoverBlur.set(isHovered ? -99 : 0); }, [isHovered, hoverBlur]);
-  const effectiveBlur = useTransform([blurPx, hoverBlur], ([b, h]) =>
-    Math.max(0, parseFloat(b) + h).toFixed(2),
-  );
-
   const brightness = useTransform(front, [-1, 0.4, 1], [0.5, 0.95, 1.15]);
   const hoverBrightness = useSpring(0, { stiffness: 300, damping: 26 });
   useEffect(() => { hoverBrightness.set(isHovered ? 0.25 : 0); }, [isHovered, hoverBrightness]);
@@ -75,17 +67,16 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
   useEffect(() => { hoverSaturate.set(isHovered ? 0.2 : 0); }, [isHovered, hoverSaturate]);
   const effectiveSaturate = useTransform([saturate, hoverSaturate], ([s, h]) => s + h);
 
-  const filter = useMotionTemplate`blur(${effectiveBlur}px) brightness(${effectiveBrightness}) saturate(${effectiveSaturate})`;
+  const filter = useMotionTemplate`brightness(${effectiveBrightness}) saturate(${effectiveSaturate})`;
 
   const glow = useTransform(front, [0.55, 1], [0, 1]);
   const hoverGlow = useSpring(0, { stiffness: 280, damping: 24 });
   useEffect(() => { hoverGlow.set(isHovered ? 1 : 0); }, [isHovered, hoverGlow]);
   const effectiveGlow = useTransform([glow, hoverGlow], ([g, h]) => Math.min(1, g + h * 0.6));
-  const glowBlur = useTransform(effectiveGlow, [0, 1], [0, 80]);
-  const glowAlpha = useTransform(effectiveGlow, [0, 1], [0, 0.75]);
+  
   const primaryRGB = hexToRgb(theme?.primary || '#6865fa');
   const secondaryRGB = hexToRgb(theme?.secondary || '#d4cefc');
-  const boxShadow = useMotionTemplate`0 34px 80px -26px rgba(0,0,0,0.8), 0 0 ${glowBlur}px rgba(${primaryRGB},${glowAlpha})`;
+  const staticBoxShadow = '0 34px 80px -26px rgba(0,0,0,0.8)';
 
   // Hover ring border intensity
   const ringOpacity = useSpring(0.1, { stiffness: 300, damping: 26 });
@@ -129,7 +120,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
     >
       <motion.div
         className="relative h-full w-full overflow-hidden rounded-[16px] will-change-transform"
-        style={{ backgroundColor: theme?.panel || '#0b1340', scale: combinedScale, opacity, filter, boxShadow, outline: ringBorder }}
+        style={{ backgroundColor: theme?.panel || '#0b1340', scale: combinedScale, opacity, filter, boxShadow: staticBoxShadow, outline: ringBorder }}
       >
         {useVideoTag ? (
           <video
@@ -162,10 +153,10 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
           style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18), inset 0 0 0 1px rgba(255,255,255,0.05)' }}
         />
 
-        {/* Lavender hover ring overlay */}
+        {/* Lavender hover ring overlay with outer glow */}
         <motion.div
           className="pointer-events-none absolute -inset-px rounded-[16px]"
-          style={{ opacity: effectiveGlow, boxShadow: `inset 0 0 0 2px rgba(${secondaryRGB},0.7)` }}
+          style={{ opacity: effectiveGlow, boxShadow: `inset 0 0 0 2px rgba(${secondaryRGB},0.7), 0 0 60px rgba(${primaryRGB}, 0.7)` }}
         />
 
         {/* Hover shine sweep */}
