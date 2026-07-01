@@ -123,7 +123,7 @@ const NarrativeBlock = ({ index, label, paragraphs, accent = 'cyan', align = 'le
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className={`whitespace-pre-line text-[16px] md:text-[17px] font-secondary leading-[1.85] text-white/95 tracking-wide md:pr-2 ${right ? '' : 'md:col-span-2 md:max-w-3xl'}`}
+            className={`whitespace-pre-line text-[20px] md:text-[26px] font-secondary leading-[1.85] text-white/95 tracking-wide md:pr-2 ${right ? '' : 'md:col-span-2 md:max-w-3xl'}`}
           >
             {left}
           </motion.p>
@@ -133,7 +133,7 @@ const NarrativeBlock = ({ index, label, paragraphs, accent = 'cyan', align = 'le
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              className="whitespace-pre-line text-[16px] md:text-[17px] font-secondary leading-[1.85] text-white/80 tracking-wide md:pl-2"
+              className="whitespace-pre-line text-[20px] md:text-[26px] font-secondary leading-[1.85] text-white/80 tracking-wide md:pl-2"
             >
               {right}
             </motion.p>
@@ -818,7 +818,7 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
       </div>
 
       {/* The Paragraphs */}
-      <div className="flex flex-col gap-8 text-[16px] md:text-[17px] font-secondary leading-[1.8] font-normal text-[#cbd5e1]">
+      <div className="flex flex-col gap-8 text-[20px] md:text-[26px] font-secondary leading-[1.8] font-normal text-[#cbd5e1]">
         {paragraphs.map((paragraph, i) => {
           const center = numItems > 1 ? (i + 0.5) / numItems : 0.5;
           return (
