@@ -2717,7 +2717,7 @@ const StrategicEngine = ({ navigate }) => {
     // N+6: The Scope Snapshot Report
     <div key="snap" className="flex flex-col justify-center h-full w-full py-12 print:py-0 print:block print-snapshot">
       <FadeUp className="relative p-[1px] rounded-[24px] bg-gradient-to-b from-white/20 to-white/5 w-full print:p-0 print:!bg-white print:rounded-none">
-        <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)] print:p-0 print:shadow-none print:rounded-none print:overflow-visible print-blueprint-container print:!bg-white print:!text-[#010d54]" style={{ backgroundColor: palette.bgDeep }}>
+        <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)] print:p-0 print:shadow-none print:rounded-none print:overflow-visible print-blueprint-container print:!bg-white print:!text-[#010d54]" style={{ backgroundColor: '#010d54' }}>
           <div className="flex flex-col md:flex-row justify-between items-start border-b border-white/10 pb-8 mb-10 relative z-10 gap-6 w-full">
             <div>
               <div className="text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-3 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><FileText className="w-4 h-4" /> {finalSettings.assessmentPage?.scopeSnapshotLabel || 'Official Scope Snapshot'}</div>
@@ -2789,17 +2789,7 @@ const StrategicEngine = ({ navigate }) => {
           <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-10 w-full print:!border-[#d4cefc]">
             <p className="print-footer-note text-[17px] md:text-[19px] text-white/40 max-w-md leading-relaxed font-secondary print:!text-[#010d54]">This snapshot has been securely routed to our partners. We will review your requirements and reach out within 24 hours to schedule a discovery alignment.</p>
             <div className="flex gap-4 w-full sm:w-auto print:hidden">
-              <PremiumButton onClick={() => {
-                if (generatedPdfDoc) {
-                  const safeCompanyName = leadForm.company ? leadForm.company.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'client';
-                  const link = document.createElement('a');
-                  link.href = generatedPdfDoc;
-                  link.download = `PBH_ScopeOfWork_${safeCompanyName}.pdf`;
-                  link.click();
-                } else {
-                  window.print();
-                }
-              }} variant="secondary" className="w-full sm:w-auto px-6 py-3"><Printer className="w-4 h-4 mr-2" /> Download PDF</PremiumButton>
+              <PremiumButton onClick={() => window.print()} variant="secondary" className="w-full sm:w-auto px-6 py-3"><Printer className="w-4 h-4 mr-2" /> Print</PremiumButton>
               <PremiumButton onClick={() => navigate('home')} className="w-full sm:w-auto px-6 py-3">Return to Website</PremiumButton>
             </div>
           </div>
@@ -2809,7 +2799,7 @@ const StrategicEngine = ({ navigate }) => {
   ];
 
   return (
-    <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative w-full print:overflow-visible print:pt-0 print:pb-0 print:!bg-white print:!text-[#010d54]" style={{ backgroundColor: palette.bgDeep }}>
+    <div className="min-h-screen text-[#F4F4F5] pt-28 pb-0 relative w-full print:overflow-visible print:pt-0 print:pb-0 print:!bg-white print:!text-[#010d54] print:!bg-none bg-[#010d54]">
       {readMorePopup && (
         <div className="fixed inset-0 z-[200000] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm text-left">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-[#0C185C] border border-white/10 p-8 rounded-[24px] max-w-lg w-full shadow-2xl relative">
