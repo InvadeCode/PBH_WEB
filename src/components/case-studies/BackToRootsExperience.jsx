@@ -466,7 +466,7 @@ const BackToRootsExperience = ({ navigate, project }) => {
 
         return (
           <CaseStudyVideoHero 
-            videoHero={{ enabled: true, backgroundColor: 'transparent', backgroundText: project.client || 'Case Study' }}
+            videoHero={{ enabled: true, backgroundColor: C.soilDeep || '#010836', backgroundText: project.client || 'Case Study' }}
             fallbackName={project.client} 
             allVideos={allVideos} 
           />
