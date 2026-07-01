@@ -370,6 +370,7 @@ const QUIZ_QUESTIONS = [
     id: 'q6_duration',
     title: 'What kind of engagement are you looking for?',
     multiSelect: false,
+    hint: 'At PBH, meaningful brand-building usually needs a medium to long-term process. Choose the engagement window closest to your current need.',
     options: [
       { id: 'q6_o1', label: '6-month engagement', desc: 'Best for a focused but complete brand-building process across strategy, identity, and communication systems.' },
       { id: 'q6_o2', label: '1-year engagement', desc: 'Best for long-term brand transformation, rollout, ecosystem storytelling, and sustained communication.' },
@@ -381,7 +382,7 @@ const QUIZ_QUESTIONS = [
 // Default blueprint deliverables auto-selected per route
 const ROUTE_BLUEPRINTS = {
   'BB':  ['D001','D002','D003','D004','D005','D006','D007','D008','D009','D010','D011','D012','D013','D014','D015','D016','D017','D018','D019','D020','D021','D022','D023','D024','D025','D026','D027'],
-  'SAS': ['D037','D038','D039','D040','D041','D042','D043','D044','D045','D046','D047','D048','D049','D050','D051','D052','D053','D054','D055','D056','D057','D058','D059','D060','D061','D062','D063','D064','D065'],
+  'SAS': ['D037','D038','D039','D040','D041','D042','D043','D044','D045','D046','D047','D048','D049','D050','D051','D054','D055','D056','D057','D058','D059','D060','D061','D062','D063','D064','D065'],
   'STC': ['D066','D067','D068','D069','D070','D071','D072','D073','D074','D075','D077','D078','D079','D080','D081','D082','D083','D084','D087','D088','D089','D090','D091','D092','D094'],
 };
 
@@ -2386,7 +2387,7 @@ const StrategicEngine = ({ navigate }) => {
           <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.phase1Label || 'Phase 1 / Discovery'} ({i + 1}/{N_QUIZ})</div>
           <h2 className="text-xl md:text-2xl font-light mb-4 font-primary">{q.title}</h2>
           {isMultiSelect && <p className="text-[17px] md:text-[19px] text-cyan-400 mb-8 font-secondary">{finalSettings.assessmentPage?.multiSelectHint || 'Select all that apply.'}</p>}
-          {!isMultiSelect && <p className="text-[17px] md:text-[19px] text-white/40 mb-8 font-secondary">{finalSettings.assessmentPage?.singleSelectHint || 'Select the most accurate statement.'}</p>}
+          {!isMultiSelect && <p className="text-[17px] md:text-[19px] text-white/40 mb-8 font-secondary">{q.hint || finalSettings.assessmentPage?.singleSelectHint || 'Select the most accurate statement.'}</p>}
           
           <StaggerGroup className="space-y-3 w-full max-w-3xl">
             {q.options.map((opt, j) => {
@@ -2491,7 +2492,19 @@ const StrategicEngine = ({ navigate }) => {
       <FadeUp>
         <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.detailsPhaseLabel || 'Phase 3 / Details'}</div>
         <h2 className="text-xl md:text-2xl font-light mb-2 font-primary">{finalSettings.assessmentPage?.buildScopeTitle || 'Your Suggested PBH Blueprint'}</h2>
-        <p className="text-white/50 font-light mb-10 font-secondary">{finalSettings.assessmentPage?.buildScopeText || 'We have pre-selected deliverables based on your brief. Remove what does not feel relevant.'}</p>
+        <p className="text-white/50 font-light mb-6 font-secondary">{finalSettings.assessmentPage?.buildScopeText || 'Based on your responses, we have pre-selected the routes and deliverables that may be most relevant to your brand. You can remove anything that does not feel relevant.'}</p>
+        {(() => {
+          const dId = answers['q6_duration']?.id;
+          const msgs = {
+            q6_o1: 'This looks like a strong 6-month scope. We have prioritised the most relevant foundations and systems. PBH will refine this further in the proposal.',
+            q6_o2: 'This looks suited to a long-term PBH engagement. We have kept the blueprint broad so the work can be phased thoughtfully.',
+            q6_o3: 'A 3-month engagement is best suited for a focused intervention. You can keep this scope lean or choose a 6-month engagement for a fuller PBH process.',
+          };
+          const msg = msgs[dId];
+          return msg ? (
+            <p className="text-white/60 font-light mb-10 font-secondary text-[15px] border border-white/10 rounded-[10px] px-5 py-3 bg-white/[0.03]">{msg}</p>
+          ) : null;
+        })()}
         <StaggerGroup className="space-y-10 w-full pb-10">
           {selectedRoutes.map(rId => {
             const route = ROUTES_INFO[rId];
