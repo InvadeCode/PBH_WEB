@@ -1088,16 +1088,16 @@ const BrandHealthRadar = ({ clusters }) => {
 
   return (
     <div className="relative w-full max-w-[340px] aspect-square mx-auto flex items-center justify-center">
-      <div className="absolute inset-0 opacity-10 blur-[60px] rounded-full pointer-events-none" style={{ backgroundColor: palette.primary }} />
+      <div className="radar-glow absolute inset-0 opacity-10 blur-[60px] rounded-full pointer-events-none" style={{ backgroundColor: palette.primary }} />
       <svg width="100%" height="100%" viewBox={`0 0 ${size} ${size}`} className="overflow-visible drop-shadow-2xl">
         {levels.map((level, i) => <polygon key={i} points={data.map((_, j) => `${getPoint(level, j, data.length).x},${getPoint(level, j, data.length).y}`).join(' ')} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />)}
         {data.map((_, i) => <line key={i} x1={center} y1={center} x2={getPoint(1, i, data.length).x} y2={getPoint(1, i, data.length).y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />)}
-        <motion.polygon points={dataPoints} fill={`rgba(${rgbPrimary},0.2)`} stroke={palette.primary} strokeWidth="2" initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", stiffness: 50, damping: 15, delay: 0.2 }} style={{ transformOrigin: `${center}px ${center}px` }} className="mix-blend-screen" />
+        <motion.polygon className="radar-data-poly" points={dataPoints} fill={`rgba(${rgbPrimary},0.2)`} stroke={palette.primary} strokeWidth="2" initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", stiffness: 50, damping: 15, delay: 0.2 }} style={{ transformOrigin: `${center}px ${center}px` }} />
         {data.map((d, i) => <motion.circle key={i} cx={getPoint(d.score / 100, i, data.length).x} cy={getPoint(d.score / 100, i, data.length).y} r="4" fill="#ffffff" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.6 + i * 0.1 }} />)}
         {data.map((d, i) => <motion.text key={i} x={getPoint(1.25, i, data.length).x} y={getPoint(1.25, i, data.length).y} fill="rgba(255,255,255,0.5)" fontSize="10" textAnchor="middle" alignmentBaseline="middle" className="uppercase tracking-widest font-medium font-primary" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>{d.label}</motion.text>)}
       </svg>
-      <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.2 }} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center backdrop-blur-md w-16 h-16 rounded-full justify-center border border-white/10 shadow-xl" style={{ backgroundColor: `${palette.bgDeep}CC` }}>
-        <span className="text-xl font-light text-white leading-none font-primary">{overallScore}</span><span className="text-[8px] uppercase tracking-widest" style={{ color: palette.primary }}>Index</span>
+      <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.2 }} className="score-circle absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center backdrop-blur-md w-16 h-16 rounded-full justify-center border border-white/10 shadow-xl" style={{ backgroundColor: `${palette.bgDeep}CC` }}>
+        <span className="score-value text-xl font-light text-white leading-none font-primary">{overallScore}</span><span className="score-label text-[8px] uppercase tracking-widest" style={{ color: palette.primary }}>Index</span>
       </motion.div>
     </div>
   );
@@ -2711,7 +2711,7 @@ const StrategicEngine = ({ navigate }) => {
     </div>,
 
     // N+6: The Scope Snapshot Report
-    <div key="snap" className="flex flex-col justify-center h-full w-full py-12 print:py-0 print:block">
+    <div key="snap" className="flex flex-col justify-center h-full w-full py-12 print:py-0 print:block print-snapshot">
       <FadeUp className="relative p-[1px] rounded-[24px] bg-gradient-to-b from-white/20 to-white/5 w-full print:p-0 print:bg-none print:rounded-none">
         <div className="rounded-[23px] p-8 md:p-14 relative overflow-hidden text-left shadow-[0_50px_100px_rgba(0,0,0,0.8)] print:p-0 print:shadow-none print:rounded-none print:overflow-visible print-blueprint-container" style={{ backgroundColor: palette.bgDeep }}>
           <div className="flex flex-col md:flex-row justify-between items-start border-b border-white/10 pb-8 mb-10 relative z-10 gap-6 w-full">
@@ -2736,7 +2736,7 @@ const StrategicEngine = ({ navigate }) => {
               <div className="w-full">
                 <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Recommended Ecosystems</h4>
                 <div className="flex flex-wrap gap-2 w-full">
-                  {selectedRoutes.map(r => <span key={r} className="px-3 py-1.5 bg-white/5 text-white/70 text-[17px] md:text-[19px] border border-white/10 rounded-full flex items-center gap-2 font-secondary">{ROUTES_INFO[r]?.icon} {ROUTES_INFO[r]?.title}</span>)}
+                  {selectedRoutes.map(r => <span key={r} className="ecosystem-pill px-3 py-1.5 bg-white/5 text-white/70 text-[17px] md:text-[19px] border border-white/10 rounded-full flex items-center gap-2 font-secondary">{ROUTES_INFO[r]?.icon} {ROUTES_INFO[r]?.title}</span>)}
                 </div>
               </div>
 
@@ -2745,7 +2745,7 @@ const StrategicEngine = ({ navigate }) => {
                 <div className="text-[17px] md:text-[19px] text-white/70 font-light space-y-3 bg-white/[0.02] p-6 rounded-[12px] border border-white/5 font-secondary w-full">
                   <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Brand Stage</span> <span className="text-right">{(Array.isArray(answers.stage) && answers.stage.length > 0) ? answers.stage.map(s => s.label).join(', ') : 'Not Selected'}</span></p>
                   <p className="flex justify-between border-b border-white/5 pb-2"><span className="text-white/40">Expected Commencement Date</span> <span className="text-right">{context.duration}</span></p>
-                  <p className="flex justify-between"><span className="text-white/40 text-left">Suggested Starting Point</span> <span className="text-right text-[#6865FA]">{computeSuggestedStartingPoint(selectedDeliverables, priorities)}</span></p>
+                  <p className="flex justify-between"><span className="text-white/40 text-left">Suggested Starting Point</span> <span className="starting-point text-right text-[#6865FA]">{computeSuggestedStartingPoint(selectedDeliverables, priorities)}</span></p>
                 </div>
               </div>
             </div>
@@ -2754,7 +2754,7 @@ const StrategicEngine = ({ navigate }) => {
               <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Selected Deliverables Blueprint</h4>
               <ul className="space-y-3 w-full max-h-[500px] overflow-y-auto custom-scrollbar pr-3 print:max-h-none print:overflow-visible print:pr-0">
                 {selectedDeliverables.map(id => DELIVERABLES_BY_ID.get(id)).filter(Boolean).map(d => (
-                  <li key={d.id} className="flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full print:break-inside-avoid">
+                  <li key={d.id} className="deliverable-item flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full print:break-inside-avoid">
                     <div className="p-1.5 rounded-md shrink-0 mt-0.5" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4" style={{ color: palette.blue }} /></div>
                     <div className="w-full">
                       <div className="text-[17px] md:text-[19px] font-medium text-white mb-1 font-secondary flex items-center justify-between">
@@ -2770,7 +2770,7 @@ const StrategicEngine = ({ navigate }) => {
           </div>
 
           <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-10 w-full">
-            <p className="text-[17px] md:text-[19px] text-white/40 max-w-md leading-relaxed font-secondary">This snapshot has been securely routed to our partners. We will review your requirements and reach out within 24 hours to schedule a discovery alignment.</p>
+            <p className="print-footer-note text-[17px] md:text-[19px] text-white/40 max-w-md leading-relaxed font-secondary">This snapshot has been securely routed to our partners. We will review your requirements and reach out within 24 hours to schedule a discovery alignment.</p>
             <div className="flex gap-4 w-full sm:w-auto">
               <PremiumButton onClick={() => window.print()} variant="secondary" className="w-full sm:w-auto px-6 py-3"><Printer className="w-4 h-4 mr-2" /> Print</PremiumButton>
               <PremiumButton onClick={() => navigate('home')} className="w-full sm:w-auto px-6 py-3">Return to Website</PremiumButton>

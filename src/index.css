@@ -255,63 +255,166 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PRINT STYLES (Preserved from original)
+   PRINT STYLES — PBH Brand White Theme
    ═══════════════════════════════════════════════════════════════ */
 @media print {
-  /* 1. Force Browsers to Render Background Colors & Images */
-  *,
-  *::before,
-  *::after {
+  /* 1. Force browsers to render background colors & images */
+  *, *::before, *::after {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
   }
 
-  /* 2. Hide Unnecessary UI Elements on Paper */
-  button, 
-  nav, 
-  header, 
-  footer,
-  .no-print {
+  /* 2. Hide UI chrome */
+  button, nav, header, footer, .no-print {
     display: none !important;
   }
 
-  /* 3. Keep Base Dark Mode Intact — force on BOTH html and body for Windows */
-  html,
-  body {
-    background-color: #010836 !important;
-    color: #ffffff !important;
+  /* 3. White page, dark navy text */
+  html, body {
+    background-color: #ffffff !important;
+    color: #010d54 !important;
   }
 
-  /* 4. Prevent Layout Breaks Inside Cards */
+  /* 4. Page margins */
+  @page {
+    margin: 1.5cm;
+  }
+
+  /* 5. Prevent layout breaks inside cards */
   .break-inside-avoid,
-  .print\\:break-inside-avoid {
+  .print\:break-inside-avoid {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
   }
-  
-  /* 5. Allow container heights to expand fully for print instead of scrolling */
+
+  /* 6. Expand scroll containers for print */
   .overflow-y-auto {
     overflow-y: visible !important;
     max-height: none !important;
   }
-  
-  /* 6. Remove heavy box styling from Live Blueprint for a clean document flow */
+
+  /* 7. Blueprint container — white, no shadow */
   .print-blueprint-container {
-    background-color: transparent !important;
+    background-color: #ffffff !important;
     border: none !important;
     box-shadow: none !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
-  
-  /* 7. Strip inline backgrounds on print to let body color bleed infinitely */
+
+  /* 8. Clear inline background on the inner card (palette.bgDeep inline style) */
+  .print-blueprint-container > div[style],
+  .print-snapshot > * > div[style] {
+    background-color: transparent !important;
+  }
+
+  /* 9. Strip helper class */
   .print-transparent-bg {
     background-color: transparent !important;
   }
 
-  /* 8. Force page margins and prevent clipping */
-  @page {
-    margin: 1cm;
+  /* ── SNAPSHOT WHITE BRAND THEME ─────────────────────────────────── */
+
+  /* All text → dark navy */
+  .print-snapshot * {
+    color: #010d54 !important;
+  }
+
+  /* All borders → light purple */
+  .print-snapshot [class*="border-"] {
+    border-color: #d4cefc !important;
+  }
+
+  /* Semi-transparent white backgrounds → very light purple tint */
+  .print-snapshot [class*="bg-white"] {
+    background-color: rgba(104, 101, 250, 0.05) !important;
+  }
+
+  /* Section label headers (h4) → brand purple */
+  .print-snapshot h4 {
+    color: #6865fa !important;
+  }
+
+  /* Company name → dark navy */
+  .print-snapshot h2 {
+    color: #010d54 !important;
+  }
+
+  /* Inline style accent labels (palette.primary) → brand purple */
+  .print-snapshot [style*="color: rgb(104"] {
+    color: #6865fa !important;
+  }
+
+  /* Suggested Starting Point value */
+  .print-snapshot .starting-point {
+    color: #6865fa !important;
+  }
+
+  /* Ecosystem pills → light purple */
+  .print-snapshot .ecosystem-pill {
+    background-color: rgba(104, 101, 250, 0.08) !important;
+    border-color: rgba(104, 101, 250, 0.25) !important;
+    color: #6865fa !important;
+  }
+
+  /* Deliverable list items → very light purple card */
+  .print-snapshot .deliverable-item {
+    background-color: rgba(104, 101, 250, 0.04) !important;
+    border-color: #d4cefc !important;
+  }
+
+  /* Footer disclaimer → muted navy */
+  .print-snapshot .print-footer-note {
+    color: rgba(1, 13, 84, 0.45) !important;
+  }
+
+  /* ── RADAR CHART PRINT OVERRIDES ──────────────────────────────── */
+
+  /* Hide ambient glow blob (looks awful on white) */
+  .print-snapshot .radar-glow {
+    display: none !important;
+  }
+
+  /* Remove screen blend mode — won't work on white */
+  .print-snapshot svg * {
+    mix-blend-mode: normal !important;
+  }
+
+  /* Grid polygons + axis lines → light purple */
+  .print-snapshot svg polygon,
+  .print-snapshot svg line {
+    stroke: rgba(104, 101, 250, 0.15) !important;
+  }
+
+  /* Data polygon → purple fill + stroke */
+  .print-snapshot .radar-data-poly {
+    fill: rgba(104, 101, 250, 0.12) !important;
+    stroke: #6865fa !important;
+    stroke-width: 2 !important;
+  }
+
+  /* Axis labels → muted navy */
+  .print-snapshot svg text {
+    fill: rgba(1, 13, 84, 0.55) !important;
+  }
+
+  /* Data dots → solid brand purple */
+  .print-snapshot svg circle {
+    fill: #6865fa !important;
+  }
+
+  /* Score circle (center) */
+  .print-snapshot .score-circle {
+    background-color: rgba(104, 101, 250, 0.08) !important;
+    border-color: rgba(104, 101, 250, 0.3) !important;
+  }
+
+  .print-snapshot .score-circle .score-value {
+    color: #010d54 !important;
+  }
+
+  .print-snapshot .score-circle .score-label {
+    color: #6865fa !important;
   }
 }
