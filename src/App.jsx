@@ -2413,11 +2413,12 @@ const StrategicEngine = ({ navigate }) => {
             {isSectorDropdownOpen && (
               <>
                 <div className="fixed inset-0 z-[90]" onClick={() => setIsSectorDropdownOpen(false)}></div>
-                <div className="absolute top-full left-0 mt-2 w-full md:top-0 md:left-[calc(100%+24px)] md:mt-0 md:w-[400px] bg-[#0a1028] border border-white/10 rounded-[16px] shadow-[0_30px_60px_rgba(0,0,0,0.8)] z-[100] overflow-hidden">
-                  <div className="px-5 py-4 border-b border-white/10 bg-white/[0.02]">
-                    <span className="text-[13px] text-white/50 uppercase tracking-widest font-primary">Select Sector</span>
+                <div className="absolute top-full left-0 mt-2 w-full md:top-1/2 md:-translate-y-1/2 md:left-[calc(100%+24px)] md:mt-0 md:w-[360px] bg-black/60 backdrop-blur-2xl border border-white/10 rounded-[20px] shadow-[0_0_80px_rgba(0,0,0,0.8),inset_0_0_0_1px_rgba(255,255,255,0.05)] z-[100] overflow-hidden">
+                  <div className="px-5 py-4 border-b border-white/10 bg-white/[0.02] flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-white/40" />
+                    <span className="text-[13px] text-white/50 uppercase tracking-widest font-primary">Select your Sector</span>
                   </div>
-                  <div className="max-h-[350px] overflow-y-auto custom-scrollbar py-2">
+                  <div className="max-h-[260px] overflow-y-auto custom-scrollbar p-2 space-y-1">
                     {SECTORS.map((s, idx) => (
                       <button
                         key={idx}
@@ -2425,10 +2426,10 @@ const StrategicEngine = ({ navigate }) => {
                           setLeadForm({...leadForm, industry: s});
                           setIsSectorDropdownOpen(false);
                         }}
-                        className={`w-full text-left px-5 py-3 hover:bg-white/5 transition-colors font-secondary text-[16px] md:text-[17px] font-light flex items-center justify-between ${leadForm.industry === s ? 'text-cyan-400 bg-white/[0.03]' : 'text-white/80'}`}
+                        className={`w-full text-left px-4 py-3 rounded-[12px] transition-all font-secondary text-[15px] md:text-[16px] font-light flex items-center justify-between group ${leadForm.industry === s ? 'text-white bg-white/10 shadow-sm' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
                       >
-                        {s}
-                        {leadForm.industry === s && <Check className="w-4 h-4 text-cyan-400" />}
+                        <span>{s}</span>
+                        {leadForm.industry === s && <Check className="w-4 h-4 text-white" />}
                       </button>
                     ))}
                   </div>
