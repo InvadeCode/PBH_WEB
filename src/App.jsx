@@ -3012,12 +3012,12 @@ const Header = ({ navigate, current }) => {
               className={`absolute top-1/2 left-1/2 rounded-2xl overflow-hidden shadow-2xl cursor-pointer group ${isActive ? 'shadow-black/60 border border-white/10' : 'shadow-black/20'}`}
               initial={false}
               animate={{
-                x: `calc(-50% + ${offset * 160}px)`,
+                x: `calc(-50% + ${offset * 240}px)`,
                 y: '-50%',
-                scale: isActive ? 1 : Math.max(0.7, 1 - absOffset * 0.15),
-                rotateY: offset * -15,
+                scale: isActive ? 1.05 : 1,
+                rotateY: offset * -12,
                 zIndex: 30 - absOffset,
-                opacity: absOffset > 2 ? 0 : (isActive ? 1 : 0.4)
+                opacity: absOffset > 2 ? 0 : (isActive ? 1 : 0.7)
               }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               style={{ width: '320px', height: '240px', transformOrigin: 'center center' }}
