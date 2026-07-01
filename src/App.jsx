@@ -2994,64 +2994,105 @@ const Header = ({ navigate, current }) => {
   );
 
   const WorkMegaMenuCarousel = ({ items, onNavigate }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+
     return (
-      <div className="w-full flex gap-4 overflow-x-auto pb-4 snap-x hide-scrollbar">
-        {items.map((cs) => {
-          const visibleTags = getVisibleCaseStudyTags(cs, 2);
+      <div className="relative w-full h-[340px] flex items-center justify-center perspective-[1000px] overflow-hidden rounded-[24px] border border-white/5 bg-white/[0.02]">
+        {items.map((cs, i) => {
+          const offset = i - currentIndex;
+          const absOffset = Math.abs(offset);
+          const isActive = offset === 0;
+          
+          const img = cs.bannerVideo || cs.fullStory?.heroVideo || cs.fullStory?.heroImg || cs.bannerImage || null;
           const thumbnailMediaProps = getCaseStudyThumbnailMediaProps(cs);
           
           return (
-            <div 
+            <motion.div
               key={cs.id}
-              onClick={(e) => {
-                e.stopPropagation();
-                onNavigate(cs.id);
+              className={`absolute top-1/2 left-1/2 rounded-2xl overflow-hidden shadow-2xl cursor-pointer group ${isActive ? 'shadow-black/60 border border-white/10' : 'shadow-black/20'}`}
+              initial={false}
+              animate={{
+                x: `calc(-50% + ${offset * 160}px)`,
+                y: '-50%',
+                scale: isActive ? 1 : Math.max(0.7, 1 - absOffset * 0.15),
+                rotateY: offset * -15,
+                zIndex: 30 - absOffset,
+                opacity: absOffset > 2 ? 0 : (isActive ? 1 : 0.4)
               }}
-              className="snap-start shrink-0 w-[280px] md:w-[320px] group relative border border-white/10 rounded-[24px] overflow-hidden cursor-pointer aspect-[4/3] bg-[#0a0a0a] shadow-2xl transition-all duration-700 hover:border-white/30 hover:-translate-y-1"
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              style={{ width: '320px', height: '240px', transformOrigin: 'center center' }}
+              onClick={(e) => {
+                 if (!isActive) {
+                   e.stopPropagation();
+                   setCurrentIndex(i);
+                 } else {
+                   onNavigate(cs.id);
+                 }
+              }}
             >
-              {/* Background Image */}
-              <div className="absolute inset-0 z-0">
-                {(cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl) ? (
-                  <CaseStudyMedia
-                    src={cs.bannerVideo || cs.fullStory?.heroVideo || cs.bannerImage || cs.fullStory?.heroImg || cs.imageUrl}
-                    alt={cs.client}
-                    className={thumbnailMediaProps.className}
-                    style={thumbnailMediaProps.style}
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center bg-[#010d54]">
-                    <span className="font-primary italic text-white/10 text-4xl">{cs.client ? cs.client.split(' ')[0] : 'Work'}</span>
-                  </div>
-                )}
+              {img ? (
+                <CaseStudyMedia 
+                  src={img} 
+                  className={thumbnailMediaProps.className} 
+                  style={thumbnailMediaProps.style}
+                  alt={cs.client} 
+                />
+              ) : (
+                <div className="w-full h-full" style={{ backgroundColor: '#010d54' }} />
+              )}
+              
+              {/* Default state — hidden on hover */}
+              <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:opacity-0 transition-opacity duration-300 flex flex-col justify-end">
+                 <span className="text-[13px] md:text-[15px] tracking-widest uppercase mb-1 block font-medium font-primary text-white/70">{cs.sector || cs.route}</span>
+                 <h4 className="text-white font-medium text-[17px] md:text-[19px] font-secondary leading-tight">{cs.client}</h4>
               </div>
-
-              {/* Hover panel */}
+              
+              {/* Hover panel — slides up from bottom */}
               <div className="absolute inset-x-0 bottom-0 z-10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[0.16,1,0.3,1]">
-                <div className="bg-gradient-to-t from-black/90 to-black/40 backdrop-blur-xl border-t border-white/10 px-5 py-5 text-left flex flex-col justify-end min-h-[50%] h-full">
-                  <h3 className="font-primary text-white text-[17px] md:text-[19px] font-semibold leading-snug mb-1 drop-shadow-md">{cs.client}</h3>
+                <div className="bg-gradient-to-t from-black/90 to-black/40 backdrop-blur-xl border-t border-white/10 px-4 py-4 text-left">
+                  <h3 className="font-primary text-white text-[17px] md:text-[19px] font-semibold leading-snug mb-0.5 drop-shadow-md">{cs.client}</h3>
                   {(cs.preview || cs.challenge) && (
-                    <p className="font-secondary text-white/60 text-[13px] md:text-[14px] leading-snug mb-3 line-clamp-2">{cs.preview || cs.challenge}</p>
+                    <p className="font-secondary text-white/60 text-[13px] md:text-[15px] leading-snug mb-2 line-clamp-1">{cs.preview || cs.challenge}</p>
                   )}
-                  {visibleTags.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mt-auto">
-                      {visibleTags.map(t => (
-                        <span key={t} className="px-2 py-1 rounded-full border border-white/25 bg-white/10 text-white/75 text-[11px] font-secondary tracking-wide uppercase backdrop-blur-sm">
+                  {cs.tags && cs.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-2.5">
+                      {cs.tags.slice(0,2).map(t => (
+                        <span key={t} className="px-2 py-0.5 rounded-full border border-white/25 bg-white/10 text-white/75 text-[11px] font-secondary tracking-wide uppercase backdrop-blur-sm">
                           {t}
                         </span>
                       ))}
                     </div>
                   )}
+                  <span className="inline-block px-3 py-1 rounded-full bg-[#F5C518]/90 text-black text-[13px] font-semibold font-secondary shadow-[0_4px_20px_rgba(245,197,24,0.3)]">
+                    View Case Study
+                  </span>
                 </div>
               </div>
-
-              {/* Default state bottom gradient for legibility */}
-              <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-black/80 via-black/40 to-transparent group-hover:opacity-0 transition-opacity duration-300 flex flex-col justify-end pointer-events-none">
-                 <span className="text-[12px] md:text-[13px] tracking-widest uppercase mb-1 block font-medium font-primary text-white/70">{cs.sector || cs.route}</span>
-                 <h4 className="text-white font-medium text-[16px] md:text-[18px] font-secondary leading-tight">{cs.client}</h4>
-              </div>
-            </div>
+              
+              {isActive && (
+                 <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                   <ArrowUpRight size={14} />
+                 </div>
+              )}
+            </motion.div>
           );
         })}
+        
+        {/* Controls */}
+        <div className="absolute bottom-4 right-4 flex gap-2 z-50">
+          <button 
+            onClick={(e) => { e.stopPropagation(); setCurrentIndex(prev => Math.max(0, prev - 1)); }}
+            className={`w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-colors ${currentIndex === 0 ? 'text-white/30 cursor-not-allowed' : 'text-white hover:bg-white/20'}`}
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button 
+            onClick={(e) => { e.stopPropagation(); setCurrentIndex(prev => Math.min(items.length - 1, prev + 1)); }}
+            className={`w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center transition-colors ${currentIndex === items.length - 1 ? 'text-white/30 cursor-not-allowed' : 'text-white hover:bg-white/20'}`}
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
       </div>
     );
   };
