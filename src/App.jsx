@@ -4413,8 +4413,8 @@ const WorkPage = ({ navigate }) => {
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
-        <RevealText><h1 className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight mb-6 font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.workPageHeader || "Our Work.")}</h1></RevealText>
-        <FadeUp><p className="text-[16px] md:text-[17px] leading-relaxed font-normal text-white/50 mb-16 max-w-2xl font-secondary">{SITE_SETTINGS?.workPageSubtext || "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns."}</p></FadeUp>
+        <RevealText><h1 className="t-display mb-6 whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.workPageHeader || "Our Work.")}</h1></RevealText>
+        <FadeUp><p className="t-body text-white/50 mb-16 max-w-2xl">{SITE_SETTINGS?.workPageSubtext || "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns."}</p></FadeUp>
 
         {/* Featured Case Study Hero */}
         <FadeUp delay={0.1} className="mb-24 w-full">
@@ -4425,7 +4425,7 @@ const WorkPage = ({ navigate }) => {
               ) : (
                 <>
                   <div className="absolute inset-0 opacity-30 mix-blend-screen transition-transform duration-1000 ease-out group-hover:scale-105"  />
-                  <div className="absolute inset-0 flex items-center justify-center"><span className="font-primary italic text-white/10 text-5xl md:text-7xl lg:text-8xl">{caseStudies[0].client ? caseStudies[0].client.split(' ')[0] : 'Work'}</span></div>
+                  <div className="absolute inset-0 flex items-center justify-center"><span className="t-display italic text-white/10">{caseStudies[0].client ? caseStudies[0].client.split(' ')[0] : 'Work'}</span></div>
                 </>
               )}
             </div>
@@ -4433,10 +4433,10 @@ const WorkPage = ({ navigate }) => {
               <span className="t-label block mb-4" style={{ color: palette.primary }}>Featured Case Study • {caseStudies[0].sector}</span>
               <h3 className="t-display mb-6">{caseStudies[0].client}</h3>
               <p className="t-body text-white/50 mb-10 max-w-lg">{caseStudies[0].challenge}</p>
-              <div className="flex gap-4 font-secondary mb-12 flex-wrap">
-                {getVisibleCaseStudyTags(caseStudies[0]).map(t => <span key={t} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 text-[12px] md:text-[13px] uppercase tracking-[0.4em] text-white/70">{t}</span>)}
+              <div className="flex gap-4 mb-12 flex-wrap">
+                {getVisibleCaseStudyTags(caseStudies[0]).map(t => <span key={t} className="t-label px-4 py-2 rounded-full border border-white/10 bg-white/5 text-white/70">{t}</span>)}
               </div>
-              <div className="mt-auto flex items-center gap-2 text-[16px] md:text-[17px] text-white/70 group-hover:text-white transition-colors font-medium font-secondary">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
+              <div className="mt-auto flex items-center gap-2 t-body text-white/70 group-hover:text-white transition-colors font-medium">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
             </div>
           </div>
         </FadeUp>
