@@ -1,4 +1,4 @@
-export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(coalesce(workPageOrder, order, 999999), orderRank, _createdAt) {
+export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(orderRank, coalesce(workPageOrder, order, 999999), _createdAt) {
   _id,
   _createdAt,
   "cmsId": _id,

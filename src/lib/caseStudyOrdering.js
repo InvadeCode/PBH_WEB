@@ -69,16 +69,16 @@ export const orderCaseStudies = (items = [], referenceItems = []) => {
     .sort((a, b) => {
       const aHasOrder = a.orderNumber !== null;
       const bHasOrder = b.orderNumber !== null;
+      if (a.rank || b.rank) {
+        if (a.rank && b.rank && a.rank !== b.rank) return a.rank.localeCompare(b.rank);
+        if (a.rank !== b.rank) return a.rank ? -1 : 1;
+      }
+
       if (aHasOrder || bHasOrder) {
         if (aHasOrder && bHasOrder && a.orderNumber !== b.orderNumber) {
           return a.orderNumber - b.orderNumber;
         }
         if (aHasOrder !== bHasOrder) return aHasOrder ? -1 : 1;
-      }
-
-      if (a.rank || b.rank) {
-        if (a.rank && b.rank && a.rank !== b.rank) return a.rank.localeCompare(b.rank);
-        if (a.rank !== b.rank) return a.rank ? -1 : 1;
       }
 
       if (a.staticIndex !== b.staticIndex) return a.staticIndex - b.staticIndex;
