@@ -60,10 +60,16 @@ const isSnowLeopardCaseStudy = (caseStudy) => (
   /snow\s*leopard/i.test(`${caseStudy?.client || ''} ${caseStudy?.id || ''}`)
 );
 
-const getCaseStudyThumbnailMediaProps = (caseStudy) => ({
-  className: 'w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out',
-  style: isSnowLeopardCaseStudy(caseStudy) ? { objectPosition: '14% center' } : undefined,
-});
+const getCaseStudyThumbnailMediaProps = (caseStudy) => {
+  const clientName = (caseStudy?.client || '').toLowerCase();
+  const isSamskara = clientName.includes('observer research') || clientName.includes('samskara');
+  const isSLT = isSnowLeopardCaseStudy(caseStudy);
+  
+  return {
+    className: `w-full h-full object-cover transition-transform duration-1000 ease-out ${isSamskara ? 'scale-[1.7] group-hover:scale-[1.8]' : 'group-hover:scale-105'}`,
+    style: isSLT ? { objectPosition: '14% center' } : undefined,
+  };
+};
 
 // --- RESEND CONFIGURATION ---
 // Configuration moved to Vercel environment variables securely.
