@@ -61,7 +61,13 @@ export const toComparableVideoUrl = (url) => {
 
 /** Kanti Sweets-style technical preface backdrop. */
 const KantiPrefaceBackdrop = ({ backgroundColor, reduced, theme }) => (
-  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+  <div
+    className="absolute inset-0 overflow-hidden pointer-events-none z-0"
+    style={{
+      WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%)',
+      maskImage: 'linear-gradient(to right, transparent 0%, black 9%, black 91%, transparent 100%)',
+    }}
+  >
     <div
       className="absolute inset-0"
       style={{
