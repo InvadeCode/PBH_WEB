@@ -190,6 +190,9 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
   const backdropText = shouldUsePunchWord
     ? normalizedBackdropText.split(' ').filter(Boolean).slice(-1)[0]
     : normalizedBackdropText;
+  
+  // Create a continuous marquee effect by repeating the text
+  const repeatedBackdropText = Array(5).fill(backdropText).join('\u00A0\u00A0\u00A0');
 
   const [activeVideoIndex, setActiveVideoIndex] = useState(null);
   const isOpen = activeVideoIndex !== null;
@@ -247,6 +250,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
           controls
           autoPlay
           playsInline
+          preload="metadata"
         />
       );
     }
@@ -304,7 +308,7 @@ const CaseStudyVideoHero = ({ videoHero, fallbackName = 'Case Study', allVideos 
           animate={prefersReduced ? undefined : { x: ['2%', '-2%', '2%'] }}
           transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
         >
-          {backdropText}
+          {repeatedBackdropText}
         </motion.div>
       </div>
 

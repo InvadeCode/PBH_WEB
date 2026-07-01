@@ -461,6 +461,7 @@ const GenericStorytellingExperience = ({ navigate, project }) => {
                   muted
                   loop
                   playsInline
+                  preload="metadata"
                   className="w-full h-auto rounded-[2rem] shadow-[0_40px_80px_rgba(0,0,0,0.8)] border border-white/5"
                   aria-label={altText}
                 />
@@ -519,7 +520,7 @@ const GenericStorytellingExperience = ({ navigate, project }) => {
 
         const mainVideoData = {
           ...rawMainVideoData,
-          backgroundColor: (!rawMainVideoData.backgroundColor || rawMainVideoData.backgroundColor === 'transparent') ? (c.soilDeep || '#010836') : rawMainVideoData.backgroundColor
+          backgroundColor: 'transparent'
         };
         
         return (

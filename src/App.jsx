@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, createContext, useContext } from 'react';
+import React, { useState, useEffect, useRef, createContext, useContext, lazy, Suspense, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { jsPDF } from 'jspdf';
 import ExcelJS from 'exceljs';
@@ -17,13 +17,13 @@ import {
   Quote, Printer, Download, MonitorPlay, MapPin, Phone, Clock, Plus, Loader2, AlertCircle,
   UploadCloud, Paperclip
 } from 'lucide-react';
-import BackToRootsExperience from './components/case-studies/BackToRootsExperience';
-import ParamInnovationExperience from './components/case-studies/ParamInnovationExperience';
-import SnowLeopardExperience from './components/case-studies/SnowLeopardExperience';
-import AriseVenturesExperience from './components/case-studies/AriseVenturesExperience';
-import FirefoxExperience from './components/case-studies/FirefoxExperience';
-import LegacyExperience from './components/case-studies/LegacyExperience';
-import GenericStorytellingExperience from './components/case-studies/GenericStorytellingExperience';
+const BackToRootsExperience = lazy(() => import('./components/case-studies/BackToRootsExperience'));
+const ParamInnovationExperience = lazy(() => import('./components/case-studies/ParamInnovationExperience'));
+const SnowLeopardExperience = lazy(() => import('./components/case-studies/SnowLeopardExperience'));
+const AriseVenturesExperience = lazy(() => import('./components/case-studies/AriseVenturesExperience'));
+const FirefoxExperience = lazy(() => import('./components/case-studies/FirefoxExperience'));
+const LegacyExperience = lazy(() => import('./components/case-studies/LegacyExperience'));
+const GenericStorytellingExperience = lazy(() => import('./components/case-studies/GenericStorytellingExperience'));
 import CaseStudyTeamCredits from './components/case-studies/CaseStudyTeamCredits';
 import CaseStudyMedia from './components/case-studies/CaseStudyMedia';
 
@@ -530,6 +530,9 @@ const DELIVERABLES_MASTER = [
   { id: 'D094', lineItem: 'SC4', name: 'Event Toolkit', interdependence: 'D087-D093' }
 ];
 
+// O(1) lookup map — avoids repeated .find() across renders
+const DELIVERABLES_BY_ID = new Map(DELIVERABLES_MASTER.map(d => [d.id, d]));
+
 const CASE_STUDIES = [
   {
     id: 'cs0',
@@ -787,34 +790,36 @@ const BrandAura = () => (
       animate={{ x: ['-4%', '4%', '-4%'], y: ['-3%', '3%', '-3%'] }}
       transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
       className="absolute -top-[18%] -left-[12%] w-[60vw] h-[60vw] rounded-full blur-[170px]"
-      style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.34) 0%, transparent 70%)' }}
+      style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.34) 0%, transparent 70%)', willChange: 'transform' }}
     />
     <motion.div
       animate={{ x: ['4%', '-4%', '4%'], y: ['3%', '-3%', '3%'] }}
       transition={{ duration: 32, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
       className="absolute top-[16%] -right-[16%] w-[55vw] h-[55vw] rounded-full blur-[180px]"
-      style={{ background: 'radial-gradient(circle, rgba(212,206,252,0.30) 0%, transparent 70%)' }}
+      style={{ background: 'radial-gradient(circle, rgba(212,206,252,0.30) 0%, transparent 70%)', willChange: 'transform' }}
     />
     <motion.div
       animate={{ scale: [1, 1.12, 1] }}
       transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
       className="absolute -bottom-[20%] left-[24%] w-[42vw] h-[42vw] rounded-full blur-[170px]"
-      style={{ background: 'radial-gradient(circle, rgba(255,205,0,0.16) 0%, transparent 70%)' }}
+      style={{ background: 'radial-gradient(circle, rgba(255,205,0,0.16) 0%, transparent 70%)', willChange: 'transform' }}
     />
   </div>
 );
 
 const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const cursorX = useMotionValue(-100);
+  const cursorY = useMotionValue(-100);
   const [isPointer, setIsPointer] = useState(false);
   useEffect(() => {
-    const handleMouseMove = (e) => setPosition({ x: e.clientX, y: e.clientY });
+    const handleMouseMove = (e) => { cursorX.set(e.clientX - 8); cursorY.set(e.clientY - 8); };
     const handleMouseOver = (e) => setIsPointer(window.getComputedStyle(e.target).cursor === 'pointer' || e.target.tagName.toLowerCase() === 'button' || e.target.tagName.toLowerCase() === 'a');
-    window.addEventListener('mousemove', handleMouseMove); window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
     return () => { window.removeEventListener('mousemove', handleMouseMove); window.removeEventListener('mouseover', handleMouseOver); };
-  }, []);
+  }, [cursorX, cursorY]);
   return (
-    <motion.div className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[999] mix-blend-difference hidden md:flex items-center justify-center" animate={{ x: position.x - 8, y: position.y - 8, scale: isPointer ? 3 : 1, backgroundColor: isPointer ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,1)', border: isPointer ? '0.5px solid rgba(255,255,255,0.5)' : 'none' }} transition={{ type: 'spring', stiffness: 700, damping: 40, mass: 0.1 }} />
+    <motion.div className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[999] mix-blend-difference hidden md:flex items-center justify-center" style={{ x: cursorX, y: cursorY }} animate={{ scale: isPointer ? 3 : 1, backgroundColor: isPointer ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,1)', border: isPointer ? '0.5px solid rgba(255,255,255,0.5)' : 'none' }} transition={{ type: 'spring', stiffness: 700, damping: 40, mass: 0.1 }} />
   );
 };
 
@@ -828,15 +833,18 @@ const InteractiveFlowingLines = () => {
 
   useEffect(() => {
     const updateDims = () => setDimensions({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener('resize', updateDims); return () => window.removeEventListener('resize', updateDims);
+    window.addEventListener('resize', updateDims, { passive: true }); return () => window.removeEventListener('resize', updateDims);
   }, []);
 
   useEffect(() => {
     const handleMouseMove = (e) => { mouseX.set(e.clientX); mouseY.set(e.clientY); };
-    window.addEventListener('mousemove', handleMouseMove); return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true }); return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseX, mouseY]);
 
+  const lastFrameT = useRef(0);
   useAnimationFrame((t) => {
+    if (t - lastFrameT.current < 33) return; // cap at ~30fps
+    lastFrameT.current = t;
     const w = dimensions.width; const h = dimensions.height; const cx = smoothX.get(); const cy = smoothY.get();
     const wave1 = Math.sin(t / 2000) * 150; const wave2 = Math.cos(t / 3000) * 150; const wave3 = Math.sin(t / 4000) * 150;
     path1.set(`M -200 ${h * 0.4 + wave1} Q ${cx + wave2} ${cy + wave3} ${w + 200} ${h * 0.6 - wave1}`);
@@ -1278,7 +1286,7 @@ const StrategicEngine = ({ navigate }) => {
     const groupedIds = new Set();
 
     selectedDeliverables.forEach(d => {
-      const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
+      const deliv = DELIVERABLES_BY_ID.get(d);
       if (!deliv) return;
 
       const lineItemId = deliv.lineItem;
@@ -1378,7 +1386,7 @@ const StrategicEngine = ({ navigate }) => {
                     <h3 style="color: #1e1e38; font-size: 14px; text-transform: uppercase; margin: 0 0 10px 0;">Other Deliverables</h3>
                     <ul style="margin: 0; padding-left: 20px; color: #374151; font-size: 13px;">
                       ${ungroupedIds.map(d => {
-      const deliv = DELIVERABLES_MASTER.find(x => x.id === d);
+      const deliv = DELIVERABLES_BY_ID.get(d);
       return `<li style="margin-bottom: 4px;">${deliv ? deliv.name : d}</li>`;
     }).join('')}
                     </ul>
@@ -1651,7 +1659,7 @@ const StrategicEngine = ({ navigate }) => {
 
       for (let i = 0; i < ungrouped.length; i += 2) {
         checkPage(45);
-        const d1 = DELIVERABLES_MASTER.find(x => x.id === ungrouped[i]);
+        const d1 = DELIVERABLES_BY_ID.get(ungrouped[i]);
         const name1 = d1 ? d1.name : ungrouped[i];
 
         doc.setFillColor(248, 245, 255);
@@ -1666,7 +1674,7 @@ const StrategicEngine = ({ navigate }) => {
         doc.text(name1, margin + 28, y + 21);
 
         if (i + 1 < ungrouped.length) {
-          const d2 = DELIVERABLES_MASTER.find(x => x.id === ungrouped[i + 1]);
+          const d2 = DELIVERABLES_BY_ID.get(ungrouped[i + 1]);
           const name2 = d2 ? d2.name : ungrouped[i + 1];
           const rightX = margin + colWidth + 15;
           doc.setFillColor(248, 245, 255);
@@ -1929,7 +1937,7 @@ const StrategicEngine = ({ navigate }) => {
         });
 
         ungroupedIds.forEach((dId, idx) => {
-          const deliv = DELIVERABLES_MASTER.find(x => x.id === dId);
+          const deliv = DELIVERABLES_BY_ID.get(dId);
           const row = sheet.addRow(["", serialNo, "Ungrouped", deliv ? deliv.name : dId]);
           row.getCell(2).alignment = { horizontal: 'center', vertical: 'middle' };
           [2, 3, 4].forEach(colIdx => {
@@ -2237,7 +2245,7 @@ const StrategicEngine = ({ navigate }) => {
                 {selectedDeliverables.length > 0 ? (
                   <ul className="space-y-4">
                     <AnimatePresence>
-                      {DELIVERABLES_MASTER.filter(d => selectedDeliverables.includes(d.id)).map((d, i) => (
+                      {selectedDeliverables.map(id => DELIVERABLES_BY_ID.get(id)).filter(Boolean).map((d, i) => (
                         <motion.li 
                           layout
                           initial={{ opacity: 0, x: -20, backgroundColor: hexToRgba(palette.blue, 0.2) }}
@@ -2669,7 +2677,7 @@ const StrategicEngine = ({ navigate }) => {
             <div className="w-full">
               <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary">Selected Deliverables Blueprint</h4>
               <ul className="space-y-4 w-full">
-                {DELIVERABLES_MASTER.filter(d => selectedDeliverables.includes(d.id)).map(d => (
+                {selectedDeliverables.map(id => DELIVERABLES_BY_ID.get(id)).filter(Boolean).map(d => (
                   <li key={d.id} className="flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full print:break-inside-avoid">
                     <div className="p-1.5 rounded-md shrink-0 mt-0.5" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4" style={{ color: palette.blue }} /></div>
                     <div className="w-full">
@@ -2728,7 +2736,7 @@ const StrategicEngine = ({ navigate }) => {
                 <p className="text-white/60 mb-6 font-secondary">This deliverable requires {dependencyModal.related.length} other foundation(s) to be executed properly:</p>
                 <ul className="mb-8 space-y-2 max-h-40 overflow-y-auto custom-scrollbar font-secondary border border-white/5 bg-white/[0.02] p-4 rounded-lg">
                   {dependencyModal.related.map(id => {
-                    const d = DELIVERABLES_MASTER.find(x => x.id === id);
+                    const d = DELIVERABLES_BY_ID.get(id);
                     return <li key={id} className="text-[17px] md:text-[19px] text-white/80 flex items-center gap-2"><ArrowRight className="w-3 h-3 text-[#6865FA] shrink-0" /> {d?.name || id}</li>;
                   })}
                 </ul>
@@ -2751,7 +2759,7 @@ const StrategicEngine = ({ navigate }) => {
                 <p className="text-white/60 mb-6 font-secondary">Removing this will also break the foundation for {dependencyModal.related.length} dependent deliverable(s):</p>
                 <ul className="mb-8 space-y-2 max-h-40 overflow-y-auto custom-scrollbar font-secondary border border-white/5 bg-white/[0.02] p-4 rounded-lg">
                   {dependencyModal.related.map(id => {
-                    const d = DELIVERABLES_MASTER.find(x => x.id === id);
+                    const d = DELIVERABLES_BY_ID.get(id);
                     return <li key={id} className="text-[17px] md:text-[19px] text-white/80 flex items-center gap-2"><X className="w-3 h-3 text-red-400 shrink-0" /> {d?.name || id}</li>;
                   })}
                 </ul>
@@ -2935,7 +2943,7 @@ const Header = ({ navigate, current }) => {
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -3258,6 +3266,8 @@ const SelectedCollaboratorsSection = () => {
           <img
             src={logo.src}
             alt={logo.name}
+            loading="lazy"
+            decoding="async"
             style={{ objectFit: 'cover', objectPosition: 'center center', ...(logo.invert ? { filter: 'brightness(0) invert(1)' } : {}) }}
             className={`h-28 md:h-40 w-[260px] md:w-[360px] transition-all duration-500 opacity-80 group-hover:opacity-100 ${logo.mixBlendScreen ? 'mix-blend-screen' : ''} ${logo.mixBlendMultiply ? 'mix-blend-multiply' : ''}`}
           />
@@ -3265,6 +3275,8 @@ const SelectedCollaboratorsSection = () => {
           <img
             src={logo.src}
             alt={logo.name}
+            loading="lazy"
+            decoding="async"
             style={logo.invert ? { filter: 'brightness(0) invert(1)' } : {}}
             className={`h-28 md:h-40 max-w-[260px] md:max-w-[360px] w-auto object-contain transition-all duration-500 opacity-80 group-hover:opacity-100 ${logo.mixBlendScreen ? 'mix-blend-screen' : ''} ${logo.mixBlendMultiply ? 'mix-blend-multiply' : ''}`}
           />
@@ -3289,8 +3301,8 @@ const SelectedCollaboratorsSection = () => {
         <div className="absolute left-0 top-0 bottom-0 w-24 md:w-56 z-20 pointer-events-none"  />
         <div className="absolute right-0 top-0 bottom-0 w-24 md:w-56 z-20 pointer-events-none"  />
 
-        <div className="flex w-max items-center animate-collab-marquee hover:[animation-play-state:paused]">
-          {[...logos, ...logos, ...logos].map(renderLogo)}
+        <div className="flex w-max items-center animate-collab-marquee hover:[animation-play-state:paused]" style={{ willChange: 'transform' }}>
+          {[...logos, ...logos].map(renderLogo)}
         </div>
       </div>
 
@@ -3300,7 +3312,7 @@ const SelectedCollaboratorsSection = () => {
       <style>{`
         @keyframes collab-marquee {
           0%   { transform: translateX(0); }
-          100% { transform: translateX(-33.333333%); }
+          100% { transform: translateX(-50%); }
         }
         .animate-collab-marquee {
           animation: collab-marquee 18s linear infinite;
@@ -3672,7 +3684,7 @@ const BrandBoulevardMarquee = ({ images, client, bgHex }) => {
           {displayImages.map((img, idx) => (
              <div key={`set1-${idx}`} className="h-[45vh] md:h-[55vh] lg:h-[60vh] shrink-0 rounded-[16px] overflow-hidden border border-white/5 relative group/card bg-white/5 transition-all duration-700 hover:scale-[1.02] hover:-translate-y-1">
                <div className="h-full w-auto group-hover/row:opacity-50 group-hover/card:opacity-100 transition-opacity duration-500">
-                 <img src={img} alt={`${client} showcase`} className="h-full w-auto object-cover md:object-contain rounded-[16px]" />
+                 <img src={img} alt={`${client} showcase`} loading="lazy" decoding="async" className="h-full w-auto object-cover md:object-contain rounded-[16px]" />
                </div>
              </div>
           ))}
@@ -3681,7 +3693,7 @@ const BrandBoulevardMarquee = ({ images, client, bgHex }) => {
           {displayImages.map((img, idx) => (
              <div key={`set2-${idx}`} className="h-[45vh] md:h-[55vh] lg:h-[60vh] shrink-0 rounded-[16px] overflow-hidden border border-white/5 relative group/card bg-white/5 transition-all duration-700 hover:scale-[1.02] hover:-translate-y-1">
                <div className="h-full w-auto group-hover/row:opacity-50 group-hover/card:opacity-100 transition-opacity duration-500">
-                 <img src={img} alt={`${client} showcase`} className="h-full w-auto object-cover md:object-contain rounded-[16px]" />
+                 <img src={img} alt={`${client} showcase`} loading="lazy" decoding="async" className="h-full w-auto object-cover md:object-contain rounded-[16px]" />
                </div>
              </div>
           ))}
@@ -3803,10 +3815,10 @@ const WorkDetailPage = ({ navigate, projectId }) => {
   })();
 
   return (
-    <>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center" style={{ background: palette.bgDeep }}><div className="w-8 h-8 rounded-full border-2 border-white/20 border-t-white animate-spin" /></div>}>
       {experience}
       <CaseStudyTeamCredits project={project} />
-    </>
+    </Suspense>
   );
 };
 
@@ -4002,7 +4014,7 @@ const TeamPage = ({ navigate }) => {
             <StaggerItem key={i}>
               <div className="border border-white/5 rounded-[24px] overflow-hidden flex flex-col sm:flex-row h-full w-full" style={{ backgroundColor: palette.panel }}>
                 <div className="sm:w-1/2 aspect-square bg-white/5 relative flex items-center justify-center border-r border-white/5">
-                  {leader.image ? <img src={leader.image} alt={leader.name} className="w-full h-full object-cover" /> : <User className="w-16 h-16 text-white/10" />}
+                  {leader.image ? <img src={leader.image} alt={leader.name} loading="lazy" decoding="async" className="w-full h-full object-cover" /> : <User className="w-16 h-16 text-white/10" />}
                 </div>
                 <div className="p-8 sm:w-1/2 flex flex-col justify-center">
                   <h3 className="text-xl md:text-2xl font-medium text-white mb-2 font-primary">{leader.name}</h3>
@@ -4021,7 +4033,7 @@ const TeamPage = ({ navigate }) => {
             <StaggerItem key={idx}>
               <div className="border border-white/5 rounded-[16px] overflow-hidden group h-full w-full" style={{ backgroundColor: palette.panel }}>
                 <div className="aspect-square bg-white/[0.02] relative overflow-hidden flex items-center justify-center transition-colors group-hover:bg-white/[0.05]">
-                  {member.image ? <img src={member.image} alt={member.name} className="w-full h-full object-cover" /> : <User className="w-12 h-12 text-white/10" />}
+                  {member.image ? <img src={member.image} alt={member.name} loading="lazy" decoding="async" className="w-full h-full object-cover" /> : <User className="w-12 h-12 text-white/10" />}
                 </div>
                 <div className="p-5">
                   <h3 className="text-xl md:text-2xl font-medium text-white mb-1 font-primary">{member.name}</h3>
@@ -5231,8 +5243,9 @@ export default function App() {
 
   const { data: sanityCaseStudies } = useSanity(CASE_STUDIES_QUERY);
   const finalCaseStudiesSource = sanityCaseStudies?.length > 0 ? sanityCaseStudies : CASE_STUDIES;
-  const finalCaseStudies = orderCaseStudies(
-    finalCaseStudiesSource.map(cs => {
+  const finalCaseStudies = finalCaseStudiesSource
+    .filter(cs => cs && cs.client && String(cs.client).trim().length > 0)
+    .map(cs => {
       const id = normalizeCaseStudyUrlId(cs, CASE_STUDIES);
       const fallbackCaseStudy = CASE_STUDIES.find((item) => (
         item.id === id ||
@@ -5245,9 +5258,7 @@ export default function App() {
         id,
         tags: tags.length > 0 ? tags : normalizeCaseStudyTags(fallbackCaseStudy?.tags),
       };
-    }),
-    CASE_STUDIES
-  );
+    });
 
   const { data: sanityTeamMembers } = useSanity(GET_TEAM_MEMBERS);
   const finalTeamMembers = mergeWithFallback(TEAM_MEMBERS_MASTER, sanityTeamMembers, "Team");

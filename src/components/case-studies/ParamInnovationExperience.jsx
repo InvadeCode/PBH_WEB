@@ -393,6 +393,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
                   muted
                   loop
                   playsInline
+                  preload="metadata"
                   className="w-full h-auto rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
                   aria-label={altText}
                 />

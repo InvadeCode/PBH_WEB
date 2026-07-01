@@ -162,6 +162,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
                   muted
                   loop
                   playsInline
+                  preload="metadata"
                   className="w-full h-auto rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10"
                   aria-label={altText}
                 />
@@ -209,7 +210,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
         
         const mainVideoData = hasVideoHero ? project.videoHero : {
           enabled: true,
-          backgroundColor: hexColor,
+          backgroundColor: 'transparent',
           backgroundText: project.client || 'Case Study',
           videoTitle: allVideos[0]?.videoTitle || 'Watch Video',
           videoSubtitle: allVideos[0]?.videoSubtitle || 'Experience the story in motion.',
