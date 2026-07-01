@@ -28,11 +28,11 @@ import lifestyleGrid from '../../assets/firefox/lifestyle_grid.png';
 
 /* ── Arise Visual DNA (palette, utilities) ─────────────────────────── */
 const palette = {
-  bgDeep: '#010d54',
-  panel: '#0c185c',
-  primary: '#6865fa',
-  secondary: '#d4cefc',
-  text: '#F4F4F5',
+  bgDeep: '#0d0600',
+  panel: '#1e0e00',
+  primary: '#e8800a',
+  secondary: '#f5c240',
+  text: '#FFF9EE',
 };
 
 /* Ambient background glows — identical to Arise */
@@ -81,7 +81,7 @@ const ParallaxImage = ({ src, alt, item, delay = 0, yOffset = 20, className = ''
       whileInView={{ clipPath: 'inset(0% 0 0 0)', scale: 1 }}
       viewport={{ once: true, margin: '-5%' }}
       transition={{ duration: 1.2, delay, ease: [0.25, 1, 0.5, 1] }}
-      className={`w-full relative group overflow-hidden bg-[#0c185c]/40 flex items-center justify-center rounded-[2rem] shadow-xl ring-1 ring-white/10 ${className}`}
+      className={`w-full relative group overflow-hidden bg-[#1e0e00]/40 flex items-center justify-center rounded-[2rem] shadow-xl ring-1 ring-white/10 ${className}`}
     >
       {item ? (
         <CaseStudyMedia
@@ -100,7 +100,7 @@ const ParallaxImage = ({ src, alt, item, delay = 0, yOffset = 20, className = ''
           motionProps={{ style: { y: useTransform(smooth, [0, 1], [-yOffset / 2, yOffset / 2]) } }}
         />
       )}
-      <div className="absolute inset-0 bg-[#0C185C]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay pointer-events-none" />
+      <div className="absolute inset-0 bg-[#1e0e00]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay pointer-events-none" />
     </motion.div>
   );
 };
@@ -109,17 +109,17 @@ const ParallaxImage = ({ src, alt, item, delay = 0, yOffset = 20, className = ''
 const SectionTitle = ({ children, label, className = '' }) => (
   <ElegantFade className={className}>
     {label && (
-      <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#D4CEFC]/10 text-[#D4CEFC] text-[16px] md:text-[17px] font-bold tracking-widest uppercase backdrop-blur-md font-primary">
-        <span className="w-2 h-2 rounded-full bg-[#D4CEFC] animate-pulse shadow-[0_0_10px_#D4CEFC]" />
+      <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#f5c240]/10 text-[#f5c240] text-[16px] md:text-[17px] font-bold tracking-widest uppercase backdrop-blur-md font-primary">
+        <span className="w-2 h-2 rounded-full bg-[#f5c240] animate-pulse shadow-[0_0_10px_#f5c240]" />
         {label}
       </div>
     )}
     <motion.h2
       animate={{ backgroundPosition: ['200% center', '-200% center'] }}
       transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-      className="font-primary text-4xl md:text-5xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.3)]"
+      className="font-primary text-4xl md:text-5xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(232,128,10,0.3)]"
       style={{
-        backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
+        backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #e8800a 45%, #f5c240 50%, #e8800a 55%, #FFFFFF 70%, #FFFFFF 100%)',
         backgroundSize: '300% auto',
       }}
     >
@@ -290,8 +290,8 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
       </div>
       
       {/* Edge Fades for elegance */}
-      <div className="absolute left-0 top-0 bottom-0 w-8 md:w-48 bg-gradient-to-r from-[#010d54] via-[#010d54]/80 to-transparent pointer-events-none z-40" />
-      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-48 bg-gradient-to-l from-[#010d54] via-[#010d54]/80 to-transparent pointer-events-none z-40" />
+      <div className="absolute left-0 top-0 bottom-0 w-8 md:w-48 bg-gradient-to-r from-[#0d0600] via-[#0d0600]/80 to-transparent pointer-events-none z-40" />
+      <div className="absolute right-0 top-0 bottom-0 w-8 md:w-48 bg-gradient-to-l from-[#0d0600] via-[#0d0600]/80 to-transparent pointer-events-none z-40" />
       <style dangerouslySetInnerHTML={{ __html: '.eco-hide-scrollbar::-webkit-scrollbar{display:none}' }} />
     </div>
   );
@@ -351,12 +351,12 @@ const AboutGraphic = () => (
     <motion.div 
       animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
       transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
+      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#e8800a]/30 opacity-60 shadow-[inset_0_0_100px_rgba(232,128,10,0.2)] mix-blend-screen pointer-events-none"
     />
     <motion.div 
       animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
       transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#D4CEFC]/20 opacity-50 shadow-[0_0_80px_rgba(212,206,252,0.1)] mix-blend-screen pointer-events-none"
+      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#f5c240]/20 opacity-50 shadow-[0_0_80px_rgba(245,194,64,0.1)] mix-blend-screen pointer-events-none"
     />
   </>
 );
@@ -366,12 +366,12 @@ const ProblemGraphic = () => (
     <motion.div 
       animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.4, 0.1] }} 
       transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] bg-[#D4CEFC] mix-blend-screen blur-[120px] pointer-events-none"
+      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] bg-[#f5c240] mix-blend-screen blur-[120px] pointer-events-none"
     />
     <motion.div 
       animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }} 
       transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] bg-[#6865FA] mix-blend-screen blur-[140px] pointer-events-none"
+      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] bg-[#e8800a] mix-blend-screen blur-[140px] pointer-events-none"
     />
   </>
 );
@@ -397,17 +397,17 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
           {motionGraphic}
         </motion.div>
 
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#010d54] to-transparent z-0 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010d54] to-transparent z-0 pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#0d0600] to-transparent z-0 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0d0600] to-transparent z-0 pointer-events-none" />
         
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
           <motion.div style={{ opacity: titleOpacity, scale: titleScale, y: titleY }} className="flex flex-col items-center justify-center w-full px-6 text-center pointer-events-auto">
             <motion.h2 
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-4xl md:text-5xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
+              className="font-primary text-4xl md:text-5xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(232,128,10,0.5)]" 
               style={{ 
-                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #e8800a 45%, #f5c240 50%, #e8800a 55%, #FFFFFF 70%, #FFFFFF 100%)',
                 backgroundSize: '300% auto',
               }}
             >
@@ -418,9 +418,12 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
+            <h3 className="text-xl md:text-2xl font-primary tracking-tight text-[#f5c240] mb-6 md:mb-8">
+               {title}
+            </h3>
             <div className="space-y-6">
               {content.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} className="text-white/90 font-normal text-[20px] md:text-[26px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
+                <p key={i} className="text-white/90 font-light text-[20px] md:text-[26px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
                   {para.trim()}
                 </p>
               ))}
@@ -474,7 +477,7 @@ const FirefoxExperience = ({ navigate, project }) => {
   };
 
   return (
-    <div className="w-full min-h-screen font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
+    <div className="w-full min-h-screen font-secondary selection:bg-[#e8800a] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
       <ChicAmbientBackground />
 
       {/* Navigation */}
@@ -493,12 +496,12 @@ const FirefoxExperience = ({ navigate, project }) => {
           {heroImg ? (
             <CaseStudyMedia src={heroImg} alt={`${project?.client || 'Firefox'} Banner`} className="w-full h-full object-cover" priority sizes="(min-width: 1280px) 1280px, 95vw" />
           ) : (
-            <div className="w-full h-full bg-[#0C185C]" />
+            <div className="w-full h-full bg-[#1e0e00]" />
           )}
           <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 px-3 md:top-28">
             <CaseStudySectorPill
               sector={project?.sector}
-              className="border border-white/[0.16] bg-[#010d54]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
+              className="border border-white/[0.16] bg-[#0d0600]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
             />
           </div>
         </div>
@@ -518,7 +521,7 @@ const FirefoxExperience = ({ navigate, project }) => {
               transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
               className="font-primary text-4xl md:text-5xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
               style={{
-                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #D4CEFC 45%, #6865FA 50%, #D4CEFC 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #f5c240 45%, #e8800a 50%, #f5c240 55%, #FFFFFF 70%, #FFFFFF 100%)',
                 backgroundSize: '300% auto',
               }}
             >
@@ -773,7 +776,7 @@ const FirefoxExperience = ({ navigate, project }) => {
       <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10">
         <div className="max-w-[1200px] mx-auto">
           <ElegantFade>
-            <p className="text-[12px] md:text-[13px] tracking-[0.4em] uppercase text-[#D4CEFC] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
+            <p className="text-[12px] md:text-[13px] tracking-[0.4em] uppercase text-[#f5c240] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
             <motion.h2
               onClick={() => navigate('work')}
               className="font-primary text-4xl md:text-5xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"

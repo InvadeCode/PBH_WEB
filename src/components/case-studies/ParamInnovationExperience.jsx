@@ -8,16 +8,16 @@ import CaseStudySectorPill from './CaseStudySectorPill';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 
 const palette = {
-  bgDeep: '#010d54',
-  panel: '#0c185c',
-  primary: '#6865fa',
-  secondary: '#d4cefc',
+  bgDeep: '#030810',
+  panel: '#0a1830',
+  primary: '#00b8d9',
+  secondary: '#7adcf0',
   blue: '#2a97d9',
   accent: '#ffcd00',
   purple: '#af73dd',
   green: '#93d435',
-  orange: '#b9d5ff',
-  text: '#F4F4F5'
+  orange: '#ffa040',
+  text: '#F0FAFF'
 };
 
 /* --- 1. Chic Ambient Glows --- */
@@ -73,7 +73,7 @@ const CreativeHeroReveal = ({ src, alt, aspectRatio }) => {
   const resolvedAspectRatio = aspectRatio || getUrlAspectRatio(src) || 16 / 9;
 
   return (
-    <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-[#0c185c]/70">
+    <div className="w-full h-full relative overflow-hidden flex items-center justify-center bg-[#0a1830]/70">
       <CaseStudyMedia
         src={src}
         alt={alt}
@@ -106,19 +106,19 @@ const SolutionVisualizer = () => {
       <motion.div 
         animate={{ scale: [1, 1.3, 1], rotate: [0, 90, 180, 360], borderRadius: ["40% 60% 70% 30%", "60% 40% 30% 70%", "40% 60% 70% 30%"] }}
         transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute w-72 h-72 bg-gradient-to-tr from-[#6865FA] via-[#D4CEFC] to-transparent blur-[50px] opacity-30 mix-blend-screen"
+        className="absolute w-72 h-72 bg-gradient-to-tr from-[#00b8d9] via-[#7adcf0] to-transparent blur-[50px] opacity-30 mix-blend-screen"
       />
       <motion.div 
         animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0], borderRadius: ["60% 40% 30% 70%", "40% 60% 70% 30%", "60% 40% 30% 70%"] }}
         transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute w-80 h-80 bg-gradient-to-bl from-[#6865FA] via-[#010836] to-[#D4CEFC] blur-[60px] opacity-40 mix-blend-screen"
+        className="absolute w-80 h-80 bg-gradient-to-bl from-[#00b8d9] via-[#040e1e] to-[#7adcf0] blur-[60px] opacity-40 mix-blend-screen"
       />
 
       {/* Expanding Ripple Base */}
       {[1, 2, 3].map((i) => (
         <motion.div
           key={`ripple-${i}`}
-          className="absolute border border-[#D4CEFC]/20 rounded-full"
+          className="absolute border border-[#7adcf0]/20 rounded-full"
           initial={{ width: 0, height: 0, opacity: 1 }}
           animate={{ width: 500, height: 500, opacity: 0 }}
           transition={{ duration: 6, repeat: Infinity, delay: i * 2, ease: 'easeOut' }}
@@ -130,24 +130,24 @@ const SolutionVisualizer = () => {
         <motion.div
           animate={{ rotateY: 360, rotateX: 15 }}
           transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-0 border border-[#D4CEFC]/30 rounded-full"
+          className="absolute inset-0 border border-[#7adcf0]/30 rounded-full"
           style={{ transformStyle: 'preserve-3d' }}
         >
           {/* Nodes */}
           <div className="absolute top-0 left-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_15px_white] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(24px)' }} />
-          <div className="absolute bottom-0 left-1/2 w-2.5 h-2.5 bg-[#D4CEFC] rounded-full shadow-[0_0_15px_#D4CEFC] -translate-x-1/2 translate-y-1/2" style={{ transform: 'translateZ(-24px)' }} />
-          <div className="absolute top-1/2 left-0 w-3.5 h-3.5 bg-[#6865FA] rounded-full shadow-[0_0_20px_#6865FA] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(10px)' }} />
+          <div className="absolute bottom-0 left-1/2 w-2.5 h-2.5 bg-[#7adcf0] rounded-full shadow-[0_0_15px_#7adcf0] -translate-x-1/2 translate-y-1/2" style={{ transform: 'translateZ(-24px)' }} />
+          <div className="absolute top-1/2 left-0 w-3.5 h-3.5 bg-[#00b8d9] rounded-full shadow-[0_0_20px_#00b8d9] -translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(10px)' }} />
           <div className="absolute top-1/2 right-0 w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_10px_white] translate-x-1/2 -translate-y-1/2" style={{ transform: 'translateZ(-10px)' }} />
         </motion.div>
 
         <motion.div
           animate={{ rotateX: 360, rotateZ: 30 }}
           transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-          className="absolute inset-5 border border-[#6865FA]/40 rounded-full"
+          className="absolute inset-5 border border-[#00b8d9]/40 rounded-full"
           style={{ transformStyle: 'preserve-3d' }}
         >
           {/* Nodes */}
-          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#D4CEFC] rounded-full shadow-[0_0_10px_#D4CEFC]" />
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#7adcf0] rounded-full shadow-[0_0_10px_#7adcf0]" />
           <div className="absolute bottom-1/4 right-1/4 w-2.5 h-2.5 bg-white rounded-full shadow-[0_0_15px_white]" />
         </motion.div>
       </div>
@@ -156,7 +156,7 @@ const SolutionVisualizer = () => {
       <motion.div 
         animate={{ scale: [1, 1.2, 1], filter: ['blur(20px)', 'blur(35px)', 'blur(20px)'] }}
         transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute w-28 h-28 bg-gradient-to-tr from-[#6865FA] to-[#D4CEFC] rounded-full mix-blend-screen opacity-50"
+        className="absolute w-28 h-28 bg-gradient-to-tr from-[#00b8d9] to-[#7adcf0] rounded-full mix-blend-screen opacity-50"
       />
     </div>
   );
@@ -177,7 +177,7 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
       whileInView={{ clipPath: 'inset(0% 0 0 0)', scale: 1 }}
       viewport={{ once: true, margin: "-5%" }}
       transition={{ duration: 1.6, delay, ease: [0.25, 1, 0.5, 1] }}
-      className="w-full h-full relative group overflow-hidden bg-[#0C185C] flex items-center justify-center"
+      className="w-full h-full relative group overflow-hidden bg-[#0a1830] flex items-center justify-center"
     >
       <CaseStudyMedia
         src={src}
@@ -188,7 +188,7 @@ const ParallaxImage = ({ src, alt, delay = 0, yOffset = 50 }) => {
       />
       
       {/* Creative Glassmorphism Overlay on Hover */}
-      <div className="absolute inset-0 bg-[#0C185C]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay" />
+      <div className="absolute inset-0 bg-[#0a1830]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 mix-blend-overlay" />
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]">
         <div className="w-16 h-16 rounded-full backdrop-blur-xl bg-white/10 border border-white/20 flex items-center justify-center transform scale-50 group-hover:scale-100 transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-[0_0_30px_rgba(255,255,255,0.1)]">
            <svg className="w-6 h-6 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -206,12 +206,12 @@ const AboutGraphic = () => (
     <motion.div 
       animate={{ rotate: 360, scale: [1, 1.1, 1] }} 
       transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#6865FA]/30 opacity-60 shadow-[inset_0_0_100px_rgba(104,101,250,0.2)] mix-blend-screen pointer-events-none"
+      className="absolute w-[80vw] h-[80vw] md:w-[50vw] md:h-[50vw] rounded-[40%] border border-[#00b8d9]/30 opacity-60 shadow-[inset_0_0_100px_rgba(0,184,217,0.2)] mix-blend-screen pointer-events-none"
     />
     <motion.div 
       animate={{ rotate: -360, scale: [1, 1.2, 1] }} 
       transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#D4CEFC]/20 opacity-50 shadow-[0_0_80px_rgba(212,206,252,0.1)] mix-blend-screen pointer-events-none"
+      className="absolute w-[70vw] h-[70vw] md:w-[40vw] md:h-[40vw] rounded-[45%] border border-[#7adcf0]/20 opacity-50 shadow-[0_0_80px_rgba(122,220,240,0.1)] mix-blend-screen pointer-events-none"
     />
   </>
 );
@@ -221,12 +221,12 @@ const ProblemGraphic = () => (
     <motion.div 
       animate={{ scale: [1, 1.3, 1], opacity: [0.1, 0.4, 0.1] }} 
       transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] bg-[#D4CEFC] mix-blend-screen blur-[120px] pointer-events-none"
+      className="absolute w-[60vw] h-[60vw] md:w-[40vw] md:h-[40vw] rounded-[40%] bg-[#7adcf0] mix-blend-screen blur-[120px] pointer-events-none"
     />
     <motion.div 
       animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }} 
       transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] bg-[#6865FA] mix-blend-screen blur-[140px] pointer-events-none"
+      className="absolute w-[70vw] h-[70vw] md:w-[45vw] md:h-[45vw] rounded-[45%] bg-[#00b8d9] mix-blend-screen blur-[140px] pointer-events-none"
     />
   </>
 );
@@ -254,8 +254,8 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         </motion.div>
 
         {/* Ambient Edge Masking (Prevents graphics from hard-cutting at the top/bottom of the screen) */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#010d54] to-transparent z-0 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#010d54] to-transparent z-0 pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#030810] to-transparent z-0 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#030810] to-transparent z-0 pointer-events-none" />
         
         {/* Title Container */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
@@ -263,9 +263,9 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
             <motion.h2 
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(104,101,250,0.5)]" 
+              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(0,184,217,0.5)]" 
               style={{ 
-                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #6865FA 45%, #D4CEFC 50%, #6865FA 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #00b8d9 45%, #7adcf0 50%, #00b8d9 55%, #FFFFFF 70%, #FFFFFF 100%)',
                 backgroundSize: '300% auto',
               }}
             >
@@ -277,14 +277,17 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         {/* Content Container */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
+            <h3 className="text-xl md:text-2xl font-primary tracking-tight text-[#7adcf0] mb-6 md:mb-8">
+               {title}
+            </h3>
             <div className="space-y-6">
               {typeof content === 'string' 
                 ? content.split('\n\n').filter(Boolean).map((para, i) => (
-                    <p key={i} className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
+                    <p key={i} className="text-white/90 font-light text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
                       {para.trim()}
                     </p>
                   ))
-                : <p className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">{content}</p>}
+                : <p className="text-white/90 font-light text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">{content}</p>}
             </div>
           </motion.div>
         </div>
@@ -309,7 +312,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
   const videoHeroData = hasVideoHeroSource(project?.videoHero) ? project.videoHero : null;
 
   return (
-    <div className="w-full min-h-screen font-secondary selection:bg-[#6865FA] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
+    <div className="w-full min-h-screen font-secondary selection:bg-[#00b8d9] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
       <ChicAmbientBackground />
 
       {/* Navigation */}
@@ -334,12 +337,12 @@ const ParamInnovationExperience = ({ navigate, project }) => {
                aspectRatio={heroAspectRatio}
              />
            ) : (
-             <div className="w-full h-full bg-[#0C185C]" />
+             <div className="w-full h-full bg-[#0a1830]" />
            )}
           <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 px-3 md:top-28">
             <CaseStudySectorPill
               sector={project?.sector}
-              className="border border-white/[0.16] bg-[#010d54]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
+              className="border border-white/[0.16] bg-[#030810]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
             />
           </div>
         </div>
@@ -360,7 +363,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
               transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
               className="font-primary text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" 
               style={{ 
-                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #D4CEFC 45%, #6865FA 50%, #D4CEFC 55%, #FFFFFF 70%, #FFFFFF 100%)',
+                backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #7adcf0 45%, #00b8d9 50%, #7adcf0 55%, #FFFFFF 70%, #FFFFFF 100%)',
                 backgroundSize: '300% auto',
               }}
             >
@@ -544,7 +547,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
                 const parallaxY = yOffsets[index % yOffsets.length];
                 
                 return (
-                  <div key={media.key} className={`${colSpan} ${rowSpan} rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-[#0C185C]`}>
+                  <div key={media.key} className={`${colSpan} ${rowSpan} rounded-[2rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/10 relative bg-[#0a1830]`}>
                     <ParallaxImage 
                       src={media.url}
                       alt={media.alt || `Highlight 0${index + 1}`}
@@ -563,7 +566,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
       <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10">
         <div className="max-w-[1200px] mx-auto">
           <ElegantFade>
-            <p className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#D4CEFC] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
+            <p className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#7adcf0] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
             <motion.h2 
               onClick={() => navigate('work')} 
               className="font-primary text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"
