@@ -296,20 +296,100 @@ const hexToRgbStr = (hex) => {
 // --- STRATEGIC DATA DICTIONARY ---
 
 const QUIZ_QUESTIONS = [
-  { id: 'stage', title: 'Where is your brand right now?', multiSelect: true, options: [{ id: 's1', label: 'We are launching a new brand' }, { id: 's2', label: 'We are repositioning an existing brand' }, { id: 's3', label: 'We have grown, but our brand has not evolved' }, { id: 's4', label: 'We need better campaigns and communication' }, { id: 's5', label: 'We need a full strategic reset' }] },
-  { id: 'q1', title: 'What feels most inconsistent about your brand right now?', multiSelect: true, options: [{ id: 'o1', label: 'Different teams communicate differently', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o2', label: 'We have no central messaging guidelines', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'o3', label: 'Our visuals feel outdated and generic', cluster: 'Generic Identity', weight: 2 }, { id: 'none1', label: 'None of the Above', cluster: 'None', weight: 0 }] },
-  { id: 'q2', title: 'How is your campaign and content engagement?', multiSelect: true, options: [{ id: 'o4', label: 'Low engagement and weak emotional pull', cluster: 'Weak Narrative', weight: 2 }, { id: 'o5', label: 'Good engagement, but execution feels messy', cluster: 'Lack of Systems', weight: 2 }, { id: 'none2', label: 'None of the Above', cluster: 'None', weight: 0 }] },
-  { id: 'q3', title: 'How does your team currently execute?', multiSelect: true, options: [{ id: 'o6', label: 'Teams are misaligned with no clear playbook', cluster: 'Lack of Systems', weight: 2 }, { id: 'o7', label: 'Our brand has grown but our execution hasn\'t evolved', cluster: 'Execution Gap', weight: 1 }, { id: 'none3', label: 'None of the Above', cluster: 'None', weight: 0 }] },
-  { id: 'q4', title: 'What best describes your visual identity?', multiSelect: true, options: [{ id: 'o8', label: 'Generic visuals with no distinctiveness', cluster: 'Generic Identity', weight: 2 }, { id: 'o9', label: 'Aesthetically pleasing but lacks deep storytelling', cluster: 'Weak Narrative', weight: 2 }, { id: 'none4', label: 'None of the Above', cluster: 'None', weight: 0 }] },
-  { id: 'q5', title: 'What is your biggest bottleneck for growth?', multiSelect: true, options: [{ id: 'o10', label: 'Lack of internal systems and repeatable templates', cluster: 'Lack of Systems', weight: 2 }, { id: 'o11', label: 'Execution is too slow and disconnected from strategy', cluster: 'Execution Gap', weight: 1 }, { id: 'o12', label: 'Messaging inconsistency across touchpoints', cluster: 'Messaging Inconsistency', weight: 2 }, { id: 'none5', label: 'None of the Above', cluster: 'None', weight: 0 }] }
+  {
+    id: 'q1_stage',
+    title: 'What stage is your brand currently in?',
+    multiSelect: false,
+    options: [
+      { id: 'q1_s1', label: 'We are launching a new brand', routes: [{ id: 'BB', weight: 3 }, { id: 'SAS', weight: 1 }] },
+      { id: 'q1_s2', label: 'We are refreshing an existing brand', routes: [{ id: 'BB', weight: 2 }, { id: 'STC', weight: 1 }] },
+      { id: 'q1_s3', label: 'We are scaling into new markets or audiences', routes: [{ id: 'BB', weight: 2 }, { id: 'SAS', weight: 2 }, { id: 'STC', weight: 1 }] },
+      { id: 'q1_s4', label: 'We have multiple offerings and need more clarity', routes: [{ id: 'SAS', weight: 2 }, { id: 'BB', weight: 2 }] },
+      { id: 'q1_s5', label: 'We have a brand, but it does not feel aligned anymore', routes: [{ id: 'BB', weight: 3 }] },
+    ]
+  },
+  {
+    id: 'q2_unclear',
+    title: 'What feels unclear or inconsistent right now?',
+    multiSelect: true,
+    options: [
+      { id: 'q2_o1', label: 'Our messaging changes across platforms', routes: [{ id: 'BB', weight: 2 }, { id: 'STC', weight: 1 }] },
+      { id: 'q2_o2', label: 'Our internal teams interpret the brand differently', routes: [{ id: 'BB', weight: 3 }] },
+      { id: 'q2_o3', label: 'Our logo, colours, or visuals do not feel strong enough', routes: [{ id: 'BB', weight: 3 }] },
+      { id: 'q2_o4', label: 'Our brand story is not clear', routes: [{ id: 'SAS', weight: 3 }] },
+      { id: 'q2_o5', label: 'Our decks, templates, and collaterals are inconsistent', routes: [{ id: 'BB', weight: 2 }] },
+      { id: 'q2_o6', label: 'Our audience does not fully understand what we do', routes: [{ id: 'SAS', weight: 2 }, { id: 'STC', weight: 1 }] },
+    ]
+  },
+  {
+    id: 'q3_build',
+    title: 'What are you trying to build or improve?',
+    multiSelect: true,
+    options: [
+      { id: 'q3_o1', label: 'A full brand identity', routes: [{ id: 'BB', weight: 3 }] },
+      { id: 'q3_o2', label: 'A stronger story for our product, innovation, or institution', routes: [{ id: 'SAS', weight: 3 }] },
+      { id: 'q3_o3', label: 'A scalable design system', routes: [{ id: 'BB', weight: 3 }] },
+      { id: 'q3_o4', label: 'Website structure and content', routes: [{ id: 'STC', weight: 2 }, { id: 'SAS', weight: 1 }] },
+      { id: 'q3_o5', label: 'Social media and content direction', routes: [{ id: 'STC', weight: 3 }] },
+      { id: 'q3_o6', label: 'Launch or go-to-market communication', routes: [{ id: 'SAS', weight: 2 }, { id: 'STC', weight: 1 }] },
+      { id: 'q3_o7', label: 'Event, experience, or on-ground branding', routes: [{ id: 'STC', weight: 2 }, { id: 'BB', weight: 1 }] },
+      { id: 'q3_o8', label: 'Merchandise, kits, or brand collectibles', routes: [{ id: 'SAS', weight: 2 }, { id: 'BB', weight: 1 }] },
+    ]
+  },
+  {
+    id: 'q4_showup',
+    title: 'Where will this brand need to show up?',
+    multiSelect: true,
+    options: [
+      { id: 'q4_o1', label: 'Website', routes: [{ id: 'STC', weight: 2 }] },
+      { id: 'q4_o2', label: 'Social media', routes: [{ id: 'STC', weight: 2 }] },
+      { id: 'q4_o3', label: 'Investor or stakeholder decks', routes: [{ id: 'SAS', weight: 2 }, { id: 'BB', weight: 1 }] },
+      { id: 'q4_o4', label: 'Internal teams', routes: [{ id: 'BB', weight: 2 }] },
+      { id: 'q4_o5', label: 'Events or conferences', routes: [{ id: 'STC', weight: 2 }] },
+      { id: 'q4_o6', label: 'Physical spaces', routes: [{ id: 'BB', weight: 2 }] },
+      { id: 'q4_o7', label: 'Product packaging', routes: [{ id: 'BB', weight: 1 }, { id: 'SAS', weight: 2 }] },
+      { id: 'q4_o8', label: 'Creator or community activations', routes: [{ id: 'SAS', weight: 2 }, { id: 'STC', weight: 1 }] },
+      { id: 'q4_o9', label: 'Policy, research, or knowledge platforms', routes: [{ id: 'SAS', weight: 3 }] },
+    ]
+  },
+  {
+    id: 'q5_support',
+    title: 'What kind of support are you expecting from PBH?',
+    multiSelect: true,
+    options: [
+      { id: 'q5_o1', label: 'Help us diagnose what is missing', routes: [{ id: 'BB', weight: 2 }] },
+      { id: 'q5_o2', label: 'Help us build the brand foundation', routes: [{ id: 'BB', weight: 3 }] },
+      { id: 'q5_o3', label: 'Help us explain a complex idea simply', routes: [{ id: 'SAS', weight: 3 }] },
+      { id: 'q5_o4', label: 'Help us create a complete visual system', routes: [{ id: 'BB', weight: 3 }] },
+      { id: 'q5_o5', label: 'Help us prepare for launch or scale', routes: [{ id: 'SAS', weight: 2 }, { id: 'STC', weight: 1 }] },
+      { id: 'q5_o6', label: 'Help us create content and communication systems', routes: [{ id: 'STC', weight: 3 }] },
+      { id: 'q5_o7', label: 'Help us create brand experiences or events', routes: [{ id: 'SAS', weight: 2 }, { id: 'STC', weight: 2 }] },
+    ]
+  },
+  {
+    id: 'q6_duration',
+    title: 'What kind of engagement are you looking for?',
+    multiSelect: false,
+    options: [
+      { id: 'q6_o1', label: '6-month engagement', desc: 'Best for a focused but complete brand-building process across strategy, identity, and communication systems.' },
+      { id: 'q6_o2', label: '1-year engagement', desc: 'Best for long-term brand transformation, rollout, ecosystem storytelling, and sustained communication.' },
+      { id: 'q6_o3', label: '3-month focused engagement', desc: 'Best for limited-scope interventions with fewer deliverables.' },
+    ]
+  },
 ];
 
-const clusterToRoute = {
-  'Messaging Inconsistency': 'BB',
-  'Weak Narrative': 'SAS',
-  'Generic Identity': 'BB',
-  'Lack of Systems': 'BB',
-  'Execution Gap': 'STC'
+// Default blueprint deliverables auto-selected per route
+const ROUTE_BLUEPRINTS = {
+  'BB':  ['D001','D002','D003','D004','D005','D006','D007','D008','D009','D010','D011','D012','D013','D014','D015','D016','D017','D018','D019','D020','D021','D022','D023','D024','D025','D026','D027'],
+  'SAS': ['D037','D038','D039','D040','D041','D042','D043','D044','D045','D046','D047','D048','D049','D050','D051','D052','D053','D054','D055','D056','D057','D058','D059','D060','D061','D062','D063','D064','D065'],
+  'STC': ['D066','D067','D068','D069','D070','D071','D072','D073','D074','D075','D077','D078','D079','D080','D081','D082','D083','D084','D087','D088','D089','D090','D091','D092','D094'],
+};
+
+// 3-month: foundational deliverables only (one route, max 8 items)
+const ROUTE_BLUEPRINTS_3M = {
+  'BB':  ['D001','D002','D003','D004','D005','D006','D007','D008'],
+  'SAS': ['D037','D038','D039','D040','D041','D042','D043','D058'],
+  'STC': ['D066','D067','D068','D069','D070','D071','D087','D088'],
 };
 
 const TEAM_MEMBERS_MASTER = [
@@ -1111,37 +1191,55 @@ const StrategicEngine = ({ navigate }) => {
   };
 
   const processDiagnosis = (finalAnswers) => {
-    const clusterScores = {};
+    // Accumulate route scores from all answers
+    const routeScores = { BB: 0, SAS: 0, STC: 0 };
     Object.values(finalAnswers).forEach(ans => {
       const opts = Array.isArray(ans) ? ans : [ans];
       opts.forEach(opt => {
-        if (opt && opt.cluster) {
-          clusterScores[opt.cluster] = (clusterScores[opt.cluster] || 0) + (opt.weight || 1);
+        if (opt && opt.routes) {
+          opt.routes.forEach(r => {
+            routeScores[r.id] = (routeScores[r.id] || 0) + (r.weight || 1);
+          });
         }
       });
     });
 
-    let maxScore = 0;
-    let topClusters = [];
-    for (const [cluster, score] of Object.entries(clusterScores)) {
-      if (score > maxScore) {
-        maxScore = score;
-        topClusters = [cluster];
-      } else if (score === maxScore) {
-        topClusters.push(cluster);
-      }
+    // Get duration from Q6 answer
+    const durationAns = finalAnswers['q6_duration'];
+    const durationId = durationAns?.id || 'q6_o1';
+
+    // Sort routes by score descending, filter out zero scores
+    const sortedRoutes = Object.entries(routeScores)
+      .filter(([, score]) => score > 0)
+      .sort(([, a], [, b]) => b - a);
+
+    const maxScore = sortedRoutes[0]?.[1] || 0;
+
+    let recRoutes;
+    if (durationId === 'q6_o3') {
+      // 3-month: top route only, focused blueprint
+      recRoutes = sortedRoutes.slice(0, 1).map(([id]) => id);
+    } else if (durationId === 'q6_o1') {
+      // 6-month: primary + supporting routes (score >= 30% of max)
+      recRoutes = sortedRoutes.filter(([, score]) => score >= maxScore * 0.3).map(([id]) => id);
+    } else {
+      // 1-year: all routes with meaningful scores
+      recRoutes = sortedRoutes.map(([id]) => id);
     }
 
-    setClusters(topClusters);
+    if (recRoutes.length === 0) recRoutes = ['BB'];
 
-    const foundRoutes = new Set();
-    topClusters.forEach(c => {
-      if (clusterToRoute[c]) foundRoutes.add(clusterToRoute[c]);
+    // Auto-select deliverables based on routes and duration
+    const blueprintMap = durationId === 'q6_o3' ? ROUTE_BLUEPRINTS_3M : ROUTE_BLUEPRINTS;
+    const autoSelected = new Set();
+    recRoutes.forEach(r => {
+      (blueprintMap[r] || []).forEach(d => autoSelected.add(d));
     });
 
-    const recRoutes = Array.from(foundRoutes).length > 0 ? Array.from(foundRoutes) : ['BB'];
     setRoutes(recRoutes);
     setSelectedRoutes(recRoutes);
+    setSelectedDeliverables(Array.from(autoSelected));
+    setClusters(recRoutes.map(r => ROUTES_INFO[r]?.title || r));
     setStep(N_QUIZ + 1);
   };
 
@@ -2304,7 +2402,10 @@ const StrategicEngine = ({ navigate }) => {
                     style={{ borderColor: isSelected ? palette.primary : 'rgba(255,255,255,0.1)', backgroundColor: isSelected ? hexToRgba(palette.primary, 0.1) : 'rgba(255,255,255,0.02)', color: isSelected ? 'white' : 'rgba(255,255,255,0.6)' }}
                   >
                     <span className="font-secondary italic opacity-40 text-xl md:text-xl md:text-2xl w-6 shrink-0">0{j + 1}</span>
-                    <span className="text-xl md:text-xl md:text-2xl font-light flex-1">{opt.label}</span>
+                    <span className="flex-1">
+                      <span className="text-xl md:text-xl md:text-2xl font-light block">{opt.label}</span>
+                      {opt.desc && <span className="text-[14px] text-white/40 mt-1 block font-light leading-snug">{opt.desc}</span>}
+                    </span>
                     {isMultiSelect && isSelected && <Check className="w-5 h-5 shrink-0" style={{ color: palette.primary }} />}
                   </button>
                 </StaggerItem>
@@ -2353,7 +2454,7 @@ const StrategicEngine = ({ navigate }) => {
       <FadeUp>
         <div className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 flex items-center gap-2 font-primary" style={{ color: palette.primary }}><Sparkles className="w-4 h-4" /> {finalSettings.assessmentPage?.diagPhaseLabel || 'Discovery Insights'}</div>
         <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">{finalSettings.assessmentPage?.diagTitle || 'Your brand opportunity areas.'}</h2>
-        <p className="text-white/50 font-light mb-12 text-xl md:text-xl md:text-2xl font-secondary max-w-3xl">{finalSettings.assessmentPage?.diagPrefixText || 'Based on your answers, your communication is currently breaking due to'} <strong className="text-white">{clusters.join(' & ')}</strong>. We recommend structuring your project around these core ecosystems:</p>
+        <p className="text-white/50 font-light mb-12 text-xl md:text-xl md:text-2xl font-secondary max-w-3xl">{finalSettings.assessmentPage?.diagPrefixText || 'Based on your responses, we recommend building your brand through'} <strong className="text-white">{clusters.join(' & ')}</strong>. Your suggested blueprint has been pre-selected below.</p>
         <StaggerGroup className="grid sm:grid-cols-2 gap-4 mb-12 w-full max-w-4xl">
           {routes.map(r => {
             const rColor = palette[ROUTES_INFO[r].type] || palette.primary;
@@ -2389,8 +2490,8 @@ const StrategicEngine = ({ navigate }) => {
     <div key="delivSel" className="flex flex-col h-full w-full py-10 text-left mx-auto md:mx-0">
       <FadeUp>
         <div className="text-[17px] md:text-[19px] font-medium text-white/40 uppercase tracking-widest mb-6 font-primary">{finalSettings.assessmentPage?.detailsPhaseLabel || 'Phase 3 / Details'}</div>
-        <h2 className="text-xl md:text-2xl font-light mb-2 font-primary">{finalSettings.assessmentPage?.buildScopeTitle || 'Build Your Scope'}</h2>
-        <p className="text-white/50 font-light mb-10 font-secondary">{finalSettings.assessmentPage?.buildScopeText || 'Select the specific deliverables you need across your chosen routes.'}</p>
+        <h2 className="text-xl md:text-2xl font-light mb-2 font-primary">{finalSettings.assessmentPage?.buildScopeTitle || 'Your Suggested PBH Blueprint'}</h2>
+        <p className="text-white/50 font-light mb-10 font-secondary">{finalSettings.assessmentPage?.buildScopeText || 'We have pre-selected deliverables based on your brief. Remove what does not feel relevant.'}</p>
         <StaggerGroup className="space-y-10 w-full pb-10">
           {selectedRoutes.map(rId => {
             const route = ROUTES_INFO[rId];
