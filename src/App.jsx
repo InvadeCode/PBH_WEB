@@ -1104,6 +1104,44 @@ const BrandHealthRadar = ({ clusters }) => {
 };
 
 
+const SECTORS = [
+  'Architecture & Urban Design',
+  'Education & Research Institutions',
+  'Universities & Centres of Excellence',
+  'Financial Services',
+  'Food & Nutrition',
+  'Ayurveda, Yoga & Wellness',
+  'Personal Care & Beauty',
+  'Mother & Baby Care',
+  'Health & Medical',
+  'Biotechnology',
+  'Pharmaceutical',
+  'Cognitive Science & Neuroscience',
+  'Agri-tech',
+  'Vertical / Urban Farming',
+  'Environmental Science',
+  'Sustainability & Conservation',
+  'Renewable Energy',
+  'EV & Clean Transport',
+  'Advanced Manufacturing',
+  '3D Printing',
+  'Chemical Industries',
+  'Nanotechnology',
+  'Artificial Intelligence',
+  'Emerging Technology',
+  'Information Technology',
+  'Defence',
+  'Aviation & Aerospace',
+  'Geology & Earth Sciences',
+  'Sports & Fitness',
+  'Fashion & Textile',
+  'Consumer Products',
+  'Public Policy & Think Tanks',
+  'Media, Events & Knowledge Platforms',
+  'Spiritual Tech / Faith Tech',
+  'Other'
+];
+
 // --- STRATEGIC ENGINE (SCOPE BUILDER) ---
 const StrategicEngine = ({ navigate }) => {
   const { QUIZ_QUESTIONS, ROUTES_INFO, DELIVERABLES_MASTER, SITE_SETTINGS } = useContext(GlobalContext);
@@ -1284,7 +1322,8 @@ const StrategicEngine = ({ navigate }) => {
 
     const startingPoint = computeSuggestedStartingPoint(selectedDeliverables, priorities);
 
-    const leadData = { ...leadForm, clusters, routes, deliverables: selectedDeliverables, ...context, startingPoint, date: new Date().toISOString(), status: 'New', score: Math.floor(Math.random() * 40) + 60 };
+    const finalIndustry = leadForm.industry === 'Other' ? (leadForm.otherIndustry || 'Other') : leadForm.industry;
+    const leadData = { ...leadForm, industry: finalIndustry, clusters, routes, deliverables: selectedDeliverables, ...context, startingPoint, date: new Date().toISOString(), status: 'New', score: Math.floor(Math.random() * 40) + 60 };
     GLOBAL_LEADS.push(leadData);
 
     // Group deliverables by Route and LineItem for both Email and PDF
@@ -1352,7 +1391,8 @@ const StrategicEngine = ({ navigate }) => {
             <h2 style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid #eef2f6; padding-bottom: 10px;">Context & Timeline</h2>
             <div style="margin-bottom: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
               <div style="background: #f8fafc; padding: 12px; border-radius: 6px;">
-
+                <p style="margin: 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Industry / Sector</p>
+                <p style="margin: 4px 0 0 0; color: #0f172a; font-weight: 600;">${leadData.industry || 'N/A'}</p>
               </div>
               <div style="background: #f8fafc; padding: 12px; border-radius: 6px;">
                 <p style="margin: 0; font-size: 12px; color: #64748b; text-transform: uppercase;">Project Duration</p>
@@ -2368,13 +2408,23 @@ const StrategicEngine = ({ navigate }) => {
           </div>
           <div>
             <label className="block text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-3 font-primary">{finalSettings.assessmentPage?.industryInputLabel || 'Industry / Sector'}</label>
-            <input 
-              type="text" 
+            <select
               value={leadForm.industry || ''}
               onChange={(e) => setLeadForm({...leadForm, industry: e.target.value})}
-              className="w-full bg-black/40 border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all"
-              placeholder="e.g. Technology, Fashion, Real Estate"
-            />
+              className="w-full bg-black/40 border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all appearance-none"
+            >
+              <option value="" disabled>Select your sector</option>
+              {SECTORS.map((s, idx) => <option key={idx} value={s}>{s}</option>)}
+            </select>
+            {leadForm.industry === 'Other' && (
+              <input 
+                type="text" 
+                value={leadForm.otherIndustry || ''}
+                onChange={(e) => setLeadForm({...leadForm, otherIndustry: e.target.value})}
+                className="w-full mt-4 bg-black/40 border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all"
+                placeholder="Please specify your sector"
+              />
+            )}
           </div>
           
           <PremiumButton 
