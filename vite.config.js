@@ -8,12 +8,9 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           if (!id.includes('node_modules')) return;
-          if (id.includes('framer-motion')) return 'vendor-motion';
-          if (id.includes('/node_modules/react-dom/') || id.includes('/node_modules/react/')) return 'vendor-react';
           if (id.includes('@sanity') || id.includes('@portabletext') || id.includes('stega')) return 'vendor-sanity';
           if (id.includes('lucide-react')) return 'vendor-icons';
           if (id.includes('html2canvas') || id.includes('dompurify') || id.includes('purify')) return 'vendor-utils';
-          return 'vendor';
         },
       },
     },
