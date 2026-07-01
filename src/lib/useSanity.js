@@ -14,7 +14,29 @@ export function useSanity(query, fallbackData = null, params = {}) {
         const result = await sanityClient.fetch(query, params);
         if (isMounted) {
           if (result && (Array.isArray(result) ? result.length > 0 : Object.keys(result).length > 0)) {
-            setData(result);
+            let finalResult = result;
+            if (Array.isArray(result) && result.length > 0 && result[0] && result[0]._id) {
+              const docMap = new Map();
+              result.forEach(doc => {
+                if (!doc || !doc._id) return;
+                const isDraft = doc._id.startsWith('drafts.');
+                const originalId = isDraft ? doc._id.replace('drafts.', '') : doc._id;
+                
+                if (isDraft) {
+                  docMap.set(originalId, doc);
+                } else if (!docMap.has(originalId)) {
+                  docMap.set(originalId, doc);
+                }
+              });
+              
+              finalResult = result.filter(doc => {
+                if (!doc || !doc._id) return true;
+                const isDraft = doc._id.startsWith('drafts.');
+                const originalId = isDraft ? doc._id.replace('drafts.', '') : doc._id;
+                return docMap.get(originalId)._id === doc._id;
+              });
+            }
+            setData(finalResult);
           } else {
             console.warn('Sanity returned empty or null. Using fallback data.');
             setData(fallbackData);

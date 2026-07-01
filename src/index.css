@@ -49,6 +49,43 @@
     @apply font-primary text-[12px] md:text-[13px] tracking-[0.4em] uppercase font-bold;
   }
 
+  /* ── Auto-center orphaned grid items (Brick Alignment) ──
+     Transforms standard grids into 6-column / 4-column setups to perfectly center the last row */
+  .grid-brick-center {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .grid-brick-center > * {
+    grid-column: span 2;
+  }
+  /* Desktop (3 items per row). If 1 left: start at col 3. If 2 left: start at col 2 */
+  @media (min-width: 1024px) {
+    .grid-brick-center > *:nth-child(3n + 1):nth-last-child(1) {
+      grid-column-start: 3;
+    }
+    .grid-brick-center > *:nth-child(3n + 1):nth-last-child(2) {
+      grid-column-start: 2;
+    }
+  }
+  /* Tablet (2 items per row). 4 columns total. Normal span 2. If 1 left: start at col 2 */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .grid-brick-center {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .grid-brick-center > *:nth-child(2n + 1):nth-last-child(1) {
+      grid-column-start: 2;
+    }
+  }
+  /* Mobile (1 item per row) */
+  @media (max-width: 767px) {
+    .grid-brick-center {
+      grid-template-columns: repeat(1, 1fr);
+    }
+    .grid-brick-center > * {
+      grid-column: span 1;
+    }
+  }
+
   /* ── Hatching Texture Overlay (Selective Use) ──
      A sketch-like texture panel that can be applied to specific sections.
      This is NOT global — it must be explicitly used with .hatching-texture */

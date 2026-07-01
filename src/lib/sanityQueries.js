@@ -1,4 +1,4 @@
-export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(orderRank, coalesce(workPageOrder, order, 999999), _createdAt) {
+export const CASE_STUDIES_QUERY = `*[_type == "caseStudy" ] | order(orderRank, coalesce(workPageOrder, order, 999999), _createdAt) {
   _id,
   _createdAt,
   "cmsId": _id,
@@ -145,17 +145,17 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy"] | order(orderRank, co
   "pageFaqs": pageFaqs[]->{ id, question, answer, category }
 }`;
 
-export const GET_JOURNAL_ARTICLES = `*[_type == "journalArticle"] | order(date desc) { id, tag, title, time, type, excerpt, author, date, seoTitle, metaDescription, focusKeyword, "pageFaqs": pageFaqs[]->{id, question, answer, category} }`;
+export const GET_JOURNAL_ARTICLES = `*[_type == "journalArticle" ] | order(date desc) { id, tag, title, time, type, excerpt, author, date, seoTitle, metaDescription, focusKeyword, "pageFaqs": pageFaqs[]->{id, question, answer, category} }`;
 
-export const GET_PROBLEM_DATA = `*[_type == "problemData"] | order(order asc) { title, type, iconName }`;
+export const GET_PROBLEM_DATA = `*[_type == "problemData" ] | order(order asc) { title, type, iconName }`;
 
-export const GET_QUIZ_QUESTIONS = `*[_type == "quizQuestion"] { id, title, options, multiSelect }`;
+export const GET_QUIZ_QUESTIONS = `*[_type == "quizQuestion" ] { id, title, options, multiSelect }`;
 
-export const GET_ROUTES_INFO = `*[_type == "routeInfo"] { id, title, desc, iconName, type, bestFor, lineItems }`;
+export const GET_ROUTES_INFO = `*[_type == "routeInfo" ] { id, title, desc, iconName, type, bestFor, lineItems }`;
 
-export const GET_DELIVERABLES = `*[_type == "deliverable"] { id, lineItem, name, interdependence }`;
+export const GET_DELIVERABLES = `*[_type == "deliverable" ] { id, lineItem, name, interdependence }`;
 
-export const GET_SITE_SETTINGS = `*[_type == "siteSettings"][0] { 
+export const GET_SITE_SETTINGS = `*[_type == "siteSettings" ][0] { 
   homeHeroTitle, homeHeroSubtitle, servicesHeader, servicesSubtext, journalHeader, journalSubtext, footerCTA, marqueeText,
   contactEmail, contactPhone, contactAddress,
   homeExploreButton, servicesExploreButton, assessmentButton, allProjectsButton, homeSection3Subtitle, homePage, backToHomeLabel,
@@ -175,12 +175,12 @@ export const GET_SITE_SETTINGS = `*[_type == "siteSettings"][0] {
   }
 }`;
 
-export const GET_TEAM_MEMBERS = `*[_type == "teamMember"] | order(order asc) { id, name, role, bio }`;
+export const GET_TEAM_MEMBERS = `*[_type == "teamMember" ] | order(order asc) { id, name, role, bio }`;
 
-export const GET_CORE_VALUES = `*[_type == "coreValue"] | order(order asc) { id, title, description }`;
+export const GET_CORE_VALUES = `*[_type == "coreValue" ] | order(order asc) { id, title, description }`;
 
-export const GET_TIMELINE = `*[_type == "timelineEvent"] | order(order asc) { id, year, title, description }`;
+export const GET_TIMELINE = `*[_type == "timelineEvent" ] | order(order asc) { id, year, title, description }`;
 
-export const GET_FRAMEWORK = `*[_type == "frameworkStep"] | order(order asc) { id, stepNumber, title, description, outputs }`;
+export const GET_FRAMEWORK = `*[_type == "frameworkStep" ] | order(order asc) { id, stepNumber, title, description, outputs }`;
 
-export const GET_FAQS = `*[_type == "faq"] | order(order asc) { id, question, answer, category }`;
+export const GET_FAQS = `*[_type == "faq" ] | order(order asc) { id, question, answer, category }`;
