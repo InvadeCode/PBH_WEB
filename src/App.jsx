@@ -2749,7 +2749,7 @@ const StrategicEngine = ({ navigate }) => {
                 <ul className="space-y-3 w-full max-h-[350px] md:max-h-[450px] overflow-y-auto custom-scrollbar pr-3 pb-8 print:max-h-none print:overflow-visible print:pr-0 print:pb-0">
                   {selectedDeliverables.map(id => DELIVERABLES_BY_ID.get(id)).filter(Boolean).map(d => (
                     <li key={d.id} className="deliverable-item flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full print:break-inside-avoid print:!bg-[#f4f3ff] print:!border-[#d4cefc]">
-                      <div className="p-1.5 rounded-md shrink-0 mt-0.5 print:!bg-[#010d54]" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4 print:!text-[#ffcd00]" style={{ color: palette.blue }} /></div>
+                      <div className="p-1.5 rounded-md shrink-0 mt-0.5 print:!bg-[#010d54]" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4 print:!stroke-white print:!text-white" style={{ color: palette.blue }} /></div>
                       <div className="w-full">
                         <div className="text-[17px] md:text-[19px] font-medium text-white mb-1 font-secondary flex items-center justify-between print:!text-[#010d54]">
                           <span>{d.name} {warnings.includes(d.id) && <AlertCircle className="w-3 h-3 inline text-yellow-400 ml-1" />}</span>
