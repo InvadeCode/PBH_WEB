@@ -207,7 +207,7 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
 };
 
 /* ── Aesthetic Horizontal Carousel ─────────────────────────────────── */
-const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) => {
+const AestheticCarousel = ({ images, heightClass = "h-[350px] md:h-[500px]" }) => {
   const containerRef = useRef(null);
   const firstSetRef = useRef(null);
   const [paused, setPaused] = useState(false);
@@ -234,7 +234,7 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
   const renderCard = (img, idx, prefix) => (
     <div 
       key={`${prefix}-${idx}`} 
-      className="flex-none w-[60vw] max-w-[220px] md:max-w-[260px] relative group shrink-0 px-4 py-16"
+      className="flex-none w-[60vw] max-w-[160px] md:max-w-[200px] relative group shrink-0 px-4 py-16"
     >
       {/* 
         Hover wrapper:
