@@ -283,7 +283,7 @@ const StickyScrollytellingGrid = ({ content }) => {
                   opacity: { duration: 1.5, ease: [0.16, 1, 0.3, 1] },
                   filter: { duration: 1.5, ease: [0.16, 1, 0.3, 1] }
                 }}
-                className="absolute text-[16vw] md:text-[11vw] font-primary font-bold leading-none tracking-tight text-[#1e2e54] whitespace-nowrap origin-left mix-blend-screen"
+                className="absolute text-[16vw] md:text-[11vw] lg:text-[9.5vw] xl:text-[9vw] font-primary font-bold leading-none tracking-tight text-[#1e2e54] whitespace-nowrap origin-left mix-blend-screen"
               >
                 {activeData.word}
               </motion.div>
@@ -309,7 +309,7 @@ const StickyScrollytellingGrid = ({ content }) => {
           </div>
 
           {/* ASYMMETRICAL EDITORIAL CONTENT BLOCK (Spatial Orbital) */}
-          <div className="w-full h-full flex items-center lg:justify-end relative z-20 pointer-events-none">
+          <div className="w-full h-full flex items-center lg:justify-end relative z-20 pointer-events-none lg:-mr-4 xl:-mr-8">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeData.id}
@@ -317,7 +317,7 @@ const StickyScrollytellingGrid = ({ content }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -40 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-[600px] pointer-events-auto relative lg:translate-x-0"
+                className="w-full max-w-[780px] pointer-events-auto relative lg:translate-x-0"
                 onMouseEnter={() => setIsOrbHovered(true)}
                 onMouseLeave={() => setIsOrbHovered(false)}
               >
@@ -748,9 +748,9 @@ const SpatialOrbitalText = ({ activeData, isHovered }) => {
     return () => controls.stop();
   }, [isHovered, orbProgress]);
 
-  // Split on single or double newlines — Sanity text fields use \n between paragraphs
+  // Split on double newlines to form paragraphs. Single newlines remain for soft breaks.
   const paragraphs = activeData.paragraphs.flatMap(p =>
-    p.split(/\n+/).map(s => s.trim()).filter(s => s.length > 0)
+    p.split(/\n\n+/).map(s => s.trim()).filter(s => s.length > 0)
   );
 
   const numItems = paragraphs.length;
@@ -848,7 +848,7 @@ const ParagraphItem = ({ paragraph, center, orbProgress }) => {
   return (
     <motion.p 
       style={{ opacity, color, y, textShadow }}
-      className="inline-block transition-colors duration-700 m-0"
+      className="inline-block transition-colors duration-700 m-0 whitespace-pre-line"
     >
       {paragraph}
     </motion.p>
