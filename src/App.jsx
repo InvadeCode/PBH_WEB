@@ -2396,7 +2396,7 @@ const StrategicEngine = ({ navigate }) => {
               type="text" 
               value={leadForm.company}
               onChange={(e) => setLeadForm({...leadForm, company: e.target.value})}
-              className="w-full bg-black/40 border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all"
+              className="w-full bg-black/40 backdrop-blur-md border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white font-secondary focus:outline-none focus:border-cyan-400 focus:bg-white/5 transition-all"
               placeholder="e.g. PurpleBlue House"
             />
           </div>
@@ -2404,7 +2404,7 @@ const StrategicEngine = ({ navigate }) => {
             <label className="block text-[13px] md:text-[15px] font-medium text-white/50 uppercase tracking-widest mb-3 font-primary">{finalSettings.assessmentPage?.industryInputLabel || 'Industry / Sector'}</label>
             <div 
               onClick={() => setIsSectorDropdownOpen(!isSectorDropdownOpen)}
-              className="w-full bg-black/40 border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white font-secondary focus:outline-none hover:border-cyan-400 focus:bg-white/5 transition-all cursor-pointer flex justify-between items-center"
+              className="w-full bg-black/40 backdrop-blur-md border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light text-white font-secondary focus:outline-none hover:border-cyan-400 transition-all cursor-pointer flex justify-between items-center"
             >
               <span className={leadForm.industry ? "text-white" : "text-white/50"}>{leadForm.industry || 'Select your sector'}</span>
               <ChevronDown className={`w-5 h-5 text-white/50 transition-transform ${isSectorDropdownOpen ? 'rotate-180' : ''}`} />
