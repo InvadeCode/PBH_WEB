@@ -32,7 +32,7 @@ const palette = {
   panel: '#1e0e00',
   primary: '#e8800a',
   secondary: '#f5c240',
-  text: '#FFF9EE',
+  text: '#F4F4F5',
 };
 
 /* Ambient background glows — identical to Arise */
@@ -109,7 +109,7 @@ const ParallaxImage = ({ src, alt, item, delay = 0, yOffset = 20, className = ''
 const SectionTitle = ({ children, label, className = '' }) => (
   <ElegantFade className={className}>
     {label && (
-      <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#f5c240]/10 text-[#f5c240] text-[16px] md:text-[17px] font-bold tracking-widest uppercase backdrop-blur-md font-primary">
+      <div className="inline-flex items-center gap-3 mb-6 px-4 py-1.5 rounded-full bg-[#f5c240]/10 text-[#f5c240] text-[15px] md:text-[17px] font-bold tracking-widest uppercase backdrop-blur-md font-primary">
         <span className="w-2 h-2 rounded-full bg-[#f5c240] animate-pulse shadow-[0_0_10px_#f5c240]" />
         {label}
       </div>
@@ -117,7 +117,7 @@ const SectionTitle = ({ children, label, className = '' }) => (
     <motion.h2
       animate={{ backgroundPosition: ['200% center', '-200% center'] }}
       transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-      className="font-primary text-4xl md:text-5xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(232,128,10,0.3)]"
+      className="font-primary text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(232,128,10,0.3)]"
       style={{
         backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #e8800a 45%, #f5c240 50%, #e8800a 55%, #FFFFFF 70%, #FFFFFF 100%)',
         backgroundSize: '300% auto',
@@ -141,7 +141,7 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
           <ElegantFade delay={0.15} className="mb-10 md:mb-14">
             <div className="max-w-4xl">
               {body.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} className="text-white/90 font-normal text-[20px] md:text-[26px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
+                <p key={i} className="text-white/90 font-normal text-[17px] md:text-[19px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
                   {para.trim()}
                 </p>
               ))}
@@ -192,7 +192,7 @@ const EditorialSection = ({ title, label, body, images = [], layoutVariant = 'te
           <ElegantFade delay={0.15} className="mt-10 md:mt-14">
             <div className="max-w-4xl">
               {body.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} className="text-white/90 font-normal text-[20px] md:text-[26px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
+                <p key={i} className="text-white/90 font-normal text-[17px] md:text-[19px] leading-relaxed md:leading-relaxed font-secondary mb-6 last:mb-0">
                   {para.trim()}
                 </p>
               ))}
@@ -246,11 +246,9 @@ const AestheticCarousel = ({ images, heightClass = "h-[450px] md:h-[650px]" }) =
         <div className="absolute inset-0 bg-white/20 blur-3xl rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-[900ms] ease-out -z-10" />
 
         <div className="w-full rounded-2xl overflow-hidden bg-white/5 border border-white/10 group-hover:border-white/30 transition-all duration-[900ms] ease-[cubic-bezier(0.19,1,0.22,1)] shadow-[0_10px_30px_rgba(0,0,0,0.3)] group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.6)]">
-          <img
-            src={img.url || img}
-            alt={img.alt || `Carousel item ${idx + 1}`}
-            loading="lazy"
-            decoding="async"
+          <img 
+            src={img.url || img} 
+            alt={img.alt || `Carousel item ${idx + 1}`} 
             className="w-full aspect-[4/5] object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-105"
             draggable="false"
           />
@@ -304,7 +302,7 @@ const UniverseCard = ({ title, description, images, index }) => {
       <ElegantFade>
         <div className="px-6 md:px-12 mb-12 md:mb-16 text-center max-w-4xl mx-auto">
           <motion.h3
-            className="font-primary text-4xl md:text-5xl text-white mb-6 font-medium tracking-tight"
+            className="font-primary text-4xl md:text-6xl text-white mb-6 font-medium tracking-tight"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -313,7 +311,7 @@ const UniverseCard = ({ title, description, images, index }) => {
             {title}
           </motion.h3>
           {description && (
-            <p className="text-white/70 font-normal text-[20px] md:text-[26px] leading-relaxed font-secondary">
+            <p className="text-white/70 font-normal text-[17px] md:text-[21px] leading-relaxed font-secondary">
               {description}
             </p>
           )}
@@ -328,11 +326,9 @@ const UniverseCard = ({ title, description, images, index }) => {
                 key={idx} 
                 className="w-full rounded-[2rem] bg-gradient-to-br from-white/5 to-transparent overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700 hover:scale-[1.01] hover:border-white/20 flex items-center justify-center relative group"
               >
-                <img
-                  src={img.url || img}
-                  alt={img.alt || `${title} view ${idx + 1}`}
-                  loading="lazy"
-                  decoding="async"
+                <img 
+                  src={img.url || img} 
+                  alt={img.alt || `${title} view ${idx + 1}`} 
                   className="w-full h-auto object-contain p-6 md:p-12 transition-transform duration-1000 group-hover:scale-105"
                   draggable="false"
                 />
@@ -405,7 +401,7 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
             <motion.h2 
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-4xl md:text-5xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(232,128,10,0.5)]" 
+              className="font-primary text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-transparent bg-clip-text drop-shadow-[0_0_30px_rgba(232,128,10,0.5)]" 
               style={{ 
                 backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #e8800a 45%, #f5c240 50%, #e8800a 55%, #FFFFFF 70%, #FFFFFF 100%)',
                 backgroundSize: '300% auto',
@@ -418,9 +414,12 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
+            <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#f5c240] mb-6 md:mb-8 font-bold font-primary">
+               {title}
+            </h3>
             <div className="space-y-6">
               {content.split('\n\n').filter(Boolean).map((para, i) => (
-                <p key={i} className="text-white/90 font-normal text-[20px] md:text-[26px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
+                <p key={i} className="text-white/90 font-normal text-[17px] md:text-[19px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
                   {para.trim()}
                 </p>
               ))}
@@ -444,42 +443,13 @@ const FirefoxExperience = ({ navigate, project }) => {
 
   const cmsMedia = normalizeMediaItems(project?.fullStory?.media || project?.fullStory?.images, project?.client || 'Firefox');
 
-  // Resolve CMS-hosted image by alt/caption match, falling back to local import
-  const getCmsImage = (altText, localFallback) => {
-    if (!project) return localFallback;
-
-    // Check in fullStory images
-    if (project.fullStory?.images?.length > 0) {
-      const match = project.fullStory.images.find(img =>
-        img.alt?.toLowerCase() === altText.toLowerCase() ||
-        img.caption?.toLowerCase() === altText.toLowerCase()
-      );
-      if (match?.url) return match.url;
-    }
-
-    // Check in firefoxSections
-    if (project.firefoxSections?.length > 0) {
-      for (const section of project.firefoxSections) {
-        if (section.images?.length > 0) {
-          const match = section.images.find(img =>
-            img.alt?.toLowerCase() === altText.toLowerCase() ||
-            img.caption?.toLowerCase() === altText.toLowerCase()
-          );
-          if (match?.url) return match.url;
-        }
-      }
-    }
-
-    return localFallback;
-  };
-
   return (
-    <div className="w-full min-h-screen font-secondary selection:bg-[#e8800a]/40 selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
+    <div className="w-full min-h-screen font-secondary selection:bg-[#e8800a] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
       <ChicAmbientBackground />
 
       {/* Navigation */}
       <div className="fixed top-0 left-0 w-full z-50 px-6 pt-28 pb-6 md:px-12 md:pt-32 md:pb-8 flex items-center gap-3 pointer-events-none">
-        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[16px] md:text-[17px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
+        <button onClick={() => navigate('work')} className="pointer-events-auto flex items-center gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white group">
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back
         </button>
       </div>
@@ -495,7 +465,7 @@ const FirefoxExperience = ({ navigate, project }) => {
           ) : (
             <div className="w-full h-full bg-[#1e0e00]" />
           )}
-          <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 px-3 md:top-28">
+          <div className="pointer-events-none absolute left-1/2 top-5 z-20 -translate-x-1/2 px-3 md:top-6">
             <CaseStudySectorPill
               sector={project?.sector}
               className="border border-white/[0.16] bg-[#0d0600]/45 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
@@ -506,7 +476,7 @@ const FirefoxExperience = ({ navigate, project }) => {
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
             {(project?.tags || ['Product Graphics', 'Illustration', 'Visual Strategy']).map((tag, i) => (
-              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[12px] md:text-[13px] tracking-[0.4em] uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
+              <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[17px] md:text-[19px] tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
                 {tag}
               </span>
             ))}
@@ -516,7 +486,7 @@ const FirefoxExperience = ({ navigate, project }) => {
             <motion.h1
               animate={{ backgroundPosition: ['200% center', '-200% center'] }}
               transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-              className="font-primary text-4xl md:text-5xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
+              className="font-primary text-5xl md:text-7xl lg:text-8xl leading-[0.9] text-transparent bg-clip-text font-medium tracking-tight drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]"
               style={{
                 backgroundImage: 'linear-gradient(90deg, #FFFFFF 0%, #FFFFFF 30%, #f5c240 45%, #e8800a 50%, #f5c240 55%, #FFFFFF 70%, #FFFFFF 100%)',
                 backgroundSize: '300% auto',
@@ -546,11 +516,11 @@ const FirefoxExperience = ({ navigate, project }) => {
       <section className="relative w-full z-10 py-16 md:py-24 px-6 md:px-12 max-w-[1400px] mx-auto">
         <div className="max-w-4xl mx-auto text-center mb-16 md:mb-20">
           <ElegantFade delay={0.1}>
-            <h2 className="font-primary text-4xl md:text-5xl font-bold text-white mb-8 md:mb-10 tracking-tight">
+            <h2 className="font-primary text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 md:mb-10 tracking-tight">
               Our Creative Strategy
             </h2>
             
-            <div className="space-y-4 text-white/90 font-secondary text-[20px] md:text-[26px] leading-relaxed md:leading-[1.6]">
+            <div className="space-y-4 text-white/90 font-secondary text-[18px] md:text-[22px] leading-relaxed md:leading-[1.6]">
               <p>Our research revealed that bicycles play a very different role in a child's life.</p>
               <p>Children use objects as storytelling tools. They create characters, missions, rules, and entire worlds around them.</p>
               <p>The bicycle wasn't simply something they rode.</p>
@@ -563,12 +533,10 @@ const FirefoxExperience = ({ navigate, project }) => {
           <div className="relative w-full max-w-[1000px] aspect-[2/1] md:aspect-[2.2/1] overflow-hidden bg-white/5 rounded-xl border border-white/10 shadow-2xl p-4 md:p-6">
             {/* Pushing the image up to crop out the baked-in text while keeping the map visible */}
             <div className="w-full h-full relative overflow-hidden rounded-lg">
-              <img
-                src={getCmsImage('Observation Map', observationMap)}
-                alt="Observation Map Diagram"
-                loading="lazy"
-                decoding="async"
-                className="absolute left-0 w-full h-auto -top-[25%] md:-top-[28%]"
+              <img 
+                src={observationMap} 
+                alt="Observation Map Diagram" 
+                className="absolute left-0 w-full h-auto -top-[25%] md:-top-[28%]" 
                 draggable="false"
               />
             </div>
@@ -580,7 +548,7 @@ const FirefoxExperience = ({ navigate, project }) => {
       <EditorialSection
         title="Insight Mapping"
         body=""
-        images={[{ url: getCmsImage('Insight Mapping', insightMapping), alt: 'Insight Mapping' }]}
+        images={[{ url: insightMapping, alt: 'Insight Mapping' }]}
         layoutVariant="visual-first"
         imageClassName="object-contain max-h-[500px]"
       />
@@ -589,7 +557,7 @@ const FirefoxExperience = ({ navigate, project }) => {
       <EditorialSection
         title="Theme Mapping"
         body=""
-        images={[{ url: getCmsImage('Theme Mapping', themeMapping), alt: 'Theme Mapping' }]}
+        images={[{ url: themeMapping, alt: 'Theme Mapping' }]}
         layoutVariant="visual-first"
         imageClassName="object-contain max-h-[500px]"
       />
@@ -609,13 +577,11 @@ const FirefoxExperience = ({ navigate, project }) => {
         {/* Standalone Star Gazer Image */}
         <ElegantFade delay={0.2} className="w-full flex justify-center mb-16 md:mb-24">
           <div className="w-full max-w-[1000px] bg-white rounded-xl shadow-2xl overflow-hidden p-6 md:p-10 border border-white/10">
-            <img
-              src={getCmsImage('Star Gazer Sketch', starGazerSketch)}
-              alt="Star Gazer Sketch"
-              loading="lazy"
-              decoding="async"
-              className="w-full h-auto object-contain drop-shadow-md"
-              draggable="false"
+            <img 
+              src={starGazerSketch} 
+              alt="Star Gazer Sketch" 
+              className="w-full h-auto object-contain drop-shadow-md" 
+              draggable="false" 
             />
           </div>
         </ElegantFade>
@@ -626,12 +592,12 @@ const FirefoxExperience = ({ navigate, project }) => {
           <div className="flex flex-col gap-6 md:gap-10">
             <ElegantFade delay={0.1}>
               <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={sketches1} alt="Sketch 1" loading="lazy" decoding="async" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+                <img src={sketches1} alt="Sketch 1" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
               </div>
             </ElegantFade>
             <ElegantFade delay={0.3}>
               <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={sketches3} alt="Sketch 3" loading="lazy" decoding="async" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+                <img src={sketches3} alt="Sketch 3" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
               </div>
             </ElegantFade>
           </div>
@@ -640,12 +606,12 @@ const FirefoxExperience = ({ navigate, project }) => {
           <div className="flex flex-col gap-6 md:gap-10 md:pt-16">
             <ElegantFade delay={0.2}>
               <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={getCmsImage('Sketch 2', sketches2)} alt="Sketch 2" loading="lazy" decoding="async" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+                <img src={sketches2} alt="Sketch 2" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
               </div>
             </ElegantFade>
             <ElegantFade delay={0.4}>
               <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={getCmsImage('Sketch 4', sketches4)} alt="Sketch 4" loading="lazy" decoding="async" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+                <img src={sketches4} alt="Sketch 4" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
               </div>
             </ElegantFade>
           </div>
@@ -659,22 +625,22 @@ const FirefoxExperience = ({ navigate, project }) => {
           {/* Dreamer */}
           <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
             <ElegantFade className="z-20 w-full max-w-[800px] mx-auto mb-10 md:mb-14 text-center">
-              <h2 className="text-white font-primary text-4xl md:text-5xl font-bold mb-6">Dreamer, Stargazer & Stellar</h2>
-              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed mb-10 md:mb-14">
+              <h2 className="text-white font-primary text-3xl md:text-4xl lg:text-5xl font-bold mb-6">Dreamer, Stargazer & Stellar</h2>
+              <p className="text-white/80 font-secondary text-[17px] md:text-[19px] leading-relaxed mb-10 md:mb-14">
                 To translate the strategy into products, we created three distinct worlds within the lilFox universe.
               </p>
-              <h3 className="text-white font-primary text-4xl md:text-5xl font-bold mb-4">Dreamer</h3>
-              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed">
+              <h3 className="text-white font-primary text-2xl md:text-3xl font-bold mb-4">Dreamer</h3>
+              <p className="text-white/80 font-secondary text-[17px] md:text-[19px] leading-relaxed">
                 A world of wonder, optimism, stars, clouds, and limitless imagination.
               </p>
             </ElegantFade>
             
             <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
               <ElegantFade delay={0.1}>
-                <img src={getCmsImage('Dreamer visual 1', dreamerBikesLeft)} alt="Dreamer visual 1" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={dreamerBikesLeft} alt="Dreamer visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
               <ElegantFade delay={0.2}>
-                <img src={getCmsImage('Dreamer visual 2', dreamerBikesRight)} alt="Dreamer visual 2" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={dreamerBikesRight} alt="Dreamer visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
             </div>
           </div>
@@ -682,17 +648,17 @@ const FirefoxExperience = ({ navigate, project }) => {
           {/* Stargazer */}
           <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
             <ElegantFade className="w-full max-w-[800px] mx-auto text-center mb-10 md:mb-14">
-              <h3 className="text-white font-primary text-4xl md:text-5xl font-bold mb-4">Stargazer</h3>
-              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed">
+              <h3 className="text-white font-primary text-2xl md:text-3xl font-bold mb-4">Stargazer</h3>
+              <p className="text-white/80 font-secondary text-[17px] md:text-[19px] leading-relaxed">
                 A world inspired by curiosity, celestial discovery, and exploration.
               </p>
             </ElegantFade>
             <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
               <ElegantFade delay={0.1}>
-                <img src={getCmsImage('Stargazer visual 1', stargazerBikesLeft)} alt="Stargazer visual 1" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={stargazerBikesLeft} alt="Stargazer visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
               <ElegantFade delay={0.2}>
-                <img src={getCmsImage('Stargazer visual 2', stargazerBikesRight)} alt="Stargazer visual 2" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={stargazerBikesRight} alt="Stargazer visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
             </div>
           </div>
@@ -700,17 +666,17 @@ const FirefoxExperience = ({ navigate, project }) => {
           {/* Stellar */}
           <div className="relative w-full flex flex-col items-center mb-24 md:mb-32">
             <ElegantFade className="w-full max-w-[800px] mx-auto text-center mb-10 md:mb-14">
-              <h3 className="text-white font-primary text-4xl md:text-5xl font-bold mb-4">Stellar</h3>
-              <p className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed">
+              <h3 className="text-white font-primary text-2xl md:text-3xl font-bold mb-4">Stellar</h3>
+              <p className="text-white/80 font-secondary text-[17px] md:text-[19px] leading-relaxed">
                 A vibrant universe built around movement, adventure, and big dreams.
               </p>
             </ElegantFade>
             <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
               <ElegantFade delay={0.1}>
-                <img src={getCmsImage('Stellar visual 1', stellarBikesLeft)} alt="Stellar visual 1" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={stellarBikesLeft} alt="Stellar visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
               <ElegantFade delay={0.2}>
-                <img src={getCmsImage('Stellar visual 2', stellarBikesRight)} alt="Stellar visual 2" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={stellarBikesRight} alt="Stellar visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
             </div>
           </div>
@@ -718,10 +684,10 @@ const FirefoxExperience = ({ navigate, project }) => {
           {/* Ecosystem */}
           <div className="relative w-full flex flex-col items-center">
             <ElegantFade className="w-full mb-10 md:mb-14 text-center">
-              <div className="text-white font-primary text-4xl md:text-5xl font-bold leading-relaxed max-w-4xl mx-auto mb-6">
+              <div className="text-white font-primary text-2xl md:text-3xl font-bold leading-relaxed max-w-4xl mx-auto mb-6">
                 <p>From bicycles to accessories, packaging, and future products, every element belonged to the same universe.</p>
               </div>
-              <div className="text-white/80 font-secondary text-[20px] md:text-[26px] leading-relaxed space-y-4 max-w-4xl mx-auto">
+              <div className="text-white/80 font-secondary text-[17px] md:text-[19px] leading-relaxed space-y-4 max-w-4xl mx-auto">
                 <p>The goal wasn't to sell bicycles.</p>
                 <p>It was to create a platform for adventure.</p>
               </div>
@@ -729,15 +695,15 @@ const FirefoxExperience = ({ navigate, project }) => {
             <div className="w-full flex flex-col items-center gap-6">
               <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
                 <ElegantFade delay={0.1}>
-                  <img src={getCmsImage('Ecosystem visual 1', ecosystem1)} alt="Ecosystem visual 1" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                  <img src={ecosystem1} alt="Ecosystem visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
                 </ElegantFade>
                 <ElegantFade delay={0.2}>
-                  <img src={getCmsImage('Ecosystem visual 2', ecosystem2)} alt="Ecosystem visual 2" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                  <img src={ecosystem2} alt="Ecosystem visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
                 </ElegantFade>
               </div>
               <ElegantFade delay={0.3} className="w-full flex justify-center">
                 <div className="w-full md:w-1/2">
-                  <img src={getCmsImage('Ecosystem visual 3', ecosystem3)} alt="Ecosystem visual 3" loading="lazy" decoding="async" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                  <img src={ecosystem3} alt="Ecosystem visual 3" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
                 </div>
               </ElegantFade>
             </div>
@@ -758,7 +724,7 @@ const FirefoxExperience = ({ navigate, project }) => {
         <section className="relative w-full z-10 overflow-hidden">
           <div className="pb-20 w-full relative">
             <ElegantFade className="mb-12 pb-6 px-6 md:px-12 max-w-[1400px] mx-auto">
-              <h2 className="font-primary text-4xl md:text-5xl text-white tracking-tight">
+              <h2 className="font-primary text-5xl md:text-7xl lg:text-8xl text-white tracking-tight">
                 {project?.deliverablesHeading || 'Ecosystem Highlights'}
               </h2>
             </ElegantFade>
@@ -773,10 +739,10 @@ const FirefoxExperience = ({ navigate, project }) => {
       <section className="pt-12 pb-20 px-6 md:px-12 text-center relative z-10">
         <div className="max-w-[1200px] mx-auto">
           <ElegantFade>
-            <p className="text-[12px] md:text-[13px] tracking-[0.4em] uppercase text-[#f5c240] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
+            <p className="text-[17px] md:text-[19px] tracking-widest uppercase text-[#f5c240] mb-6 font-medium font-primary">{SITE_SETTINGS?.csBackToWork || 'Back to Portfolio'}</p>
             <motion.h2
               onClick={() => navigate('work')}
-              className="font-primary text-4xl md:text-5xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"
+              className="font-primary text-5xl md:text-7xl lg:text-8xl text-white font-medium cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center gap-6"
             >
               <ArrowLeft className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20" /> {SITE_SETTINGS?.csAllProjects || 'All Case Studies'}
             </motion.h2>
