@@ -418,9 +418,6 @@ const DramaticSection = ({ title, content, motionGraphic }) => {
         
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <motion.div style={{ opacity: contentOpacity, y: contentY }} className="w-full max-w-4xl px-6 md:px-12 text-center flex flex-col items-center pointer-events-auto">
-            <h3 className="text-[12px] md:text-[13px] tracking-[0.4em] uppercase text-[#D4CEFC] mb-6 md:mb-8 font-bold font-primary">
-               {title}
-            </h3>
             <div className="space-y-6">
               {content.split('\n\n').filter(Boolean).map((para, i) => (
                 <p key={i} className="text-white/90 font-normal text-[20px] md:text-[26px] max-w-3xl mx-auto leading-relaxed md:leading-relaxed font-secondary">
