@@ -260,11 +260,11 @@
 
 /* MediaRibbon3D: reduce height on mobile so it doesn't dominate the viewport */
 .media-ribbon-3d {
-  height: clamp(340px, 65vh, 800px);
+  height: clamp(340px, 60vh, 600px);
 }
 @media (min-width: 768px) {
   .media-ribbon-3d {
-    height: clamp(560px, 92vh, 1300px);
+    height: clamp(400px, 65vh, 750px);
   }
 }
 

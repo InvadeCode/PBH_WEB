@@ -196,8 +196,8 @@ const MediaRibbon3D = ({ media, theme }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.33, 320, 580);
-      const minRadius = clamp(w * 0.55, 560, 900);
+      const height = clamp(w * 0.26, 260, 460);
+      const minRadius = clamp(w * 0.5, 450, 800);
       const maxRadius = clamp(w * 2.5, 1800, 4200);
       const maxAspect = Math.max(...items.map(m => getMediaAspect(m)), 1.4);
       const approxPanelWidth = height * maxAspect;
