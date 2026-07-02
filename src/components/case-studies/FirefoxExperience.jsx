@@ -443,57 +443,36 @@ const FirefoxExperience = ({ navigate, project }) => {
 
   const cmsMedia = normalizeMediaItems(project?.fullStory?.media || project?.fullStory?.images, project?.client || 'Firefox');
 
-  // Pull dynamic images from Sanity storyChapters if they exist
-  const storyChapters = project?.fullStory?.storyChapters || [];
+  // Pull dynamic images from the new dedicated Sanity firefoxAssets schema if they exist
+  const fxAssets = project?.firefoxAssets || {};
   
-  const findChapterImage = (keyword, fallbackImg) => {
-    const ch = storyChapters.find(c => {
-      const title = (c.title || c.chapterLabel || c.caption || '').toLowerCase();
-      return title.includes(keyword.toLowerCase());
-    });
-    return getMediaUrl(ch) || fallbackImg;
-  };
+  const imgStrategy = getMediaUrl(fxAssets.imgStrategy) || observationMap;
+  const imgInsight = getMediaUrl(fxAssets.imgInsight) || insightMapping;
+  const imgTheme = getMediaUrl(fxAssets.imgTheme) || themeMapping;
+  const imgStargazer = getMediaUrl(fxAssets.imgStargazerSketch) || starGazerSketch;
 
-  const imgStrategy = findChapterImage('strategy', observationMap);
-  const imgInsight = findChapterImage('insight', insightMapping);
-  const imgTheme = findChapterImage('theme', themeMapping);
-  
-  let imgStargazer = starGazerSketch;
-  const sketchCh = storyChapters.find(c => {
-    const t = (c.title || c.chapterLabel || c.caption || '').toLowerCase();
-    // avoid matching 'sketches' which is used for the masonry grid
-    return (t.includes('gazer') || t.includes('untitled')) && !t.includes('sketches');
-  });
-  if (sketchCh) imgStargazer = getMediaUrl(sketchCh) || starGazerSketch;
+  const sketches = fxAssets.sketchesGrid || [];
+  const imgSketch1 = getMediaUrl(sketches[0]) || sketches1;
+  const imgSketch2 = getMediaUrl(sketches[1]) || sketches2;
+  const imgSketch3 = getMediaUrl(sketches[2]) || sketches3;
+  const imgSketch4 = getMediaUrl(sketches[3]) || sketches4;
 
-  const findChapterImageMulti = (keyword, index, fallbackImg) => {
-    const matches = storyChapters.filter(c => {
-      const title = (c.title || c.chapterLabel || c.caption || '').toLowerCase();
-      return title.includes(keyword.toLowerCase());
-    });
-    if (matches.length > index) {
-      return getMediaUrl(matches[index]) || fallbackImg;
-    }
-    return fallbackImg;
-  };
-
-  const imgSketch1 = findChapterImageMulti('sketch', 0, sketches1);
-  const imgSketch2 = findChapterImageMulti('sketch', 1, sketches2);
-  const imgSketch3 = findChapterImageMulti('sketch', 2, sketches3);
-  const imgSketch4 = findChapterImageMulti('sketch', 3, sketches4);
-
-  const imgDreamerLeft = findChapterImageMulti('dreamer', 0, dreamerBikesLeft);
-  const imgDreamerRight = findChapterImageMulti('dreamer', 1, dreamerBikesRight);
+  const dreamer = fxAssets.dreamerImages || [];
+  const imgDreamerLeft = getMediaUrl(dreamer[0]) || dreamerBikesLeft;
+  const imgDreamerRight = getMediaUrl(dreamer[1]) || dreamerBikesRight;
   
-  const imgStargazerLeft = findChapterImageMulti('stargazer', 0, stargazerBikesLeft);
-  const imgStargazerRight = findChapterImageMulti('stargazer', 1, stargazerBikesRight);
+  const stargazer = fxAssets.stargazerImages || [];
+  const imgStargazerLeft = getMediaUrl(stargazer[0]) || stargazerBikesLeft;
+  const imgStargazerRight = getMediaUrl(stargazer[1]) || stargazerBikesRight;
   
-  const imgStellarLeft = findChapterImageMulti('stellar', 0, stellarBikesLeft);
-  const imgStellarRight = findChapterImageMulti('stellar', 1, stellarBikesRight);
+  const stellar = fxAssets.stellarImages || [];
+  const imgStellarLeft = getMediaUrl(stellar[0]) || stellarBikesLeft;
+  const imgStellarRight = getMediaUrl(stellar[1]) || stellarBikesRight;
   
-  const imgEcosystem1 = findChapterImageMulti('ecosystem', 0, ecosystem1);
-  const imgEcosystem2 = findChapterImageMulti('ecosystem', 1, ecosystem2);
-  const imgEcosystem3 = findChapterImageMulti('ecosystem', 2, ecosystem3);
+  const ecosystem = fxAssets.ecosystemImages || [];
+  const imgEcosystem1 = getMediaUrl(ecosystem[0]) || ecosystem1;
+  const imgEcosystem2 = getMediaUrl(ecosystem[1]) || ecosystem2;
+  const imgEcosystem3 = getMediaUrl(ecosystem[2]) || ecosystem3;
 
   return (
     <div className="w-full min-h-screen font-secondary selection:bg-[#e8800a] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>

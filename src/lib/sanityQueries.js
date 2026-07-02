@@ -136,11 +136,16 @@ export const CASE_STUDIES_QUERY = `*[_type == "caseStudy" ] | order(orderRank, c
       }
     }
   },
-  "universeCards": universeCards[] {
-    _key,
-    title,
-    description,
-    "imageUrl": image.asset->url
+  "firefoxAssets": {
+    "imgStrategy": firefoxAssets.imgStrategy.asset->url,
+    "imgInsight": firefoxAssets.imgInsight.asset->url,
+    "imgTheme": firefoxAssets.imgTheme.asset->url,
+    "imgStargazerSketch": firefoxAssets.imgStargazerSketch.asset->url,
+    "sketchesGrid": firefoxAssets.sketchesGrid[].asset->url,
+    "dreamerImages": firefoxAssets.dreamerImages[].asset->url,
+    "stargazerImages": firefoxAssets.stargazerImages[].asset->url,
+    "stellarImages": firefoxAssets.stellarImages[].asset->url,
+    "ecosystemImages": firefoxAssets.ecosystemImages[].asset->url
   },
   "pageFaqs": pageFaqs[]->{ id, question, answer, category }
 }`;

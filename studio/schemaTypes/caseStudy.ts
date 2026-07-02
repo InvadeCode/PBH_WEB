@@ -625,23 +625,51 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'universeCards',
-      title: '🦊 Universe Breakdown Cards (Firefox Only)',
-      type: 'array',
-      description: 'Three product cards for the Firefox universe breakdown (e.g. Dreamer, Stargazer, Stellar). Only used by the Firefox experience template.',
-      of: [
-        {
-          type: 'object',
-          name: 'universeCard',
-          title: 'Universe Card',
-          fields: [
-            defineField({ name: 'title', title: 'Card Title', type: 'string' }),
-            defineField({ name: 'description', title: 'Card Description', type: 'text' }),
-            defineField({ name: 'image', title: 'Card Image', type: 'image', options: { hotspot: true } }),
-          ],
-          preview: { select: { title: 'title', media: 'image' } }
-        }
-      ],
+      name: 'firefoxAssets',
+      title: '🦊 Firefox Assets (Strict UI Mapping)',
+      type: 'object',
+      description: 'Upload exactly the images needed for the Firefox UI layout. Leave empty to fallback to default static assets.',
+      fields: [
+        defineField({ name: 'imgStrategy', title: 'Strategy / Observation Map (1 Image)', type: 'image', options: { hotspot: true } }),
+        defineField({ name: 'imgInsight', title: 'Insight Mapping (1 Image)', type: 'image', options: { hotspot: true } }),
+        defineField({ name: 'imgTheme', title: 'Theme Mapping (1 Image)', type: 'image', options: { hotspot: true } }),
+        defineField({ name: 'imgStargazerSketch', title: 'Standalone Stargazer Sketch (1 Image)', type: 'image', options: { hotspot: true } }),
+        defineField({
+          name: 'sketchesGrid',
+          title: '4-Image Sketches Masonry Grid (Exactly 4 Images)',
+          type: 'array',
+          validation: (Rule) => Rule.max(4),
+          of: [{ type: 'image', options: { hotspot: true } }]
+        }),
+        defineField({
+          name: 'dreamerImages',
+          title: 'Dreamer World (2 Images: Left & Right)',
+          type: 'array',
+          validation: (Rule) => Rule.max(2),
+          of: [{ type: 'image', options: { hotspot: true } }]
+        }),
+        defineField({
+          name: 'stargazerImages',
+          title: 'Stargazer World (2 Images: Left & Right)',
+          type: 'array',
+          validation: (Rule) => Rule.max(2),
+          of: [{ type: 'image', options: { hotspot: true } }]
+        }),
+        defineField({
+          name: 'stellarImages',
+          title: 'Stellar World (2 Images: Left & Right)',
+          type: 'array',
+          validation: (Rule) => Rule.max(2),
+          of: [{ type: 'image', options: { hotspot: true } }]
+        }),
+        defineField({
+          name: 'ecosystemImages',
+          title: 'Ecosystem (3 Images)',
+          type: 'array',
+          validation: (Rule) => Rule.max(3),
+          of: [{ type: 'image', options: { hotspot: true } }]
+        })
+      ]
     }),
     defineField({
       name: 'pageFaqs',
