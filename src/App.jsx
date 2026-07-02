@@ -3855,7 +3855,8 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       'veauli',
       'world forum',
       'best iu',
-      'best innovation university'
+      'best innovation university',
+      'earthy souls'
     ];
 
     if (ariseClients.some(target => clientName.includes(target))) {
@@ -3887,8 +3888,7 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       'kanti sweets',
       'navankur',
       'sunburst',
-      'leading business family',
-      'earthy souls'
+      'leading business family'
     ];
 
     if (kantiSweetsClients.some(target => clientName.includes(target))) {

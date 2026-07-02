@@ -520,7 +520,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
                 backgroundSize: '300% auto',
               }}
             >
-              {project?.client || 'Arise Ventures'}
+              {project?.client || project?.title || 'Case Study'}
             </motion.h1>
           </ElegantFade>
         </div>
