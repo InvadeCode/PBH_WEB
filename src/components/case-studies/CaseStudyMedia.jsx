@@ -176,6 +176,7 @@ const CaseStudyMedia = ({
       loop: true,
       muted: true,
       playsInline: true,
+      preload: 'none',
       ...props,
       ...(motionProps || {}),
     };

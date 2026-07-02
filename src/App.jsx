@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, createContext, useContext, lazy, Suspense, useMemo } from 'react';
+import React, { useState, useEffect, useRef, createContext, useContext, lazy, Suspense, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { jsPDF } from 'jspdf';
 import ExcelJS from 'exceljs';
@@ -6,7 +6,7 @@ import { useSanity } from './lib/useSanity';
 import { useEditableUiCopy } from './lib/useEditableUiCopy';
 import { CASE_STUDIES_QUERY, GET_JOURNAL_ARTICLES, GET_PROBLEM_DATA, GET_QUIZ_QUESTIONS, GET_ROUTES_INFO, GET_DELIVERABLES, GET_SITE_SETTINGS, GET_TEAM_MEMBERS, GET_CORE_VALUES, GET_TIMELINE, GET_FRAMEWORK, GET_FAQS } from './lib/sanityQueries';
 import { normalizeCaseStudyUrlId, orderCaseStudies } from './lib/caseStudyOrdering';
-import { motion, AnimatePresence, useScroll, useTransform, useInView, useSpring, useMotionValue, useMotionTemplate, useAnimationFrame } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useInView, useSpring, useMotionValue, useMotionTemplate, useAnimationFrame, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight, Sparkles, Zap, CheckCircle2,
   ArrowLeft, ArrowDown, Menu, X, Globe, MoveRight,
@@ -779,28 +779,31 @@ const GlobalFilmGrain = () => (
    tint EVERY page (screen-blend only lightens, so white text stays crisp).
    Fixed + pointer-events-none; sits above the navy page surfaces (z<30) but
    below the header (z-10000) and modals (z-100000). */
-const BrandAura = () => (
-  <div className="pointer-events-none fixed inset-0 z-[30] overflow-hidden mix-blend-screen" aria-hidden="true">
-    <motion.div
-      animate={{ x: ['-4%', '4%', '-4%'], y: ['-3%', '3%', '-3%'] }}
-      transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute -top-[18%] -left-[12%] w-[60vw] h-[60vw] rounded-full blur-[170px]"
-      style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.34) 0%, transparent 70%)', willChange: 'transform' }}
-    />
-    <motion.div
-      animate={{ x: ['4%', '-4%', '4%'], y: ['3%', '-3%', '3%'] }}
-      transition={{ duration: 32, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-      className="absolute top-[16%] -right-[16%] w-[55vw] h-[55vw] rounded-full blur-[180px]"
-      style={{ background: 'radial-gradient(circle, rgba(212,206,252,0.30) 0%, transparent 70%)', willChange: 'transform' }}
-    />
-    <motion.div
-      animate={{ scale: [1, 1.12, 1] }}
-      transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
-      className="absolute -bottom-[20%] left-[24%] w-[42vw] h-[42vw] rounded-full blur-[170px]"
-      style={{ background: 'radial-gradient(circle, rgba(255,205,0,0.16) 0%, transparent 70%)', willChange: 'transform' }}
-    />
-  </div>
-);
+const BrandAura = () => {
+  const reduceAura = useReducedMotion();
+  return (
+    <div className="pointer-events-none fixed inset-0 z-[30] overflow-hidden mix-blend-screen" aria-hidden="true">
+      <motion.div
+        animate={reduceAura ? undefined : { x: ['-4%', '4%', '-4%'], y: ['-3%', '3%', '-3%'] }}
+        transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute -top-[18%] -left-[12%] w-[60vw] h-[60vw] rounded-full blur-[170px]"
+        style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.34) 0%, transparent 70%)', willChange: 'transform' }}
+      />
+      <motion.div
+        animate={reduceAura ? undefined : { x: ['4%', '-4%', '4%'], y: ['3%', '-3%', '3%'] }}
+        transition={{ duration: 32, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+        className="absolute top-[16%] -right-[16%] w-[55vw] h-[55vw] rounded-full blur-[180px]"
+        style={{ background: 'radial-gradient(circle, rgba(212,206,252,0.30) 0%, transparent 70%)', willChange: 'transform' }}
+      />
+      <motion.div
+        animate={reduceAura ? undefined : { scale: [1, 1.12, 1] }}
+        transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+        className="absolute -bottom-[20%] left-[24%] w-[42vw] h-[42vw] rounded-full blur-[170px]"
+        style={{ background: 'radial-gradient(circle, rgba(255,205,0,0.16) 0%, transparent 70%)', willChange: 'transform' }}
+      />
+    </div>
+  );
+};
 
 const CustomCursor = () => {
   const cursorX = useMotionValue(-100);
@@ -1192,15 +1195,23 @@ const StrategicEngine = ({ navigate }) => {
   const [readMorePopup, setReadMorePopup] = useState(null);
   const [dependencyModal, setDependencyModal] = useState(null);
 
-  const formatInterdependence = (interdepString) => {
+  // Pre-build a lookup map of deliverable id → name so we avoid creating
+  // 90+ RegExp objects on every call during render.
+  const delivIdToName = useMemo(() => {
+    const map = {};
+    DELIVERABLES_MASTER.forEach(deliv => { map[deliv.id] = deliv.name; });
+    return map;
+  }, [DELIVERABLES_MASTER]);
+
+  const formatInterdependence = useCallback((interdepString) => {
     if (!interdepString || interdepString === 'None') return null;
     if (interdepString.includes('-')) return "Complete Previous Phase";
     let formatted = interdepString;
-    DELIVERABLES_MASTER.forEach(deliv => {
-      formatted = formatted.replace(new RegExp(deliv.id, 'g'), deliv.name);
+    Object.entries(delivIdToName).forEach(([id, name]) => {
+      formatted = formatted.split(id).join(name);
     });
     return formatted;
-  };
+  }, [delivIdToName]);
 
   const N_QUIZ = QUIZ_QUESTIONS.length;
 
@@ -5485,7 +5496,7 @@ export default function App() {
   const { data: sanityFaqs } = useSanity(GET_FAQS);
   const finalFaqs = sanityFaqs?.length > 0 ? sanityFaqs : FAQS_MASTER;
 
-  const globalData = {
+  const globalData = useMemo(() => ({
     JOURNAL_ARTICLES: finalJournal,
     PROBLEM_DATA: finalProblems,
     SITE_SETTINGS: finalSettings,
@@ -5498,7 +5509,7 @@ export default function App() {
     TIMELINE: finalTimeline,
     FRAMEWORK: finalFramework,
     FAQS: finalFaqs
-  };
+  }), [finalJournal, finalProblems, finalSettings, finalRoutes, finalDeliverables, finalQuiz, finalCaseStudies, finalTeamMembers, finalCoreValues, finalTimeline, finalFramework, finalFaqs]);
 
   const navigate = (path, data = null) => {
     let urlPath = path;

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo, memo } from 'react';
 import { motion, useMotionValue, useAnimationFrame, useReducedMotion } from 'framer-motion';
 
 /**
@@ -103,7 +103,7 @@ const findCaseStudyForLogo = (logo, caseStudies = []) => {
   return aliases.reduce((match, alias) => match || caseStudies.find((caseStudy) => matchAlias(caseStudy, alias)), null);
 };
 
-const Logo = ({ logo, i, reduce, navigate, isClone = false }) => {
+const Logo = memo(({ logo, i, reduce, navigate, isClone = false }) => {
   const canNavigate = Boolean(navigate && logo.caseStudy?.id);
 
   const openCaseStudy = () => {
@@ -194,7 +194,7 @@ const Logo = ({ logo, i, reduce, navigate, isClone = false }) => {
       </div>
     </motion.div>
   );
-};
+});
 
 const PremiumLogoMarquee = ({ navigate, caseStudies = [], clientLogos = [] }) => {
   const reduce = useReducedMotion();
@@ -202,14 +202,15 @@ const PremiumLogoMarquee = ({ navigate, caseStudies = [], clientLogos = [] }) =>
   const setWidth = useRef(0);
   const firstSet = useRef(null);
 
-  const activeLogos = clientLogos && clientLogos.length > 0 
-    ? clientLogos.map(cl => ({ ...cl, fromCMS: true })) 
-    : LOGOS;
-
-  const logos = activeLogos.map((logo) => ({
-    ...logo,
-    caseStudy: findCaseStudyForLogo(logo, caseStudies),
-  }));
+  const logos = useMemo(() => {
+    const activeLogos = clientLogos && clientLogos.length > 0
+      ? clientLogos.map(cl => ({ ...cl, fromCMS: true }))
+      : LOGOS;
+    return activeLogos.map((logo) => ({
+      ...logo,
+      caseStudy: findCaseStudyForLogo(logo, caseStudies),
+    }));
+  }, [clientLogos, caseStudies]);
 
   const speedTarget = useRef(1);
   const speedCurrent = useRef(1);

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import {
   motion,
   useMotionValue,
@@ -173,7 +173,10 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
 };
 
 const MediaRibbon3D = ({ media, theme }) => {
-  const items = Array.isArray(media) ? media.filter((m) => m && m.url) : [];
+  const items = useMemo(
+    () => (Array.isArray(media) ? media.filter((m) => m && m.url) : []),
+    [media]
+  );
   const N = items.length;
 
   const reduce = useReducedMotion();
@@ -187,6 +190,8 @@ const MediaRibbon3D = ({ media, theme }) => {
   const dragDistance = useRef(0);
   const lastX = useRef(0);
   const hoverCount = useRef(0); // track multiple overlapping enter/leave calls
+  const pointerMoveRaf = useRef(null);
+  const pendingPointerEvent = useRef(null);
 
   useEffect(() => {
     const measure = () => {
@@ -209,7 +214,14 @@ const MediaRibbon3D = ({ media, theme }) => {
     const ro = new ResizeObserver(measure);
     if (sceneRef.current) ro.observe(sceneRef.current);
     window.addEventListener('resize', measure);
-    return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', measure);
+      if (pointerMoveRaf.current) {
+        cancelAnimationFrame(pointerMoveRaf.current);
+        pointerMoveRaf.current = null;
+      }
+    };
   }, [items]);
 
   const rotation = useMotionValue(0);
@@ -257,23 +269,39 @@ const MediaRibbon3D = ({ media, theme }) => {
     e.target.setPointerCapture?.(e.pointerId);
   };
 
-  const handlePointerMove = (e) => {
-    const rect = sceneRef.current?.getBoundingClientRect();
-    if (rect) {
-      const px = (e.clientX - rect.left) / rect.width - 0.5;
-      const py = (e.clientY - rect.top) / rect.height - 0.5;
-      tiltX.set(-6 - py * 10);
-      tiltY.set(px * 8);
-      if (!isDragging.current) targetVel.current = BASE_VEL + px * 15;
-    }
+  const handlePointerMove = useCallback((e) => {
+    // Capture the values we need from the synthetic event immediately
+    // (SyntheticEvent is recycled; reading clientX/Y is safe as they're primitive)
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+
+    // For drag: update synchronously so rotation stays accurate under fast movement
     if (isDragging.current) {
-      const deltaX = e.clientX - lastX.current;
+      const deltaX = clientX - lastX.current;
       dragDistance.current += Math.abs(deltaX);
-      lastX.current = e.clientX;
+      lastX.current = clientX;
       rotation.set(rotation.get() - deltaX * 0.4);
       velocity.current = -deltaX * 25;
     }
-  };
+
+    // Throttle tilt + velocity updates to one RAF tick
+    pendingPointerEvent.current = { clientX, clientY };
+    if (!pointerMoveRaf.current) {
+      pointerMoveRaf.current = requestAnimationFrame(() => {
+        pointerMoveRaf.current = null;
+        const ev = pendingPointerEvent.current;
+        if (!ev) return;
+        const rect = sceneRef.current?.getBoundingClientRect();
+        if (rect) {
+          const px = (ev.clientX - rect.left) / rect.width - 0.5;
+          const py = (ev.clientY - rect.top) / rect.height - 0.5;
+          tiltX.set(-6 - py * 10);
+          tiltY.set(px * 8);
+          if (!isDragging.current) targetVel.current = BASE_VEL + px * 15;
+        }
+      });
+    }
+  }, [rotation, tiltX, tiltY, BASE_VEL]);
 
   const handlePointerUp = (e) => {
     if (isDragging.current) {
@@ -285,6 +313,11 @@ const MediaRibbon3D = ({ media, theme }) => {
 
   const handlePointerLeave = () => {
     if (isDragging.current) return;
+    if (pointerMoveRaf.current) {
+      cancelAnimationFrame(pointerMoveRaf.current);
+      pointerMoveRaf.current = null;
+    }
+    pendingPointerEvent.current = null;
     tiltX.set(-6);
     tiltY.set(0);
     targetVel.current = BASE_VEL;

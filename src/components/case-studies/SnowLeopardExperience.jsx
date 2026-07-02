@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useInView, AnimatePresence, useSpring, useMotionValue, animate } from 'framer-motion';
+import { motion, useScroll, useTransform, useInView, AnimatePresence, useSpring, useMotionValue, animate, useMotionValueEvent } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import createGlobe from 'cobe';
 import CaseStudyVideoHero, { hasVideoHeroSource } from './CaseStudyVideoHero';
 import { getSafeEmbedUrl } from '../../lib/videoUtils';
 import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
@@ -222,13 +221,10 @@ const StickyScrollytellingGrid = ({ content }) => {
   }
 
   // Update active slide based on scroll percentage within the container
-  useEffect(() => {
-    return scrollYProgress.onChange((v) => {
-      // Divide the total scroll progress by the number of sections
-      const index = Math.min(sections.length - 1, Math.floor(v * sections.length));
-      setActiveIndex(index);
-    });
-  }, [scrollYProgress, sections.length]);
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    const index = Math.min(sections.length - 1, Math.floor(v * sections.length));
+    setActiveIndex(index);
+  });
 
   const activeData = sections[activeIndex];
   const [isOrbHovered, setIsOrbHovered] = useState(false);
