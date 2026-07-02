@@ -1200,7 +1200,89 @@ const StrategicEngine = ({ navigate }) => {
   const [isSectorDropdownOpen, setIsSectorDropdownOpen] = useState(false);
   const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [leadFormErrors, setLeadFormErrors] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const isValidLeadEmail = (email) => {
+    const value = String(email || '').trim();
+    const emailPattern = /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,}$/i;
+    if (!emailPattern.test(value) || value.includes('..')) return false;
+
+    const domain = value.split('@')[1] || '';
+    return domain
+      .split('.')
+      .every(part => part.length > 0 && !part.startsWith('-') && !part.endsWith('-'));
+  };
+
+  const handleLeadFormChange = (field, value) => {
+    const nextValue = field === 'phone'
+      ? String(value || '').replace(/\D/g, '').slice(0, 10)
+      : field === 'email'
+        ? String(value || '').replace(/\s/g, '')
+        : value;
+
+    setLeadForm(prev => ({ ...prev, [field]: nextValue }));
+    setLeadFormErrors(prev => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  };
+
+  const handlePhoneKeyDown = (event) => {
+    const allowedKeys = new Set(['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'Enter']);
+    if (allowedKeys.has(event.key) || event.metaKey || event.ctrlKey) return;
+
+    const input = event.currentTarget;
+    const hasSelection = input.selectionStart !== input.selectionEnd;
+    if (!/^\d$/.test(event.key) || (input.value.length >= 10 && !hasSelection)) {
+      event.preventDefault();
+    }
+  };
+
+  const handlePhonePaste = (event) => {
+    event.preventDefault();
+    const pastedDigits = event.clipboardData.getData('text').replace(/\D/g, '');
+    if (!pastedDigits) return;
+
+    const input = event.currentTarget;
+    const start = input.selectionStart || 0;
+    const end = input.selectionEnd || start;
+    const nextValue = `${input.value.slice(0, start)}${pastedDigits}${input.value.slice(end)}`.slice(0, 10);
+    handleLeadFormChange('phone', nextValue);
+  };
+
+  const validateLeadForm = () => {
+    const nextErrors = {};
+    const sanitizedLeadForm = {
+      ...leadForm,
+      name: String(leadForm.name || '').trim(),
+      email: String(leadForm.email || '').trim().toLowerCase(),
+      phone: String(leadForm.phone || '').trim()
+    };
+
+    if (!sanitizedLeadForm.name) {
+      nextErrors.name = 'Full name is required.';
+    } else if (sanitizedLeadForm.name.length < 2) {
+      nextErrors.name = 'Please enter your full name.';
+    }
+
+    if (!sanitizedLeadForm.email) {
+      nextErrors.email = 'Work email is required.';
+    } else if (!isValidLeadEmail(sanitizedLeadForm.email)) {
+      nextErrors.email = 'Please enter a valid work email address.';
+    }
+
+    if (!sanitizedLeadForm.phone) {
+      nextErrors.phone = 'Phone number is required.';
+    } else if (!/^\d{10}$/.test(sanitizedLeadForm.phone)) {
+      nextErrors.phone = 'Phone number must contain exactly 10 digits and no letters or symbols.';
+    }
+
+    setLeadFormErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0 ? sanitizedLeadForm : null;
+  };
 
   // --- LocalStorage Persistence ---
   useEffect(() => {
@@ -1360,12 +1442,16 @@ const StrategicEngine = ({ navigate }) => {
 
   const submitLead = async (e) => {
     e.preventDefault();
+    const sanitizedLeadForm = validateLeadForm();
+    if (!sanitizedLeadForm) return;
+
+    setLeadForm(sanitizedLeadForm);
     setIsSubmitting(true);
 
     const startingPoint = computeSuggestedStartingPoint(selectedDeliverables, priorities);
 
-    const finalIndustry = leadForm.industry === 'Other' ? (leadForm.otherIndustry || 'Other') : leadForm.industry;
-    const leadData = { ...leadForm, industry: finalIndustry, clusters, routes, deliverables: selectedDeliverables, ...context, startingPoint, date: new Date().toISOString(), status: 'New', score: Math.floor(Math.random() * 40) + 60 };
+    const finalIndustry = sanitizedLeadForm.industry === 'Other' ? (sanitizedLeadForm.otherIndustry || 'Other') : sanitizedLeadForm.industry;
+    const leadData = { ...sanitizedLeadForm, industry: finalIndustry, clusters, routes, deliverables: selectedDeliverables, ...context, startingPoint, date: new Date().toISOString(), status: 'New', score: Math.floor(Math.random() * 40) + 60 };
     GLOBAL_LEADS.push(leadData);
 
     // Group deliverables by Route and LineItem for both Email and PDF
@@ -1402,7 +1488,7 @@ const StrategicEngine = ({ navigate }) => {
     });
     const ungroupedIds = selectedDeliverables.filter(d => !groupedIds.has(d));
 
-    const subject = `New Lead: ${leadForm.company} - Scope Builder`;
+    const subject = `New Lead: ${sanitizedLeadForm.company} - Scope Builder`;
     const htmlContent = `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #F3F4F6; padding: 40px 20px;">
         <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
@@ -1417,16 +1503,17 @@ const StrategicEngine = ({ navigate }) => {
             <!-- Intro -->
             <div style="margin-bottom: 25px; color: #475569; line-height: 1.6; font-size: 15px;">
               <p>Hi Team,</p>
-              <p>A new Scope of Work has been generated by <strong>${leadForm.name}</strong> from <strong>${leadForm.company}</strong>.</p>
+              <p>A new Scope of Work has been generated by <strong>${sanitizedLeadForm.name}</strong> from <strong>${sanitizedLeadForm.company}</strong>.</p>
               <p>Please find their detailed diagnostic responses and selected deliverables attached in both PDF and Excel formats.</p>
             </div>
 
             <!-- Client Details -->
             <h2 style="color: #6366f1; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid #eef2f6; padding-bottom: 10px;">Client Details</h2>
             <div style="margin-bottom: 30px;">
-              <p style="margin: 8px 0; color: #374151;"><strong>Name:</strong> ${leadForm.name}</p>
-              <p style="margin: 8px 0; color: #374151;"><strong>Email:</strong> <a href="mailto:${leadForm.email}" style="color: #6366f1; text-decoration: none;">${leadForm.email}</a></p>
-              <p style="margin: 8px 0; color: #374151;"><strong>Company:</strong> ${leadForm.company}</p>
+              <p style="margin: 8px 0; color: #374151;"><strong>Name:</strong> ${sanitizedLeadForm.name}</p>
+              <p style="margin: 8px 0; color: #374151;"><strong>Email:</strong> <a href="mailto:${sanitizedLeadForm.email}" style="color: #6366f1; text-decoration: none;">${sanitizedLeadForm.email}</a></p>
+              <p style="margin: 8px 0; color: #374151;"><strong>Phone:</strong> ${sanitizedLeadForm.phone}</p>
+              <p style="margin: 8px 0; color: #374151;"><strong>Company:</strong> ${sanitizedLeadForm.company}</p>
             </div>
             
             <!-- Context -->
@@ -1563,9 +1650,10 @@ const StrategicEngine = ({ navigate }) => {
     y = 140;
 
     // Client Details
-    addText(`Client: ${leadForm.name}`, 14, [40, 40, 40], true);
-    addText(`Company: ${leadForm.company}`, 12, [80, 80, 80]);
-    addText(`Email: ${leadForm.email}`, 12, [80, 80, 80]);
+    addText(`Client: ${sanitizedLeadForm.name}`, 14, [40, 40, 40], true);
+    addText(`Company: ${sanitizedLeadForm.company}`, 12, [80, 80, 80]);
+    addText(`Email: ${sanitizedLeadForm.email}`, 12, [80, 80, 80]);
+    addText(`Phone: ${sanitizedLeadForm.phone}`, 12, [80, 80, 80]);
 
     // Detailed Diagnostic Responses
     addSectionHeader('Diagnostic Responses');
@@ -1790,7 +1878,7 @@ const StrategicEngine = ({ navigate }) => {
       doc.text(`Page ${i} of ${pageCount}`, pageW - margin, pageH - 25, { align: 'right' });
     }
 
-    const safeCompanyName = leadForm.company ? leadForm.company.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'client';
+    const safeCompanyName = sanitizedLeadForm.company ? sanitizedLeadForm.company.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'client';
     const pdfDataUri = doc.output('datauristring');
     setGeneratedPdfDoc(pdfDataUri);
     const pdfBase64Content = pdfDataUri.split(',')[1];
@@ -1824,7 +1912,7 @@ const StrategicEngine = ({ navigate }) => {
       headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
 
       // Subtitle
-      const subtitleRow = sheet.addRow(["", `PurpleBlue House - Brand Strategy Deliverables for ${leadForm.company || 'Client'}`, "", ""]);
+      const subtitleRow = sheet.addRow(["", `PurpleBlue House - Brand Strategy Deliverables for ${sanitizedLeadForm.company || 'Client'}`, "", ""]);
       subtitleRow.font = { name: 'Arial', size: 11, italic: true, color: { argb: 'FFA5B4FC' } };
       subtitleRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
       subtitleRow.getCell(3).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF121228' } };
@@ -1864,9 +1952,10 @@ const StrategicEngine = ({ navigate }) => {
       clientHeader.font = { size: 12, bold: true, color: { argb: 'FF6366F1' } };
       sheet.mergeCells(`B${clientHeader.number}:D${clientHeader.number}`);
 
-      addField("Name", leadForm.name);
-      addField("Company", leadForm.company);
-      addField("Email", leadForm.email);
+      addField("Name", sanitizedLeadForm.name);
+      addField("Company", sanitizedLeadForm.company);
+      addField("Email", sanitizedLeadForm.email);
+      addField("Phone", sanitizedLeadForm.phone);
 
       sheet.addRow([]);
 
@@ -2092,7 +2181,7 @@ const StrategicEngine = ({ navigate }) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        leadForm,
+        leadForm: sanitizedLeadForm,
         answers,
         formattedAnswers,
         selectedDeliverables,
@@ -2118,12 +2207,12 @@ const StrategicEngine = ({ navigate }) => {
           <!-- Header -->
           <div style="background-color: #010836; padding: 40px 30px; text-align: center;">
             <h1 style="color: white; margin: 0; font-size: 24px; font-weight: 600;">Your Strategic Scope Snapshot</h1>
-            <p style="color: #94a3b8; margin: 10px 0 0 0; font-size: 14px;">Customized Blueprint for ${leadForm.company}</p>
+            <p style="color: #94a3b8; margin: 10px 0 0 0; font-size: 14px;">Customized Blueprint for ${sanitizedLeadForm.company}</p>
           </div>
           
           <!-- Content -->
           <div style="padding: 40px 30px;">
-            <p style="color: #334155; font-size: 16px; margin-bottom: 20px;">Hi ${leadForm.name},</p>
+            <p style="color: #334155; font-size: 16px; margin-bottom: 20px;">Hi ${sanitizedLeadForm.name},</p>
             <p style="color: #475569; font-size: 15px; line-height: 1.6; margin-bottom: 20px;">
               Thank you for completing the PurpleBlue House Scope Builder. Based on your diagnostic responses, we have compiled a customized Scope Snapshot outlining your brand's current positioning and recommended strategic deliverables.
             </p>
@@ -2143,7 +2232,7 @@ const StrategicEngine = ({ navigate }) => {
     `;
     // The client only gets the beautiful PDF, not the raw Excel
     const clientAttachments = attachments.filter(a => a.filename.endsWith('.pdf'));
-    const clientEmailPromise = sendEmailViaResend(clientSubject, clientHtmlContent, clientAttachments, leadForm.email);
+    const clientEmailPromise = sendEmailViaResend(clientSubject, clientHtmlContent, clientAttachments, sanitizedLeadForm.email);
 
     const [saveLeadResult, result, clientResult] = await Promise.all([saveLeadPromise, emailPromise, clientEmailPromise]);
     setIsSubmitting(false);
@@ -2747,10 +2836,62 @@ const StrategicEngine = ({ navigate }) => {
         <div className="text-[13px] md:text-[15px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.blue }}>{finalSettings.assessmentPage?.finalStepLabel || 'Final Step'}</div>
         <h2 className="text-3xl md:text-5xl font-light mb-6 font-primary leading-tight">{finalSettings.assessmentPage?.leadTitle || 'Where should we send your Scope Snapshot?'}</h2>
         <p className="text-white/50 font-light mb-10 text-[17px] md:text-[19px] font-secondary max-w-3xl">{finalSettings.assessmentPage?.leadText || 'Enter your details below to instantly generate your strategy report and brief our consulting team.'}</p>
-        <form onSubmit={submitLead} className="space-y-4 w-full font-secondary max-w-3xl">
-          <input required type="text" placeholder={finalSettings.forms?.namePlaceholder || "Full Name"} value={leadForm.name} onChange={e => setLeadForm({ ...leadForm, name: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light font-secondary text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
-          <input required type="email" placeholder={finalSettings.forms?.emailPlaceholder || "Work Email"} value={leadForm.email} onChange={e => setLeadForm({ ...leadForm, email: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light font-secondary text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
-          <input required type="tel" placeholder={finalSettings.forms?.phonePlaceholder || "Phone Number"} value={leadForm.phone} onChange={e => setLeadForm({ ...leadForm, phone: e.target.value })} className="w-full bg-white/[0.02] border border-white/10 rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light font-secondary text-white focus:outline-none" style={{ '--tw-ring-color': palette.blue }} />
+        <form onSubmit={submitLead} noValidate className="space-y-4 w-full font-secondary max-w-3xl">
+          <div>
+            <input
+              required
+              type="text"
+              name="name"
+              autoComplete="name"
+              aria-invalid={Boolean(leadFormErrors.name)}
+              placeholder={finalSettings.forms?.namePlaceholder || "Full Name"}
+              value={leadForm.name}
+              onChange={e => handleLeadFormChange('name', e.target.value)}
+              className={`w-full bg-white/[0.02] border rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light font-secondary text-white focus:outline-none transition-colors ${leadFormErrors.name ? 'border-red-400/70 focus:border-red-300' : 'border-white/10 focus:border-white/30'}`}
+              style={{ '--tw-ring-color': palette.blue }}
+            />
+            {leadFormErrors.name && <p className="mt-2 text-[13px] md:text-[15px] text-red-300 font-secondary">{leadFormErrors.name}</p>}
+          </div>
+          <div>
+            <input
+              required
+              type="email"
+              name="email"
+              autoComplete="email"
+              inputMode="email"
+              aria-invalid={Boolean(leadFormErrors.email)}
+              placeholder={finalSettings.forms?.emailPlaceholder || "Work Email"}
+              value={leadForm.email}
+              onChange={e => handleLeadFormChange('email', e.target.value)}
+              className={`w-full bg-white/[0.02] border rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light font-secondary text-white focus:outline-none transition-colors ${leadFormErrors.email ? 'border-red-400/70 focus:border-red-300' : 'border-white/10 focus:border-white/30'}`}
+              style={{ '--tw-ring-color': palette.blue }}
+            />
+            {leadFormErrors.email && <p className="mt-2 text-[13px] md:text-[15px] text-red-300 font-secondary">{leadFormErrors.email}</p>}
+          </div>
+          <div>
+            <input
+              required
+              type="text"
+              name="phone"
+              autoComplete="tel"
+              inputMode="numeric"
+              pattern="[0-9]{10}"
+              maxLength={10}
+              aria-invalid={Boolean(leadFormErrors.phone)}
+              placeholder={finalSettings.forms?.phonePlaceholder || "Phone Number"}
+              value={leadForm.phone}
+              onBeforeInput={e => {
+                if (e.data && /\D/.test(e.data)) e.preventDefault();
+              }}
+              onKeyDown={handlePhoneKeyDown}
+              onPaste={handlePhonePaste}
+              onDrop={e => e.preventDefault()}
+              onChange={e => handleLeadFormChange('phone', e.target.value)}
+              className={`w-full bg-white/[0.02] border rounded-[12px] px-5 py-4 text-[17px] md:text-[19px] font-light font-secondary text-white focus:outline-none transition-colors ${leadFormErrors.phone ? 'border-red-400/70 focus:border-red-300' : 'border-white/10 focus:border-white/30'}`}
+              style={{ '--tw-ring-color': palette.blue }}
+            />
+            {leadFormErrors.phone && <p className="mt-2 text-[13px] md:text-[15px] text-red-300 font-secondary">{leadFormErrors.phone}</p>}
+          </div>
           <div className="pt-6 flex gap-4 items-center">
             <PremiumButton type="submit" disabled={isSubmitting} className="w-full sm:w-auto px-10">
               {isSubmitting ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> {finalSettings.assessmentPage?.processingText || 'Processing...'}</> : (finalSettings.assessmentPage?.generateReportBtn || 'Generate Report & Send Brief')}
@@ -4645,7 +4786,7 @@ const WorkPage = ({ navigate }) => {
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
         <RevealText><h1 className="t-display mb-6 whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.workPageHeader || "Our Work.")}</h1></RevealText>
-        <FadeUp><p className="t-body text-white/50 mb-16 max-w-2xl">{SITE_SETTINGS?.workPageSubtext || "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns."}</p></FadeUp>
+        <FadeUp><p className="font-secondary text-sm md:text-[15px] text-white/50 mb-16 max-w-2xl">{SITE_SETTINGS?.workPageSubtext || "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns."}</p></FadeUp>
 
         {/* Featured Case Study Hero */}
         <FadeUp delay={0.1} className="mb-24 w-full">
@@ -4666,22 +4807,22 @@ const WorkPage = ({ navigate }) => {
               )}
             </div>
             <div className="w-full lg:w-[45%] p-8 lg:p-12 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-white/5">
-              <span className="t-label block mb-4" style={{ color: palette.primary }}>Featured Case Study • {caseStudies[0].sector}</span>
-              <h3 className="t-display mb-6">{caseStudies[0].client}</h3>
-              <p className="t-body text-white/50 mb-10 max-w-lg">{caseStudies[0].challenge}</p>
+              <span className="font-secondary text-[11px] md:text-xs tracking-wide uppercase block mb-4" style={{ color: palette.primary }}>Featured Case Study • {caseStudies[0].sector}</span>
+              <h3 className="font-primary text-white text-lg md:text-xl font-semibold leading-snug mb-6 drop-shadow-md">{caseStudies[0].client}</h3>
+              <p className="font-secondary text-sm md:text-[15px] text-white/50 mb-10 max-w-lg leading-snug">{caseStudies[0].challenge}</p>
               <div className="flex gap-4 mb-12 flex-wrap">
-                {getVisibleCaseStudyTags(caseStudies[0]).map(t => <span key={t} className="t-label px-4 py-2 rounded-full border border-white/10 bg-white/5 text-white/70">{t}</span>)}
+                {getVisibleCaseStudyTags(caseStudies[0]).map(t => <span key={t} className="px-3 py-1 rounded-full border border-white/25 bg-white/10 text-white/75 text-[11px] md:text-xs font-secondary tracking-wide uppercase backdrop-blur-sm">{t}</span>)}
               </div>
-              <div className="mt-auto flex items-center gap-2 t-body text-white/70 group-hover:text-white transition-colors font-medium">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
+              <div className="mt-auto flex items-center gap-2 font-secondary text-sm font-semibold text-white/70 group-hover:text-white transition-colors">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
             </div>
           </div>
         </FadeUp>
 
         <FadeUp delay={0.2} className="flex gap-4 mb-12 border-b border-white/10 pb-6 overflow-x-auto font-secondary w-full custom-scrollbar">
-          <button className="px-4 py-2 rounded-full border border-white text-white text-[12px] md:text-[13px] tracking-[0.3em] uppercase shrink-0">{SITE_SETTINGS?.allProjectsButton || "All Projects"}</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[12px] md:text-[13px] tracking-[0.3em] uppercase shrink-0 hover:bg-white/5">Brand Boulevard</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[12px] md:text-[13px] tracking-[0.3em] uppercase shrink-0 hover:bg-white/5">SciArt Saga</button>
-          <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[12px] md:text-[13px] tracking-[0.3em] uppercase shrink-0 hover:bg-white/5">Storytelling Corner</button>
+          <button className="px-3 py-1 rounded-full border border-white text-white text-[11px] md:text-xs tracking-wide uppercase shrink-0">{SITE_SETTINGS?.allProjectsButton || "All Projects"}</button>
+          <button className="px-3 py-1 rounded-full border border-white/10 text-white/50 text-[11px] md:text-xs tracking-wide uppercase shrink-0 hover:bg-white/5">Brand Boulevard</button>
+          <button className="px-3 py-1 rounded-full border border-white/10 text-white/50 text-[11px] md:text-xs tracking-wide uppercase shrink-0 hover:bg-white/5">SciArt Saga</button>
+          <button className="px-3 py-1 rounded-full border border-white/10 text-white/50 text-[11px] md:text-xs tracking-wide uppercase shrink-0 hover:bg-white/5">Storytelling Corner</button>
         </FadeUp>
 
         <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-32">
