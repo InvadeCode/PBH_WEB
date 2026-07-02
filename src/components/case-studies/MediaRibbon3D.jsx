@@ -197,11 +197,11 @@ const MediaRibbon3D = ({ media, theme, isArise = false }) => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
       const height = isArise ? clamp(w * 0.28, 300, 500) : clamp(w * 0.20, 200, 340);
-      const minRadius = isArise ? clamp(w * 0.8, 800, 1200) : clamp(w * 0.5, 450, 750);
+      const minRadius = isArise ? clamp(w * 0.5, 450, 800) : clamp(w * 0.5, 450, 750);
       const maxRadius = clamp(w * 2.5, 1800, 4200);
       const maxAspect = Math.max(...items.map(m => getMediaAspect(m)), 1.4);
       const approxPanelWidth = height * maxAspect;
-      const minGap = isArise ? 200 : 70; // Larger gap prevents 3D collapsing for Arise
+      const minGap = isArise ? 100 : 70; // Reduced gap for Arise to remove negative space
       // Chord-based formula: (W+gap) / (2·sin(π/N)) guarantees the actual 3D
       // edge-to-edge separation equals minGap regardless of item count
       const requiredRadius = items.length > 1
@@ -210,8 +210,8 @@ const MediaRibbon3D = ({ media, theme, isArise = false }) => {
       
       let radius;
       if (isArise) {
-        // Enforce minRadius so the 3D circle is wide enough to prevent visual overlapping 
-        radius = clamp(Math.max(requiredRadius, minRadius), 800, maxRadius);
+        // Allow the radius to naturally shrink based on requiredRadius instead of forcing a massive 800px gap
+        radius = clamp(requiredRadius, minRadius, maxRadius);
       } else {
         radius = clamp(requiredRadius, minRadius, maxRadius);
       }
