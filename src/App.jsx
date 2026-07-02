@@ -4786,7 +4786,7 @@ const WorkPage = ({ navigate }) => {
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
         <RevealText><h1 className="t-display mb-6 whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.workPageHeader || "Our Work.")}</h1></RevealText>
-        <FadeUp><p className="font-secondary text-sm md:text-[15px] text-white/50 mb-16 max-w-2xl">{SITE_SETTINGS?.workPageSubtext || "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns."}</p></FadeUp>
+        <FadeUp><p className="font-secondary text-[16px] md:text-[17px] text-white/50 mb-16 max-w-2xl">{SITE_SETTINGS?.workPageSubtext || "Case studies and full visual archive proving our thinking across strategy, identity, and campaigns."}</p></FadeUp>
 
         {/* Featured Case Study Hero */}
         <FadeUp delay={0.1} className="mb-24 w-full">
@@ -4808,12 +4808,12 @@ const WorkPage = ({ navigate }) => {
             </div>
             <div className="w-full lg:w-[45%] p-8 lg:p-12 flex flex-col justify-center border-t lg:border-t-0 lg:border-l border-white/5">
               <span className="font-secondary text-[11px] md:text-xs tracking-wide uppercase block mb-4" style={{ color: palette.primary }}>Featured Case Study • {caseStudies[0].sector}</span>
-              <h3 className="font-primary text-white text-lg md:text-xl font-semibold leading-snug mb-6 drop-shadow-md">{caseStudies[0].client}</h3>
-              <p className="font-secondary text-sm md:text-[15px] text-white/50 mb-10 max-w-lg leading-snug">{caseStudies[0].challenge}</p>
+              <h3 className="t-display mb-6">{caseStudies[0].client}</h3>
+              <p className="font-secondary text-[16px] md:text-[17px] text-white/50 mb-10 max-w-lg leading-snug">{caseStudies[0].challenge}</p>
               <div className="flex gap-4 mb-12 flex-wrap">
                 {getVisibleCaseStudyTags(caseStudies[0]).map(t => <span key={t} className="px-3 py-1 rounded-full border border-white/25 bg-white/10 text-white/75 text-[11px] md:text-xs font-secondary tracking-wide uppercase backdrop-blur-sm">{t}</span>)}
               </div>
-              <div className="mt-auto flex items-center gap-2 font-secondary text-sm font-semibold text-white/70 group-hover:text-white transition-colors">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
+              <div className="mt-auto flex items-center gap-2 font-secondary text-[16px] md:text-[17px] font-semibold text-white/70 group-hover:text-white transition-colors">Read Full Study <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" /></div>
             </div>
           </div>
         </FadeUp>

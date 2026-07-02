@@ -1,5 +1,16 @@
 import { createClient } from "@supabase/supabase-js";
 
+const isValidEmail = (email) => {
+  const value = String(email || "").trim();
+  const emailPattern = /^[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,}$/i;
+  if (!emailPattern.test(value) || value.includes("..")) return false;
+
+  const domain = value.split("@")[1] || "";
+  return domain
+    .split(".")
+    .every((part) => part.length > 0 && !part.startsWith("-") && !part.endsWith("-"));
+};
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
@@ -30,12 +41,31 @@ export default async function handler(req, res) {
     context,
   } = req.body;
 
+  const sanitizedLeadForm = {
+    ...leadForm,
+    name: String(leadForm?.name || "").trim(),
+    email: String(leadForm?.email || "").trim().toLowerCase(),
+    phone: String(leadForm?.phone || "").trim(),
+  };
+
+  if (!sanitizedLeadForm.name) {
+    return res.status(400).json({ success: false, error: "Name is required." });
+  }
+
+  if (!isValidEmail(sanitizedLeadForm.email)) {
+    return res.status(400).json({ success: false, error: "A valid email address is required." });
+  }
+
+  if (!/^\d{10}$/.test(sanitizedLeadForm.phone)) {
+    return res.status(400).json({ success: false, error: "Phone number must be exactly 10 digits." });
+  }
+
   try {
     const { data, error } = await supabase.from("leads").insert({
-      name: leadForm?.name || "Unknown",
-      email: leadForm?.email || "Unknown",
-      phone: leadForm?.phone || "",
-      company: leadForm?.company || "Unknown",
+      name: sanitizedLeadForm.name,
+      email: sanitizedLeadForm.email,
+      phone: sanitizedLeadForm.phone,
+      company: sanitizedLeadForm.company || "Unknown",
       identified_gaps: clusters || [],
       recommended_routes: routes || [],
       selected_routes: selectedRoutes || [],
