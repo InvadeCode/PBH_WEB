@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { GlobalContext } from '../../App';
-import CaseStudyMedia, { normalizeMediaItems } from './CaseStudyMedia';
+import CaseStudyMedia, { normalizeMediaItems, getMediaUrl } from './CaseStudyMedia';
 import MediaRibbon3D from './MediaRibbon3D';
 import CaseStudySectorPill from './CaseStudySectorPill';
 
@@ -443,6 +443,28 @@ const FirefoxExperience = ({ navigate, project }) => {
 
   const cmsMedia = normalizeMediaItems(project?.fullStory?.media || project?.fullStory?.images, project?.client || 'Firefox');
 
+  // Pull dynamic images from Sanity storyChapters if they exist
+  const storyChapters = project?.fullStory?.storyChapters || [];
+  
+  const findChapterImage = (keyword, fallbackImg) => {
+    const ch = storyChapters.find(c => {
+      const title = (c.title || c.chapterLabel || c.caption || '').toLowerCase();
+      return title.includes(keyword.toLowerCase());
+    });
+    return getMediaUrl(ch) || fallbackImg;
+  };
+
+  const imgStrategy = findChapterImage('strategy', observationMap);
+  const imgInsight = findChapterImage('insight', insightMapping);
+  const imgTheme = findChapterImage('theme', themeMapping);
+  
+  let imgStargazer = starGazerSketch;
+  const sketchCh = storyChapters.find(c => {
+    const t = (c.title || c.chapterLabel || c.caption || '').toLowerCase();
+    return t.includes('gazer') || t.includes('sketch') || t.includes('untitled');
+  });
+  if (sketchCh) imgStargazer = getMediaUrl(sketchCh) || starGazerSketch;
+
   return (
     <div className="w-full min-h-screen font-secondary selection:bg-[#e8800a] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
       <ChicAmbientBackground />
@@ -534,7 +556,7 @@ const FirefoxExperience = ({ navigate, project }) => {
             {/* Pushing the image up to crop out the baked-in text while keeping the map visible */}
             <div className="w-full h-full relative overflow-hidden rounded-lg">
               <img 
-                src={observationMap} 
+                src={imgStrategy} 
                 alt="Observation Map Diagram" 
                 className="absolute left-0 w-full h-auto -top-[25%] md:-top-[28%]" 
                 draggable="false"
@@ -548,7 +570,7 @@ const FirefoxExperience = ({ navigate, project }) => {
       <EditorialSection
         title="Insight Mapping"
         body=""
-        images={[{ url: insightMapping, alt: 'Insight Mapping' }]}
+        images={[{ url: imgInsight, alt: 'Insight Mapping' }]}
         layoutVariant="visual-first"
         imageClassName="object-contain max-h-[500px]"
       />
@@ -557,7 +579,7 @@ const FirefoxExperience = ({ navigate, project }) => {
       <EditorialSection
         title="Theme Mapping"
         body=""
-        images={[{ url: themeMapping, alt: 'Theme Mapping' }]}
+        images={[{ url: imgTheme, alt: 'Theme Mapping' }]}
         layoutVariant="visual-first"
         imageClassName="object-contain max-h-[500px]"
       />
@@ -578,7 +600,7 @@ const FirefoxExperience = ({ navigate, project }) => {
         <ElegantFade delay={0.2} className="w-full flex justify-center mb-16 md:mb-24">
           <div className="w-full max-w-[1000px] bg-white rounded-xl shadow-2xl overflow-hidden p-6 md:p-10 border border-white/10">
             <img 
-              src={starGazerSketch} 
+              src={imgStargazer} 
               alt="Star Gazer Sketch" 
               className="w-full h-auto object-contain drop-shadow-md" 
               draggable="false" 
