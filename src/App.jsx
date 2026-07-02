@@ -3021,6 +3021,7 @@ const Header = ({ navigate, current }) => {
   const finalSettings = SITE_SETTINGS || {};
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const timeoutRef = useRef(null);
 
   useEffect(() => {
@@ -3040,6 +3041,21 @@ const Header = ({ navigate, current }) => {
       document.documentElement.classList.remove('mega-menu-open');
     };
   }, [activeMenu]);
+
+  // Close mobile menu whenever route changes
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [current]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileMenuOpen]);
 
   const handleMouseEnter = (menu) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -3258,10 +3274,80 @@ const Header = ({ navigate, current }) => {
           <PremiumButton onClick={() => { navigate('assessment'); setActiveMenu(null); }} className="px-6 py-2.5 rounded-[9px] text-[17px] md:text-[19px] font-secondary shadow-lg">{finalSettings.navigation?.navCtaDesktop || 'Build My Brand Scope'}</PremiumButton>
         </div>
 
-        <div className="lg:hidden flex items-center">
+        <div className="lg:hidden flex items-center gap-3">
           <button onClick={() => navigate('assessment')} className="text-[17px] md:text-[19px] font-medium text-white px-4 py-2 rounded-[6px] uppercase tracking-widest shadow-md font-secondary" style={{ backgroundColor: '#6865fa' }}>{finalSettings.navigation?.navCtaMobile || 'Build Scope'}</button>
+          <button
+            onClick={() => setMobileMenuOpen(o => !o)}
+            aria-label="Toggle navigation menu"
+            className="flex flex-col justify-center items-center w-9 h-9 gap-1.5 rounded-[6px] border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
+          >
+            <span className={`block w-5 h-0.5 bg-white transition-all duration-300 origin-center ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+            <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0 scale-x-0' : ''}`} />
+            <span className={`block w-5 h-0.5 bg-white transition-all duration-300 origin-center ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+          </button>
         </div>
       </div>
+
+      {/* Mobile full-screen navigation drawer */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            key="mobile-nav"
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:hidden fixed inset-0 top-0 z-[9999] flex flex-col pt-24 pb-12 px-6 overflow-y-auto"
+            style={{
+              backgroundColor: `${palette.bgDeep}F5`,
+              backdropFilter: 'blur(24px) saturate(160%)',
+              WebkitBackdropFilter: 'blur(24px) saturate(160%)'
+            }}
+          >
+            <nav className="flex flex-col gap-1 font-secondary">
+              {[
+                { label: finalSettings.navigation?.navWork || 'Work', page: 'work' },
+                { label: finalSettings.navigation?.navServices || 'Services', page: 'services' },
+                { label: finalSettings.navigation?.navAbout || 'About Us', page: 'about' },
+                { label: 'The PBH Method', page: 'method' },
+                { label: 'Our Story', page: 'story' },
+                { label: 'The Team', page: 'team' },
+                { label: finalSettings.navigation?.navJournal || 'Journal', page: 'journal' },
+                { label: finalSettings.navigation?.navContact || 'Contact Us', page: 'contact' },
+              ].map((item, i) => (
+                <motion.button
+                  key={item.page}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.25, delay: i * 0.045, ease: [0.16, 1, 0.3, 1] }}
+                  onClick={() => { navigate(item.page); setMobileMenuOpen(false); }}
+                  className={`text-left text-2xl font-light py-4 border-b border-white/5 transition-colors ${
+                    current === item.page || current.startsWith(item.page)
+                      ? 'text-white'
+                      : 'text-white/50 hover:text-white'
+                  }`}
+                >
+                  {item.label}
+                </motion.button>
+              ))}
+            </nav>
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.38 }}
+              className="mt-10"
+            >
+              <button
+                onClick={() => { navigate('assessment'); setMobileMenuOpen(false); }}
+                className="w-full py-4 rounded-[12px] text-lg font-semibold text-white font-secondary uppercase tracking-widest"
+                style={{ backgroundColor: palette.primary }}
+              >
+                {finalSettings.navigation?.navCtaDesktop || 'Build My Brand Scope'}
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence mode="wait">
         {activeMenu && (
@@ -3499,13 +3585,13 @@ const HomePage = ({ navigate }) => {
           </motion.div>
           <RevealText delay={0.1}>
             <h1 className="text-[clamp(3.2rem,8vw,7rem)] font-light tracking-[-0.06em] leading-[0.95] text-white drop-shadow-lg pb-2 font-primary whitespace-pre-wrap">
-              {renderWithItalics(SITE_SETTINGS?.homeHeroTitle || "Breakthroughs happen when strategy and execution *move as one.*", "text-white/60 mx-2 whitespace-nowrap")}
+              {renderWithItalics(SITE_SETTINGS?.homeHeroTitle || "Breakthroughs happen when strategy and execution *move as one.*", "text-white/60 mx-1 sm:mx-2 whitespace-normal sm:whitespace-nowrap")}
             </h1>
           </RevealText>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 t-body text-white/60 max-w-3xl">{SITE_SETTINGS?.homeHeroSubtitle || "PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs."}</motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.7 }} className="mt-12 flex flex-col sm:flex-row gap-6">
-            <PremiumButton onClick={() => navigate('assessment')} className="min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(255, 205, 0, 0.28)` }}>{SITE_SETTINGS.assessmentButton || 'Build My Brand Scope'} <Sparkles className="w-4 h-4 ml-2" style={{ color: '#ffcd00' }} /></PremiumButton>
-            <PremiumButton variant="secondary" onClick={() => navigate('work')} className="min-w-[240px]">{SITE_SETTINGS.homeExploreButton || 'Explore Our Work'}</PremiumButton>
+            <PremiumButton onClick={() => navigate('assessment')} className="w-full sm:w-auto sm:min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(255, 205, 0, 0.28)` }}>{SITE_SETTINGS.assessmentButton || 'Build My Brand Scope'} <Sparkles className="w-4 h-4 ml-2" style={{ color: '#ffcd00' }} /></PremiumButton>
+            <PremiumButton variant="secondary" onClick={() => navigate('work')} className="w-full sm:w-auto sm:min-w-[240px]">{SITE_SETTINGS.homeExploreButton || 'Explore Our Work'}</PremiumButton>
           </motion.div>
         </div>
       </section>
@@ -3948,7 +4034,7 @@ const AboutPage = ({ navigate }) => {
         {/* Section 1: Hero */}
         <FadeUp>
           <h2 className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.aboutPage?.pageLabel || "About PurpleBlue House"}</h2>
-          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-12 tracking-tight max-w-5xl font-primary">{renderWithItalics(SITE_SETTINGS?.aboutPage?.heroTitle || "We build breakthrough brands backed by cutting-edge innovation, powered by a *SciArt approach.*")}</h1>
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-light mb-12 tracking-tight max-w-5xl font-primary">{renderWithItalics(SITE_SETTINGS?.aboutPage?.heroTitle || "We build breakthrough brands backed by cutting-edge innovation, powered by a *SciArt approach.*")}</h1>
         </FadeUp>
 
         {/* Section 2: Vision & Mission */}
@@ -3967,7 +4053,7 @@ const AboutPage = ({ navigate }) => {
         <FadeUp className="border border-white/10 rounded-[24px] p-12 md:p-16 mb-24 text-center relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
           <div className="absolute inset-0 opacity-10 mix-blend-screen pointer-events-none w-full" style={{  }} />
           <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-primary" style={{ color: palette.blue }}>{SITE_SETTINGS?.aboutPage?.purposeLabel || "Our Purpose"}</h3>
-          <h2 className="text-xl md:text-2xl md:text-5xl font-light font-primary leading-tight max-w-4xl mx-auto text-white/90">{renderWithItalics(SITE_SETTINGS?.aboutPage?.purposeText || "We exist to turn complex innovations into undeniable *market breakthroughs.*")}</h2>
+          <h2 className="text-2xl md:text-5xl font-light font-primary leading-tight max-w-4xl mx-auto text-white/90">{renderWithItalics(SITE_SETTINGS?.aboutPage?.purposeText || "We exist to turn complex innovations into undeniable *market breakthroughs.*")}</h2>
         </FadeUp>
 
         {/* Section 4: Core Values */}
@@ -4013,7 +4099,7 @@ const AboutPage = ({ navigate }) => {
         {/* Section 6: Indian Heritage on a Global Stage */}
         <FadeUp className="text-center w-full mb-32">
           <Globe className="w-12 h-12 mx-auto mb-8 opacity-40" style={{ color: palette.blue }} />
-          <h2 className="text-xl md:text-2xl md:text-5xl font-light mb-8 font-primary leading-tight max-w-4xl mx-auto">{SITE_SETTINGS?.aboutPage?.globalTitle || "Elevating Indian Innovation to the Global Stage."}</h2>
+          <h2 className="text-2xl md:text-5xl font-light mb-8 font-primary leading-tight max-w-4xl mx-auto">{SITE_SETTINGS?.aboutPage?.globalTitle || "Elevating Indian Innovation to the Global Stage."}</h2>
           <p className="text-xl text-white/50 font-secondary font-light leading-relaxed max-w-3xl mx-auto">
             {SITE_SETTINGS?.aboutPage?.globalText || "We are rooted in the rich scientific and artistic heritage of India. Our ambition is to help local breakthrough innovators communicate with the precision and premium aesthetic required to compete and lead globally."}
           </p>
@@ -4038,7 +4124,7 @@ const OurStoryPage = ({ navigate }) => {
         {/* Section 1: Hero */}
         <FadeUp>
           <h2 className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.storyPage?.pageLabel || "Our Story"}</h2>
-          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-16 tracking-tight font-primary">{SITE_SETTINGS?.storyPage?.heroTitle || "Where Science Meets Art."}</h1>
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-light mb-16 tracking-tight font-primary">{SITE_SETTINGS?.storyPage?.heroTitle || "Where Science Meets Art."}</h1>
         </FadeUp>
 
         {/* Section 2: The Spark */}
@@ -4119,7 +4205,7 @@ const TeamPage = ({ navigate }) => {
         {/* Section 1: Hero */}
         <FadeUp>
           <h2 className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.teamPage?.pageLabel || "The Team"}</h2>
-          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-16 tracking-tight font-primary">{renderWithItalics(SITE_SETTINGS?.teamPage?.heroTitle || "The minds behind the magic.")}</h1>
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-light mb-16 tracking-tight font-primary">{renderWithItalics(SITE_SETTINGS?.teamPage?.heroTitle || "The minds behind the magic.")}</h1>
         </FadeUp>
 
         {/* Section 2: Leadership */}
@@ -4216,7 +4302,7 @@ const MethodPage = ({ navigate }) => {
         {/* Section 1: Hero */}
         <FadeUp>
           <h2 className="text-[17px] md:text-[19px] font-medium uppercase tracking-widest mb-6 font-primary" style={{ color: palette.primary }}>{SITE_SETTINGS?.methodPage?.pageLabel || "The PBH Method"}</h2>
-          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-24 tracking-tight font-primary max-w-4xl">{renderWithItalics(SITE_SETTINGS?.methodPage?.heroTitle || "The blueprint for *breakthrough brands.*")}</h1>
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-light mb-24 tracking-tight font-primary max-w-4xl">{renderWithItalics(SITE_SETTINGS?.methodPage?.heroTitle || "The blueprint for *breakthrough brands.*")}</h1>
         </FadeUp>
 
         {/* Section 2: Traditional vs PBH */}
@@ -4304,7 +4390,7 @@ const ServicesPage = ({ navigate }) => {
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
-        <RevealText><h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight max-w-4xl font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.servicesHeader || "Three strategic routes.\n*One connected brand system.*")}</h1></RevealText>
+        <RevealText><h1 className="text-4xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight max-w-4xl font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.servicesHeader || "Three strategic routes.\n*One connected brand system.*")}</h1></RevealText>
         <FadeUp><p className="text-xl text-white/50 font-light mb-24 max-w-3xl leading-relaxed font-secondary">{SITE_SETTINGS?.servicesSubtext || "PBH services are not isolated offerings. They are designed as connected routes that help brands move from clarity to communication to execution."}</p></FadeUp>
 
         <StaggerGroup className="grid gap-12 mb-32 w-full">
@@ -4393,7 +4479,7 @@ const ServiceDetailPage = ({ navigate, routeId }) => {
         <button onClick={() => navigate('services')} className="text-white/40 hover:text-white text-[17px] md:text-[19px] transition-colors flex items-center gap-2 group mb-12 font-secondary"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Services</button>
         <FadeUp>
           <div className="w-20 h-20 rounded-[20px] flex items-center justify-center mb-10 shadow-lg" style={{ backgroundColor: rColor, color: palette.bgDeep }}>{route.icon}</div>
-          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h1>
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h1>
           <p className="text-xl text-white/50 font-light mb-12 max-w-3xl leading-relaxed font-secondary">{route.desc}</p>
         </FadeUp>
 
@@ -4457,7 +4543,7 @@ const ServiceModal = ({ navigate, routeId, onClose }) => {
 
         <div className="px-8 md:px-16 pb-16 -mt-10 relative z-10">
           <div className="w-20 h-20 rounded-[20px] flex items-center justify-center mb-10 shadow-lg" style={{ backgroundColor: rColor, color: palette.bgDeep }}>{route.icon}</div>
-          <h2 className="text-xl md:text-2xl md:text-5xl md:text-5xl md:text-7xl lg:text-8xl lg:text-8xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h2>
+          <h2 className="text-3xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary text-white">{route.title}</h2>
           <p className="text-xl text-white/50 font-light mb-12 max-w-3xl leading-relaxed font-secondary">{route.desc}</p>
 
           <div className="bg-white/[0.03] border border-white/10 rounded-[24px] p-8 mb-16 max-w-4xl relative overflow-hidden shadow-inner">
@@ -4623,7 +4709,7 @@ const JournalPage = ({ navigate }) => {
     <div className="min-h-screen text-[#F4F4F5] pt-40 pb-32 px-[3%] w-full" style={{ backgroundColor: palette.bgDeep }}>
       <div className="w-full text-left">
         <button onClick={() => navigate('home')} className="pointer-events-auto flex items-center w-fit gap-2 text-[17px] md:text-[19px] backdrop-blur-md bg-white/5 px-4 py-2 rounded-full border border-white/10 transition-all hover:bg-white/10 font-secondary text-white/60 hover:text-white mb-12 group"><ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> {SITE_SETTINGS?.backToHomeLabel || "Back to Home"}</button>
-        <RevealText><h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.journalHeader || "The Journal.")}</h1></RevealText>
+        <RevealText><h1 className="text-4xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary whitespace-pre-wrap">{renderWithItalics(SITE_SETTINGS?.journalHeader || "The Journal.")}</h1></RevealText>
         <FadeUp><p className="text-xl text-white/50 font-light mb-16 max-w-2xl font-secondary">{SITE_SETTINGS?.journalSubtext || "Essays, frameworks, and perspectives on building brands that matter."}</p></FadeUp>
 
         {/* Featured Article */}
@@ -4660,7 +4746,7 @@ const JournalPage = ({ navigate }) => {
         <StaggerGroup className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-32">
           {filteredArticles.length > 0 ? filteredArticles.map((article, i) => (
             <StaggerItem key={i}>
-              <div onClick={() => navigate('article/' + article.id)} className="border border-white/10 rounded-[24px] p-8 h-[380px] flex flex-col hover:-translate-y-2 transition-transform cursor-pointer group shadow-xl w-full" style={{ backgroundColor: palette.panel }}>
+              <div onClick={() => navigate('article/' + article.id)} className="border border-white/10 rounded-[24px] p-8 min-h-[320px] md:h-[380px] flex flex-col hover:-translate-y-2 transition-transform cursor-pointer group shadow-xl w-full" style={{ backgroundColor: palette.panel }}>
                 <div className="t-label mb-6" style={{ color: palette[article.type] || palette.primary }}>{article.tag}</div>
                 <h4 className="text-xl md:text-2xl font-light text-white mb-6 group-hover:text-white/80 transition-colors leading-snug font-primary">{article.title}</h4>
                 <p className="t-body text-white/50 line-clamp-3 mb-8">{article.excerpt}</p>
@@ -4686,9 +4772,9 @@ const JournalPage = ({ navigate }) => {
             <p className="text-white/50 font-secondary text-xl md:text-2xl leading-relaxed max-w-lg">Join innovators receiving our monthly digest on brand strategy, SciArt philosophy, and design thinking.</p>
           </div>
           <div className="md:w-1/2 w-full">
-            <form className="flex gap-4 w-full" onSubmit={(e) => e.preventDefault()}>
+            <form className="flex flex-col sm:flex-row gap-4 w-full" onSubmit={(e) => e.preventDefault()}>
               <input required type="email" placeholder="Email Address" className="w-full bg-white/[0.05] border border-white/10 rounded-[12px] px-5 py-4 text-white focus:outline-none font-secondary" style={{ '--tw-ring-color': palette.primary }} />
-              <PremiumButton type="submit" className="shrink-0 px-8">Subscribe</PremiumButton>
+              <PremiumButton type="submit" className="shrink-0 sm:px-8 w-full sm:w-auto">Subscribe</PremiumButton>
             </form>
           </div>
         </FadeUp>
@@ -4709,7 +4795,7 @@ const ArticlePage = ({ navigate, articleId }) => {
 
         <FadeUp className="w-full max-w-4xl mx-auto">
           <div className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-primary font-medium" style={{ color: artColor }}>{article.tag}</div>
-          <h1 className="text-xl md:text-2xl md:text-5xl md:text-5xl md:text-7xl lg:text-8xl lg:text-8xl font-light tracking-tight mb-8 font-primary leading-tight">{article.title}</h1>
+          <h1 className="text-3xl md:text-7xl lg:text-8xl font-light tracking-tight mb-8 font-primary leading-tight">{article.title}</h1>
           <div className="flex items-center gap-6 text-white/40 font-secondary text-[17px] md:text-[19px] mb-16 pb-8 border-b border-white/10">
             <span>By {article.author}</span>
             <span className="w-1 h-1 rounded-full bg-white/20" />
@@ -4938,7 +5024,7 @@ const ContactPage = ({ navigate }) => {
 
         {/* Section 1: Hero */}
         <FadeUp>
-          <h1 className="text-5xl md:text-5xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary">{finalSettings.forms?.contactFormTitle || 'Start with a conversation.'} <br /><AnimatedItalic className="text-white/50">{finalSettings.forms?.contactFormTitleItalic || 'Or start with clarity.'}</AnimatedItalic></h1>
+          <h1 className="text-4xl md:text-7xl lg:text-8xl font-light mb-6 tracking-tight font-primary">{finalSettings.forms?.contactFormTitle || 'Start with a conversation.'} <br /><AnimatedItalic className="text-white/50">{finalSettings.forms?.contactFormTitleItalic || 'Or start with clarity.'}</AnimatedItalic></h1>
           <p className="text-white/50 mb-20 text-xl font-light font-secondary max-w-2xl">{finalSettings.forms?.contactFormText || 'Have a project in mind? Choose how you want to begin your journey with PurpleBlue House.'}</p>
         </FadeUp>
 
@@ -4971,7 +5057,7 @@ const ContactPage = ({ navigate }) => {
         </FadeUp>
 
         {/* Section 3 & 4: Direct Info & Map */}
-        <FadeUp className="grid md:grid-cols-2 gap-8 mb-24 h-[400px] w-full">
+        <FadeUp className="grid md:grid-cols-2 gap-8 mb-24 md:h-[400px] w-full">
           <div className="border border-white/10 rounded-[24px] p-10 flex flex-col justify-center w-full" style={{ backgroundColor: palette.panel }}>
             <h3 className="text-xl md:text-2xl font-light mb-8 font-primary">{finalSettings.forms?.directContactSectionTitle || 'Direct Contact'}</h3>
             <div className="space-y-6 font-secondary">
@@ -4998,7 +5084,7 @@ const ContactPage = ({ navigate }) => {
               </div>
             </div>
           </div>
-          <div className="rounded-[24px] overflow-hidden border border-white/10 relative shadow-2xl h-full w-full bg-[#05050A]">
+          <div className="rounded-[24px] overflow-hidden border border-white/10 relative shadow-2xl h-[300px] md:h-full w-full bg-[#05050A]">
             <LeafletMap />
           </div>
         </FadeUp>
@@ -5014,7 +5100,7 @@ const ContactPage = ({ navigate }) => {
             ].map((step, idx) => (
               <StaggerItem key={idx}>
                 <div className="border border-white/5 bg-white/[0.02] rounded-[16px] p-8 text-center relative overflow-hidden group h-full w-full">
-                  <div className="absolute top-0 right-0 p-4 text-5xl md:text-5xl md:text-7xl lg:text-8xl lg:text-8xl font-primary italic text-white/5 group-hover:text-white/10 transition-colors">{step.num}</div>
+                  <div className="absolute top-0 right-0 p-4 text-4xl md:text-7xl lg:text-8xl font-primary italic text-white/5 group-hover:text-white/10 transition-colors">{step.num}</div>
                   <div className="w-12 h-12 rounded-full mx-auto mb-6 flex items-center justify-center bg-white/5 relative z-10" style={{ color: palette.primary }}>{step.icon}</div>
                   <h4 className="text-xl font-medium text-white mb-3 font-primary relative z-10">{step.title}</h4>
                   <p className="text-white/50 font-secondary text-[17px] md:text-[19px] leading-relaxed relative z-10 max-w-sm mx-auto">{step.desc}</p>
@@ -5100,7 +5186,7 @@ const LatestCredentialsPage = ({ navigate }) => {
       <div className="w-full max-w-5xl mx-auto text-left">
         <FadeUp>
           <div className="w-16 h-16 border border-white/10 rounded-[16px] flex items-center justify-center mb-8 bg-white/5"><Fingerprint className="w-8 h-8 text-white" /></div>
-          <h1 className="text-xl md:text-2xl md:text-5xl md:text-5xl md:text-7xl lg:text-8xl lg:text-8xl font-light tracking-tight mb-6 font-primary leading-tight">Credentials & Selected Work.</h1>
+          <h1 className="text-3xl md:text-7xl lg:text-8xl font-light tracking-tight mb-6 font-primary leading-tight">Credentials & Selected Work.</h1>
           <p className="text-xl text-white/50 font-light mb-16 leading-relaxed font-secondary max-w-2xl">A curated selection of breakthroughs. How we partner with visionary teams to build clear, scalable brand systems.</p>
         </FadeUp>
 
