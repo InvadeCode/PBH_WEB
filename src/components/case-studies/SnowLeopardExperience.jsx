@@ -321,7 +321,7 @@ const StickyScrollytellingGrid = ({ content }) => {
                 onMouseEnter={() => setIsOrbHovered(true)}
                 onMouseLeave={() => setIsOrbHovered(false)}
               >
-                <div className="relative z-10 px-8 py-12 w-full rounded-[2rem] bg-[#050a15]/40 backdrop-blur-md shadow-2xl border border-white/5">
+                <div className="relative z-10 px-4 sm:px-8 py-8 sm:py-12 w-full rounded-[2rem] bg-[#050a15]/40 backdrop-blur-md shadow-2xl border border-white/5">
                   <SpatialOrbitalText activeData={activeData} isHovered={isOrbHovered} />
                 </div>
               </motion.div>

@@ -991,7 +991,7 @@ const InteractiveHowItWorks = () => {
           );
         })}
       </div>
-      <div className="w-full lg:w-7/12 h-[450px] border border-white/10 rounded-[24px] relative overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)]" style={{ backgroundColor: palette.panel }}>
+      <div className="w-full lg:w-7/12 h-[300px] sm:h-[380px] lg:h-[450px] border border-white/10 rounded-[24px] relative overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.5)]" style={{ backgroundColor: palette.panel }}>
         <AnimatePresence mode="wait">
           {activeStep === 0 && <DiagnoseVisual key="diag" />}
           {activeStep === 1 && <MapVisual key="map" />}
@@ -4050,7 +4050,7 @@ const AboutPage = ({ navigate }) => {
         </FadeUp>
 
         {/* Section 3: Purpose */}
-        <FadeUp className="border border-white/10 rounded-[24px] p-12 md:p-16 mb-24 text-center relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
+        <FadeUp className="border border-white/10 rounded-[24px] p-8 md:p-16 mb-24 text-center relative overflow-hidden w-full" style={{ backgroundColor: palette.panel }}>
           <div className="absolute inset-0 opacity-10 mix-blend-screen pointer-events-none w-full" style={{  }} />
           <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-primary" style={{ color: palette.blue }}>{SITE_SETTINGS?.aboutPage?.purposeLabel || "Our Purpose"}</h3>
           <h2 className="text-2xl md:text-5xl font-light font-primary leading-tight max-w-4xl mx-auto text-white/90">{renderWithItalics(SITE_SETTINGS?.aboutPage?.purposeText || "We exist to turn complex innovations into undeniable *market breakthroughs.*")}</h2>
@@ -4075,7 +4075,7 @@ const AboutPage = ({ navigate }) => {
 
         {/* Section 5: The SciArt Philosophy */}
         <FadeUp className="border border-white/5 rounded-[32px] overflow-hidden grid md:grid-cols-2 mb-32 bg-[#050B2E] w-full">
-          <div className="p-12 md:p-16 flex flex-col justify-center w-full">
+          <div className="p-8 md:p-16 flex flex-col justify-center w-full">
             <h3 className="text-[17px] md:text-[19px] tracking-widest uppercase mb-6 font-primary" style={{ color: palette.accent }}>{SITE_SETTINGS?.aboutPage?.philosophyLabel || "Our Philosophy"}</h3>
             <h2 className="text-xl md:text-2xl font-light mb-6 font-primary">{SITE_SETTINGS?.aboutPage?.philosophyTitle || "The Fusion of Logic and Aesthetics."}</h2>
             <p className="text-xl md:text-2xl text-white/60 font-light font-secondary leading-relaxed mb-8">
@@ -4136,7 +4136,7 @@ const OurStoryPage = ({ navigate }) => {
         </StaggerGroup>
 
         {/* Section 3: The Meaning Behind the Name */}
-        <FadeUp className="border border-white/5 rounded-[24px] p-12 md:p-16 mb-32 flex flex-col md:flex-row gap-12 items-center w-full" style={{ backgroundColor: palette.panel }}>
+        <FadeUp className="border border-white/5 rounded-[24px] p-8 md:p-16 mb-32 flex flex-col md:flex-row gap-12 items-center w-full" style={{ backgroundColor: palette.panel }}>
           <div className="flex gap-4 md:w-1/3 justify-center">
             <div className="w-16 h-32 rounded-full" style={{ backgroundColor: palette.primary }} />
             <div className="w-16 h-32 rounded-full" style={{ backgroundColor: palette.blue }} />
@@ -4246,7 +4246,7 @@ const TeamPage = ({ navigate }) => {
         </StaggerGroup>
 
         {/* Section 4: Our Culture */}
-        <FadeUp className="border border-white/10 rounded-[32px] p-12 md:p-16 mb-32 w-full" >
+        <FadeUp className="border border-white/10 rounded-[32px] p-8 md:p-16 mb-32 w-full" >
           <h3 className="text-xl md:text-2xl font-light mb-10 font-primary text-center">{SITE_SETTINGS?.teamPage?.cultureTitle || "Our Culture"}</h3>
           <StaggerGroup className="grid md:grid-cols-3 gap-8 w-full">
             <StaggerItem className="text-center">
@@ -4337,7 +4337,7 @@ const MethodPage = ({ navigate }) => {
                   <h3 className="text-xl md:text-2xl font-light mb-4 font-primary">{s.title}</h3>
                   <p className="text-white/50 font-light text-xl md:text-2xl leading-relaxed font-secondary max-w-2xl">{s.description}</p>
                 </div>
-                <div className="md:col-span-5 md:pl-12 border-l border-white/5">
+                <div className="md:col-span-5 md:pl-12 md:border-l border-white/5 mt-6 md:mt-0">
                   <h4 className="text-[17px] md:text-[19px] font-medium text-white/30 uppercase tracking-widest mb-6 font-primary">Key Outputs</h4>
                   <ul className="space-y-3 font-secondary">
                     {s.outputs?.map((out, j) => <li key={j} className="flex items-center gap-3 text-white/70 font-light text-[17px] md:text-[19px] bg-white/[0.02] border border-white/5 px-4 py-3 rounded-[8px]"><Check className="w-4 h-4 shrink-0" style={{ color: palette.accent }} /> {out}</li>)}
@@ -4680,7 +4680,7 @@ const WorkPage = ({ navigate }) => {
           })}
         </StaggerGroup>
 
-        <FadeUp className="border border-white/10 rounded-[32px] p-16 text-center bg-[#010825] relative overflow-hidden w-full">
+        <FadeUp className="border border-white/10 rounded-[32px] p-8 md:p-16 text-center bg-[#010825] relative overflow-hidden w-full">
           <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-20" style={{ backgroundColor: palette.blue }} />
           <h3 className="text-xl md:text-2xl font-light mb-6 font-primary text-white">Ready to start your project?</h3>
           <p className="text-xl md:text-2xl text-white/50 font-secondary mb-10 max-w-xl mx-auto">Skip the generic agency pitch. Map your brand needs instantly using our Scope Builder.</p>
@@ -4715,7 +4715,7 @@ const JournalPage = ({ navigate }) => {
         {/* Featured Article */}
         <FadeUp delay={0.1} className="mb-24 w-full">
           <div onClick={() => navigate('article/' + JOURNAL_ARTICLES[0].id)} className="group relative border border-white/10 rounded-[32px] overflow-hidden flex flex-col md:flex-row h-auto md:h-[500px] cursor-pointer w-full" style={{ backgroundColor: palette.panel }}>
-            <div className="md:w-1/2 p-12 md:p-16 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/10 w-full">
+            <div className="md:w-1/2 p-8 md:p-16 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/10 w-full">
               <span className="text-[17px] md:text-[19px] font-medium tracking-widest uppercase block mb-6 font-primary" style={{ color: palette.primary }}>Featured • {JOURNAL_ARTICLES[0].tag}</span>
               <h3 className="text-xl md:text-2xl font-light mb-8 font-primary group-hover:text-white/80 transition-colors leading-tight max-w-2xl">{JOURNAL_ARTICLES[0].title}</h3>
               <p className="text-white/50 font-light mb-10 text-xl md:text-2xl leading-relaxed font-secondary line-clamp-3 max-w-xl">{JOURNAL_ARTICLES[0].excerpt}</p>
@@ -4766,7 +4766,7 @@ const JournalPage = ({ navigate }) => {
         </StaggerGroup>
 
         {/* Newsletter CTA */}
-        <FadeUp className="border border-white/10 rounded-[32px] p-12 md:p-16 flex flex-col md:flex-row gap-12 items-center w-full" >
+        <FadeUp className="border border-white/10 rounded-[32px] p-8 md:p-16 flex flex-col md:flex-row gap-12 items-center w-full" >
           <div className="md:w-1/2">
             <h3 className="text-xl md:text-2xl font-light mb-4 font-primary text-white">Get insights in your inbox.</h3>
             <p className="text-white/50 font-secondary text-xl md:text-2xl leading-relaxed max-w-lg">Join innovators receiving our monthly digest on brand strategy, SciArt philosophy, and design thinking.</p>
