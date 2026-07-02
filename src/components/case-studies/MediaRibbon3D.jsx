@@ -196,21 +196,20 @@ const MediaRibbon3D = ({ media, theme }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.22, 240, 420);
-      const minRadius = clamp(w * 0.5, 450, 750);
+      const height = clamp(w * 0.28, 300, 500);
+      const minRadius = clamp(w * 0.8, 800, 1200);
       const maxRadius = clamp(w * 2.5, 1800, 4200);
       const maxAspect = Math.max(...items.map(m => getMediaAspect(m)), 1.4);
       const approxPanelWidth = height * maxAspect;
-      const minGap = 70;
+      const minGap = 200; // Larger gap prevents 3D collapsing
       // Chord-based formula: (W+gap) / (2·sin(π/N)) guarantees the actual 3D
       // edge-to-edge separation equals minGap regardless of item count
       const requiredRadius = items.length > 1
         ? (approxPanelWidth + minGap) / (2 * Math.sin(Math.PI / items.length))
         : minRadius;
       
-      // Do not force a massive minRadius if there are few items, this caused huge gaps
-      // and made back items shrink too much due to extreme depth.
-      const radius = clamp(requiredRadius, 300, maxRadius);
+      // Enforce minRadius so the 3D circle is wide enough to prevent visual overlapping 
+      const radius = clamp(Math.max(requiredRadius, minRadius), 800, maxRadius);
       setDims({ height, radius });
     };
     measure();
