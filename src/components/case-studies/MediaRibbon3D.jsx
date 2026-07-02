@@ -229,7 +229,7 @@ const MediaRibbon3D = ({ media, theme }) => {
   const velocity = useRef(BASE_VEL);
   const targetVel = useRef(BASE_VEL);
 
-  const tiltX = useSpring(-6, { stiffness: 60, damping: 18 });
+  const tiltX = useSpring(0, { stiffness: 60, damping: 18 });
   const tiltY = useSpring(0, { stiffness: 60, damping: 18 });
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -316,7 +316,7 @@ const MediaRibbon3D = ({ media, theme }) => {
       pointerMoveRaf.current = null;
     }
     pendingPointerEvent.current = null;
-    tiltX.set(-6);
+    tiltX.set(0);
     tiltY.set(0);
     targetVel.current = BASE_VEL;
   };
