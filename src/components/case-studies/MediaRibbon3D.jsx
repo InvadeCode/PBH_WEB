@@ -196,9 +196,20 @@ const MediaRibbon3D = ({ media, theme, isArise = false, isEga = false, isSnug = 
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const heightMultiplier = isEga ? 0.32 : (isArise ? 0.28 : 0.20);
-      const minHeight = isEga ? 340 : (isArise ? 300 : 200);
-      const maxHeight = isEga ? 550 : (isArise ? 500 : 340);
+      let heightMultiplier = 0.20;
+      let minHeight = 200;
+      let maxHeight = 340;
+
+      if (isEga || isSnug) {
+        heightMultiplier = 0.32;
+        minHeight = 340;
+        maxHeight = 550;
+      } else if (isArise) {
+        heightMultiplier = 0.28;
+        minHeight = 300;
+        maxHeight = 500;
+      }
+      
       const height = clamp(w * heightMultiplier, minHeight, maxHeight);
       
       const minRadius = isArise ? clamp(w * 0.5, 450, 800) : clamp(w * 0.5, 450, 750);
