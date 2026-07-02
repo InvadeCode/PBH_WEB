@@ -2934,21 +2934,21 @@ const StrategicEngine = ({ navigate }) => {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-16 relative z-10 w-full print:grid-cols-1 print:gap-8">
-            <div className="space-y-10 w-full">
+          <div className="flex flex-col md:flex-row gap-16 relative z-10 w-full print:block">
+            <div className="space-y-10 w-full md:w-1/2 print:w-full print:mb-8">
               <div className="bg-white/[0.02] border border-white/5 rounded-[16px] p-8 mb-8 relative overflow-hidden w-full print:break-inside-avoid print:overflow-visible">
                 <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-8 font-primary print:break-after-avoid">Brand Alignment Profile</h4>
                 <BrandHealthRadar clusters={clusters} />
               </div>
 
-              <div className="w-full print:break-inside-avoid">
+              <div className="w-full print:break-inside-avoid print:mb-8">
                 <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary print:!text-[#6865fa] print:!border-[#d4cefc] print:break-after-avoid">Recommended Ecosystems</h4>
                 <div className="flex flex-wrap gap-2 w-full">
                   {selectedRoutes.map(r => <span key={r} className="ecosystem-pill px-3 py-1.5 bg-white/5 text-white/70 text-[17px] md:text-[19px] border border-white/10 rounded-full flex items-center gap-2 font-secondary print:!bg-[#d4cefc] print:!text-[#010d54] print:!border-[#6865fa]">{ROUTES_INFO[r]?.icon} {ROUTES_INFO[r]?.title}</span>)}
                 </div>
               </div>
 
-              <div className="w-full print:break-inside-avoid">
+              <div className="w-full print:break-inside-avoid print:mb-8">
                 <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary print:!text-[#6865fa] print:!border-[#d4cefc] print:break-after-avoid">Execution Context</h4>
                 <div className="text-[17px] md:text-[19px] text-white/70 font-light space-y-3 bg-white/[0.02] p-6 rounded-[12px] border border-white/5 font-secondary w-full print:!bg-[#f4f3ff] print:!border-[#d4cefc] print:!text-[#010d54]">
                   <p className="flex justify-between border-b border-white/5 pb-2 print:!border-[#d4cefc]"><span className="text-white/40 print:!text-[#6865fa]">Brand Stage</span> <span className="text-right">{(Array.isArray(answers.stage) && answers.stage.length > 0) ? answers.stage.map(s => s.label).join(', ') : 'Not Selected'}</span></p>
@@ -2958,19 +2958,20 @@ const StrategicEngine = ({ navigate }) => {
               </div>
             </div>
 
-            <div className="w-full relative print:mt-8">
+            <div className="w-full md:w-1/2 relative print:w-full print:mt-8 print:block">
               <h4 className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 mb-4 border-b border-white/5 pb-2 font-primary print:!text-[#6865fa] print:!border-[#d4cefc] print:break-after-avoid">Selected Deliverables Blueprint</h4>
               <div className="relative w-full">
                 <ul className="space-y-3 w-full max-h-[350px] md:max-h-[450px] overflow-y-auto custom-scrollbar pr-3 pb-8 print:max-h-none print:overflow-visible print:pr-0 print:pb-0">
                   {selectedDeliverables.map(id => DELIVERABLES_BY_ID.get(id)).filter(Boolean).map(d => (
-                    <li key={d.id} className="deliverable-item flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full print:break-inside-avoid print:!bg-[#f4f3ff] print:!border-[#d4cefc]">
-                      <div className="p-1.5 rounded-md shrink-0 mt-0.5 print:!bg-[#010d54]" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4 print:!stroke-white print:!text-white" style={{ color: palette.blue }} /></div>
-                      <div className="w-full">
-                        <div className="text-[17px] md:text-[19px] font-medium text-white mb-1 font-secondary flex items-center justify-between print:!text-[#010d54]">
-                          <span>{d.name} {warnings.includes(d.id) && <AlertCircle className="w-3 h-3 inline text-yellow-400 ml-1" />}</span>
-                          <span className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 print:!text-[#6865fa]">{priorities[d.id] || 'Standard'}</span>
+                    <li key={d.id} className="deliverable-item flex items-start gap-3 bg-white/[0.02] p-4 rounded-[12px] border border-white/5 w-full print:break-inside-avoid print:!bg-[#f4f3ff] print:!border-[#d4cefc] print:block">
+                      <div className="flex items-start gap-3 w-full">
+                        <div className="p-1.5 rounded-md shrink-0 mt-0.5 print:!bg-[#010d54]" style={{ backgroundColor: hexToRgba(palette.blue, 0.2) }}><CheckSquare className="w-4 h-4 print:!stroke-white print:!text-white" style={{ color: palette.blue }} /></div>
+                        <div className="w-full">
+                          <div className="text-[17px] md:text-[19px] font-medium text-white font-secondary flex items-center justify-between print:!text-[#010d54]">
+                            <span>{d.name} {warnings.includes(d.id) && <AlertCircle className="w-3 h-3 inline text-yellow-400 ml-1" />}</span>
+                            <span className="text-[17px] md:text-[19px] uppercase tracking-widest text-white/40 print:!text-[#6865fa]">{priorities[d.id] || 'Standard'}</span>
+                          </div>
                         </div>
-                        <div className="text-[17px] md:text-[19px] text-white/40 leading-relaxed font-secondary print:!text-[#6865fa]">ID: {d.id}</div>
                       </div>
                     </li>
                   ))}
