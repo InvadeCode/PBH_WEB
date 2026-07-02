@@ -688,7 +688,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </h2>
             </ElegantFade>
 
-            <MediaRibbon3D media={cmsMedia} theme={activeTheme} />
+            <MediaRibbon3D media={cmsMedia} theme={activeTheme} isArise={true} />
           </div>
         </section>
       )}

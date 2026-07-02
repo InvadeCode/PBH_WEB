@@ -172,7 +172,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
   );
 };
 
-const MediaRibbon3D = ({ media, theme }) => {
+const MediaRibbon3D = ({ media, theme, isArise = false }) => {
   const items = useMemo(
     () => (Array.isArray(media) ? media.filter((m) => m && m.url) : []),
     [media]
@@ -196,20 +196,25 @@ const MediaRibbon3D = ({ media, theme }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.28, 300, 500);
-      const minRadius = clamp(w * 0.8, 800, 1200);
+      const height = isArise ? clamp(w * 0.28, 300, 500) : clamp(w * 0.20, 200, 340);
+      const minRadius = isArise ? clamp(w * 0.8, 800, 1200) : clamp(w * 0.5, 450, 750);
       const maxRadius = clamp(w * 2.5, 1800, 4200);
       const maxAspect = Math.max(...items.map(m => getMediaAspect(m)), 1.4);
       const approxPanelWidth = height * maxAspect;
-      const minGap = 200; // Larger gap prevents 3D collapsing
+      const minGap = isArise ? 200 : 70; // Larger gap prevents 3D collapsing for Arise
       // Chord-based formula: (W+gap) / (2·sin(π/N)) guarantees the actual 3D
       // edge-to-edge separation equals minGap regardless of item count
       const requiredRadius = items.length > 1
         ? (approxPanelWidth + minGap) / (2 * Math.sin(Math.PI / items.length))
         : minRadius;
       
-      // Enforce minRadius so the 3D circle is wide enough to prevent visual overlapping 
-      const radius = clamp(Math.max(requiredRadius, minRadius), 800, maxRadius);
+      let radius;
+      if (isArise) {
+        // Enforce minRadius so the 3D circle is wide enough to prevent visual overlapping 
+        radius = clamp(Math.max(requiredRadius, minRadius), 800, maxRadius);
+      } else {
+        radius = clamp(requiredRadius, minRadius, maxRadius);
+      }
       setDims({ height, radius });
     };
     measure();
