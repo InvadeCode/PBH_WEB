@@ -196,7 +196,7 @@ const MediaRibbon3D = ({ media, theme }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.22, 220, 380);
+      const height = clamp(w * 0.20, 200, 340);
       const minRadius = clamp(w * 0.5, 450, 750);
       const maxRadius = clamp(w * 2.5, 1800, 4200);
       const maxAspect = Math.max(...items.map(m => getMediaAspect(m)), 1.4);
@@ -336,7 +336,7 @@ const MediaRibbon3D = ({ media, theme }) => {
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerLeave}
       onDragStart={(e) => e.preventDefault()}
-      className="relative w-full overflow-hidden touch-none cursor-grab active:cursor-grabbing media-ribbon-3d"
+      className="relative w-full touch-none cursor-grab active:cursor-grabbing media-ribbon-3d"
       style={{}}
     >
       {/* Ambient depth */}
