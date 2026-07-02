@@ -412,7 +412,7 @@ const EcosystemCarousel = ({ media }) => {
   const renderCard = (m, i, prefix) => (
     <figure
       key={`${prefix}-${m.key || i}`}
-      className="group relative shrink-0 h-[clamp(220px,34vh,440px)] rounded-[20px] overflow-hidden ring-1 ring-white/10 shadow-[0_28px_70px_-24px_rgba(0,0,0,0.75)]"
+      className="group relative shrink-0 h-[clamp(260px,42vh,520px)] rounded-[20px] overflow-hidden ring-1 ring-white/10 shadow-[0_28px_70px_-24px_rgba(0,0,0,0.75)]"
       style={{ aspectRatio: getMediaAspect(m), backgroundColor: theme.panel }}
     >
       <CaseStudyMedia
@@ -440,6 +440,12 @@ const EcosystemCarousel = ({ media }) => {
       </div>
       <div className="flex items-center gap-5 md:gap-7 pr-5 md:pr-7 shrink-0" aria-hidden="true">
         {media.map((m, i) => renderCard(m, i, 'b'))}
+      </div>
+      <div className="flex items-center gap-5 md:gap-7 pr-5 md:pr-7 shrink-0" aria-hidden="true">
+        {media.map((m, i) => renderCard(m, i, 'c'))}
+      </div>
+      <div className="flex items-center gap-5 md:gap-7 pr-5 md:pr-7 shrink-0" aria-hidden="true">
+        {media.map((m, i) => renderCard(m, i, 'd'))}
       </div>
       <style dangerouslySetInnerHTML={{ __html: '.eco-hide-scrollbar::-webkit-scrollbar{display:none}' }} />
     </div>
