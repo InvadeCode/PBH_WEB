@@ -302,6 +302,25 @@
     page-break-inside: avoid !important;
   }
 
+  /* 5b. Prevent orphaned headings from being stranded at page bottom */
+  .print\:break-after-avoid {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  /* 5c. Snapshot print: keep section containers together; each li is already guarded */
+  .print-snapshot .deliverable-item {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* 5d. Give text blocks breathing room so widows/orphans don't appear */
+  .print-snapshot p,
+  .print-snapshot li {
+    orphans: 3;
+    widows: 3;
+  }
+
   /* 6. Expand scroll containers for print */
   .overflow-y-auto {
     overflow-y: visible !important;
