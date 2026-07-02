@@ -3803,7 +3803,7 @@ const HomePage = ({ navigate }) => {
               {renderWithItalics(SITE_SETTINGS?.homeHeroTitle || "Breakthroughs happen when strategy and execution *move as one.*", "text-white/60 mx-1 sm:mx-2 whitespace-normal sm:whitespace-nowrap")}
             </h1>
           </RevealText>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 font-secondary text-sm md:text-[15px] text-white/60 max-w-3xl">{SITE_SETTINGS?.homeHeroSubtitle || "PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs."}</motion.p>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="mt-8 t-body text-white/60 max-w-3xl">{SITE_SETTINGS?.homeHeroSubtitle || "PurpleBlue House partners with visionary teams to build clear, scalable brand systems that turn complex innovations into market breakthroughs."}</motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.7 }} className="mt-12 flex flex-col sm:flex-row gap-6">
             <PremiumButton onClick={() => navigate('assessment')} className="w-full sm:w-auto sm:min-w-[240px]" style={{ boxShadow: `0 0 40px rgba(255, 205, 0, 0.28)` }}>{SITE_SETTINGS.assessmentButton || 'Build My Brand Scope'} <Sparkles className="w-4 h-4 ml-2" style={{ color: '#ffcd00' }} /></PremiumButton>
             <PremiumButton variant="secondary" onClick={() => navigate('work')} className="w-full sm:w-auto sm:min-w-[240px]">{SITE_SETTINGS.homeExploreButton || 'Explore Our Work'}</PremiumButton>
@@ -3819,7 +3819,7 @@ const HomePage = ({ navigate }) => {
         <div className="relative z-10 w-full">
         <div className="geo-diamond hidden md:block" style={{ top: '12%', right: '8%' }} />
         <RevealText><h2 className="t-display mb-16">{SITE_SETTINGS?.homePage?.problemTitle || "Scaling a breakthrough"} <br /><AnimatedItalic className="text-white/50">{SITE_SETTINGS?.homePage?.problemTitleItalic || "requires deep alignment."}</AnimatedItalic></h2></RevealText>
-        <FadeUp><p className="font-secondary text-sm md:text-[15px] text-white/50 max-w-3xl mb-16">{SITE_SETTINGS?.homePage?.problemBody || "Low engagement, inconsistent visuals, and scattered teams aren't just creative issues—they are strategic bottlenecks. We align your brand thinking with execution to drive sustainable, long-term growth."}</p></FadeUp>
+        <FadeUp><p className="t-body text-white/50 max-w-3xl mb-16">{SITE_SETTINGS?.homePage?.problemBody || "Low engagement, inconsistent visuals, and scattered teams aren't just creative issues—they are strategic bottlenecks. We align your brand thinking with execution to drive sustainable, long-term growth."}</p></FadeUp>
         <StaggerGroup className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full">
           {PROBLEM_DATA.map((prob, i) => (
             <StaggerItem key={i}><ProblemHoverCard title={prob.title} icon={prob.icon} type={prob.type} /></StaggerItem>
@@ -3831,16 +3831,16 @@ const HomePage = ({ navigate }) => {
       <section className="py-32 px-[3%] w-full text-left" style={{ background: `linear-gradient(to bottom, ${SURFACE.purpleDeep}, ${palette.bgDeep})` }}>
         <div className="max-w-4xl mb-24">
           <RevealText><h2 className="t-display mb-6">{SITE_SETTINGS?.homePage?.modelTitle || "Breakthrough innovation"} <br /><AnimatedItalic className="text-white/50">{SITE_SETTINGS?.homePage?.modelTitleItalic || "demands a new model."}</AnimatedItalic></h2></RevealText>
-          <FadeUp><p className="font-secondary text-sm md:text-[15px] text-white/50">{SITE_SETTINGS?.homeSection3Subtitle || "Traditional execution models struggle to translate complex ideas into scalable systems. We build a strategic foundation first, ensuring every asset accelerates your 5-year vision and market impact."}</p></FadeUp>
+          <FadeUp><p className="t-body text-white/50">{SITE_SETTINGS?.homeSection3Subtitle || "Traditional execution models struggle to translate complex ideas into scalable systems. We build a strategic foundation first, ensuring every asset accelerates your 5-year vision and market impact."}</p></FadeUp>
         </div>
         <StaggerGroup className="grid md:grid-cols-2 gap-8 w-full">
           <StaggerItem>
             <div className="border border-white/10 rounded-[24px] p-10 md:p-14 h-full w-full backdrop-blur-3xl" style={{ background: `linear-gradient(135deg, ${hexToRgba(palette.panel, 0.5)} 0%, ${hexToRgba(palette.bgDeep, 0.5)} 100%)`, boxShadow: `inset 0 1px 0 ${hexToRgba(palette.secondary, 0.1)}` }}>
               <h3 className="t-label text-white/40 mb-10">{SITE_SETTINGS?.homePage?.oldWayLabel || "The Old Way"}</h3>
               <ul className="space-y-8">
-                <li className="flex gap-5 font-secondary text-sm md:text-[15px] text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[0] || "Execution disconnected from core business objectives."}</span></li>
-                <li className="flex gap-5 font-secondary text-sm md:text-[15px] text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[1] || "Short-term aesthetic fixes over long-term strategic systems."}</span></li>
-                <li className="flex gap-5 font-secondary text-sm md:text-[15px] text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[2] || "Disjointed touchpoints that dilute the brand's potential."}</span></li>
+                <li className="flex gap-5 t-body text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[0] || "Execution disconnected from core business objectives."}</span></li>
+                <li className="flex gap-5 t-body text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[1] || "Short-term aesthetic fixes over long-term strategic systems."}</span></li>
+                <li className="flex gap-5 t-body text-white/50"><X className="w-6 h-6 shrink-0 text-red-500/50 mt-1" /> <span>{SITE_SETTINGS?.methodPage?.traditionalModel?.[2] || "Disjointed touchpoints that dilute the brand's potential."}</span></li>
               </ul>
             </div>
           </StaggerItem>
@@ -3850,9 +3850,9 @@ const HomePage = ({ navigate }) => {
               <div className="absolute top-[-10%] left-[-10%] w-64 h-64 opacity-[0.25] blur-[80px] pointer-events-none" style={{ backgroundColor: palette.secondary }} />
               <h3 className="t-label mb-10 relative z-10" style={{ color: palette.primary }}>{SITE_SETTINGS?.homePage?.pbhWayLabel || "The PBH Way"}</h3>
               <ul className="space-y-8 relative z-10">
-                <li className="flex gap-5 font-secondary text-sm md:text-[15px] text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[0] || "Mapping the root business gap before designing anything."}</span></li>
-                <li className="flex gap-5 font-secondary text-sm md:text-[15px] text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[1] || "Modular scoping based on exact strategic requirements."}</span></li>
-                <li className="flex gap-5 font-secondary text-sm md:text-[15px] text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[2] || "Building connected systems where strategy dictates execution."}</span></li>
+                <li className="flex gap-5 t-body text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[0] || "Mapping the root business gap before designing anything."}</span></li>
+                <li className="flex gap-5 t-body text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[1] || "Modular scoping based on exact strategic requirements."}</span></li>
+                <li className="flex gap-5 t-body text-white/90"><Check className="w-6 h-6 shrink-0 mt-1" style={{ color: palette.primary }} /> <span>{SITE_SETTINGS?.methodPage?.pbhMethod?.[2] || "Building connected systems where strategy dictates execution."}</span></li>
               </ul>
             </div>
           </StaggerItem>
@@ -3865,7 +3865,7 @@ const HomePage = ({ navigate }) => {
           <FadeUp>
             <h3 className="t-label mb-6" style={{ color: palette.primary }}>{SITE_SETTINGS?.aboutPage?.philosophyLabel || "Our Philosophy"}</h3>
             <h2 className="t-display mb-6" style={{ color: 'white' }}>{SITE_SETTINGS?.aboutPage?.philosophyTitle || "Engineering breakthroughs with the SciArt framework."}</h2>
-            <p className="font-secondary text-sm md:text-[15px]" style={{ color: 'rgba(255,255,255,0.7)' }}>{SITE_SETTINGS?.aboutPage?.philosophyText || "We bridge the divide between rigorous strategic logic and intense imagination. Science gives us the framework, the data, and the scalable systems. Art gives us the empathy, the visual impact, and the connection. Together, they create brands engineered for the future."}</p>
+            <p className="t-body" style={{ color: 'rgba(255,255,255,0.7)' }}>{SITE_SETTINGS?.aboutPage?.philosophyText || "We bridge the divide between rigorous strategic logic and intense imagination. Science gives us the framework, the data, and the scalable systems. Art gives us the empathy, the visual impact, and the connection. Together, they create brands engineered for the future."}</p>
           </FadeUp>
           <FadeUp delay={0.2} className="relative h-[300px] md:h-[400px] flex items-center justify-center rounded-[32px] border border-black/5 overflow-hidden shadow-2xl w-full" style={{ backgroundColor: palette.secondary }}>
             <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" style={{ mixBlendMode: 'multiply' }} />
@@ -3899,7 +3899,7 @@ const HomePage = ({ navigate }) => {
                   <div className="border rounded-[24px] p-10 h-full flex flex-col hover:border-black/10 transition-all duration-500 w-full" style={{ backgroundColor: palette.secondary, borderColor: hexToRgba(palette.primary, 0.15) }}>
                     <div className="w-14 h-14 rounded-[12px] flex items-center justify-center mb-8 shadow-lg" style={{ backgroundColor: rColor, color: 'white' }}>{route.icon}</div>
                     <h4 className="font-primary text-lg md:text-xl font-semibold leading-snug mb-4" style={{ color: palette.bgDeep }}>{route.title}</h4>
-                    <p className="font-secondary text-sm md:text-[15px] leading-snug mb-10 flex-grow" style={{ color: hexToRgba(palette.bgDeep, 0.7) }}>{route.desc}</p>
+                    <p className="t-body mb-10 flex-grow" style={{ color: hexToRgba(palette.bgDeep, 0.7) }}>{route.desc}</p>
                     <PremiumButton variant="ghost" onClick={() => navigate(`service-modal/${route.id.toLowerCase()}`)} className="self-start px-0 group hover:bg-transparent !text-[13px] md:!text-sm" style={{ color: palette.bgDeep }}>{SITE_SETTINGS?.homePage?.exploreRouteLabel || "Explore Route"} <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" /></PremiumButton>
                   </div>
                 </SpotlightCard>
@@ -3929,7 +3929,7 @@ const HomePage = ({ navigate }) => {
         <FadeUp>
           <Globe className="w-12 h-12 mx-auto mb-8 opacity-40" style={{ color: palette.blue }} />
           <h2 className="t-display mb-8 max-w-4xl mx-auto">{SITE_SETTINGS?.aboutPage?.globalTitle || "Elevating Indian Innovation to the Global Stage."}</h2>
-          <p className="font-secondary text-sm md:text-[15px] text-white/50 max-w-2xl mx-auto">{SITE_SETTINGS?.aboutPage?.globalText || "Championing the rise of breakthrough ideas, fostering a future where creativity and ingenuity fuel human progress on a worldwide scale."}</p>
+          <p className="t-body text-white/50 max-w-2xl mx-auto">{SITE_SETTINGS?.aboutPage?.globalText || "Championing the rise of breakthrough ideas, fostering a future where creativity and ingenuity fuel human progress on a worldwide scale."}</p>
         </FadeUp>
       </section>
 
