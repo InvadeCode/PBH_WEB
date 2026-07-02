@@ -942,7 +942,7 @@ const ProblemHoverCard = ({ title, icon, type }) => {
       <motion.div variants={{ initial: { opacity: 0 }, hover: { opacity: 0.05 } }} transition={{ duration: 0.4 }} className="absolute inset-0 z-0 pointer-events-none" style={{ backgroundColor: palette.bgDeep }} />
       <div className="relative z-10 flex flex-col items-start gap-4">
         <motion.div variants={{ initial: { y: 0, opacity: 1, scale: 1 }, hover: { y: -2, scale: 1.05 } }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className="flex items-center justify-center w-10 h-10 rounded-[10px] shadow-sm" style={{ backgroundColor: color, color: 'white' }}>{icon}</motion.div>
-        <motion.span variants={{ initial: { y: 0 }, hover: { y: 0 } }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className="t-body font-medium leading-snug font-primary transition-colors" style={{ color: palette.bgDeep }}>{title}</motion.span>
+        <motion.span variants={{ initial: { y: 0 }, hover: { y: 0 } }} transition={{ type: "spring", stiffness: 400, damping: 25 }} className="text-[17px] md:text-[19px] font-medium leading-snug font-primary transition-colors" style={{ color: palette.bgDeep }}>{title}</motion.span>
       </div>
     </motion.div>
   );
@@ -1119,7 +1119,7 @@ const PremiumButton = ({ children, onClick, variant = "primary", className = "",
   const baseClasses = isPrimary ? `hover:brightness-110 font-bold border border-white/20` : (variant === "secondary" ? "bg-white/5 text-white border border-white/10 hover:bg-white/10 hover:border-white/20" : "text-white/70 hover:text-white hover:bg-white/5");
 
   return (
-    <motion.button ref={buttonRef} type={type} onClick={onClick} disabled={disabled} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={btnStyle} className={`group relative inline-flex items-center justify-center px-8 py-4 tracking-wide transition-all duration-500 overflow-hidden rounded-[9px] t-body font-medium hover:scale-[1.02] w-auto ${baseClasses} ${className} ${disabled ? 'opacity-50 cursor-not-allowed hover:scale-100' : ''} font-primary`}>
+    <motion.button ref={buttonRef} type={type} onClick={onClick} disabled={disabled} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} style={btnStyle} className={`group relative inline-flex items-center justify-center px-8 py-4 tracking-wide transition-all duration-500 overflow-hidden rounded-[9px] text-[17px] md:text-[19px] hover:scale-[1.02] w-auto ${baseClasses} ${className} ${disabled ? 'opacity-50 cursor-not-allowed hover:scale-100' : ''} font-primary`}>
       <span className="relative z-10 flex items-center gap-2 w-full justify-center">{children}</span>
       {isPrimary && !disabled && <span className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-700 ease-in-out skew-x-12 w-full" />}
     </motion.button>
