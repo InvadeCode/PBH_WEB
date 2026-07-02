@@ -4540,7 +4540,7 @@ const WorkPage = ({ navigate }) => {
           <button className="px-4 py-2 rounded-full border border-white/10 text-white/50 text-[12px] md:text-[13px] tracking-[0.3em] uppercase shrink-0 hover:bg-white/5">Storytelling Corner</button>
         </FadeUp>
 
-        <StaggerGroup className="grid-brick-center gap-8 w-full mb-32">
+        <StaggerGroup className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mb-32">
           {caseStudies.slice(1).map((cs, i) => {
             const secondaryColors = [palette.lavender, palette.medBlue, palette.lightBlue, palette.primary];
             const hexColor = secondaryColors[i % secondaryColors.length];
