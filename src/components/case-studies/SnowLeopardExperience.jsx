@@ -536,7 +536,7 @@ const SnowLeopardExperience = ({ navigate, project }) => {
               <CaseStudyMedia
                 src={heroImage}
                 alt={`${project.client || 'Case study'} hero`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain md:object-cover"
                 priority
                 sizes="100vw"
                 motionProps={{

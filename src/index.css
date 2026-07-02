@@ -255,6 +255,20 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE OVERRIDES — component-specific mobile fixes
+   ═══════════════════════════════════════════════════════════════ */
+
+/* MediaRibbon3D: reduce height on mobile so it doesn't dominate the viewport */
+.media-ribbon-3d {
+  height: clamp(340px, 65vh, 800px);
+}
+@media (min-width: 768px) {
+  .media-ribbon-3d {
+    height: clamp(560px, 92vh, 1300px);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
    PRINT STYLES — PBH Brand White Theme
    ═══════════════════════════════════════════════════════════════ */
 @media print {

@@ -57,7 +57,7 @@ const CaseStudyTeamCredits = ({ project }) => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:w-1/3 flex flex-col sticky top-32"
+            className="lg:w-1/3 flex flex-col lg:sticky lg:top-32"
           >
             <div className="inline-flex items-center gap-4 mb-8">
               <span className="h-[1px] w-12 bg-cyan-400" />

@@ -303,8 +303,8 @@ const MediaRibbon3D = ({ media, theme }) => {
       onPointerUp={handlePointerUp}
       onPointerLeave={handlePointerLeave}
       onDragStart={(e) => e.preventDefault()}
-      className="relative w-full overflow-hidden touch-none cursor-grab active:cursor-grabbing"
-      style={{ height: 'clamp(560px, 92vh, 1300px)' }}
+      className="relative w-full overflow-hidden touch-none cursor-grab active:cursor-grabbing media-ribbon-3d"
+      style={{}}
     >
       {/* Ambient depth */}
       <div className="pointer-events-none absolute inset-0">

@@ -314,15 +314,15 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS, c }) => {
     return (
       <motion.div
         key={`${prefix}-${img?.key ?? index}-${index}`}
-        className="relative shrink-0 flex flex-col items-center"
-        style={{ width: 'min(85vw, 420px)', maxHeight: '75vh' }}
+        className="relative shrink-0 flex flex-col items-center max-h-[50vh] md:max-h-[75vh]"
+        style={{ width: 'min(85vw, 420px)' }}
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-8%" }}
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
         {/* Adaptive Image Container */}
-        <div className="w-full h-full max-h-[60vh] relative p-3 bg-[#0E0805] shadow-2xl flex flex-col z-10 hover:scale-[1.02] transition-transform duration-500 cursor-grab active:cursor-grabbing"
+        <div className="w-full h-full max-h-[40vh] md:max-h-[60vh] relative p-3 bg-[#0E0805] shadow-2xl flex flex-col z-10 hover:scale-[1.02] transition-transform duration-500 cursor-grab active:cursor-grabbing"
              style={{ boxShadow: '0 40px 80px rgba(0,0,0,0.8)' }}>
           <Sprockets pos="top" c={c} />
           <Sprockets pos="bottom" c={c} />
