@@ -561,13 +561,12 @@ const FirefoxExperience = ({ navigate, project }) => {
         </div>
           
         <ElegantFade delay={0.2} className="w-full flex justify-center">
-          <div className="relative w-full max-w-[1000px] aspect-[2/1] md:aspect-[2.2/1] overflow-hidden bg-white/5 rounded-xl border border-white/10 shadow-2xl p-4 md:p-6">
-            {/* Pushing the image up to crop out the baked-in text while keeping the map visible */}
-            <div className="w-full h-full relative overflow-hidden rounded-lg">
+          <div className="relative w-full max-w-[1200px] bg-white/5 rounded-xl border border-white/10 shadow-2xl p-4 md:p-6">
+            <div className="w-full relative overflow-hidden rounded-lg">
               <img 
                 src={imgStrategy} 
                 alt="Observation Map Diagram" 
-                className="absolute left-0 w-full h-auto -top-[25%] md:-top-[28%]" 
+                className="w-full h-auto" 
                 draggable="false"
               />
             </div>

@@ -630,41 +630,41 @@ export default defineType({
       type: 'object',
       description: 'Upload exactly the images needed for the Firefox UI layout. Leave empty to fallback to default static assets.',
       fields: [
-        defineField({ name: 'imgStrategy', title: 'Strategy / Observation Map (1 Image)', type: 'image', options: { hotspot: true } }),
-        defineField({ name: 'imgInsight', title: 'Insight Mapping (1 Image)', type: 'image', options: { hotspot: true } }),
-        defineField({ name: 'imgTheme', title: 'Theme Mapping (1 Image)', type: 'image', options: { hotspot: true } }),
-        defineField({ name: 'imgStargazerSketch', title: 'Standalone Stargazer Sketch (1 Image)', type: 'image', options: { hotspot: true } }),
+        defineField({ name: 'imgStrategy', title: 'Strategy / Observation Map (1 Image) [Rec: 16:9, e.g. 1920x1080]', type: 'image', options: { hotspot: true } }),
+        defineField({ name: 'imgInsight', title: 'Insight Mapping (1 Image) [Rec: 16:9, e.g. 1920x1080]', type: 'image', options: { hotspot: true } }),
+        defineField({ name: 'imgTheme', title: 'Theme Mapping (1 Image) [Rec: 16:9, e.g. 1920x1080]', type: 'image', options: { hotspot: true } }),
+        defineField({ name: 'imgStargazerSketch', title: 'Standalone Stargazer Sketch (1 Image) [Rec: 16:9, e.g. 1920x1080]', type: 'image', options: { hotspot: true } }),
         defineField({
           name: 'sketchesGrid',
-          title: '4-Image Sketches Masonry Grid (Exactly 4 Images)',
+          title: '4-Image Sketches Masonry Grid (Exactly 4 Images) [Rec: 4:3 or Square, e.g. 1440x1080]',
           type: 'array',
           validation: (Rule) => Rule.max(4),
           of: [{ type: 'image', options: { hotspot: true } }]
         }),
         defineField({
           name: 'dreamerImages',
-          title: 'Dreamer World (2 Images: Left & Right)',
+          title: 'Dreamer World (2 Images: Left & Right) [Rec: 4:3 or Square, e.g. 1440x1080]',
           type: 'array',
           validation: (Rule) => Rule.max(2),
           of: [{ type: 'image', options: { hotspot: true } }]
         }),
         defineField({
           name: 'stargazerImages',
-          title: 'Stargazer World (2 Images: Left & Right)',
+          title: 'Stargazer World (2 Images: Left & Right) [Rec: 4:3 or Square, e.g. 1440x1080]',
           type: 'array',
           validation: (Rule) => Rule.max(2),
           of: [{ type: 'image', options: { hotspot: true } }]
         }),
         defineField({
           name: 'stellarImages',
-          title: 'Stellar World (2 Images: Left & Right)',
+          title: 'Stellar World (2 Images: Left & Right) [Rec: 4:3 or Square, e.g. 1440x1080]',
           type: 'array',
           validation: (Rule) => Rule.max(2),
           of: [{ type: 'image', options: { hotspot: true } }]
         }),
         defineField({
           name: 'ecosystemImages',
-          title: 'Ecosystem (3 Images)',
+          title: 'Ecosystem (3 Images) [Rec: 4:3 or Square, e.g. 1440x1080]',
           type: 'array',
           validation: (Rule) => Rule.max(3),
           of: [{ type: 'image', options: { hotspot: true } }]
