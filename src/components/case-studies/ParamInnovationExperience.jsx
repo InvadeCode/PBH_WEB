@@ -350,7 +350,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
         {/* Text Below the Banner Box */}
         <div className="relative z-20 flex flex-col items-center text-center px-4 mt-12 md:mt-16">
           <ElegantFade delay={0.4} className="mb-6 flex flex-wrap justify-center gap-4">
-            {(project?.tags || project?.roles || ['Branding', 'Visual Identity', 'Collateral']).map((tag, i) => (
+            {(project?.tags?.length > 0 ? project.tags : (project?.roles?.length > 0 ? project.roles : (project?.sector ? [project.sector] : ['Branding', 'Visual Identity', 'Collateral']))).map((tag, i) => (
               <span key={i} className="px-6 py-2 rounded-full border border-white/10 text-[17px] md:text-[19px] tracking-widest uppercase font-bold text-white/80 bg-white/5 backdrop-blur-md shadow-lg font-primary">
                 {tag}
               </span>
