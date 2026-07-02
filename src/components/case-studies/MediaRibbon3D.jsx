@@ -172,7 +172,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
   );
 };
 
-const MediaRibbon3D = ({ media, theme, isArise = false }) => {
+const MediaRibbon3D = ({ media, theme, isArise = false, isEga = false }) => {
   const items = useMemo(
     () => (Array.isArray(media) ? media.filter((m) => m && m.url) : []),
     [media]
@@ -196,12 +196,16 @@ const MediaRibbon3D = ({ media, theme, isArise = false }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = isArise ? clamp(w * 0.28, 300, 500) : clamp(w * 0.20, 200, 340);
+      const heightMultiplier = isEga ? 0.32 : (isArise ? 0.28 : 0.20);
+      const minHeight = isEga ? 340 : (isArise ? 300 : 200);
+      const maxHeight = isEga ? 550 : (isArise ? 500 : 340);
+      const height = clamp(w * heightMultiplier, minHeight, maxHeight);
+      
       const minRadius = isArise ? clamp(w * 0.5, 450, 800) : clamp(w * 0.5, 450, 750);
       const maxRadius = clamp(w * 2.5, 1800, 4200);
       const maxAspect = Math.max(...items.map(m => getMediaAspect(m)), 1.4);
       const approxPanelWidth = height * maxAspect;
-      const minGap = isArise ? 100 : 70; // Reduced gap for Arise to remove negative space
+      const minGap = isEga ? 50 : (isArise ? 100 : 70); // Reduced gap for Arise, even smaller for EGA
       // Chord-based formula: (W+gap) / (2·sin(π/N)) guarantees the actual 3D
       // edge-to-edge separation equals minGap regardless of item count
       const requiredRadius = items.length > 1
