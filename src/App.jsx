@@ -3847,7 +3847,6 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       'arise ventures',
       'bellavita',
       'chien de luxe',
-      'earthy souls',
       'hero lectro',
       'leverage edu',
       'param innovation',
@@ -3888,7 +3887,8 @@ const WorkDetailPage = ({ navigate, projectId }) => {
       'kanti sweets',
       'navankur',
       'sunburst',
-      'leading business family'
+      'leading business family',
+      'earthy souls'
     ];
 
     if (kantiSweetsClients.some(target => clientName.includes(target))) {
