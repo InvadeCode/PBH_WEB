@@ -688,7 +688,13 @@ const AriseVenturesExperience = ({ navigate, project }) => {
               </h2>
             </ElegantFade>
 
-            <MediaRibbon3D media={cmsMedia} theme={activeTheme} isArise={true} isEga={clientStr === 'ega wellness'} />
+            <MediaRibbon3D 
+              media={cmsMedia} 
+              theme={activeTheme} 
+              isArise={true} 
+              isEga={clientStr === 'ega wellness'} 
+              isSnug={['earthy souls', 'chien de luxe', 'veauli'].some(c => clientStr.includes(c))}
+            />
           </div>
         </section>
       )}

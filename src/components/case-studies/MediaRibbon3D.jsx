@@ -172,7 +172,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
   );
 };
 
-const MediaRibbon3D = ({ media, theme, isArise = false, isEga = false }) => {
+const MediaRibbon3D = ({ media, theme, isArise = false, isEga = false, isSnug = false }) => {
   const items = useMemo(
     () => (Array.isArray(media) ? media.filter((m) => m && m.url) : []),
     [media]
@@ -205,7 +205,13 @@ const MediaRibbon3D = ({ media, theme, isArise = false, isEga = false }) => {
       const maxRadius = clamp(w * 2.5, 1800, 4200);
       const maxAspect = Math.max(...items.map(m => getMediaAspect(m)), 1.4);
       const approxPanelWidth = height * maxAspect;
-      const minGap = isEga ? 50 : (isArise ? 100 : 70); // Reduced gap for Arise, even smaller for EGA
+      
+      let gapValue = 70;
+      if (isEga) gapValue = 50;
+      else if (isSnug) gapValue = 50;
+      else if (isArise) gapValue = 100;
+      const minGap = gapValue;
+
       // Chord-based formula: (W+gap) / (2·sin(π/N)) guarantees the actual 3D
       // edge-to-edge separation equals minGap regardless of item count
       const requiredRadius = items.length > 1
@@ -213,9 +219,10 @@ const MediaRibbon3D = ({ media, theme, isArise = false, isEga = false }) => {
         : minRadius;
       
       let radius;
-      if (isArise) {
-        // Allow the radius to naturally shrink based on requiredRadius instead of forcing a massive 800px gap
-        radius = clamp(requiredRadius, minRadius, maxRadius);
+      if (isArise || isEga || isSnug) {
+        // Do NOT clamp to minRadius (e.g. 450) if the required radius is smaller, 
+        // as this creates massive gaps for small item counts (3 or 4 images).
+        radius = clamp(requiredRadius, 200, maxRadius);
       } else {
         radius = clamp(requiredRadius, minRadius, maxRadius);
       }
