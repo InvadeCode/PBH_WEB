@@ -61,12 +61,10 @@ const isSnowLeopardCaseStudy = (caseStudy) => (
 );
 
 const getCaseStudyThumbnailMediaProps = (caseStudy) => {
-  const clientName = (caseStudy?.client || '').toLowerCase();
-  const isSamskara = clientName.includes('observer research') || clientName.includes('samskara');
   const isSLT = isSnowLeopardCaseStudy(caseStudy);
   
   return {
-    className: `w-full h-full object-cover transition-transform duration-1000 ease-out ${isSamskara ? 'scale-[1.7] group-hover:scale-[1.8]' : 'group-hover:scale-105'}`,
+    className: `w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105`,
     style: isSLT ? { objectPosition: '14% center' } : undefined,
   };
 };
