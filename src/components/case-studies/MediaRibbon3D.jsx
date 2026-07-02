@@ -196,8 +196,8 @@ const MediaRibbon3D = ({ media, theme }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.26, 260, 460);
-      const minRadius = clamp(w * 0.5, 450, 800);
+      const height = clamp(w * 0.22, 220, 380);
+      const minRadius = clamp(w * 0.5, 450, 750);
       const maxRadius = clamp(w * 2.5, 1800, 4200);
       const maxAspect = Math.max(...items.map(m => getMediaAspect(m)), 1.4);
       const approxPanelWidth = height * maxAspect;
@@ -342,7 +342,7 @@ const MediaRibbon3D = ({ media, theme }) => {
       {/* Ambient depth */}
       <div className="pointer-events-none absolute inset-0">
         <div
-          className="absolute left-1/2 top-[45%] h-[60vw] w-[60vw] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[150px]"
+          className="absolute left-1/2 top-1/2 h-[60vw] w-[60vw] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[150px]"
           style={{ background: `radial-gradient(circle, ${theme?.primary || '#6865fa'}2e, transparent 62%)` }}
         />
       </div>
@@ -350,7 +350,7 @@ const MediaRibbon3D = ({ media, theme }) => {
       {/* 3D scene */}
       <div className="absolute inset-0" style={{ perspective: '5500px', perspectiveOrigin: '50% 48%' }}>
         <motion.div
-          className="absolute left-1/2 top-[45%]"
+          className="absolute left-1/2 top-1/2"
           style={{ transformStyle: 'preserve-3d', transform: ringTransform, willChange: 'transform' }}
         >
           <motion.div className="absolute" style={{ transformStyle: 'preserve-3d', transform: innerRotate }}>
