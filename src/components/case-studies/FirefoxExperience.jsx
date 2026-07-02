@@ -461,9 +461,39 @@ const FirefoxExperience = ({ navigate, project }) => {
   let imgStargazer = starGazerSketch;
   const sketchCh = storyChapters.find(c => {
     const t = (c.title || c.chapterLabel || c.caption || '').toLowerCase();
-    return t.includes('gazer') || t.includes('sketch') || t.includes('untitled');
+    // avoid matching 'sketches' which is used for the masonry grid
+    return (t.includes('gazer') || t.includes('untitled')) && !t.includes('sketches');
   });
   if (sketchCh) imgStargazer = getMediaUrl(sketchCh) || starGazerSketch;
+
+  const findChapterImageMulti = (keyword, index, fallbackImg) => {
+    const matches = storyChapters.filter(c => {
+      const title = (c.title || c.chapterLabel || c.caption || '').toLowerCase();
+      return title.includes(keyword.toLowerCase());
+    });
+    if (matches.length > index) {
+      return getMediaUrl(matches[index]) || fallbackImg;
+    }
+    return fallbackImg;
+  };
+
+  const imgSketch1 = findChapterImageMulti('sketch', 0, sketches1);
+  const imgSketch2 = findChapterImageMulti('sketch', 1, sketches2);
+  const imgSketch3 = findChapterImageMulti('sketch', 2, sketches3);
+  const imgSketch4 = findChapterImageMulti('sketch', 3, sketches4);
+
+  const imgDreamerLeft = findChapterImageMulti('dreamer', 0, dreamerBikesLeft);
+  const imgDreamerRight = findChapterImageMulti('dreamer', 1, dreamerBikesRight);
+  
+  const imgStargazerLeft = findChapterImageMulti('stargazer', 0, stargazerBikesLeft);
+  const imgStargazerRight = findChapterImageMulti('stargazer', 1, stargazerBikesRight);
+  
+  const imgStellarLeft = findChapterImageMulti('stellar', 0, stellarBikesLeft);
+  const imgStellarRight = findChapterImageMulti('stellar', 1, stellarBikesRight);
+  
+  const imgEcosystem1 = findChapterImageMulti('ecosystem', 0, ecosystem1);
+  const imgEcosystem2 = findChapterImageMulti('ecosystem', 1, ecosystem2);
+  const imgEcosystem3 = findChapterImageMulti('ecosystem', 2, ecosystem3);
 
   return (
     <div className="w-full min-h-screen font-secondary selection:bg-[#e8800a] selection:text-white" style={{ backgroundColor: palette.bgDeep, color: palette.text }}>
@@ -614,12 +644,12 @@ const FirefoxExperience = ({ navigate, project }) => {
           <div className="flex flex-col gap-6 md:gap-10">
             <ElegantFade delay={0.1}>
               <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={sketches1} alt="Sketch 1" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+                <img src={imgSketch1} alt="Sketch 1" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
               </div>
             </ElegantFade>
             <ElegantFade delay={0.3}>
               <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={sketches3} alt="Sketch 3" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+                <img src={imgSketch3} alt="Sketch 3" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
               </div>
             </ElegantFade>
           </div>
@@ -628,12 +658,12 @@ const FirefoxExperience = ({ navigate, project }) => {
           <div className="flex flex-col gap-6 md:gap-10 md:pt-16">
             <ElegantFade delay={0.2}>
               <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={sketches2} alt="Sketch 2" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+                <img src={imgSketch2} alt="Sketch 2" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
               </div>
             </ElegantFade>
             <ElegantFade delay={0.4}>
               <div className="w-full bg-white rounded-xl shadow-xl overflow-hidden p-4 md:p-6 border border-white/10">
-                <img src={sketches4} alt="Sketch 4" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
+                <img src={imgSketch4} alt="Sketch 4" className="w-full h-auto object-contain drop-shadow-sm" draggable="false" />
               </div>
             </ElegantFade>
           </div>
@@ -659,10 +689,10 @@ const FirefoxExperience = ({ navigate, project }) => {
             
             <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
               <ElegantFade delay={0.1}>
-                <img src={dreamerBikesLeft} alt="Dreamer visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={imgDreamerLeft} alt="Dreamer visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
               <ElegantFade delay={0.2}>
-                <img src={dreamerBikesRight} alt="Dreamer visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={imgDreamerRight} alt="Dreamer visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
             </div>
           </div>
@@ -677,10 +707,10 @@ const FirefoxExperience = ({ navigate, project }) => {
             </ElegantFade>
             <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
               <ElegantFade delay={0.1}>
-                <img src={stargazerBikesLeft} alt="Stargazer visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={imgStargazerLeft} alt="Stargazer visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
               <ElegantFade delay={0.2}>
-                <img src={stargazerBikesRight} alt="Stargazer visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={imgStargazerRight} alt="Stargazer visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
             </div>
           </div>
@@ -695,10 +725,10 @@ const FirefoxExperience = ({ navigate, project }) => {
             </ElegantFade>
             <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
               <ElegantFade delay={0.1}>
-                <img src={stellarBikesLeft} alt="Stellar visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={imgStellarLeft} alt="Stellar visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
               <ElegantFade delay={0.2}>
-                <img src={stellarBikesRight} alt="Stellar visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                <img src={imgStellarRight} alt="Stellar visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
               </ElegantFade>
             </div>
           </div>
@@ -717,15 +747,15 @@ const FirefoxExperience = ({ navigate, project }) => {
             <div className="w-full flex flex-col items-center gap-6">
               <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
                 <ElegantFade delay={0.1}>
-                  <img src={ecosystem1} alt="Ecosystem visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                  <img src={imgEcosystem1} alt="Ecosystem visual 1" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
                 </ElegantFade>
                 <ElegantFade delay={0.2}>
-                  <img src={ecosystem2} alt="Ecosystem visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                  <img src={imgEcosystem2} alt="Ecosystem visual 2" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
                 </ElegantFade>
               </div>
               <ElegantFade delay={0.3} className="w-full flex justify-center">
                 <div className="w-full md:w-1/2">
-                  <img src={ecosystem3} alt="Ecosystem visual 3" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
+                  <img src={imgEcosystem3} alt="Ecosystem visual 3" className="w-full h-auto object-cover rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]" draggable="false" />
                 </div>
               </ElegantFade>
             </div>
