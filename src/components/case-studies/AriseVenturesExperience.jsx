@@ -553,7 +553,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 3. DRAMATIC: PROBLEM STATEMENT ── */}
       {project?.challenge && (
         <DramaticSection 
-          title={project?.challengeHeading || SITE_SETTINGS?.csTheProblem || "The Problem."}
+          title={clientStr === 'param innovation' ? "The Problem." : (project?.challengeHeading || SITE_SETTINGS?.csTheProblem || "The Problem.")}
           content={project?.challenge}
           motionGraphic={<ProblemGraphic />}
         />
@@ -561,7 +561,7 @@ const AriseVenturesExperience = ({ navigate, project }) => {
       {/* ── 4. DRAMATIC: CREATIVE SOLUTION ── */}
       {(project?.solution || project?.fullStory?.execution) && (
         <DramaticSection 
-          title={project?.solutionHeading || SITE_SETTINGS?.csCreativeSolution || "Creative Solution."}
+          title={clientStr === 'param innovation' ? "Creative Solution." : (project?.solutionHeading || SITE_SETTINGS?.csCreativeSolution || "Creative Solution.")}
           content={
             <div className="flex flex-col gap-6">
               {project?.solution && <span>{project.solution}</span>}
