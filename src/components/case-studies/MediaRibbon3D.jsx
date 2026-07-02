@@ -137,7 +137,7 @@ const Panel = ({ media, index, step, radius, height, rotation, isActive, onHover
           <CaseStudyMedia
             item={media}
             alt={media?.alt}
-            className="absolute inset-0 h-full w-full object-cover select-none pointer-events-none"
+            className="absolute inset-0 h-full w-full object-contain select-none pointer-events-none"
             sizes="(min-width: 768px) 56vw, 92vw"
             draggable="false"
           />
@@ -353,7 +353,7 @@ const MediaRibbon3D = ({ media, theme, isArise = false }) => {
       onPointerLeave={handlePointerLeave}
       onDragStart={(e) => e.preventDefault()}
       className="relative w-full touch-none cursor-grab active:cursor-grabbing media-ribbon-3d"
-      style={{}}
+      style={{ height: isArise ? 'clamp(650px, 95vh, 1400px)' : 'clamp(560px, 92vh, 1300px)' }}
     >
       {/* Ambient depth */}
       <div className="pointer-events-none absolute inset-0">
@@ -425,7 +425,7 @@ const MediaRibbon3D = ({ media, theme, isArise = false }) => {
               <CaseStudyMedia
                 item={items[expandedMediaIndex]}
                 alt={items[expandedMediaIndex]?.alt}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-contain"
                 sizes="100vw"
               />
             )}
