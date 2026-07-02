@@ -1432,7 +1432,18 @@ const StrategicEngine = ({ navigate }) => {
     setRoutes(recRoutes);
     setSelectedRoutes(recRoutes);
     setSelectedDeliverables(Array.from(autoSelected));
-    setClusters(recRoutes.map(r => ROUTES_INFO[r]?.title || r));
+    const problemSet = new Set();
+    const q2Ans = finalAnswers['q2_unclear'];
+    if (q2Ans) {
+      const selectedIds = Array.isArray(q2Ans) ? q2Ans.map(a => a.id) : [q2Ans.id];
+      if (selectedIds.includes('q2_o2') || selectedIds.includes('q2_o5')) problemSet.add('Messaging Inconsistency');
+      if (selectedIds.includes('q2_o3')) problemSet.add('Generic Identity');
+      if (selectedIds.includes('q2_o4')) problemSet.add('Weak Narrative');
+      if (selectedIds.includes('q2_o1')) problemSet.add('Lack of Systems');
+      if (selectedIds.includes('q2_o6')) problemSet.add('Execution Gap');
+    }
+    if (problemSet.size === 0) problemSet.add('Brand System Alignment'); // Fallback baseline
+    setClusters(Array.from(problemSet));
     setStep(N_QUIZ + 1);
   };
 
