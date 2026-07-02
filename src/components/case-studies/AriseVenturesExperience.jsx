@@ -131,13 +131,13 @@ const ChicAmbientBackground = () => {
           animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
           transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
           className="absolute top-[-20%] left-[-10%] w-[80vw] h-[80vw] rounded-full blur-[120px]"
-          style={{ background: `radial-gradient(circle, ${theme.primary}40 0%, transparent 60%)` }}
+          style={{ background: `radial-gradient(circle, ${theme.primary}40 0%, transparent 60%)`, willChange: 'transform' }}
         />
         <motion.div
           animate={{ opacity: [0.2, 0.4, 0.2], scale: [1, 1.1, 1] }}
           transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
           className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full blur-[120px]"
-          style={{ background: `radial-gradient(circle, ${theme.secondary}30 0%, transparent 60%)` }}
+          style={{ background: `radial-gradient(circle, ${theme.secondary}30 0%, transparent 60%)`, willChange: 'transform' }}
         />
       </div>
     </div>

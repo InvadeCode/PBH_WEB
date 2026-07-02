@@ -732,7 +732,7 @@ const FadeUp = ({ children, delay = 0, className = "", style = {}, ...props }) =
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }} transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }} className={className} style={style} {...props}>
+    <motion.div layout={false} ref={ref} initial={{ opacity: 0, y: 40 }} animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }} transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }} className={className} style={style} {...props}>
       {children}
     </motion.div>
   );
@@ -742,14 +742,14 @@ const StaggerGroup = ({ children, className = "", staggerDelay = 0.1 }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-10%" });
   return (
-    <motion.div ref={ref} initial="hidden" animate={isInView ? "visible" : "hidden"} variants={{ visible: { transition: { staggerChildren: staggerDelay } } }} className={className}>
+    <motion.div layout={false} ref={ref} initial="hidden" animate={isInView ? "visible" : "hidden"} variants={{ visible: { transition: { staggerChildren: staggerDelay } } }} className={className}>
       {children}
     </motion.div>
   );
 };
 
 const StaggerItem = ({ children, className = "" }) => (
-  <motion.div variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } } }} className={className}>
+  <motion.div layout={false} variants={{ hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } } }} className={className}>
     {children}
   </motion.div>
 );
@@ -759,7 +759,7 @@ const RevealText = ({ children, delay = 0, className = "" }) => {
   const isInView = useInView(ref, { once: true, margin: "-10%" });
   return (
     <div ref={ref} className={`overflow-hidden ${className}`}>
-      <motion.div initial={{ y: "100%", opacity: 0, rotateZ: 2 }} animate={isInView ? { y: 0, opacity: 1, rotateZ: 0 } : { y: "100%", opacity: 0, rotateZ: 2 }} transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay }} className="origin-bottom">{children}</motion.div>
+      <motion.div layout={false} initial={{ y: "100%", opacity: 0, rotateZ: 2 }} animate={isInView ? { y: 0, opacity: 1, rotateZ: 0 } : { y: "100%", opacity: 0, rotateZ: 2 }} transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay }} className="origin-bottom">{children}</motion.div>
     </div>
   );
 };
@@ -796,6 +796,13 @@ const GlobalFilmGrain = () => (
    `willChange` is only set on the animating children (not the fixed wrapper). */
 const BrandAura = () => {
   const reduceAura = useReducedMotion();
+  // On mobile GPUs, large Gaussian blurs are very expensive. Detect once at
+  // render time — viewport width < 768 means we're on a narrow (likely mobile)
+  // screen. We halve the blur radii and disable animation on mobile to avoid
+  // compositing-layer pressure. Visual result is the same ambient glow, just
+  // lighter on resources.
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const noAnimate = reduceAura || isMobile;
   return (
     // isolation:isolate ensures mix-blend-screen blending is resolved INSIDE
     // this stacking context only, so it doesn't composite with the whole page.
@@ -808,21 +815,21 @@ const BrandAura = () => {
           isolated stacking context above rather than against the entire page. */}
       <div className="absolute inset-0 mix-blend-screen">
         <motion.div
-          animate={reduceAura ? undefined : { x: ['-4%', '4%', '-4%'], y: ['-3%', '3%', '-3%'] }}
+          animate={noAnimate ? undefined : { x: ['-4%', '4%', '-4%'], y: ['-3%', '3%', '-3%'] }}
           transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute -top-[18%] -left-[12%] w-[60vw] h-[60vw] rounded-full blur-[170px]"
+          className={`absolute -top-[18%] -left-[12%] w-[60vw] h-[60vw] rounded-full ${isMobile ? 'blur-[80px]' : 'blur-[170px]'}`}
           style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.34) 0%, transparent 70%)', willChange: 'transform' }}
         />
         <motion.div
-          animate={reduceAura ? undefined : { x: ['4%', '-4%', '4%'], y: ['3%', '-3%', '3%'] }}
+          animate={noAnimate ? undefined : { x: ['4%', '-4%', '4%'], y: ['3%', '-3%', '3%'] }}
           transition={{ duration: 32, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-          className="absolute top-[16%] -right-[16%] w-[55vw] h-[55vw] rounded-full blur-[180px]"
+          className={`absolute top-[16%] -right-[16%] w-[55vw] h-[55vw] rounded-full ${isMobile ? 'blur-[90px]' : 'blur-[180px]'}`}
           style={{ background: 'radial-gradient(circle, rgba(212,206,252,0.30) 0%, transparent 70%)', willChange: 'transform' }}
         />
         <motion.div
-          animate={reduceAura ? undefined : { scale: [1, 1.12, 1] }}
+          animate={noAnimate ? undefined : { scale: [1, 1.12, 1] }}
           transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
-          className="absolute -bottom-[20%] left-[24%] w-[42vw] h-[42vw] rounded-full blur-[170px]"
+          className={`absolute -bottom-[20%] left-[24%] w-[42vw] h-[42vw] rounded-full ${isMobile ? 'blur-[80px]' : 'blur-[170px]'}`}
           style={{ background: 'radial-gradient(circle, rgba(255,205,0,0.16) 0%, transparent 70%)', willChange: 'transform' }}
         />
       </div>
@@ -830,7 +837,12 @@ const BrandAura = () => {
   );
 };
 
-const CustomCursor = () => {
+// Detect touch-primary devices once at module level (no reactivity needed —
+// the device type doesn't change during a session).
+const _isTouchDevice = typeof window !== 'undefined' &&
+  (window.matchMedia('(hover: none)').matches || navigator.maxTouchPoints > 0);
+
+const CustomCursorInner = () => {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   const [isPointer, setIsPointer] = useState(false);
@@ -867,6 +879,10 @@ const CustomCursor = () => {
     <motion.div className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[999] mix-blend-difference hidden md:flex items-center justify-center" style={{ x: cursorX, y: cursorY }} animate={{ scale: isPointer ? 3 : 1, backgroundColor: isPointer ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,1)', border: isPointer ? '0.5px solid rgba(255,255,255,0.5)' : 'none' }} transition={{ type: 'spring', stiffness: 700, damping: 40, mass: 0.1 }} />
   );
 };
+
+// Skip mounting on touch-primary devices — no mouse cursor needed and
+// this avoids registering mousemove/mouseover listeners on mobile.
+const CustomCursor = () => _isTouchDevice ? null : <CustomCursorInner />;
 
 const InteractiveFlowingLines = () => {
   const [dimensions, setDimensions] = useState({ width: typeof window !== 'undefined' ? window.innerWidth : 1000, height: typeof window !== 'undefined' ? window.innerHeight : 800 });
