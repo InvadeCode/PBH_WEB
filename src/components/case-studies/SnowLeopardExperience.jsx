@@ -496,22 +496,30 @@ const SnowLeopardExperience = ({ navigate, project }) => {
     <div className="min-h-screen w-full relative overflow-clip bg-[#001e2e] text-[#F4F4F5] font-primary selection:bg-teal-500/30">
 
       {/* --- AMBIENT MESH GRADIENT BACKGROUND --- */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-80">
-        <motion.div
-          animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0], x: ['-10%', '10%', '-10%'] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full bg-teal-500/40 mix-blend-screen blur-[120px]"
-        />
-        <motion.div
-          animate={{ scale: [1, 1.5, 1], rotate: [0, -90, 0], y: ['-10%', '20%', '-10%'] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-cyan-500/35 mix-blend-screen blur-[100px]"
-        />
-        <motion.div
-          animate={{ scale: [1, 1.3, 1], x: ['20%', '-20%', '20%'] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[30%] left-[20%] w-[50vw] h-[50vw] rounded-full bg-sky-300/25 mix-blend-screen blur-[100px]"
-        />
+      {/* PERF: isolation:isolate scopes all three mix-blend-screen blobs within this container only,
+          eliminating per-scroll compositing of the entire page. contain:layout style further
+          restricts repaint scope. */}
+      <div
+        className="fixed inset-0 z-0 pointer-events-none opacity-80"
+        style={{ isolation: 'isolate', contain: 'layout style' }}
+      >
+        <div className="absolute inset-0 mix-blend-screen">
+          <motion.div
+            animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0], x: ['-10%', '10%', '-10%'] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full bg-teal-500/40 blur-[120px]"
+          />
+          <motion.div
+            animate={{ scale: [1, 1.5, 1], rotate: [0, -90, 0], y: ['-10%', '20%', '-10%'] }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-cyan-500/35 blur-[100px]"
+          />
+          <motion.div
+            animate={{ scale: [1, 1.3, 1], x: ['20%', '-20%', '20%'] }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            className="absolute top-[30%] left-[20%] w-[50vw] h-[50vw] rounded-full bg-sky-300/25 blur-[100px]"
+          />
+        </div>
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }} />
       </div>
 

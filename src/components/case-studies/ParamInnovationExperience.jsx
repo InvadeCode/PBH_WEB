@@ -22,19 +22,26 @@ const palette = {
 
 /* --- 1. Chic Ambient Glows --- */
 const ChicAmbientBackground = () => (
-  <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <motion.div
-      animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
-      transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute top-[-20%] left-[-10%] w-[80vw] h-[80vw] rounded-full mix-blend-screen blur-[120px]"
-      style={{ background: `radial-gradient(circle, ${palette.primary}90 0%, transparent 60%)` }}
-    />
-    <motion.div
-      animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.1, 1] }}
-      transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-      className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full mix-blend-screen blur-[120px]"
-      style={{ background: `radial-gradient(circle, ${palette.secondary}70 0%, transparent 60%)` }}
-    />
+  // PERF: isolation:isolate scopes mix-blend-screen compositing within this element only
+  // contain:layout style limits repaint scope so scroll doesn't invalidate the whole page
+  <div
+    className="fixed inset-0 overflow-hidden pointer-events-none z-0"
+    style={{ isolation: 'isolate', contain: 'layout style' }}
+  >
+    <div className="absolute inset-0 mix-blend-screen">
+      <motion.div
+        animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.05, 1] }}
+        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-[-20%] left-[-10%] w-[80vw] h-[80vw] rounded-full blur-[120px]"
+        style={{ background: `radial-gradient(circle, ${palette.primary}90 0%, transparent 60%)` }}
+      />
+      <motion.div
+        animate={{ opacity: [0.3, 0.5, 0.3], scale: [1, 1.1, 1] }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] rounded-full blur-[120px]"
+        style={{ background: `radial-gradient(circle, ${palette.secondary}70 0%, transparent 60%)` }}
+      />
+    </div>
   </div>
 );
 

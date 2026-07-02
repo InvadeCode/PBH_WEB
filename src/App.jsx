@@ -766,41 +766,66 @@ const RevealText = ({ children, delay = 0, className = "" }) => {
 
 // --- UTILITIES & UI COMPONENTS ---
 
+// GlobalFilmGrain: static data-URI noise texture instead of an animated SVG
+// feTurbulence filter. A fixed+mix-blend-screen element with a live SVG filter
+// forces a full-viewport repaint every frame on Windows Chrome/Edge. A static
+// background-image PNG causes no per-frame work at all.
+const FILM_GRAIN_DATA_URI =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E\")";
+
 const GlobalFilmGrain = () => (
-  <div className="pointer-events-none fixed inset-0 z-[9999] opacity-[0.035] mix-blend-screen">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-      <filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" /></filter>
-      <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-    </svg>
-  </div>
+  <div
+    className="pointer-events-none fixed inset-0 z-[9999] opacity-[0.035] mix-blend-screen"
+    style={{
+      backgroundImage: FILM_GRAIN_DATA_URI,
+      backgroundRepeat: 'repeat',
+      backgroundSize: '200px 200px',
+    }}
+  />
 );
 
 /* Site-wide brand atmosphere — soft purple / periwinkle / yellow blooms that
    tint EVERY page (screen-blend only lightens, so white text stays crisp).
    Fixed + pointer-events-none; sits above the navy page surfaces (z<30) but
-   below the header (z-10000) and modals (z-100000). */
+   below the header (z-10000) and modals (z-100000).
+
+   PERF: The outer wrapper uses `isolation: isolate` so the mix-blend-screen
+   compositing is contained entirely within this element and doesn't force
+   re-compositing of the rest of the page on every animation frame.
+   `contain: layout style` further limits browser layout/paint scope.
+   `willChange` is only set on the animating children (not the fixed wrapper). */
 const BrandAura = () => {
   const reduceAura = useReducedMotion();
   return (
-    <div className="pointer-events-none fixed inset-0 z-[30] overflow-hidden mix-blend-screen" aria-hidden="true">
-      <motion.div
-        animate={reduceAura ? undefined : { x: ['-4%', '4%', '-4%'], y: ['-3%', '3%', '-3%'] }}
-        transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-[18%] -left-[12%] w-[60vw] h-[60vw] rounded-full blur-[170px]"
-        style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.34) 0%, transparent 70%)', willChange: 'transform' }}
-      />
-      <motion.div
-        animate={reduceAura ? undefined : { x: ['4%', '-4%', '4%'], y: ['3%', '-3%', '3%'] }}
-        transition={{ duration: 32, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
-        className="absolute top-[16%] -right-[16%] w-[55vw] h-[55vw] rounded-full blur-[180px]"
-        style={{ background: 'radial-gradient(circle, rgba(212,206,252,0.30) 0%, transparent 70%)', willChange: 'transform' }}
-      />
-      <motion.div
-        animate={reduceAura ? undefined : { scale: [1, 1.12, 1] }}
-        transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
-        className="absolute -bottom-[20%] left-[24%] w-[42vw] h-[42vw] rounded-full blur-[170px]"
-        style={{ background: 'radial-gradient(circle, rgba(255,205,0,0.16) 0%, transparent 70%)', willChange: 'transform' }}
-      />
+    // isolation:isolate ensures mix-blend-screen blending is resolved INSIDE
+    // this stacking context only, so it doesn't composite with the whole page.
+    <div
+      className="pointer-events-none fixed inset-0 z-[30] overflow-hidden"
+      aria-hidden="true"
+      style={{ isolation: 'isolate', contain: 'layout style' }}
+    >
+      {/* Inner wrapper carries mix-blend-screen so it composites within the
+          isolated stacking context above rather than against the entire page. */}
+      <div className="absolute inset-0 mix-blend-screen">
+        <motion.div
+          animate={reduceAura ? undefined : { x: ['-4%', '4%', '-4%'], y: ['-3%', '3%', '-3%'] }}
+          transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -top-[18%] -left-[12%] w-[60vw] h-[60vw] rounded-full blur-[170px]"
+          style={{ background: 'radial-gradient(circle, rgba(104,101,250,0.34) 0%, transparent 70%)', willChange: 'transform' }}
+        />
+        <motion.div
+          animate={reduceAura ? undefined : { x: ['4%', '-4%', '4%'], y: ['3%', '-3%', '3%'] }}
+          transition={{ duration: 32, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
+          className="absolute top-[16%] -right-[16%] w-[55vw] h-[55vw] rounded-full blur-[180px]"
+          style={{ background: 'radial-gradient(circle, rgba(212,206,252,0.30) 0%, transparent 70%)', willChange: 'transform' }}
+        />
+        <motion.div
+          animate={reduceAura ? undefined : { scale: [1, 1.12, 1] }}
+          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
+          className="absolute -bottom-[20%] left-[24%] w-[42vw] h-[42vw] rounded-full blur-[170px]"
+          style={{ background: 'radial-gradient(circle, rgba(255,205,0,0.16) 0%, transparent 70%)', willChange: 'transform' }}
+        />
+      </div>
     </div>
   );
 };
@@ -811,10 +836,32 @@ const CustomCursor = () => {
   const [isPointer, setIsPointer] = useState(false);
   useEffect(() => {
     const handleMouseMove = (e) => { cursorX.set(e.clientX - 8); cursorY.set(e.clientY - 8); };
-    const handleMouseOver = (e) => setIsPointer(window.getComputedStyle(e.target).cursor === 'pointer' || e.target.tagName.toLowerCase() === 'button' || e.target.tagName.toLowerCase() === 'a');
+    // PERF: mouseover fires on every element under the cursor including all
+    // ancestors. Throttle with a flag so we only call setIsPointer when the
+    // pointer-cursor status actually changes, avoiding re-renders on every move.
+    let rafId = null;
+    let lastIsPointer = false;
+    const handleMouseOver = (e) => {
+      if (rafId) return; // Already scheduled
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const nextIsPointer =
+          window.getComputedStyle(e.target).cursor === 'pointer' ||
+          e.target.tagName.toLowerCase() === 'button' ||
+          e.target.tagName.toLowerCase() === 'a';
+        if (nextIsPointer !== lastIsPointer) {
+          lastIsPointer = nextIsPointer;
+          setIsPointer(nextIsPointer);
+        }
+      });
+    };
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('mouseover', handleMouseOver, { passive: true });
-    return () => { window.removeEventListener('mousemove', handleMouseMove); window.removeEventListener('mouseover', handleMouseOver); };
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseover', handleMouseOver);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [cursorX, cursorY]);
   return (
     <motion.div className="fixed top-0 left-0 w-4 h-4 rounded-full pointer-events-none z-[999] mix-blend-difference hidden md:flex items-center justify-center" style={{ x: cursorX, y: cursorY }} animate={{ scale: isPointer ? 3 : 1, backgroundColor: isPointer ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,1)', border: isPointer ? '0.5px solid rgba(255,255,255,0.5)' : 'none' }} transition={{ type: 'spring', stiffness: 700, damping: 40, mass: 0.1 }} />

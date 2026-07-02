@@ -229,14 +229,25 @@ const MediaRibbon3D = ({ media, theme }) => {
   const velocity = useRef(BASE_VEL);
   const targetVel = useRef(BASE_VEL);
 
-  const tiltX = useSpring(0, { stiffness: 60, damping: 18 });
+  // PERF: pause RAF when ribbon is off-screen
+  const isVisible = useRef(false);
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      ([entry]) => { isVisible.current = entry.isIntersecting; },
+      { rootMargin: '100px' }
+    );
+    if (sceneRef.current) io.observe(sceneRef.current);
+    return () => io.disconnect();
+  }, []);
+
+  const tiltX = useSpring(-6, { stiffness: 60, damping: 18 });
   const tiltY = useSpring(0, { stiffness: 60, damping: 18 });
   const [activeIndex, setActiveIndex] = useState(0);
 
   const step = N > 0 ? 360 / N : 0;
 
   useAnimationFrame((_, deltaMs) => {
-    if (N === 0) return;
+    if (N === 0 || !isVisible.current) return;
     const dt = Math.min(deltaMs, 50) / 1000;
     // Slow to ~10% speed when a panel is hovered, so it stays readable
     const effective = hoverPaused ? BASE_VEL * 0.08 : targetVel.current;

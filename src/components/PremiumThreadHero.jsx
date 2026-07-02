@@ -168,12 +168,25 @@ const PremiumThreadHero = ({ media, eyebrow, title, subtitle, className = '' }) 
   const targetVel = useRef(reduce ? 0 : 7);
   const BASE_VEL = reduce ? 0 : 7;
 
+  // PERF: track visibility so we skip RAF work when off-screen
+  const isVisible = useRef(true);
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      ([entry]) => { isVisible.current = entry.isIntersecting; },
+      { rootMargin: '100px' }
+    );
+    if (sceneRef.current) io.observe(sceneRef.current);
+    return () => io.disconnect();
+  }, []);
+
   // Cursor parallax (springy tilt of the whole ring).
   const tiltX = useSpring(-7, { stiffness: 60, damping: 18 });
   const tiltY = useSpring(0, { stiffness: 60, damping: 18 });
   const [activeIndex, setActiveIndex] = useState(0);
 
   useAnimationFrame((_, deltaMs) => {
+    // PERF: skip when not in viewport
+    if (!isVisible.current) return;
     const dt = Math.min(deltaMs, 50) / 1000;
     // ease velocity toward target (momentum)
     velocity.current += (targetVel.current - velocity.current) * Math.min(1, dt * 3);

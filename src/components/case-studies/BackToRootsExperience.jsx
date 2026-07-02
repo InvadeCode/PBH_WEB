@@ -237,9 +237,21 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
   const defaultChapters = editableDefaultChapters.length ? editableDefaultChapters : BUILT_IN_STORY_CHAPTERS;
 
   const hasImages = images && images.length > 0;
-  
+
+  // PERF: pause RAF when carousel is off-screen
+  const isVisible = useRef(false);
+  const sectionRef = useRef(null);
+  useEffect(() => {
+    const io = new IntersectionObserver(
+      ([entry]) => { isVisible.current = entry.isIntersecting; },
+      { rootMargin: '100px' }
+    );
+    if (sectionRef.current) io.observe(sectionRef.current);
+    return () => io.disconnect();
+  }, []);
+
   // To prevent the "lag" or "jumping" bug when wrapping, we must ensure a single set
-  // is physically wider than the user's screen. If they only upload 1-3 images, we duplicate 
+  // is physically wider than the user's screen. If they only upload 1-3 images, we duplicate
   // them in the base array until it has enough items to span a large desktop.
   let baseImages = [];
   if (hasImages) {
@@ -252,13 +264,15 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
   useAnimationFrame((time, delta) => {
     if (!hasImages) return;
     if (isPaused) return;
+    // PERF: skip when off-screen
+    if (!isVisible.current) return;
 
     // Adjust speed here (higher = faster)
     let moveBy = 0.8 * (delta / 16);
     let currentX = x.get() - moveBy;
 
     const wrapWidth = firstSetRef.current?.offsetWidth || 0;
-    
+
     // When we've scrolled exactly one set width to the left, seamlessly reset
     if (wrapWidth > 0 && Math.abs(currentX) >= wrapWidth) {
       currentX += wrapWidth;
@@ -336,7 +350,7 @@ const StoryChapterCarousel = ({ images, project, SITE_SETTINGS }) => {
   };
 
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden" style={{ backgroundColor: C.soilDeep }}>
+    <section ref={sectionRef} className="relative py-24 md:py-32 overflow-hidden" style={{ backgroundColor: C.soilDeep }}>
       <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ backgroundImage: GRAIN, backgroundSize: '120px', opacity: 0.1 }} />
       
       <div className="text-center mb-16 px-[6%] relative z-10">

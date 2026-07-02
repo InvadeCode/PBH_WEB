@@ -201,6 +201,10 @@ const PremiumLogoMarquee = ({ navigate, caseStudies = [], clientLogos = [] }) =>
   const x = useMotionValue(0);
   const setWidth = useRef(0);
   const firstSet = useRef(null);
+  // PERF: track whether the marquee is in the viewport so we can pause the
+  // useAnimationFrame loop when it is scrolled out of view.
+  const isVisible = useRef(false);
+  const sectionRef = useRef(null);
 
   const logos = useMemo(() => {
     const activeLogos = clientLogos && clientLogos.length > 0
@@ -221,11 +225,25 @@ const PremiumLogoMarquee = ({ navigate, caseStudies = [], clientLogos = [] }) =>
     const ro = new ResizeObserver(measure);
     if (firstSet.current) ro.observe(firstSet.current);
     window.addEventListener('resize', measure);
-    return () => { ro.disconnect(); window.removeEventListener('resize', measure); };
+
+    // PERF: IntersectionObserver — pause RAF when not visible
+    const io = new IntersectionObserver(
+      ([entry]) => { isVisible.current = entry.isIntersecting; },
+      { rootMargin: '200px' } // Start slightly before it enters viewport
+    );
+    if (sectionRef.current) io.observe(sectionRef.current);
+
+    return () => {
+      ro.disconnect();
+      io.disconnect();
+      window.removeEventListener('resize', measure);
+    };
   }, []);
 
   useAnimationFrame((_, delta) => {
     if (reduce) return;
+    // PERF: skip RAF work when off-screen
+    if (!isVisible.current) return;
     const w = setWidth.current;
     if (!w) return;
     speedCurrent.current += (speedTarget.current - speedCurrent.current) * Math.min(1, delta / 260);
@@ -237,6 +255,7 @@ const PremiumLogoMarquee = ({ navigate, caseStudies = [], clientLogos = [] }) =>
 
   return (
     <motion.section
+      ref={sectionRef}
       className="relative w-full overflow-hidden py-20 md:py-28"
       initial={{ opacity: 0, y: 40, filter: 'blur(16px)' }}
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
