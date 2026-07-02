@@ -196,7 +196,7 @@ const MediaRibbon3D = ({ media, theme }) => {
   useEffect(() => {
     const measure = () => {
       const w = sceneRef.current?.clientWidth || window.innerWidth;
-      const height = clamp(w * 0.20, 200, 340);
+      const height = clamp(w * 0.22, 240, 420);
       const minRadius = clamp(w * 0.5, 450, 750);
       const maxRadius = clamp(w * 2.5, 1800, 4200);
       const maxAspect = Math.max(...items.map(m => getMediaAspect(m)), 1.4);
@@ -207,7 +207,10 @@ const MediaRibbon3D = ({ media, theme }) => {
       const requiredRadius = items.length > 1
         ? (approxPanelWidth + minGap) / (2 * Math.sin(Math.PI / items.length))
         : minRadius;
-      const radius = clamp(requiredRadius, minRadius, maxRadius);
+      
+      // Do not force a massive minRadius if there are few items, this caused huge gaps
+      // and made back items shrink too much due to extreme depth.
+      const radius = clamp(requiredRadius, 300, maxRadius);
       setDims({ height, radius });
     };
     measure();
