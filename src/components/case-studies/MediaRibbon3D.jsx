@@ -286,7 +286,7 @@ const MediaRibbon3D = ({ media, theme }) => {
 
     // Throttle tilt + velocity updates to one RAF tick
     pendingPointerEvent.current = { clientX, clientY };
-    if (!pointerMoveRaf.current) {
+      if (!pointerMoveRaf.current) {
       pointerMoveRaf.current = requestAnimationFrame(() => {
         pointerMoveRaf.current = null;
         const ev = pendingPointerEvent.current;
@@ -294,8 +294,6 @@ const MediaRibbon3D = ({ media, theme }) => {
         const rect = sceneRef.current?.getBoundingClientRect();
         if (rect) {
           const px = (ev.clientX - rect.left) / rect.width - 0.5;
-          const py = (ev.clientY - rect.top) / rect.height - 0.5;
-          tiltX.set(-6 - py * 10);
           tiltY.set(px * 8);
           if (!isDragging.current) targetVel.current = BASE_VEL + px * 15;
         }
