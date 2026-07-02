@@ -323,7 +323,7 @@ const ParamInnovationExperience = ({ navigate, project }) => {
       </div>
 
       {/* ── 1. CINEMATIC HERO (Boxed) ── */}
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-20 md:pb-24 pt-10 px-4 md:px-8">
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-20 md:pb-24 pt-44 md:pt-48 px-4 md:px-8">
         
         {/* Floating Box Hero Banner */}
         <div

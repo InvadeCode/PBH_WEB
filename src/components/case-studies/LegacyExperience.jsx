@@ -21,7 +21,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
       </div>
       {/* Fallback old UI */}
       {/* Hero Section - Cinematic Boxed Layout */}
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-32 md:pb-40 pt-10 px-4 md:px-8">
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-32 md:pb-40 pt-44 md:pt-48 px-4 md:px-8">
         {heroImage ? (
           <div className="w-full max-w-7xl mx-auto aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden mb-12 shadow-2xl relative">
             <div className="absolute inset-0 bg-black/20 mix-blend-overlay z-10 pointer-events-none"></div>

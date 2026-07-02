@@ -455,7 +455,7 @@ const FirefoxExperience = ({ navigate, project }) => {
       </div>
 
       {/* ── 1. HERO ── */}
-      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-16 md:pb-20 pt-10 px-4 md:px-8">
+      <section className="relative w-full flex flex-col items-center justify-start z-10 pb-16 md:pb-20 pt-44 md:pt-48 px-4 md:px-8">
         <div
           className="relative w-full max-w-[95vw] md:max-w-7xl mx-auto rounded-[30px] md:rounded-[50px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5"
           style={{ aspectRatio: heroAspectRatio }}
