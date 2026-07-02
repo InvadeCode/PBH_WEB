@@ -110,7 +110,7 @@ const Cover = ({ project, navigate, SITE_SETTINGS, c }) => {
       </motion.div>
       <div className="pointer-events-none absolute left-1/2 top-36 z-10 -translate-x-1/2 px-4 md:top-40">
         <CaseStudySectorPill
-          sector={project?.sector}
+          sector={project?.sector || (project?.tags?.length > 0 ? project.tags[0] : null) || (project?.roles?.length > 0 ? project.roles[0] : null)}
           className="border bg-[#6f6a62]/55 text-[#fff6e5] shadow-[0_16px_42px_rgba(0,0,0,0.24)] backdrop-blur-md"
           style={{ borderColor: `${c.cream}24` }}
         />

@@ -34,7 +34,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
             />
             <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 px-3 md:top-28">
               <CaseStudySectorPill
-                sector={project?.sector}
+                sector={project?.sector || (project?.tags?.length > 0 ? project.tags[0] : null) || (project?.roles?.length > 0 ? project.roles[0] : null)}
                 className="border border-white/15 bg-black/35 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
               />
             </div>
@@ -43,7 +43,7 @@ const LegacyExperience = ({ project, navigate, palette }) => {
           <div className="relative w-full h-24 md:h-32 mb-8">
             <div className="pointer-events-none absolute left-1/2 top-24 z-20 -translate-x-1/2 px-3 md:top-28">
               <CaseStudySectorPill
-                sector={project?.sector}
+                sector={project?.sector || (project?.tags?.length > 0 ? project.tags[0] : null) || (project?.roles?.length > 0 ? project.roles[0] : null)}
                 className="border border-white/15 bg-black/35 text-white/85 shadow-[0_14px_40px_rgba(0,0,0,0.24)] backdrop-blur-md"
               />
             </div>
