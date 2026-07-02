@@ -418,7 +418,7 @@ const EcosystemCarousel = ({ media }) => {
       <CaseStudyMedia
         item={m}
         alt={m.alt}
-        className="h-full w-full object-cover transition-transform duration-[1.4s] ease-out group-hover:scale-105"
+        className="h-full w-full object-contain transition-transform duration-[1.4s] ease-out group-hover:scale-105"
         sizes="(min-width: 768px) 42vw, 82vw"
       />
       <div className="pointer-events-none absolute inset-0 rounded-[20px] ring-1 ring-inset ring-white/5" />
