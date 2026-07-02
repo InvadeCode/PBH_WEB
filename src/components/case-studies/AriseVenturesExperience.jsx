@@ -412,7 +412,7 @@ const EcosystemCarousel = ({ media }) => {
   const renderCard = (m, i, prefix) => (
     <figure
       key={`${prefix}-${m.key || i}`}
-      className="group relative shrink-0 h-[clamp(260px,42vh,520px)] rounded-[20px] overflow-hidden ring-1 ring-white/10 shadow-[0_28px_70px_-24px_rgba(0,0,0,0.75)]"
+      className="group relative shrink-0 h-[clamp(320px,55vh,700px)] rounded-[20px] overflow-hidden ring-1 ring-white/10 shadow-[0_28px_70px_-24px_rgba(0,0,0,0.75)]"
       style={{ aspectRatio: getMediaAspect(m), backgroundColor: theme.panel }}
     >
       <CaseStudyMedia
