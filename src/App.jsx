@@ -4662,7 +4662,7 @@ const JournalPage = ({ navigate }) => {
             <StaggerItem key={i}>
               <div onClick={() => navigate('article/' + article.id)} className="border border-white/10 rounded-[24px] p-8 h-[380px] flex flex-col hover:-translate-y-2 transition-transform cursor-pointer group shadow-xl w-full" style={{ backgroundColor: palette.panel }}>
                 <div className="t-label mb-6" style={{ color: palette[article.type] || palette.primary }}>{article.tag}</div>
-                <h4 className="t-subtitle text-white mb-6 group-hover:text-white/80 transition-colors leading-snug font-primary">{article.title}</h4>
+                <h4 className="text-xl md:text-2xl font-light text-white mb-6 group-hover:text-white/80 transition-colors leading-snug font-primary">{article.title}</h4>
                 <p className="t-body text-white/50 line-clamp-3 mb-8">{article.excerpt}</p>
                 <div className="mt-auto flex justify-between items-center text-[17px] md:text-[19px] text-white/40 font-secondary pt-6 border-t border-white/5">
                   <span>{article.time}</span>
